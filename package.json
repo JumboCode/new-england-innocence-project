@@ -1,0 +1,21 @@
+{
+  "name": "new-england-innocence-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@clerk/clerk-sdk-node": "^5.0.48",
+    "autoprefixer": "^10.4.20",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "pg": "^8.13.0",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13"
+  }
+}
