@@ -12,3 +12,67 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Gender {
+  M
+  F
+  OTHER
+}
+
+model Exoneree {
+  id                      Int           @id @default(autoincrement())
+  personalInfo            PersonalInfo
+  caseInfo                CaseInfo
+  legalInfo               LegalInfo
+  wrongfulConvictionInfo  WrongfulConvictionInfo
+  postExonerationInfo     PostExonerationInfo
+  metaData                MetaData
+}
+
+model Location {
+  id                    Int           @id @default(autoincrement())
+  state                 String
+  country               String
+  currentStatus         CurrentStatus[] // One to many relation
+}
+
+model Compensation {
+  id                    Int           @id @default(autoincrement())
+  amount                Int
+  Date                  DateTime
+}
+
+model CurrentStatus {
+  id                    Int           @id @default(autoincrement())
+  occupation            String
+  residence             Location  @relation(fields: [residenceId], references: [id]) // Relation with Location
+  residenceId           Int
+}
+
+model PersonalInfo {
+    id                      Int           @id @default(autoincrement())
+}
+
+model CaseInfo {
+  id                      Int           @id @default(autoincrement())
+
+}
+
+model LegalInfo {
+  id                      Int           @id @default(autoincrement())
+}
+
+model WrongfulConvictionInfo {
+  id                      Int           @id @default(autoincrement())
+
+}
+
+model PostExonerationInfo {
+  id                      Int           @id @default(autoincrement())
+
+}
+
+model MetaData {
+  id                      Int           @id @default(autoincrement())
+
+}
