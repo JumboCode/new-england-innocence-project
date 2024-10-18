@@ -24,23 +24,15 @@ const AuthBox: FC<AuthBoxProps> = ({ prop }) => {
             alignItems: 'center', // Center items horizontally
             padding: '15px'
         }}>
-            {/* <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginTop: '20px', // Add margin to move it down from the top
-                marginBottom: '10px' // Add space below the logo and the prop below
-            }}> */}
+            {/* Import logo at top of the page */}
+            <div style={{marginTop: '20px'}}>
+                <Image src={logo} alt="CaseView Logo" width={180} height={60}/>
+            </div>
 
-                {/* Import logo at top of the page */}
-                    <div style={{marginTop: '20px'}}>
-                        <Image src={logo} alt="CaseView Logo" width={180} height={60}/>
-                    </div>
-
-                    <div style={{padding: '30px'}}>
-                        {prop}
-                    </div>
-        
-            {/* </div> */}
+            {/* Allows for prop to be passed */}
+            <div style={{padding: '30px'}}>
+                {prop}
+            </div>
         </div>
     );
 }
