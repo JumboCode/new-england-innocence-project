@@ -20,59 +20,99 @@ enum Gender {
 }
 
 model Exoneree {
-  id                      Int           @id @default(autoincrement())
-  personalInfo            PersonalInfo
-  caseInfo                CaseInfo
-  legalInfo               LegalInfo
-  wrongfulConvictionInfo  WrongfulConvictionInfo
-  postExonerationInfo     PostExonerationInfo
-  metaData                MetaData
+  id                             Int           @id @default(autoincrement())
+  personalInfo                   PersonalInfo
+  caseInfo                       CaseInfo
+  legalInfo                      LegalInfo
+  wrongfulConvictionInfo         WrongfulConvictionInfo
+  postExonerationInfo            PostExonerationInfo
+  metaData                       MetaData
 }
 
 model Location {
-  id                    Int           @id @default(autoincrement())
-  state                 String
-  country               String
-  currentStatus         CurrentStatus[] // One to many relation
+  id                             Int           @id @default(autoincrement())
+  state                          String
+  country                        String
+  currentStatus                  CurrentStatus[] // One to many relation
 }
 
 model Compensation {
-  id                    Int           @id @default(autoincrement())
-  amount                Int
-  Date                  DateTime
+  id                             Int           @id @default(autoincrement())
+  amount                         Int
+  Date                           DateTime
 }
 
 model CurrentStatus {
-  id                    Int           @id @default(autoincrement())
-  occupation            String
-  residence             Location  @relation(fields: [residenceId], references: [id]) // Relation with Location
-  residenceId           Int
+  id                             Int           @id @default(autoincrement())
+  occupation                     String
+  residence                      Location  @relation(fields: [residenceId], references: [id]) // Relation with Location
+  residenceId                    Int
 }
 
 model PersonalInfo {
-    id                      Int           @id @default(autoincrement())
+  id                             Int           @id @default(autoincrement())
+  name                           String
+  dateOfBirth                    DateTime
+  gender                         Gender
+  race                           String
+  ethnicity                      String
+  phone Number                   String
+  address                        String
+  email                          String
 }
 
 model CaseInfo {
-  id                      Int           @id @default(autoincrement())
-
+  id                             Int           @id @default(autoincrement())
+  caseNumber                     String
+  jurisdiction                   Location
+  yearsInPrison                  Int
+  arrestDate                     DateTime
+  convictionDate                 DateTime
+  freedomDate                    DateTime
+  exonerationDate                DateTime
+  crimeType                      String
+  sentence                       String
 }
 
 model LegalInfo {
-  id                      Int           @id @default(autoincrement())
+  id                             Int           @id @default(autoincrement())
+  originalCharges                String
+  convictionMethod               String[]
+  exonerationMethod              String[]
+  legalRepresentation            String
+  prosecutor                     String
+  detectivesInvolved             String[]
 }
 
 model WrongfulConvictionInfo {
-  id                      Int           @id @default(autoincrement())
-
+  id                             Int           @id @default(autoincrement())
+  falseConfession                Boolean
+  eyewitnessMisidentification    Boolean
+  inadequateLegalDefense         Boolean
+  policeProsecutorialMisconduct  Boolean
+  forensicEvidence               Boolean
+  informantTestimony             Boolean
 }
 
 model PostExonerationInfo {
-  id                      Int           @id @default(autoincrement())
+  id                             Int           @id @default(autoincrement())
+  compensation                   Compensation
+  reentrySupport                 String[]
+  publicApology                  Boolean
+  currentStatus                  CurrentStatus
+}
 
+model AdditionalInfo {
+  id                             Int           @id @default(autoincrement())
+  mediaCoverage                  String[]
+  advocacyInvolvement            String
+  educationalBackground          String
+  healthInfo                     String
 }
 
 model MetaData {
-  id                      Int           @id @default(autoincrement())
-
+  id                             Int           @id @default(autoincrement())
+  dataSource                     String
+  lastUpdated                    DateTime
+  createdAt                      DateTime
 }
