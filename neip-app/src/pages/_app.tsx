@@ -1,15 +1,15 @@
 // src/pages/_app.tsx
-import '../styles/globals.css'; // Adjust the import path
+import '../styles/globals.css'; 
 import AuthBox from '../app/components/AuthBox';
-import Signup from '../app/pages/Signup';
-import SignupConfirmation from '../app/pages/SignupConfirmation';
+import Signup from './Signup';
+import SignupConfirmation from './signupConfirmation';
+import { AppProps } from 'next/app'; 
 
-function MyApp({  }) {
-    
-    return <Signup />;
-    
-    // return <AuthBox prop={<SignupConfirmation></SignupConfirmation>} />;
+function MyApp({ Component, pageProps }: AppProps) {
 
+    return (
+        <Component {...pageProps} />
+    );
 }
 
 export default MyApp;
