@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
-import AuthEntryBox from '../components/AuthEntryBox';
-import AuthButton from '../components/AuthButton';
-import AuthBox from '../components/AuthBox';
+import AuthEntryBox from '../app/components/AuthEntryBox';
+import AuthButton from '../app/components/AuthButton';
+import AuthBox from '../app/components/AuthBox';
 import Link from 'next/link';
 
-// const [login, email, pasword] = useState('')
-
-
-
-const Signup: React.FC = () => {
+const SignupConfirmation: React.FC = () => {
     return (
-        <AuthBox prop={<SignupContent />} size={{height: '525px' }} />
+        <AuthBox prop={<SignupConfirmationContent />} size={{height: '538px' }} />
     );
 }
 
-const SignupContent = () => {
+const SignupConfirmationContent = () => {
     return (
         <div>
             <div>
@@ -29,9 +25,9 @@ const SignupContent = () => {
                     Signup
                 </h1>
             </div>
-            <div>
+            {/* <div> */}
                 {/* User credentials text */}
-                <h2 style = {{
+                {/* <h2 style = {{
                     textAlign: 'center',
                     fontSize: '15px',
                     fontWeight: 'bold',
@@ -39,20 +35,33 @@ const SignupContent = () => {
                 }}>
                     User Credentials
                 </h2>
-            </div>
-            {/* user ID input */}
+            </div> */}
+            {/* Account Made! Box */}
             <div style = {{
                 display: 'flex',
-                justifyContent: 'center', 
                 alignItems: 'center',
-                height: '20px',
-                width: '375px',
-                padding: '30px',
-            }}>
-                <AuthEntryBox placeholder="user ID" type="text" />
+                justifyContent: 'flex-start',
+                backgroundColor: '#C6DEC7',
+                borderRadius: '8px',
+                padding: '5px 20px',
+                marginBottom: '15px',
+                width: '400px', 
+                height: '45px',         
+            }}> 
+            {/* Account Made! text */}
+            <h2 style = {{
+                    textAlign: 'center',
+                    fontSize: '25px',
+                    fontWeight: 'bold',
+                    color: 'black',
+                    paddingBottom: '10px',
+                }}>
+                    Account Made!
+                </h2>
+                {/* <AuthEntryBox placeholder="user ID" type="number" /> */}
             </div >
             {/* email input */}
-            <div style = {{
+            {/* <div style = {{
                 display: 'flex',
                 justifyContent: 'center', 
                 alignItems: 'center',
@@ -61,19 +70,12 @@ const SignupContent = () => {
                 padding: '30px',
             }}>
                 <AuthEntryBox placeholder="email" type="email" />
-            </div>
-            <div style = {{
-                display: 'flex',
-                justifyContent: 'center', 
-                alignItems: 'center',
-                height: '20px',
-                width: '375px',
-                padding: '30px',
-            }}>
-                <AuthEntryBox placeholder="new user position" type="text" />
-            </div>
+            </div> */}
+            {/* <div>
+                
+            </div> */}
             {/* password input */}
-            <div style = {{
+            {/* <div style = {{
                 display: 'flex',
                 justifyContent: 'center', 
                 alignItems: 'center',
@@ -82,22 +84,20 @@ const SignupContent = () => {
                 padding: '30px',
             }}>
                 <AuthEntryBox placeholder="password" type="password" /> 
-            </div>
-            {/* sign up button */}
+            </div> */}
+            {/* Next Button */}
             <div style = {{
                 display: 'flex',
                 justifyContent: 'center', 
                 alignItems: 'center',
-                padding: '15px',
+                padding: '30px',
             }}>
-                <Link href="/SignupConfirmation">
-                    <AuthButton color = '#43b4ef' filled = {true} text = 'Sign Up'/>
-                 </Link>
+                {/* <Link href="TBD - it doesn't need to link to anything for now"> */}
+                    <AuthButton color = '#43b4ef' filled = {true} text = 'Next'/>
+                 {/* </Link> */}
             </div>
         </div>
     );
 }
 
-export default Signup;
- 
-
+export default SignupConfirmation;

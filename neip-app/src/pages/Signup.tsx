@@ -1,8 +1,20 @@
 import React, { useState } from 'react';
-import AuthEntryBox from '../components/AuthEntryBox';
-import AuthButton from '../components/AuthButton';
+import AuthEntryBox from '../app/components/AuthEntryBox';
+import AuthButton from '../app/components/AuthButton';
+import AuthBox from '../app/components/AuthBox';
+import Link from 'next/link';
 
-const SignupConfirmation: React.FC = () => {
+// const [login, email, pasword] = useState('')
+
+
+
+const Signup: React.FC = () => {
+    return (
+        <AuthBox prop={<SignupContent />} size={{height: '525px' }} />
+    );
+}
+
+const SignupContent = () => {
     return (
         <div>
             <div>
@@ -17,9 +29,9 @@ const SignupConfirmation: React.FC = () => {
                     Signup
                 </h1>
             </div>
-            {/* <div> */}
+            <div>
                 {/* User credentials text */}
-                {/* <h2 style = {{
+                <h2 style = {{
                     textAlign: 'center',
                     fontSize: '15px',
                     fontWeight: 'bold',
@@ -27,33 +39,20 @@ const SignupConfirmation: React.FC = () => {
                 }}>
                     User Credentials
                 </h2>
-            </div> */}
-            {/* Account Made! Box */}
+            </div>
+            {/* user ID input */}
             <div style = {{
                 display: 'flex',
+                justifyContent: 'center', 
                 alignItems: 'center',
-                justifyContent: 'flex-start',
-                backgroundColor: '#C6DEC7',
-                borderRadius: '8px',
-                padding: '5px 20px',
-                marginBottom: '15px',
-                width: '400px', 
-                height: '45px',         
-            }}> 
-            {/* Account Made! text */}
-            <h2 style = {{
-                    textAlign: 'center',
-                    fontSize: '25px',
-                    fontWeight: 'bold',
-                    color: 'black',
-                    paddingBottom: '10px',
-                }}>
-                    Account Made!
-                </h2>
-                {/* <AuthEntryBox placeholder="user ID" type="number" /> */}
+                height: '20px',
+                width: '375px',
+                padding: '30px',
+            }}>
+                <AuthEntryBox placeholder="user ID" type="text" />
             </div >
             {/* email input */}
-            {/* <div style = {{
+            <div style = {{
                 display: 'flex',
                 justifyContent: 'center', 
                 alignItems: 'center',
@@ -62,12 +61,19 @@ const SignupConfirmation: React.FC = () => {
                 padding: '30px',
             }}>
                 <AuthEntryBox placeholder="email" type="email" />
-            </div> */}
-            {/* <div>
-                
-            </div> */}
+            </div>
+            <div style = {{
+                display: 'flex',
+                justifyContent: 'center', 
+                alignItems: 'center',
+                height: '20px',
+                width: '375px',
+                padding: '30px',
+            }}>
+                <AuthEntryBox placeholder="new user position" type="text" />
+            </div>
             {/* password input */}
-            {/* <div style = {{
+            <div style = {{
                 display: 'flex',
                 justifyContent: 'center', 
                 alignItems: 'center',
@@ -76,20 +82,22 @@ const SignupConfirmation: React.FC = () => {
                 padding: '30px',
             }}>
                 <AuthEntryBox placeholder="password" type="password" /> 
-            </div> */}
-            {/* Next Button */}
+            </div>
+            {/* sign up button */}
             <div style = {{
                 display: 'flex',
                 justifyContent: 'center', 
                 alignItems: 'center',
-                padding: '30px',
+                padding: '15px',
             }}>
-                {/* <Link href="TBD - it doesn't need to link to anything for now"> */}
-                    <AuthButton color = '#43b4ef' filled = {true} text = 'Next'/>
-                 {/* </Link> */}
+                <Link href="/signupConfirmation">
+                    <AuthButton color = '#43b4ef' filled = {true} text = 'Sign Up'/>
+                 </Link>
             </div>
         </div>
     );
 }
 
-export default SignupConfirmation;
+export default Signup;
+ 
+
