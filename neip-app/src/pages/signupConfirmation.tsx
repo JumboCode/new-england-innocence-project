@@ -3,6 +3,8 @@ import AuthEntryBox from '../app/components/AuthEntryBox';
 import AuthButton from '../app/components/AuthButton';
 import AuthBox from '../app/components/AuthBox';
 
+// import { Checkmark } from 'react-checkmark'
+
 const SignupConfirmation: React.FC = () => {
     return (
         <AuthBox prop={<SignupConfirmationContent />} />
@@ -29,20 +31,8 @@ const SignupConfirmationContent = () => {
                     Signup
                 </h1>
             </div>
-            {/* <div> */}
-                {/* User credentials text */}
-                {/* <h2 style = {{
-                    textAlign: 'center',
-                    fontSize: '15px',
-                    fontWeight: 'bold',
-                    color: 'black',
-                }}>
-                    User Credentials
-                </h2>
-            </div> */}
-
-            {/* Account Made! Box */}
-            <div style = {{
+                {/* Account made! Box */}
+                <div style = {{
                 // display: 'flex',
                 // alignItems: 'center',
                 // justifyContent: 'flex-start',
@@ -51,30 +41,63 @@ const SignupConfirmationContent = () => {
                 // padding: '5px 20px',
                 // marginBottom: '15px',
                 width: '400px', 
-                height: '45px',         
+                height: '45px',
+                top: '238px',
+                left: '69px',    
+                
             }}> 
-            {/* Account Made! text */}
+            {/* Account made! text */}
             <h2 style = {{
-                    textAlign: 'center',
-                    fontSize: '25px',
-                    color: 'green',
-                    paddingBottom: '10px',
+                textAlign: 'center',
+                fontSize: '20px',
+                color: '#49C151',
+                height: '60px',
+                // paddingBottom: '5px',
+                weight: '500px',
+                align: 'center',
                 }}>
-                    Account Made!
+                    Account made!
                 </h2>
                 {/* <AuthEntryBox placeholder="user ID" type="number" /> */}
             </div >
-            {/* email input */}
-            {/* <div style = {{
+            {/* You will get an email confirmation... text */}
+            <h3 style = {{
                 display: 'flex',
-                justifyContent: 'center', 
+                justifyContent: 'left', 
                 alignItems: 'center',
                 height: '20px',
                 width: '375px',
                 padding: '30px',
+                color: '#B6B5B5',
             }}>
-                <AuthEntryBox placeholder="email" type="email" />
-            </div> */}
+                You will get an email confirmation...
+            </h3>
+            {/* Please note that you can manage users */}
+            <h3 style = {{
+                display: 'flex',
+                justifyContent: 'left', 
+                alignItems: 'center',
+                height: '20px',
+                width: '375px',
+                padding: '30px',
+                color: '#B6B5B5',
+                fontStyle: 'italic',
+            }}>
+                *Please note that you can manage users
+            </h3>
+            {/* in the users section of the profile page */}
+            <h3 style = {{
+                display: 'flex',
+                justifyContent: 'left', 
+                alignItems: 'center',
+                height: '20px',
+                width: '375px',
+                padding: '30px',
+                color: '#B6B5B5',
+                fontStyle: 'italic',
+            }}>
+                in the users section of the profile page
+            </h3>
             {/* <div>
                 
             </div> */}
