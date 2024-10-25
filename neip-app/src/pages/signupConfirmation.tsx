@@ -1,8 +1,20 @@
-import React, { useState } from 'react';
-import AuthEntryBox from '../components/AuthEntryBox';
-import AuthButton from '../components/AuthButton';
+import React, { useState, useEffect } from 'react';
+import AuthEntryBox from '../app/components/AuthEntryBox';
+import AuthButton from '../app/components/AuthButton';
+import AuthBox from '../app/components/AuthBox';
 
 const SignupConfirmation: React.FC = () => {
+    return (
+        <AuthBox prop={<SignupConfirmationContent />} />
+    );
+}
+
+const SignupConfirmationContent = () => {
+
+    useEffect(() => {
+        console.log("Signup Confirmation Page Mounted");
+    }, []);
+
     return (
         <div>
             <div>
@@ -28,15 +40,16 @@ const SignupConfirmation: React.FC = () => {
                     User Credentials
                 </h2>
             </div> */}
+
             {/* Account Made! Box */}
             <div style = {{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
+                // display: 'flex',
+                // alignItems: 'center',
+                // justifyContent: 'flex-start',
                 backgroundColor: '#C6DEC7',
-                borderRadius: '8px',
-                padding: '5px 20px',
-                marginBottom: '15px',
+                // borderRadius: '8px',
+                // padding: '5px 20px',
+                // marginBottom: '15px',
                 width: '400px', 
                 height: '45px',         
             }}> 
@@ -44,8 +57,7 @@ const SignupConfirmation: React.FC = () => {
             <h2 style = {{
                     textAlign: 'center',
                     fontSize: '25px',
-                    fontWeight: 'bold',
-                    color: 'black',
+                    color: 'green',
                     paddingBottom: '10px',
                 }}>
                     Account Made!
