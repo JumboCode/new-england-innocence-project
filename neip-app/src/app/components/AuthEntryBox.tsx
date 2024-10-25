@@ -1,6 +1,7 @@
 // components/AuthEntryBox.tsx
 import React from 'react';
 
+// 
 interface AuthEntryBoxProps {
   placeholder: string;
   type?: string;
@@ -9,7 +10,7 @@ interface AuthEntryBoxProps {
 const AuthEntryBox: React.FC<AuthEntryBoxProps> = ({placeholder, type = "text"}) => {
   const inputStyle = {
     width: '100%',
-    padding: '10px',
+    padding: '5px',
     borderLeft: '0px',
     borderRight: '0px',
     borderTop: '0px',

@@ -4,9 +4,6 @@ import AuthButton from '../components/AuthButton';
 import AuthBox from '../components/AuthBox';
 import Link from 'next/link';
 
-// const [login, email, pasword] = useState('')
-
-
 
 const Signup: React.FC = () => {
     return (
@@ -33,9 +30,10 @@ const SignupContent = () => {
                 {/* User credentials text */}
                 <h2 style = {{
                     textAlign: 'center',
-                    fontSize: '15px',
+                    fontSize: '18px',
                     fontWeight: 'bold',
                     color: 'black',
+                    paddingBottom: '10px',
                 }}>
                     User Credentials
                 </h2>
@@ -47,7 +45,7 @@ const SignupContent = () => {
                 alignItems: 'center',
                 height: '20px',
                 width: '375px',
-                padding: '30px',
+                padding: '27px',
             }}>
                 <AuthEntryBox placeholder="user ID" type="text" />
             </div >
@@ -58,7 +56,7 @@ const SignupContent = () => {
                 alignItems: 'center',
                 height: '20px',
                 width: '375px',
-                padding: '30px',
+                padding: '27px',
             }}>
                 <AuthEntryBox placeholder="email" type="email" />
             </div>
@@ -68,7 +66,7 @@ const SignupContent = () => {
                 alignItems: 'center',
                 height: '20px',
                 width: '375px',
-                padding: '30px',
+                padding: '27px',
             }}>
                 <AuthEntryBox placeholder="new user position" type="text" />
             </div>
@@ -79,7 +77,7 @@ const SignupContent = () => {
                 alignItems: 'center',
                 height: '20px',
                 width: '375px',
-                padding: '30px',
+                padding: '27px',
             }}>
                 <AuthEntryBox placeholder="password" type="password" /> 
             </div>
