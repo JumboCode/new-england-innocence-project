@@ -36,15 +36,16 @@ const SignupConfirmationContent = () => {
                     User Credentials
                 </h2>
             </div> */}
+
             {/* Account Made! Box */}
             <div style = {{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
+                // display: 'flex',
+                // alignItems: 'center',
+                // justifyContent: 'flex-start',
                 backgroundColor: '#C6DEC7',
-                borderRadius: '8px',
-                padding: '5px 20px',
-                marginBottom: '15px',
+                // borderRadius: '8px',
+                // padding: '5px 20px',
+                // marginBottom: '15px',
                 width: '400px', 
                 height: '45px',         
             }}> 
@@ -52,8 +53,7 @@ const SignupConfirmationContent = () => {
             <h2 style = {{
                     textAlign: 'center',
                     fontSize: '25px',
-                    fontWeight: 'bold',
-                    color: 'black',
+                    color: 'green',
                     paddingBottom: '10px',
                 }}>
                     Account Made!
