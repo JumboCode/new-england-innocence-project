@@ -6,15 +6,16 @@ import logo from ".//caseview_logo.png";
 
 interface AuthBoxProps {
     prop: ReactNode; // The prop is a React component
-    size?: {height: string}; // Allows for height adjustment
+    height?: {height: string}; // Allows for height adjustment
+    width?: {width: string};
 }
 
-const AuthBox: FC<AuthBoxProps> = ({ prop, size }) => {
+const AuthBox: FC<AuthBoxProps> = ({ prop, height, width }) => {
     return (
         <div style={{
             // Create the rectangular shape for the AuthBox
-            width: '400px', 
-            height: size?.height || '475px', // Adjuted height or given height
+            width: width?.width || '400px', 
+            height: height?.height || '475px', // Adjuted height or given height
             border: '2.5px solid', // Gray edge on the border
             borderColor: 'rgba(200,200,200,255)', // Border color
             borderRadius: '20px', // Curved edge on the border

@@ -6,7 +6,7 @@ import SignupConfirmation from './signupConfirmation';
 
 function MyApp({  }) {
     
-    return <Signup />;
+    return <SignupConfirmation/>;
     
     // return <AuthBox prop={<SignupConfirmation></SignupConfirmation>} />;
 
