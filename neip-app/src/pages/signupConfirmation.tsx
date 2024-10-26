@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const SignupConfirmation: React.FC = () => {
     return (
-        <AuthBox prop={<SignupConfirmationContent />} />
+        <AuthBox prop={<SignupConfirmationContent />}/>
     );
 }
 
