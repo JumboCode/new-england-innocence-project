@@ -29,7 +29,8 @@ const SignupContent = () => {
                     fontSize: '25px',
                     fontWeight: 'bold',
                     color: 'black',
-                    paddingBottom: '10px',
+                    paddingBottom: '5px',
+                    marginTop: '-19px',
                 }}>
                     Signup
                 </h1>
@@ -101,7 +102,7 @@ const SignupContent = () => {
                 display: 'flex',
                 justifyContent: 'center', 
                 alignItems: 'center',
-                padding: '15px',
+                padding: '10px',
             }}>
                  <AuthButton color='#43b4ef' filled={true} text='Sign Up' href="/signupConfirmation"/>
             </div>
