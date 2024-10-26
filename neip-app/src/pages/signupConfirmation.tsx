@@ -1,11 +1,13 @@
-// "use client";
+"use client";
 
-import React, { useState, useEffect } from 'react';
-// import AuthEntryBox from '../app/components/AuthEntryBox';
+import React, { useEffect } from 'react'; 
+import dynamic from 'next/dynamic'; // Import dynamic for client-side rendering
 import AuthButton from '../app/components/AuthButton';
 import AuthBox from '../app/components/AuthBox';
 import Link from 'next/link';
-// import { Checkmark } from 'react-checkmark' //importing the checkmark
+
+// Dynamically import the Checkmark component with SSR disabled
+const Checkmark = dynamic(() => import('react-checkmark').then(mod => mod.Checkmark), { ssr: false });
 
 const SignupConfirmation: React.FC = () => {
     return (
@@ -14,7 +16,6 @@ const SignupConfirmation: React.FC = () => {
 }
 
 const SignupConfirmationContent: React.FC = () => {
-    //chat: React.FC
     useEffect(() => {
         console.log("Signup Confirmation Page Mounted");
     }, []);
@@ -35,7 +36,6 @@ const SignupConfirmationContent: React.FC = () => {
                     fontWeight: 'bold',
                     color: 'black',
                     textAlign: 'center',
-                    // paddingBottom: '10px',
                 }}>
                     Signup
                 </h1>
@@ -43,19 +43,29 @@ const SignupConfirmationContent: React.FC = () => {
             {/* Account made! Box */}
             <div style = {{
                 display: 'flex',
-                justifyContent: 'center', 
                 alignItems: 'center',
                 backgroundColor: '#C6DEC7',
-                // padding: '10px 20px',
                 width: '300px',
                 height: '35px',
-                // marginTop: '15px',
                 marginBottom: '-40px',
-                // top: '238px',
-                // left: '69px',    
+                gap: '10px', 
             }}> 
 
+            {/* Checkmark */}
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '12px',
+            }}>
+            <Checkmark size="medium" color="#49C151" /> 
+            </div>
+
             {/* Account made! text */}
+            <div style ={{
+                flex: 1, // Take up the remaining space to push content to the center
+                display: 'flex',
+                padding: '15%',
+            }}>
             <h2 style = {{
                 fontSize: '17px',
                 color: '#49C151',
@@ -63,7 +73,8 @@ const SignupConfirmationContent: React.FC = () => {
                 }}>
                     Account made!
                 </h2>
-            </div >
+            </div>
+        </div>
 
             {/* Informational Text */}
             <div
