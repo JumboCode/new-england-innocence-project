@@ -1,6 +1,29 @@
 nav {
-    background-color: rgba(11, 117, 222, 0.915);
-    max-width: 8vw;
+    background-color: rgb(13, 85, 130);
+    max-width: 10vw;
     height: 100vw;
-    display: block;
+    padding: 3vw 0;
+    display: flex;  
+    align-items: center;
+    flex-direction: column;   
 }
+
+ nav ul li {
+    padding: 1vw;
+    border-radius: 0.5vw;
+}
+
+nav ul li a{
+    color: white;
+    text-decoration: none;
+}
+
+nav u li a:visited{
+    background-color: white;
+    color: rgb(13, 85, 130);
+}
+
+
+
+
+
