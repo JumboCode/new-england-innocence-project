@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import AuthEntryBox from '../app/components/AuthEntryBox';
 import AuthButton from '../app/components/AuthButton';
 import AuthBox from '../app/components/AuthBox';
-
-// import { Checkmark } from 'react-checkmark'
+import Link from 'next/link';
+// import { Checkmark } from 'react-checkmark' //importing the checkmark
 
 const SignupConfirmation: React.FC = () => {
     return (
@@ -33,15 +33,17 @@ const SignupConfirmationContent = () => {
             </div>
                 {/* Account made! Box */}
                 <div style = {{
-                // display: 'flex',
-                // alignItems: 'center',
-                // justifyContent: 'flex-start',
+                display: 'flex',
+                justifyContent: 'left', 
+                alignItems: 'center',
                 backgroundColor: '#C6DEC7',
-                // borderRadius: '8px',
-                // padding: '5px 20px',
-                // marginBottom: '15px',
-                width: '400px', 
-                height: '45px',
+                borderRadius: '8px',
+                padding: '10px 20px',
+                // width: '300px',
+                // height: '45px',
+                marginBottom: '15px',
+                width: '300px', 
+                height: '35px',
                 top: '238px',
                 left: '69px',    
                 
@@ -49,12 +51,12 @@ const SignupConfirmationContent = () => {
             {/* Account made! text */}
             <h2 style = {{
                 textAlign: 'center',
-                fontSize: '20px',
+                fontSize: '17px',
                 color: '#49C151',
                 height: '60px',
                 // paddingBottom: '5px',
-                weight: '500px',
-                align: 'center',
+                // weight: '500px',
+                // align: 'center',
                 }}>
                     Account made!
                 </h2>
