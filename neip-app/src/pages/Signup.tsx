@@ -9,7 +9,7 @@ import Link from 'next/link';
 const Signup: React.FC = () => {
     return (
         <AuthBox prop={<SignupContent />}/>
-        //Leann: removed size={{height: '530px'}} because error
+        //removed size={{height: '530px'}} because error
     );
 }
 
