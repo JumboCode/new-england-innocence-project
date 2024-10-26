@@ -2,7 +2,7 @@
 
 import { FC, ReactNode } from "react";
 import Image from "next/image";
-import logo from "../caseview_logo.png";
+import logo from "./caseview_logo.png";
 
 interface AuthBoxProps {
     prop: ReactNode; // The prop is a React component
