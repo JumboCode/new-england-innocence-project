@@ -1,13 +1,21 @@
 // components/AuthButton.tsx
-import React from 'react';
+import React from "react";
+import { useRouter } from "next/navigation";
 
 interface AuthButtonProps {
   color: string;
   filled: boolean;
   text: string;
+  href: string; // New prop for navigation
 }
 
-const AuthButton: React.FC<AuthButtonProps> = ({ color, filled, text }) => {
+const AuthButton: React.FC<AuthButtonProps> = ({ color, filled, text, href }) => {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(href); // Navigate to the specified href
+  };
+
   const buttonStyle = {
     backgroundColor: filled ? color : 'white',
     color: filled ? 'white' : color,
@@ -21,7 +29,7 @@ const AuthButton: React.FC<AuthButtonProps> = ({ color, filled, text }) => {
   };
 
   return (
-    <button style={buttonStyle}>
+    <button style={buttonStyle} onClick={handleClick}>
       {text}
     </button>
   );

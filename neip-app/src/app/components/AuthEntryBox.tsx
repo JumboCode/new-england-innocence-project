@@ -1,20 +1,25 @@
 // components/AuthEntryBox.tsx
 import React from 'react';
 
-const AuthEntryBox: React.FC = () => {
+interface AuthEntryBoxProps {
+  placeholder: string;
+  type?: string;
+}
+
+const AuthEntryBox: React.FC<AuthEntryBoxProps> = ({ placeholder, type = 'text' }) => {
   const inputStyle = {
     width: '100%',
-    padding: '10px',
-    borderRadius: '8px', 
-    border: '2px solid #ccc',  
+    padding: '8px 0',
     fontSize: '16px',
-    marginBottom: '10px',
-    fontFamily: 'Arial, sans-serif',  
+    fontFamily: 'Arial, sans-serif',
+    border: 'none',
+    borderBottom: '2px solid #3b82f6',  // Blue underline
+    outline: 'none',
+    color: '#333',
+    textAlign: 'center' as 'center',
   };
 
-  return (
-    <input type="text" style={inputStyle} placeholder="Enter details here" />
-  );
+  return <input type={type} placeholder={placeholder} style={inputStyle} />;
 };
 
 export default AuthEntryBox;
