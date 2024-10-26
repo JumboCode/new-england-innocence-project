@@ -1,3 +1,5 @@
+// "use client";
+
 import React, { useState, useEffect } from 'react';
 // import AuthEntryBox from '../app/components/AuthEntryBox';
 import AuthButton from '../app/components/AuthButton';
@@ -25,7 +27,7 @@ const SignupConfirmationContent: React.FC = () => {
             justifyContent: 'center',
             gap: '20px',
             width: '100%', 
-            padding: '20px',
+            padding: '10px',
         }}>
             {/* Sign Up Title */}
                 <h1 style = {{
