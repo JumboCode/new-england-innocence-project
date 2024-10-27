@@ -1,4 +1,4 @@
-// TODO: import prisma client once created 
+import prisma from '../src/backend/prisma';
 
 // Connect to db before running tests
 beforeAll(async () => {
