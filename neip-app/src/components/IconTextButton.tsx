@@ -12,7 +12,7 @@ const IconTextButton: React.FC<IconTextButtonProps> = ({ icon, filled, text, bor
   const IconButtonStyle = {
     fontWeight: 'bold',
     fontFamily: 'Inter, sans-serif',
-    color: filled ? 'white' : color,
+    color: filled ? 'white' : color: 'white',
     borderRadius: '8px', 
     gap: '8px',
     backgroundColor: filled ? color : '#2B9BD6;',
