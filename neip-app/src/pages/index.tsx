@@ -1,9 +1,13 @@
 // pages/index.tsx
 // import Homepage from '@/app/pages/homepage'
 import NavBar from '../components/NavBar'
+import LoginPage from './login'
+import AuthButton from '@/components/AuthButton'
+import AuthEntryBox from '@/components/SignupAuthEntryBox'
+import Signup from './Signup'
 
 const Homepage = () => {
-  return <NavBar />
+  return <Signup />
 }
 
 export default Homepage
