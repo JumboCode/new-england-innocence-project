@@ -2,8 +2,8 @@
 
 import React, { useEffect } from 'react'; 
 import dynamic from 'next/dynamic'; // Import dynamic for client-side rendering
-import AuthButton from '../app/components/AuthButton';
-import AuthBox from '../app/components/AuthBox';
+import AuthButton from '../components/AuthButton';
+import AuthBox from '../components/AuthBox';
 import Link from 'next/link';
 
 // Dynamically import the Checkmark component with SSR disabled

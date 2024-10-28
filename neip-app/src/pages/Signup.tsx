@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import AuthEntryBox from '../app/components/AuthEntryBox';
-import AuthButton from '../app/components/AuthButton';
-import AuthBox from '../app/components/AuthBox';
+import AuthEntryBox from '../components/AuthEntryBox';
+import AuthButton from '../components/AuthButton';
+import AuthBox from '../components/AuthBox';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
