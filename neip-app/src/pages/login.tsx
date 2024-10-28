@@ -2,9 +2,9 @@
 "use client";
 
 import React from 'react';
-import AuthBox from '../app/components/AuthBox';
-import AuthButton from '../app/components/AuthButton';
-import AuthEntryBox from '../app/components/AuthEntryBox';
+import AuthBox from '../components/AuthBox';
+import AuthButton from '../components/AuthButton';
+import AuthEntryBox from '../components/AuthEntryBox';
 
 const LoginPage: React.FC = () => {
   return (
