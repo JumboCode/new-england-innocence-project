@@ -1,6 +1,6 @@
 module.exports = {
-    preset: "ts-jest",
-    testEnvironment: "node",
-    setupFilesAfterEnv: ["/prisma/testPrismaSetup.ts"], 
+    preset: 'ts-jest',
+    testEnvironment: 'node',
+    setupFilesAfterEnv: ['<rootDir>/prisma/testPrismaSetup.ts'],
   };
   

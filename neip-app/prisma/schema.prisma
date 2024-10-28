@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,124 +7,124 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Exoneree {
+  id                       Int                    @id @default(autoincrement())
+  personalInfoId           Int                    @unique
+  caseInfoId               Int                    @unique
+  legalInfoId              Int                    @unique
+  wrongfulConvictionInfoId Int                    @unique
+  postExonerationInfoId    Int                    @unique
+  metaDataId               Int                    @unique
+  caseInfo                 CaseInfo               @relation(fields: [caseInfoId], references: [id])
+  legalInfo                LegalInfo              @relation(fields: [legalInfoId], references: [id])
+  metaData                 MetaData               @relation(fields: [metaDataId], references: [id])
+  personalInfo             PersonalInfo           @relation(fields: [personalInfoId], references: [id])
+  postExonerationInfo      PostExonerationInfo    @relation(fields: [postExonerationInfoId], references: [id])
+  wrongfulConvictionInfo   WrongfulConvictionInfo @relation(fields: [wrongfulConvictionInfoId], references: [id])
+}
+
+model Location {
+  id            Int             @id @default(autoincrement())
+  state         String
+  country       String
+  caseInfo      CaseInfo?
+  currentStatus CurrentStatus[]
+}
+
+model Compensation {
+  id                  Int                  @id @default(autoincrement())
+  amount              Int
+  Date                DateTime
+  postExonerationInfo PostExonerationInfo?
+}
+
+model CurrentStatus {
+  id                  Int                  @id @default(autoincrement())
+  occupation          String
+  residenceId         Int
+  residence           Location             @relation(fields: [residenceId], references: [id])
+  postExonerationInfo PostExonerationInfo?
+}
+
+model PersonalInfo {
+  id          Int       @id @default(autoincrement())
+  name        String
+  dateOfBirth DateTime
+  gender      Gender
+  race        String
+  ethnicity   String
+  phoneNumber String
+  address     String
+  email       String
+  exoneree    Exoneree?
+}
+
+model CaseInfo {
+  id              Int       @id @default(autoincrement())
+  caseNumber      String
+  jurisdictionId  Int       @unique
+  yearsInPrison   Int
+  arrestDate      DateTime
+  convictionDate  DateTime
+  freedomDate     DateTime
+  exonerationDate DateTime
+  crimeType       String
+  sentence        String
+  jurisdiction    Location  @relation(fields: [jurisdictionId], references: [id])
+  exoneree        Exoneree?
+}
+
+model LegalInfo {
+  id                  Int       @id @default(autoincrement())
+  originalCharges     String
+  convictionMethod    String[]
+  exonerationMethod   String[]
+  legalRepresentation String
+  prosecutor          String
+  detectivesInvolved  String[]
+  exoneree            Exoneree?
+}
+
+model WrongfulConvictionInfo {
+  id                            Int       @id @default(autoincrement())
+  falseConfession               Boolean
+  eyewitnessMisidentification   Boolean
+  inadequateLegalDefense        Boolean
+  policeProsecutorialMisconduct Boolean
+  forensicEvidence              Boolean
+  informantTestimony            Boolean
+  exoneree                      Exoneree?
+}
+
+model PostExonerationInfo {
+  id              Int           @id @default(autoincrement())
+  compensationId  Int           @unique
+  reentrySupport  String[]
+  publicApology   Boolean
+  currentStatusId Int           @unique
+  exoneree        Exoneree?
+  compensation    Compensation  @relation(fields: [compensationId], references: [id])
+  currentStatus   CurrentStatus @relation(fields: [currentStatusId], references: [id])
+}
+
+model AdditionalInfo {
+  id                    Int      @id @default(autoincrement())
+  mediaCoverage         String[]
+  advocacyInvolvement   String
+  educationalBackground String
+  healthInfo            String
+}
+
+model MetaData {
+  id          Int       @id @default(autoincrement())
+  dataSource  String
+  lastUpdated DateTime
+  createdAt   DateTime
+  exoneree    Exoneree?
+}
+
 enum Gender {
   M
   F
   OTHER
-}
-
-model Exoneree {
-  id                             Int                    @id @default(autoincrement())
-  personalInfo                   PersonalInfo           @relation(fields: [personalInfoId], references: [id]) // Relation with PersonalInfo
-  personalInfoId                 Int                    @unique
-  caseInfo                       CaseInfo               @relation(fields: [caseInfoId], references: [id]) // Relation with CaseInfo
-  caseInfoId                     Int                    @unique
-  legalInfo                      LegalInfo              @relation(fields: [legalInfoId], references: [id]) // Relation with LegalInfo
-  legalInfoId                    Int                    @unique
-  wrongfulConvictionInfo         WrongfulConvictionInfo @relation(fields: [wrongfulConvictionInfoId], references: [id]) // Relation with WrongfullConvictionInfo
-  wrongfulConvictionInfoId       Int                    @unique
-  postExonerationInfo            PostExonerationInfo    @relation(fields: [postExonerationInfoId], references: [id]) // Relation with PostExoneratonInfo
-  postExonerationInfoId          Int                    @unique
-  metaData                       MetaData               @relation(fields: [metaDataId], references: [id]) // Relation with MetaData
-  metaDataId                     Int                    @unique
-}
-
-model Location {
-  id                             Int           @id @default(autoincrement())
-  state                          String
-  country                        String
-  currentStatus                  CurrentStatus[] // One to many relation
-  caseInfo                       CaseInfo?      // One to one relation
-}
-
-model Compensation {
-  id                             Int           @id @default(autoincrement())
-  amount                         Int
-  Date                           DateTime
-  postExonerationInfo            PostExonerationInfo? // One to one relation
-}
-
-model CurrentStatus {
-  id                             Int           @id @default(autoincrement())
-  occupation                     String
-  residence                      Location      @relation(fields: [residenceId], references: [id]) // Relation with Location
-  residenceId                    Int
-  postExonerationInfo            PostExonerationInfo? // One to one relation
-}
-
-model PersonalInfo {
-  id                             Int           @id @default(autoincrement())
-  name                           String
-  dateOfBirth                    DateTime
-  gender                         Gender
-  race                           String
-  ethnicity                      String
-  phoneNumber                    String
-  address                        String
-  email                          String
-  exoneree                       Exoneree?    // One to one relation
-}
-
-model CaseInfo {
-  id                             Int           @id @default(autoincrement())
-  caseNumber                     String
-  jurisdiction                   Location      @relation(fields: [jurisdictionId], references: [id]) // Relation with Location
-  jurisdictionId                 Int           @unique
-  yearsInPrison                  Int
-  arrestDate                     DateTime
-  convictionDate                 DateTime
-  freedomDate                    DateTime
-  exonerationDate                DateTime
-  crimeType                      String
-  sentence                       String
-  exoneree                       Exoneree?    // One to one relation
-}
-
-model LegalInfo {
-  id                             Int           @id @default(autoincrement())
-  originalCharges                String
-  convictionMethod               String[]
-  exonerationMethod              String[]
-  legalRepresentation            String
-  prosecutor                     String
-  detectivesInvolved             String[]
-  exoneree                       Exoneree?    // One to one relation
-}
-
-model WrongfulConvictionInfo {
-  id                             Int           @id @default(autoincrement())
-  falseConfession                Boolean
-  eyewitnessMisidentification    Boolean
-  inadequateLegalDefense         Boolean
-  policeProsecutorialMisconduct  Boolean
-  forensicEvidence               Boolean
-  informantTestimony             Boolean
-  exoneree                       Exoneree?    // One to one relation
-}
-
-model PostExonerationInfo {
-  id                             Int           @id @default(autoincrement())
-  compensation                   Compensation  @relation(fields: [compensationId], references: [id]) // Relation with Location
-  compensationId                 Int           @unique
-  reentrySupport                 String[]
-  publicApology                  Boolean
-  currentStatus                  CurrentStatus @relation(fields: [currentStatusId], references: [id]) // Relation with Location
-  currentStatusId                Int           @unique
-  exoneree                       Exoneree?    // One to one relation
-}
-
-model AdditionalInfo {
-  id                             Int           @id @default(autoincrement())
-  mediaCoverage                  String[]
-  advocacyInvolvement            String
-  educationalBackground          String
-  healthInfo                     String
-}
-
-model MetaData {
-  id                             Int           @id @default(autoincrement())
-  dataSource                     String
-  lastUpdated                    DateTime
-  createdAt                      DateTime
-  exoneree                       Exoneree?    // One to one relation
 }
