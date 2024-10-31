@@ -2,24 +2,15 @@ import React, { useState } from 'react';
 import AuthEntryBox from '../components/AuthEntryBox';
 import AuthButton from '../components/AuthButton';
 import AuthBox from '../components/AuthBox';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
 
 
 const Signup: React.FC = () => {
     return (
         <AuthBox prop={<SignupContent />}/>
-        //removed size={{height: '530px'}} because error
     );
 }
 
 const SignupContent = () => {
-    // const router = useRouter(); 
-
-    // const handleSignup = () => {
-    //     router.push('/signupConfirmation');
-    // };
-
     return (
         <div>
             <div>
