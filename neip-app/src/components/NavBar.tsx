@@ -25,24 +25,19 @@ interface NavItem {
 // Sample nav items array
 const navItems: NavItem[] = [
     {
-        name: "Homepage", 
-        icon: <img src="/icons/home.svg" alt="Homepage Icon"/>,
-        route: "/"
-    },
-    {
-        name: "Add Entry", 
-        icon: <img src="/icons/home.svg" alt="Add Entry Icon"/>,
-        route: "/addEntry"
-    },
-    {
         name: "Dashboard", 
-        icon: <img src="/icons/home.svg" alt="Dashboard Icon"/>,
+        icon: <img src="/icons/dashboard.svg" alt="Dashboard Icon"/>,
         route: "/"
     },
     {
-        name: "Account", 
-        icon: <img src="/icons/home.svg" alt="Account Icon"/>,
-        route: "/account"
+        name: "Manage Users", 
+        icon: <img src="/icons/user.svg" alt="User Icon"/>,
+        route: "/manage-users"
+    },
+    {
+        name: "Settings", 
+        icon: <img src="/icons/settings.svg" alt="Settings Icon"/>,
+        route: "/settings"
     }
 ];
 
