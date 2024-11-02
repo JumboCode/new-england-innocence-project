@@ -7,7 +7,12 @@ import AuthEntryBox from '@/components/SignupAuthEntryBox'
 import Signup from './Signup'
 
 const Homepage = () => {
-  return <Signup />
+  return (
+    <>
+      <NavBar />
+      <Signup />
+    </>
+  );
 }
 
 export default Homepage
