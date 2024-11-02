@@ -3,6 +3,11 @@
 import React from 'react';
 import IconTextButton from '../components/IconTextButton';
 import SearchEntryBox from '../components/SearchEntryBox';
+import TrashIcon from "../img/trash-01.png";
+import Image from 'next/image';
+import UploadIcon from "../img/Upload.png"
+import PlusIcon from "../img/plus.png";
+import ArrowIcon from "../img/arrow_icon.png";
 import { CgTrash, CgExport, CgAdd, CgSearch, CgChevronLeft } from "react-icons/cg";
 
 // import logo from 'neip-app/public/caseview_logo2.png'; // Import the logo directly
@@ -10,7 +15,7 @@ import { CgTrash, CgExport, CgAdd, CgSearch, CgChevronLeft } from "react-icons/c
 const HomePage: React.FC = () => {
     return (
         <div style={{ height: '100vh', backgroundColor: 'white' }}>
-            
+
             {/* Top Banner */}
             <div style={{ backgroundColor: '#033550', color: 'white', display: 'flex', alignItems: 'center', width: 'auto', height: '56px' }}>
                 <img src="/caseview_logo2.png" alt="Logo" style={{ height: '35px', width: 'auto', marginLeft: '17px', backgroundColor: 'white' }} />
@@ -30,7 +35,7 @@ const HomePage: React.FC = () => {
                     alignItems: 'center',
                     fontSize: '11px',
                 }}>Open filter sidebar
-                <CgChevronLeft style={{ marginRight: '3px', fontSize: '20px' }} />
+                    <Image src={ArrowIcon} alt="arrow icon" style={{ marginLeft: '12px' }} height="5.21" width="10.42"></Image>
                 </button>
             </div>
 
@@ -50,7 +55,7 @@ const HomePage: React.FC = () => {
                     {/* Action Buttons */}
                     <div style={{ display: 'flex', gap: '16px', marginRight: '200px' }}>
                         <IconTextButton
-                            icon={<CgTrash />}
+                            icon={<Image src={TrashIcon} alt="trash icon" width="20" height="20"></Image>}
                             filled={false}
                             text="Delete"
                             border={false}
@@ -58,7 +63,7 @@ const HomePage: React.FC = () => {
                             width="104px"
                         />
                         <IconTextButton
-                            icon={<CgExport />}
+                            icon={<Image src={UploadIcon} alt="upload icon" width="24" height="24"></Image>}
                             filled={false}
                             text="Export to CSV"
                             border={true}
@@ -66,7 +71,7 @@ const HomePage: React.FC = () => {
                             width="159px"
                         />
                         <IconTextButton
-                            icon={<CgAdd />}
+                            icon={<Image src={PlusIcon} alt="plus icon" width="14" height="14"></Image>}
                             filled={true}
                             text="Add new exoneree file"
                             border={false}
