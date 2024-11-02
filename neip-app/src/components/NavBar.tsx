@@ -32,12 +32,12 @@ const navItems: NavItem[] = [
     {
         name: "Manage Users", 
         icon: <img src="/icons/user.svg" alt="User Icon"/>,
-        route: "/manage-users"
+        route: "/account"
     },
     {
         name: "Settings", 
         icon: <img src="/icons/settings.svg" alt="Settings Icon"/>,
-        route: "/settings"
+        route: "/"
     }
 ];
 
