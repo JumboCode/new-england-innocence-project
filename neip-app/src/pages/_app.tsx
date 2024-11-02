@@ -1,6 +1,7 @@
 // src/pages/_app.tsx
 import '../styles/globals.css'; 
-import AuthBox from '../app/components/AuthBox';
+import "../styles/NavBarStyle.css"; 
+//import AuthBox from '../app/components/AuthBox';
 import Signup from './Signup';
 import SignupConfirmation from './signupConfirmation';
 import { AppProps } from 'next/app'; 
