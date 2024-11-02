@@ -31,7 +31,7 @@ const navItems: NavItem[] = [
     },
     {
         name: "Add Entry", 
-        icon: <img src="/icons/addEntry.svg" alt="Add Entry Icon"/>,
+        icon: <img src="/icons/home.svg" alt="Add Entry Icon"/>,
         route: "/addEntry"
     },
     {
@@ -41,7 +41,7 @@ const navItems: NavItem[] = [
     },
     {
         name: "Account", 
-        icon: <img src="/icons/user.svg" alt="Account Icon"/>,
+        icon: <img src="/icons/home.svg" alt="Account Icon"/>,
         route: "/account"
     }
 ];
