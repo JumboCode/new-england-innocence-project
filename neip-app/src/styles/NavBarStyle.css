@@ -23,7 +23,74 @@ nav u li a:visited{
     color: rgb(13, 85, 130);
 }
 
+.nav-container {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #44B4EF;
+    color: #fff;
+    transition: width 0.0s ease;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    overflow: hidden;
+  }
+  
+  /* Expanded and collapsed states */
+  .nav-container.collapsed {
+    width: 60px;
+  }
+  
+  .nav-container.expanded {
+    width: 200px;
+    align-items: flex-start;
+    padding-left: 10px;
+  }
+  
+  /* Individual nav items */
+  .nav-item {
+    width: 100%;
+    padding: 10px 15px;
+    display: inline-block;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.0s ease;
+  }
+  
+  /*.nav-item:hover {
+    background-color: darkgray;
+  }*/
+  
+  /* Icon styles */
+  /*.icon-wrapper {
+    width: 40px;
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0px;
+  }*/
 
+  .icon-wrapper {
+    width: 40px;
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Text styles */
+  .nav-item-text {
+    margin: 0;
+    font-size: 16px;
+    color: #FFFFFF;
+  }
 
-
-
+  .nav-link div,
+  .nav-link span {
+    vertical-align: middle;
+  }
