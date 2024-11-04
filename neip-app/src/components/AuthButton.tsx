@@ -8,9 +8,10 @@ interface AuthButtonProps {
   filled: boolean;
   text: string;
   href?: string;
+  onClick?: () => void;
 }
 
-const AuthButton: React.FC<AuthButtonProps> = ({ color, filled, text, href }) => {
+const AuthButton: React.FC<AuthButtonProps> = ({ color, filled, text, href, onClick }) => {
   const buttonStyle = {
     backgroundColor: filled ? color : 'white',
     color: filled ? 'white' : color,
@@ -29,7 +30,7 @@ const AuthButton: React.FC<AuthButtonProps> = ({ color, filled, text, href }) =>
 
   return (
     <Link href={href || '/'} passHref>
-      <button style={buttonStyle}>
+      <button style={buttonStyle} onClick={onClick}>
         {text}
       </button>
     </Link>
