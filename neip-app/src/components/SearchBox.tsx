@@ -5,6 +5,7 @@ import mag from "../img/Search.png"
 
 const SearchBox: React.FC = () => {
     const searchbox_style = {
+        color: '#000',
         width: '252px',
         height: '30px',
         borderRadius: '8px',
