@@ -1,12 +1,36 @@
 // pages/LoginPage.tsx
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import AuthBox from '../components/AuthBox';
 import AuthButton from '../components/AuthButton';
 import AuthEntryBox from '../components/AuthEntryBox';
 
+import { useSignIn } from '@clerk/nextjs';
+
 const LoginPage: React.FC = () => {
+
+  const { signIn, isLoaded } = useSignIn();
+  const [userId, setUserId] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = async () => {
+    if (!isLoaded) return; // make Clerk is loaded
+
+    try {
+      await signIn.create({
+        identifier: userId,
+        password,
+      });
+      alert("Login successful!");
+      // redirect or handle successful login here
+    } catch (err) {
+      console.error("Login failed:", err);
+      alert("Login failed. Please check your credentials.");
+    }
+  };
+
+
   return (
     <div style={{
       display: 'flex',
@@ -28,12 +52,12 @@ const LoginPage: React.FC = () => {
 
           {/* User ID Entry */}
           <div style={{ width: '100%', marginBottom: '15px' }}>
-            <AuthEntryBox placeholder="user ID" />
+            <AuthEntryBox placeholder="user ID" onChange={(e) => setUserId(e.target.value)} />
           </div>
 
           {/* Password Entry */}
           <div style={{ width: '100%', marginBottom: '5px' }}>
-            <AuthEntryBox placeholder="password" type="password" />
+            <AuthEntryBox placeholder="password" type="password" onChange={(e) => setPassword(e.target.value)} />
           </div>
 
           {/* Reset Password Text */}
@@ -49,7 +73,7 @@ const LoginPage: React.FC = () => {
           </div>
 
           {/* Login Button */}
-          <AuthButton color="#3b82f6" filled={true} text="Login" href=''/>
+          <AuthButton color="#3b82f6" filled={true} text="Login" onClick={handleLogin} />
         </div>
       }/>
     </div>

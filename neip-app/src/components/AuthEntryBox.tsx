@@ -14,7 +14,7 @@ const AuthEntryBox: React.FC<AuthEntryBoxProps> = ({ placeholder, type = 'text',
     fontSize: '16px',
     fontFamily: 'Arial, sans-serif',
     border: 'none',
-    border-bottom: '2.5px solid #44B4EF',  // Blue underline
+    borderBottom: '2.5px solid #44B4EF',  // Blue underline
     outline: 'none',
     color: '#333',
     textAlign: 'center' as 'center',
