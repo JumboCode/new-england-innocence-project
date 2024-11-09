@@ -1,7 +1,7 @@
 import { createClerkClient, EmailAddress } from '@clerk/clerk-sdk-node'
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const clerkClient = createClerkClient({ secretKey: '' })
+const clerkClient = createClerkClient({ secretKey: 'sk_test_t4I1jgHCCDO5CUJ7QzpMuISi7Ko6vLKEZREpN0oX5o' })
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const {email, password} = req.body;
@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const user = clerkClient.users.createUser({
         emailAddress: [email],
-        password: password,
+        password,
     })
 
     console.log("User created successfully:", user);

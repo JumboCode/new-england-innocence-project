@@ -15,12 +15,12 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
-    if (!isLoaded) return; // make Clerk is loaded
+    if (!isLoaded) return; // make sure Clerk is loaded
 
     try {
       await signIn.create({
         identifier: userId,
-        password,
+        password: password,
       });
       alert("Login successful!");
       // redirect or handle successful login here
