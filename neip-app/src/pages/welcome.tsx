@@ -1,6 +1,6 @@
 import React from "react";
-import AuthBox from "../app/components/AuthBox";
-import AuthButton from "../app/components/AuthButton";
+import AuthBox from '../components/AuthBox';
+import AuthButton from "../components/AuthButton";
 
 const WelcomePage: React.FC = () => {
   const textStyle = {
@@ -38,7 +38,7 @@ const WelcomePage: React.FC = () => {
             {/* Buttons for Login and Signup */}
             <div style={buttonContainerStyle}>
               <AuthButton color="#1E90FF" filled={true} text="Login" href="/login" />
-              <AuthButton color="#1E90FF" filled={false} text="Signup" href="/signup" />
+              <AuthButton color="#1E90FF" filled={false} text="Signup" href="/Signup" />
             </div>
           </div>
         }
