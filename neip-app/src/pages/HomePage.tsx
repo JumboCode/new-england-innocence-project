@@ -8,9 +8,11 @@ import Image from 'next/image';
 import UploadIcon from "../img/Upload.png"
 import PlusIcon from "../img/plus.png";
 import ArrowIcon from "../img/arrow_icon.png";
-import { Table } from "antd";
-//import 'antd/dist/antd.css';
 import { CgTrash, CgExport, CgAdd, CgSearch, CgChevronLeft } from "react-icons/cg";
+import dynamic from 'next/dynamic';
+
+// import antd Table dynamically 
+const Table = dynamic(() => import('antd').then(mod => mod.Table), { ssr: false });
 
 // import logo from 'neip-app/public/caseview_logo2.png'; // Import the logo directly
 
