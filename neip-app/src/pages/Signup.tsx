@@ -6,7 +6,13 @@ import AuthBox from '../components/AuthBox';
 
 const Signup: React.FC = () => {
     return (
-        <AuthBox prop={<SignupContent />}/>
+        <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+        }}>
+            <AuthBox prop={<SignupContent />}/>
+        </div>
     );
 }
 
