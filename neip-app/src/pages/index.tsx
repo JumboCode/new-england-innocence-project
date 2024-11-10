@@ -5,14 +5,15 @@ import LoginPage from './login'
 import AuthButton from '@/components/AuthButton'
 import AuthEntryBox from '@/components/SignupAuthEntryBox'
 import Signup from './Signup'
+import HomePage from './HomePage'
 
 const Homepage = () => {
   return (
     <>
+      <HomePage />
       <NavBar />
-      <Signup />
     </>
-  );
+  )
 }
 
-export default Homepage
+export default Homepage;

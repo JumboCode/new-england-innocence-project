@@ -6,11 +6,40 @@ import AuthBox from '../components/AuthBox';
 
 const Signup: React.FC = () => {
     return (
-        <AuthBox prop={<SignupContent />}/>
+        <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+        }}>
+            <AuthBox prop={<SignupContent />}/>
+        </div>
     );
 }
 
 const SignupContent = () => {
+
+    const [userId, setUserId] = useState('');
+    const [email, setEmail] = useState('');
+    const [position, setPosition] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleSignup = async () => {
+        const response = await fetch('/api/auth/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email,
+                password,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to create account');
+        }
+    }
+
     return (
         <div>
             <div>
@@ -49,7 +78,7 @@ const SignupContent = () => {
                 width: '375px',
                 padding: '27px',
             }}>
-                <AuthEntryBox placeholder="user ID" type="text" />
+                <AuthEntryBox placeholder="user ID" type="text" onChange={(e) => setUserId(e.target.value)}/>
             </div >
 
             {/* email input */}
@@ -61,7 +90,7 @@ const SignupContent = () => {
                 width: '375px',
                 padding: '27px',
             }}>
-                <AuthEntryBox placeholder="email" type="email" />
+                <AuthEntryBox placeholder="email" type="email" onChange={(e) => setEmail(e.target.value)} />
             </div>
 
             {/* position input */}
@@ -73,7 +102,7 @@ const SignupContent = () => {
                 width: '375px',
                 padding: '27px',
             }}>
-                <AuthEntryBox placeholder="new user position" type="text" />
+                <AuthEntryBox placeholder="new user position" type="text" onChange={(e) => setPosition(e.target.value)}/>
             </div>
 
             {/* password input */}
@@ -85,7 +114,7 @@ const SignupContent = () => {
                 width: '375px',
                 padding: '27px',
             }}>
-                <AuthEntryBox placeholder="password" type="password" /> 
+                <AuthEntryBox placeholder="password" type="password" onChange={(e) => setPassword(e.target.value)}/> 
             </div>
 
             {/* sign up button */}
@@ -95,7 +124,7 @@ const SignupContent = () => {
                 alignItems: 'center',
                 padding: '10px',
             }}>
-                 <AuthButton color='#43b4ef' filled={true} text='Sign Up' href="/signupConfirmation"/>
+                 <AuthButton color='#43b4ef' filled={true} text='Sign Up' href="/signupConfirmation" onClick={handleSignup}/>
             </div>
         </div>
     );
