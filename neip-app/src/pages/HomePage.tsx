@@ -9,10 +9,60 @@ import UploadIcon from "../img/Upload.png"
 import PlusIcon from "../img/plus.png";
 import ArrowIcon from "../img/arrow_icon.png";
 import { CgTrash, CgExport, CgAdd, CgSearch, CgChevronLeft } from "react-icons/cg";
+import dynamic from 'next/dynamic';
+
+// import antd Table dynamically 
+const Table = dynamic(() => import('antd').then(mod => mod.Table), { ssr: false });
 
 // import logo from 'neip-app/public/caseview_logo2.png'; // Import the logo directly
 
 const HomePage: React.FC = () => {
+    // dummy data for table
+    const dataSource = [
+        {
+          key: '1',
+          name: 'Mike',
+          age: 32,
+          address: '10 Downing Street',
+        },
+        {
+          key: '2',
+          name: 'John',
+          age: 42,
+          address: '10 Downing Street',
+        },
+        {
+          key: '2',
+          name: 'John',
+          age: 42,
+          address: '10 Downing Street',
+        },
+        {
+          key: '2',
+          name: 'John',
+          age: 42,
+          address: '10 Downing Street',
+        },  
+      ];
+      
+      const columns = [
+        {
+          title: 'Name',
+          dataIndex: 'name',
+          key: 'name',
+        },
+        {
+          title: 'Age',
+          dataIndex: 'age',
+          key: 'age',
+        },
+        {
+          title: 'Address',
+          dataIndex: 'address',
+          key: 'address',
+        },
+      ];
+      
     return (
         <div style={{ height: '100vh', backgroundColor: 'white' }}>
 
@@ -83,7 +133,8 @@ const HomePage: React.FC = () => {
 
                 {/* Placeholder for Database Display */}
                 <div style={{ height: '60vh', backgroundColor: 'white' }}>
-                    {/* This empty div will eventually hold the database display */}
+                    {/* Database Display */}
+                    <Table dataSource={dataSource} columns={columns} />;
                 </div>
             </div>
         </div>
