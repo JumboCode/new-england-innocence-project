@@ -4,17 +4,23 @@ import { NextApiRequest, NextApiResponse } from 'next';
 const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-
   const {
     personalInfo,
     caseInfo,
     legalInfo,
     wrongfulConvictionInfo,
     postExonerationInfo,
-    metaData
+    metaData,
   } = req.body;
 
-  if (!personalInfo || !caseInfo || !legalInfo || !wrongfulConvictionInfo || !postExonerationInfo || !metaData) {
+  if (
+    !personalInfo ||
+    !caseInfo ||
+    !legalInfo ||
+    !wrongfulConvictionInfo ||
+    !postExonerationInfo ||
+    !metaData
+  ) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
@@ -22,22 +28,40 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const newExoneree = await prisma.exoneree.create({
       data: {
         personalInfo: {
-          create: personalInfo,
+          connectOrCreate: {
+            where: { email: personalInfo.email },
+            create: personalInfo,
+          },
         },
         caseInfo: {
-          create: caseInfo,
+          connectOrCreate: {
+            where: { caseNumber: caseInfo.caseNumber }, 
+            create: caseInfo,
+          },
         },
         legalInfo: {
-          create: legalInfo,
+          connectOrCreate: {
+            where: { id: legalInfo.id || 0 }, 
+            create: legalInfo,
+          },
         },
         wrongfulConvictionInfo: {
-          create: wrongfulConvictionInfo,
+          connectOrCreate: {
+            where: { id: wrongfulConvictionInfo.id || 0 }, 
+            create: wrongfulConvictionInfo,
+          },
         },
         postExonerationInfo: {
-          create: postExonerationInfo,
+          connectOrCreate: {
+            where: { id: postExonerationInfo.id || 0 },
+            create: postExonerationInfo,
+          },
         },
         metaData: {
-          create: metaData,
+          connectOrCreate: {
+            where: { id: metaData.id || 0 },
+            create: metaData,
+          },
         },
       },
       include: {
@@ -52,7 +76,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     return res.status(201).json(newExoneree);
   } catch (error) {
-    const errorMessage = (error instanceof Error) ? error.message : 'An unexpected error occurred';
-    return res.status(400).json({ error: `Failed to create Exoneree: ${errorMessage}` });
+    const errorMessage =
+      error instanceof Error ? error.message : 'An unexpected error occurred';
+    return res
+      .status(400)
+      .json({ error: `Failed to create Exoneree: ${errorMessage}` });
   }
 }
