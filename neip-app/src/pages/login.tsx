@@ -5,28 +5,53 @@ import React, { useState } from 'react';
 import AuthBox from '../components/AuthBox';
 import AuthButton from '../components/AuthButton';
 import AuthEntryBox from '../components/AuthEntryBox';
+import { useRouter } from 'next/router';
 
-import { useSignIn } from '@clerk/nextjs';
+import { useSignIn, useAuth, useClerk } from '@clerk/nextjs';
 
 const LoginPage: React.FC = () => {
 
   const { signIn, isLoaded } = useSignIn();
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
+  const { isSignedIn } = useAuth();
+  const router = useRouter();
+  // const { signOut } = useClerk();    // used to sign out for testing
 
   const handleLogin = async () => {
     if (!isLoaded) return; // make sure Clerk is loaded
 
+    // console.log("user id", userId);
+    // console.log("password", password);
+
+    if (isSignedIn) {
+      alert("You are already logged in!");
+      return;
+
+      // used for testing to automtically sign out any signed in accounts
+      // await signOut();
+      // console.log("previous account logged out")
+    }
+
     try {
-      await signIn.create({
+      const result = await signIn.create({
         identifier: userId,
         password: password,
       });
+
+      if (result.status === "complete") {
+        router.push('/dashboard');
+      } 
+      else {
+        router.push('/login');
+      }
+
       alert("Login successful!");
-      // redirect or handle successful login here
-    } catch (err) {
+      
+    } catch (err: any) {
       console.error("Login failed:", err);
-      alert("Login failed. Please check your credentials.");
+      alert(`Login failed. ${err.errors ? err.errors[0].message : "Please check your credentials."}`);
+      router.push('/login');    // TODO: need to find a more efficient way to remain on login w/o re-rendering
     }
   };
 

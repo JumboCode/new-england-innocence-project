@@ -71,31 +71,3 @@ const NavBar: React.FC = () => {
 };
 
 export default NavBar;
-
-//jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
-/* Pseudo Code (TODO, none of them have been done yet)
-1. Add placeholders for icons next to each item in the NavBar.
-
-2. Modify the CSS styles so that the NavBar expands on hover.
-   a. Set the initial width of the NavBar to show only icons.
-   b. When hovering, increase the width and display both icons and text.
-
-3. Implement hover logic:
-   a. Use CSS to manage hover styles for expanding and collapsing.
-   b. Make sure that when not hovered, only icons are shown.
-   
-4. Import the NavBar into index.tsx and update index.tsx to include the NavBar
-   and display a page component (like LoginPage or Signup).
-*/
-
-
-/* What was done (so far):
-1. Render NavBar in index.tsx (done tgt last time)
-2. moved the importing NavBar component line to _app.tsx to stop the error
-   when rendering (was there before us)
-3. Created a "public" folder, and added an "icons" folder in it. 
-   Apparently, adding things like icons, images, and fonts to a "public" 
-   folder makes the program treat them as static assets, and leads to better 
-   performance (it's a commmon practice so I did it).
-4. Downloaded the icons from Figma, and added them to "public/icons"
-*/
