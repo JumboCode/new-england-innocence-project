@@ -6,6 +6,7 @@ import Signup from './Signup';
 import SignupConfirmation from './signupConfirmation';
 import { AppProps } from 'next/app'; 
 import ActionMenuComponent from '../components/ActionMenuComponent'
+import HomePage from './HomePage';
 
 function MyApp({ Component, pageProps }: AppProps) {
 
@@ -14,10 +15,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     // );
 
     return (
-        <ActionMenuComponent>
-            
-        </ActionMenuComponent>
+        <HomePage />
     )
+    
 }
 
 export default MyApp;
