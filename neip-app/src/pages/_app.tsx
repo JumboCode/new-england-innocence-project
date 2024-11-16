@@ -5,11 +5,15 @@ import "../styles/NavBarStyle.css";
 import Signup from './Signup';
 import SignupConfirmation from './signupConfirmation';
 import { AppProps } from 'next/app'; 
+import ActionMenuComponent from '../components/ActionMenuComponent'
+import HomePage from './HomePage';
 import { ClerkProvider } from '@clerk/nextjs';
 
 function MyApp({ Component, pageProps }: AppProps) {
 
     return (
+        <HomePage />,
+    
         <ClerkProvider {...pageProps}>
             <Component {...pageProps} />
         </ClerkProvider>
