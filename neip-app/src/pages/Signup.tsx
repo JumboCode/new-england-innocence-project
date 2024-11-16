@@ -24,19 +24,29 @@ const SignupContent = () => {
     const [password, setPassword] = useState('');
 
     const handleSignup = async () => {
-        const response = await fetch('/api/auth/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email,
-                password,
-            }),
-        });
+        try {               // added to make sure signup doesn't fail silently
+            const response = await fetch('/api/auth/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email,
+                    password,
+                }),
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Signup error', errorData.error);
+                throw new Error('Failed to create account');
+            }
 
-        if (!response.ok) {
-            throw new Error('Failed to create account');
+            alert("Signup successful!");
+
+        } catch (error) {
+            console.error(error);
+            alert("Failed to create account. Please try again");
         }
     }
 
