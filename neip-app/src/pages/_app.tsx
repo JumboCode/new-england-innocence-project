@@ -8,11 +8,17 @@ import { AppProps } from 'next/app';
 import ActionMenuComponent from '../components/ActionMenuComponent'
 import HomePage from './HomePage';
 import NavBar from '../components/NavBar'
+import { ClerkProvider } from '@clerk/nextjs';
 
 function MyApp({ Component, pageProps }: AppProps) {
 
     return (
-        <Component {...pageProps} />
+        <Component {...pageProps} />,
+        <HomePage />,
+    
+        <ClerkProvider {...pageProps}>
+            <Component {...pageProps} />
+        </ClerkProvider>
     );
 }
 

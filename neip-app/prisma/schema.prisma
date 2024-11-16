@@ -23,29 +23,6 @@ model Exoneree {
   wrongfulConvictionInfo   WrongfulConvictionInfo @relation(fields: [wrongfulConvictionInfoId], references: [id])
 }
 
-model Location {
-  id            Int             @id @default(autoincrement())
-  state         String
-  country       String
-  caseInfo      CaseInfo?
-  currentStatus CurrentStatus[]
-}
-
-model Compensation {
-  id                  Int                  @id @default(autoincrement())
-  amount              Int
-  Date                DateTime
-  postExonerationInfo PostExonerationInfo?
-}
-
-model CurrentStatus {
-  id                  Int                  @id @default(autoincrement())
-  occupation          String
-  residenceId         Int
-  residence           Location             @relation(fields: [residenceId], references: [id])
-  postExonerationInfo PostExonerationInfo?
-}
-
 model PersonalInfo {
   id          Int       @id @default(autoincrement())
   name        String
@@ -55,13 +32,13 @@ model PersonalInfo {
   ethnicity   String
   phoneNumber String
   address     String
-  email       String
+  email       String    @unique
   exoneree    Exoneree?
 }
 
 model CaseInfo {
   id              Int       @id @default(autoincrement())
-  caseNumber      String
+  caseNumber      String    @unique
   jurisdictionId  Int       @unique
   yearsInPrison   Int
   arrestDate      DateTime
@@ -70,7 +47,8 @@ model CaseInfo {
   exonerationDate DateTime
   crimeType       String
   sentence        String
-  jurisdiction    Location  @relation(fields: [jurisdictionId], references: [id])
+  state           String
+  country         String
   exoneree        Exoneree?
 }
 
@@ -97,14 +75,15 @@ model WrongfulConvictionInfo {
 }
 
 model PostExonerationInfo {
-  id              Int           @id @default(autoincrement())
-  compensationId  Int           @unique
-  reentrySupport  String[]
-  publicApology   Boolean
-  currentStatusId Int           @unique
-  exoneree        Exoneree?
-  compensation    Compensation  @relation(fields: [compensationId], references: [id])
-  currentStatus   CurrentStatus @relation(fields: [currentStatusId], references: [id])
+  id                 Int       @id @default(autoincrement())
+  reentrySupport     String[]
+  publicApology      Boolean
+  compensationAmount Int
+  compensationDate   DateTime
+  occupation         String
+  currentState       String
+  currentCountry     String
+  exoneree           Exoneree?
 }
 
 model AdditionalInfo {
