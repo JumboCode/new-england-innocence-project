@@ -2,12 +2,16 @@
 
 import React, { useState } from 'react';
 import IconTextButton from '../components/IconTextButton';
+import TableFilterIcons from '../components/TableFilterIcons';
 import SearchEntryBox from '../components/SearchEntryBox';
 import TrashIcon from "../img/trash-01.png";
 import Image from 'next/image';
 import UploadIcon from "../img/Upload.png"
 import PlusIcon from "../img/plus.png";
 import ArrowIcon from "../img/arrow_icon.png";
+import funnel from "../img/funnel.png";
+import XIcon from "../img/xicon.png";
+import Filter from "../img/filter.png"
 import { CgTrash, CgExport, CgAdd, CgSearch, CgChevronLeft } from "react-icons/cg";
 import dynamic from 'next/dynamic';
 
@@ -17,8 +21,11 @@ const Table = dynamic(() => import('antd').then(mod => mod.Table), { ssr: false 
 // import logo from 'neip-app/public/caseview_logo2.png'; // Import the logo directly
 
 const HomePage: React.FC = () => {
+    
+    const [selectedFilters] = useState(['Detective', 'Male', 'Test']);
+    
     // dummy data for table
-
+    
     const dataSource = [
         {
           key: '1', name: 'Mike', dob: '10/10/05', gender: 'male', race: 'white',
@@ -85,8 +92,10 @@ const HomePage: React.FC = () => {
       // Filter columns based on selected columns state
       const filteredColumns = columns.filter(columns => selectedColumns.includes(columns.key));
 
+      
+      
     return (
-        <div style={{ height: '100vh', backgroundColor: 'white' }}>
+        <div style={{ height: '100vh', backgroundColor: 'white', paddingLeft: '60px' }}>
 
             {/* Top Banner */}
             <div style={{ backgroundColor: '#033550', color: 'white', display: 'flex', alignItems: 'center', width: 'auto', height: '56px' }}>
@@ -152,6 +161,54 @@ const HomePage: React.FC = () => {
                         />
                     </div>
                 </div>
+                
+            {/* Table Filter Info */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '20px', borderColor: '#E1E0E0', borderWidth: '1px', borderBottom: 'none' }}>
+                <div style={{ display: 'flex', gap: '12px', marginLeft: '20px', marginTop: '10px', marginBottom: '10px' }}>
+                    <Image src={funnel} alt="funnel" style={{ width: '16px', height: '16px', marginTop: '10px' }} ></Image>
+                            
+                    {selectedFilters.map((filter, index) => (
+                        <TableFilterIcons
+                            key={index}
+                            icon={<Image src={XIcon} alt="XIcon" width={18} height={18} />}
+                            filled={true}
+                            text={filter}
+                            border={false}
+                            borderRadius={false}
+                            height="35px"
+                            />
+                        ))}
+                    <TableFilterIcons
+                        icon={<Image src={PlusIcon} alt="PlusIcon" width={18} height={18}></Image>}
+                        filled={false}
+                        text="Filter"
+                        border={false}
+                        borderRadius={false}
+                        height="35px"
+                        width="120px"
+                    />
+                </div>
+                <div style={{ marginLeft: 'auto', marginRight: '20px' }}>
+                  <TableFilterIcons
+                    icon={<Image src={Filter} alt="Filter" width={18} height={18}></Image>}
+                    filled={false}
+                    text="Manage Columns"
+                    border={true}
+                    borderRadius={true}
+                    height="35px"
+                    width="185px"
+                    />
+                </div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0px', borderColor: '#E1E0E0', borderWidth: '1px', borderTop: 'none' }}>
+                <div style={{ display: 'flex', gap: '4px', marginLeft: '20px', marginTop: '2px', marginBottom: '6px' }}>
+                    <span style={{ color: '#ABACBE', fontSize: '12px' }}>Showing</span>
+                    <span style={{ color: '#000000', fontSize: '12px' }}>x</span>
+                    <span style={{ color: '#ABACBE', fontSize: '12px' }}>from</span>
+                    <span style={{ color: '#000000', fontSize: '12px' }}>x</span>
+                    <span style={{ color: '#ABACBE', fontSize: '12px' }}>results</span>
+                </div>
+            </div>
 
                 {/* Placeholder for Database Display */}
                 <div style={{ height: '60vh', backgroundColor: 'white' }}>
