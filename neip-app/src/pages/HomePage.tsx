@@ -10,6 +10,7 @@ import PlusIcon from "../img/plus.png";
 import ArrowIcon from "../img/arrow_icon.png";
 import { CgTrash, CgExport, CgAdd, CgSearch, CgChevronLeft } from "react-icons/cg";
 import dynamic from 'next/dynamic';
+import AddExonereeModal from '@/components/AddExonereeModal';
 
 // import antd Table dynamically 
 const Table = dynamic(() => import('antd').then(mod => mod.Table), { ssr: false });
@@ -85,6 +86,10 @@ const HomePage: React.FC = () => {
       // Filter columns based on selected columns state
       const filteredColumns = columns.filter(columns => selectedColumns.includes(columns.key));
 
+      const [modalOpen, setModalOpen] = useState(false);
+      const handleOpenModal = () => setModalOpen(true);
+      const handleCloseModal = () => setModalOpen(false);
+
     return (
         <div style={{ height: '100vh', backgroundColor: 'white' }}>
 
@@ -125,8 +130,8 @@ const HomePage: React.FC = () => {
                     </div>
 
                     {/* Action Buttons */}
-                    <div style={{ display: 'flex', gap: '16px', marginRight: '200px' }}>
-                        <IconTextButton
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '16px', marginRight: '15px' }}>
+                    <IconTextButton
                             icon={<Image src={TrashIcon} alt="trash icon" width="20" height="20"></Image>}
                             filled={false}
                             text="Delete"
@@ -143,6 +148,7 @@ const HomePage: React.FC = () => {
                             width="159px"
                         />
                         <IconTextButton
+                            onClick={handleOpenModal}
                             icon={<Image src={PlusIcon} alt="plus icon" width="14" height="14"></Image>}
                             filled={true}
                             text="Add new exoneree file"
@@ -150,6 +156,7 @@ const HomePage: React.FC = () => {
                             height="44px"
                             width="209px"
                         />
+                        <AddExonereeModal open={modalOpen} handleClose={handleCloseModal}/>
                     </div>
                 </div>
 
