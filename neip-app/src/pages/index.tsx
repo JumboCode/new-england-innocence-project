@@ -12,6 +12,7 @@ const Homepage = () => {
   return (
     <>
       <HomePage />
+      <NavBar />
     </>
   )
 }
