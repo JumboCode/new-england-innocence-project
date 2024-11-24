@@ -6,12 +6,12 @@ import AuthButton from '@/components/AuthButton'
 import AuthEntryBox from '@/components/SignupAuthEntryBox'
 import Signup from './Signup'
 import HomePage from './HomePage'
+import ActionMenuComponent from '@/components/ActionMenuComponent'
 
 const Homepage = () => {
   return (
     <>
       <HomePage />
-      <NavBar />
     </>
   )
 }
