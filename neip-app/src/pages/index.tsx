@@ -1,19 +1,18 @@
-// pages/index.tsx
-// import Homepage from '@/app/pages/homepage'
-import NavBar from '../components/NavBar'
-import LoginPage from './login'
-import AuthButton from '@/components/AuthButton'
-import AuthEntryBox from '@/components/SignupAuthEntryBox'
-import Signup from './Signup'
-import HomePage from './HomePage'
-import ActionMenuComponent from '@/components/ActionMenuComponent'
+// Import necessary components
+import NavBar from '../components/NavBar';
+import HomePage from './HomePage';
 
 const Homepage = () => {
   return (
-    <>
-      <HomePage />
-    </>
-  )
-}
+    <div className="flex h-screen">
+      <div className="w-1/4 bg-gray-100">
+        <NavBar />
+      </div>
+      <div className="flex-1">
+        <HomePage />
+      </div>
+    </div>
+  );
+};
 
 export default Homepage;
