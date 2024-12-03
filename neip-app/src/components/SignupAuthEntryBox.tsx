@@ -18,7 +18,7 @@ const SignupAuthEntryBox: React.FC<AuthEntryBoxProps> = ({placeholder, type = "t
     fontSize: '14px',
     marginBottom: '10px',
     fontFamily: 'Arial, sans-serif', 
-    textAlign: 'center',
+    textAlign: 'center' as 'center',
     color: 'black',
     outline: 'none',
   };

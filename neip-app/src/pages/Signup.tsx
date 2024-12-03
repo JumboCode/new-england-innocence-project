@@ -22,6 +22,7 @@ const SignupContent = () => {
     const [email, setEmail] = useState('');
     const [position, setPosition] = useState('');
     const [password, setPassword] = useState('');
+    console.log(userId, position); // Temporary use to avoid linting error
 
     const handleSignup = async () => {
         try {               // added to make sure signup doesn't fail silently

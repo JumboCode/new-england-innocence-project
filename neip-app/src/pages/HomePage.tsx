@@ -14,6 +14,19 @@ import { MdFilterList } from 'react-icons/md';
 import ActionMenuComponent from "@/components/ActionMenuComponent";
 import TableFilterIcons from "@/components/TableFilterIcons";
 
+// TODO: This is a bandaid solution for Vercel deployment. 
+// In the future we will want to dynamically determine columns based off this
+interface TableRowData {
+  name: string;
+  dob: string;
+  race: string;
+  ethnicity: string;
+  phoneNumber: string;
+  address: string;
+  email: string;
+  caseNumber: string;
+  crimeType: string;
+}
 // Dynamic import for the Ant Design Table component
 const Table = dynamic(() => import("antd").then((mod) => mod.Table), { ssr: false });
 
@@ -227,18 +240,18 @@ const HomePage: React.FC = () => {
 
   const [actionMenuVisible, setActionMenuVisible] = useState(false);
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 });
-  const [selectedCell, setSelectedCell] = useState<{ record: any; columnKey: string } | null>(null);
+  const [selectedCell, setSelectedCell] = useState<{ record: TableRowData; columnKey: string } | null>(null);
 
   const filteredColumns = columns.filter((column) =>
   selectedColumns.includes(column.key)
 ).map(column => ({
   ...column,
-  onCell: (record, rowIndex) => ({
-    onClick: (event) => handleCellClick(event, record, column.key),
+  onCell: (record: any) => ({
+    onClick: (event: any) => handleCellClick(event, record, column.key),
   }),
 }));
 
-const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement>, record: any, columnKey: string) => {
+const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement>, record: TableRowData, columnKey: string) => {
   event.stopPropagation();
   
   const cellElement = event.currentTarget as HTMLTableCellElement;

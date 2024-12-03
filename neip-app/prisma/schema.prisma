@@ -26,7 +26,7 @@ model Exoneree {
 model PersonalInfo {
   id          Int       @id @default(autoincrement())
   name        String
-  dateOfBirth DateTime
+  dateOfBirth String
   gender      Gender
   race        String
   ethnicity   String
@@ -41,10 +41,10 @@ model CaseInfo {
   caseNumber      String    @unique
   jurisdictionId  Int       @unique
   yearsInPrison   Int
-  arrestDate      DateTime
-  convictionDate  DateTime
-  freedomDate     DateTime
-  exonerationDate DateTime
+  arrestDate      String
+  convictionDate  String
+  freedomDate     String
+  exonerationDate String
   crimeType       String
   sentence        String
   state           String
@@ -79,7 +79,7 @@ model PostExonerationInfo {
   reentrySupport     String[]
   publicApology      Boolean
   compensationAmount Int
-  compensationDate   DateTime
+  compensationDate   String
   occupation         String
   currentState       String
   currentCountry     String
@@ -97,8 +97,8 @@ model AdditionalInfo {
 model MetaData {
   id          Int       @id @default(autoincrement())
   dataSource  String
-  lastUpdated DateTime
-  createdAt   DateTime
+  lastUpdated String
+  createdAt   String
   exoneree    Exoneree?
 }
 
