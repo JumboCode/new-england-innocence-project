@@ -3,194 +3,97 @@
 import { PrismaClient } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-enum Gender {
-  M = "M",
-  F = "F",
-  OTHER = "OTHER",
-}
+import { z } from 'zod';
 
-interface PersonalInfo {
-  name: string;
-  dateOfBirth: Date;
-  gender: Gender;
-  race: string;
-  ethnicity: string;
-  phoneNumber: string;
-  address: string;
-  email: string;
-}
+const Gender = z.enum(["M", "F", "OTHER"]);
 
-interface CaseInfo {
-  caseNumber: string;
-  jurisdictionId: number;
-  yearsInPrison: number;
-  arrestDate: Date;
-  convictionDate: Date;
-  freedomDate: Date;
-  exonerationDate: Date;
-  crimeType: string;
-  sentence: string;
-  state: string;
-  country: string;
-}
+const PersonalInfoSchema = z.object({
+  name: z.string(),
+  dateOfBirth: z.date(),
+  gender: Gender,
+  race: z.string(),
+  ethnicity: z.string(),
+  phoneNumber: z.string(),
+  address: z.string(),
+  email: z.string(),
+});
 
-interface LegalInfo {
-  originalCharges: string;
-  convictionMethod: string[];
-  exonerationMethod: string[];
-  legalRepresentation: string;
-  prosecutor: string;
-  detectivesInvolved: string[];
-}
+const CaseInfoSchema = z.object({
+  caseNumber: z.string(),
+  jurisdictionId: z.number(),
+  yearsInPrison: z.number(),
+  arrestDate: z.date(),
+  convictionDate: z.date(),
+  freedomDate: z.date(),
+  exonerationDate: z.date(),
+  crimeType: z.string(),
+  sentence: z.string(),
+  state: z.string(),
+  country: z.string(),
+});
 
-interface WrongfulConvictionInfo {
-  falseConfession: boolean;
-  eyewitnessMisidentification: boolean;
-  inadequateLegalDefense: boolean;
-  policeProsecutorialMisconduct: boolean;
-  forensicEvidence: boolean;
-  informantTestimony: boolean;
-}
+const LegalInfoSchema = z.object({
+  originalCharges: z.string(),
+  convictionMethod: z.array(z.string()),
+  exonerationMethod: z.array(z.string()),
+  legalRepresentation: z.string(),
+  prosecutor: z.string(),
+  detectivesInvolved: z.array(z.string()),
+});
 
-interface PostExonerationInfo {
-  reentrySupport: string[];
-  publicApology: boolean;
-  compensationAmount: number;
-  compensationDate: Date;
-  occupation: string;
-  currentState: string;
-  currentCountry: string;
-}
+const WrongfulConvictionInfoSchema = z.object({
+  falseConfession: z.boolean(),
+  eyewitnessMisidentification: z.boolean(),
+  inadequateLegalDefense: z.boolean(),
+  policeProsecutorialMisconduct: z.boolean(),
+  forensicEvidence: z.boolean(),
+  informantTestimony: z.boolean(),
+});
 
-interface AdditionalInfo {
-  mediaCoverage: string[];
-  advocacyInvolvement: string;
-  educationalBackground: string;
-  healthInfo: string;
-}
+const PostExonerationInfoSchema = z.object({
+  reentrySupport: z.array(z.string()),
+  publicApology: z.boolean(),
+  compensationAmount: z.number(),
+  compensationDate: z.date(),
+  occupation: z.string(),
+  currentState: z.string(),
+  currentCountry: z.string(),
+});
 
-interface MetaData {
-  dataSource: string;
-  lastUpdated: Date;
-  createdAt: Date;
-}
+const AdditionalInfoSchema = z.object({
+  mediaCoverage: z.array(z.string()),
+  advocacyInvolvement: z.string(),
+  educationalBackground: z.string(),
+  healthInfo: z.string(),
+});
 
-interface UpdatedExonereeData {
-  personalInfo: PersonalInfo;
-  caseInfo: CaseInfo;
-  legalInfo: LegalInfo;
-  wrongfulConvictionInfo: WrongfulConvictionInfo;
-  postExonerationInfo: PostExonerationInfo;
-  additionalInfo: AdditionalInfo;
-  metaData: MetaData;
-}
+const MetaDataSchema = z.object({
+  dataSource: z.string(),
+  lastUpdated: z.date(),
+  createdAt: z.date(),
+});
+
+const UpdatedExonereeDataSchema = z.object({
+  personalInfo: PersonalInfoSchema.optional(),
+  caseInfo: CaseInfoSchema.optional(),
+  legalInfo: LegalInfoSchema.optional(),
+  wrongfulConvictionInfo: WrongfulConvictionInfoSchema.optional(),
+  postExonerationInfo: PostExonerationInfoSchema.optional(),
+  additionalInfo: AdditionalInfoSchema.optional(),
+  metaData: MetaDataSchema.optional(),
+});
 
 
 const prisma = new PrismaClient();
 
-function validateUpdatedData(data: UpdatedExonereeData): boolean {
-  if (typeof data !== 'object' || data === null) return false;
-
-  // Validate each property
-  if (typeof data.personalInfo.name !== 'string') return false;
-  if (typeof data.personalInfo.race !== 'string') return false;
-  if (typeof data.personalInfo.ethnicity !== 'string') return false;
-  if (typeof data.personalInfo.phoneNumber !== 'string') return false;
-  if (typeof data.personalInfo.address !== 'string') return false;
-  if (typeof data.personalInfo.email !== 'string') return false;
-  if (typeof data.caseInfo.caseNumber !== 'string') return false;
-  if (typeof data.caseInfo.crimeType !== 'string') return false;
-  if (typeof data.caseInfo.sentence !== 'string') return false;
-  if (typeof data.caseInfo.state !== 'string') return false;
-  if (typeof data.caseInfo.country !== 'string') return false;
-  if (typeof data.legalInfo.originalCharges !== 'string') return false;
-  if (typeof data.legalInfo.legalRepresentation !== 'string') return false;
-  if (typeof data.legalInfo.prosecutor !== 'string') return false;
-  if (typeof data.additionalInfo.advocacyInvolvement !== 'string') return false;
-  if (typeof data.additionalInfo.educationalBackground !== 'string') return false;
-  if (typeof data.additionalInfo.healthInfo !== 'string') return false;
-  if (typeof data.metaData.dataSource !== 'string') return false;
-
-
-  if (typeof data.caseInfo.jurisdictionId !== 'number') return false;
-  if (typeof data.caseInfo.yearsInPrison !== 'number') return false;
-  if (typeof data.postExonerationInfo.compensationAmount !== 'number') return false;
-
-
-  if (!(data.personalInfo.dateOfBirth instanceof Date) || isNaN(data.personalInfodateOfBirth.getTime())) return false;
-  if (!(data.caseInfo.arrestDate instanceof Date) || isNaN(data.caseInfo.arrestDate.getTime())) return false;
-  if (!(data.caseInfo.convictionDate instanceof Date) || isNaN(data.caseInfo.convictionDate.getTime())) return false;
-  if (!(data.caseInfo.freedomDate instanceof Date) || isNaN(data.caseInfo.freedomDate.getTime())) return false;
-  if (!(data.caseInfo.exonerationDate instanceof Date) || isNaN(data.caseInfo.exonerationDate.getTime())) return false;
-  if (!(data.postExonerationInfo.compensationDate instanceof Date) || isNaN(data.postExonerationInfo.compensationDate.getTime())) return false;
-  if (!(data.metaData.lastUpdated instanceof Date) || isNaN(data.metaData.lastUpdated.getTime())) return false;
-  if (!(data.metaData.createdAt instanceof Date) || isNaN(data.metaData.createdAt.getTime())) return false;
-
-
-  if (typeof data.wrongfulConvictionInfo.falseConfession !== 'boolean') return false;
-  if (typeof data.wrongfulConvictionInfo.eyewitnessMisidentification !== 'boolean') return false;
-  if (typeof data.wrongfulConvictionInfo.inadequateLegalDefense !== 'boolean') return false;
-  if (typeof data.wrongfulConvictionInfo.policeProsecutorialMisconduct !== 'boolean') return false;
-  if (typeof data.wrongfulConvictionInfo.forensicEvidence !== 'boolean') return false;
-  if (typeof data.wrongfulConvictionInfo.informantTestimony !== 'boolean') return false;
-  if (typeof data.postExonerationInfo.publicApology !== 'boolean') return false;
-
-
-  if (!(Object.values(Gender).includes(data.personalInfo.gender))) return false;
-
-
-  if (typeof data.legalInfo.convictionMethod !== 'object') {
-    const arr_length = data.legalInfo.convictionMethod.length;
-    for (let i = 0; i < arr_length; i++) {
-      if (typeof data.legalInfo.convictionMethod[i] !== "string") return false
-    }
-  }
-  else {
+function validateUpdatedData(data: unknown): boolean {
+  try {
+    UpdatedExonereeDataSchema.parse(data);
+    return true;
+  } catch (error) {
+    console.error('Validation error:', error);
     return false;
   }
-
-  if (typeof data.legalInfo.exonerationMethod !== 'object') {
-    let arr_length = data.legalInfo.exonerationMethod.length;
-    for (let i = 0; i < arr_length; i++) {
-      if (typeof data.legalInfo.exonerationMethod[i] !== "string") return false
-    }
-  }
-  else {
-    return false;
-  }
-
-  if (typeof data.legalInfo.detectivesInvolved !== 'object') {
-    let arr_length = data.legalInfo.detectivesInvolved.length;
-    for (let i = 0; i < arr_length; i++) {
-      if (typeof data.legalInfo.detectivesInvolved[i] !== "string") return false
-    }
-  }
-  else {
-    return false;
-  }
-
-  if (typeof data.postExonerationInfo.reentrySupport !== 'object') {
-    let arr_length = data.postExonerationInfo.reentrySupport.length;
-    for (let i = 0; i < arr_length; i++) {
-      if (typeof data.postExonerationInfo.reentrySupport[i] !== "string") return false
-    }
-  }
-  else {
-    return false;
-  }
-
-  if (typeof data.additionalInfo.mediaCoverage !== 'object') {
-    let arr_length = data.additionalInfo.mediaCoverage.length;
-    for (let i = 0; i < arr_length; i++) {
-      if (typeof data.additionalInfo.mediaCoverage[i] !== "string") return false
-    }
-  }
-  else {
-    return false;
-  }
-
-
-  return true;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
