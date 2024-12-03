@@ -9,11 +9,86 @@ enum Gender {
   OTHER = "OTHER",
 }
 
+interface PersonalInfo {
+  name: string;
+  dateOfBirth: Date;
+  gender: Gender;
+  race: string;
+  ethnicity: string;
+  phoneNumber: string;
+  address: string;
+  email: string;
+}
+
+interface CaseInfo {
+  caseNumber: string;
+  jurisdictionId: number;
+  yearsInPrison: number;
+  arrestDate: Date;
+  convictionDate: Date;
+  freedomDate: Date;
+  exonerationDate: Date;
+  crimeType: string;
+  sentence: string;
+  state: string;
+  country: string;
+}
+
+interface LegalInfo {
+  originalCharges: string;
+  convictionMethod: string[];
+  exonerationMethod: string[];
+  legalRepresentation: string;
+  prosecutor: string;
+  detectivesInvolved: string[];
+}
+
+interface WrongfulConvictionInfo {
+  falseConfession: boolean;
+  eyewitnessMisidentification: boolean;
+  inadequateLegalDefense: boolean;
+  policeProsecutorialMisconduct: boolean;
+  forensicEvidence: boolean;
+  informantTestimony: boolean;
+}
+
+interface PostExonerationInfo {
+  reentrySupport: string[];
+  publicApology: boolean;
+  compensationAmount: number;
+  compensationDate: Date;
+  occupation: string;
+  currentState: string;
+  currentCountry: string;
+}
+
+interface AdditionalInfo {
+  mediaCoverage: string[];
+  advocacyInvolvement: string;
+  educationalBackground: string;
+  healthInfo: string;
+}
+
+interface MetaData {
+  dataSource: string;
+  lastUpdated: Date;
+  createdAt: Date;
+}
+
+interface UpdatedExonereeData {
+  personalInfo: PersonalInfo;
+  caseInfo: CaseInfo;
+  legalInfo: LegalInfo;
+  wrongfulConvictionInfo: WrongfulConvictionInfo;
+  postExonerationInfo: PostExonerationInfo;
+  additionalInfo: AdditionalInfo;
+  metaData: MetaData;
+}
 
 
 const prisma = new PrismaClient();
 
-function validateUpdatedData(data: any): boolean {
+function validateUpdatedData(data: UpdatedExonereeData): boolean {
   if (typeof data !== 'object' || data === null) return false;
 
   // Validate each property
@@ -23,11 +98,11 @@ function validateUpdatedData(data: any): boolean {
   if (typeof data.personalInfo.phoneNumber !== 'string') return false;
   if (typeof data.personalInfo.address !== 'string') return false;
   if (typeof data.personalInfo.email !== 'string') return false;
-  if (typeof data.caselInfo.caseNumber !== 'string') return false;
-  if (typeof data.caselInfo.crimeType !== 'string') return false;
-  if (typeof data.caselInfo.sentence !== 'string') return false;
-  if (typeof data.caselInfo.state !== 'string') return false;
-  if (typeof data.caselInfo.country !== 'string') return false;
+  if (typeof data.caseInfo.caseNumber !== 'string') return false;
+  if (typeof data.caseInfo.crimeType !== 'string') return false;
+  if (typeof data.caseInfo.sentence !== 'string') return false;
+  if (typeof data.caseInfo.state !== 'string') return false;
+  if (typeof data.caseInfo.country !== 'string') return false;
   if (typeof data.legalInfo.originalCharges !== 'string') return false;
   if (typeof data.legalInfo.legalRepresentation !== 'string') return false;
   if (typeof data.legalInfo.prosecutor !== 'string') return false;
@@ -37,9 +112,9 @@ function validateUpdatedData(data: any): boolean {
   if (typeof data.metaData.dataSource !== 'string') return false;
 
 
-  if (typeof data.caselInfo.jurisdictionId !== 'number') return false;
-  if (typeof data.caselInfo.yearsInPrison !== 'number') return false;
-  if (typeof data.postExonerationlInfo.compensationAmount !== 'number') return false;
+  if (typeof data.caseInfo.jurisdictionId !== 'number') return false;
+  if (typeof data.caseInfo.yearsInPrison !== 'number') return false;
+  if (typeof data.postExonerationInfo.compensationAmount !== 'number') return false;
 
 
   if (!(data.personalInfo.dateOfBirth instanceof Date) || isNaN(data.personalInfodateOfBirth.getTime())) return false;
@@ -65,7 +140,7 @@ function validateUpdatedData(data: any): boolean {
 
 
   if (typeof data.legalInfo.convictionMethod !== 'object') {
-    let arr_length = data.legalInfo.convictionMethod.length;
+    const arr_length = data.legalInfo.convictionMethod.length;
     for (let i = 0; i < arr_length; i++) {
       if (typeof data.legalInfo.convictionMethod[i] !== "string") return false
     }

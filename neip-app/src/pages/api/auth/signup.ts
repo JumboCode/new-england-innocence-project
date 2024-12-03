@@ -1,4 +1,4 @@
-import { createClerkClient, EmailAddress } from '@clerk/clerk-sdk-node'
+import { createClerkClient } from '@clerk/clerk-sdk-node'
 import { NextApiRequest, NextApiResponse } from 'next';
 import dotenv from 'dotenv';
 

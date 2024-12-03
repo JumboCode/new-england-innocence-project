@@ -7,7 +7,7 @@ import AuthButton from '../components/AuthButton';
 import AuthEntryBox from '../components/AuthEntryBox';
 import { useRouter } from 'next/router';
 
-import { useSignIn, useAuth, useClerk } from '@clerk/nextjs';
+import { useSignIn, useAuth } from '@clerk/nextjs';
 
 const LoginPage: React.FC = () => {
 
