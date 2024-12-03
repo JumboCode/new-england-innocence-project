@@ -19,6 +19,7 @@
     "@mui/material": "^6.1.8",
     "@prisma/client": "^5.21.1",
     "antd": "^5.22.1",
+    "dotenv": "^16.4.7",
     "next": "^14.2.17",
     "react": "^18",
     "react-checkmark": "^2.1.1",
