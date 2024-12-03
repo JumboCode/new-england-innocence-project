@@ -1,15 +1,14 @@
 // -- look over
 
-import { PrismaClient } from '@prisma/client';
-import { NextApiRequest, NextApiResponse } from 'next';
-
+import { PrismaClient } from '@prisma/client'
+import { NextApiRequest, NextApiResponse } from 'next'
 import { z } from 'zod';
 
 const Gender = z.enum(["M", "F", "OTHER"]);
 
 const PersonalInfoSchema = z.object({
   name: z.string(),
-  dateOfBirth: z.date(),
+  dateOfBirth: z.string(),
   gender: Gender,
   race: z.string(),
   ethnicity: z.string(),
@@ -22,10 +21,10 @@ const CaseInfoSchema = z.object({
   caseNumber: z.string(),
   jurisdictionId: z.number(),
   yearsInPrison: z.number(),
-  arrestDate: z.date(),
-  convictionDate: z.date(),
-  freedomDate: z.date(),
-  exonerationDate: z.date(),
+  arrestDate: z.string(),
+  convictionDate: z.string(),
+  freedomDate: z.string(),
+  exonerationDate: z.string(),
   crimeType: z.string(),
   sentence: z.string(),
   state: z.string(),
@@ -54,7 +53,7 @@ const PostExonerationInfoSchema = z.object({
   reentrySupport: z.array(z.string()),
   publicApology: z.boolean(),
   compensationAmount: z.number(),
-  compensationDate: z.date(),
+  compensationDate: z.string(),
   occupation: z.string(),
   currentState: z.string(),
   currentCountry: z.string(),
@@ -69,8 +68,8 @@ const AdditionalInfoSchema = z.object({
 
 const MetaDataSchema = z.object({
   dataSource: z.string(),
-  lastUpdated: z.date(),
-  createdAt: z.date(),
+  lastUpdated: z.string(),
+  createdAt: z.string(),
 });
 
 const UpdatedExonereeDataSchema = z.object({
@@ -83,8 +82,7 @@ const UpdatedExonereeDataSchema = z.object({
   metaData: MetaDataSchema.optional(),
 });
 
-
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 function validateUpdatedData(data: unknown): boolean {
   try {
@@ -96,15 +94,18 @@ function validateUpdatedData(data: unknown): boolean {
   }
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler (
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== 'PUT') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { id, updatedData } = req.body;
+  const { id, updatedData } = req.body
 
   if (!id || !updatedData) {
-    return res.status(400).json({ error: 'ID and updated data are required' });
+    return res.status(400).json({ error: 'ID and updated data are required' })
   }
 
   if (!validateUpdatedData(updatedData)) {
@@ -120,12 +121,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         legalInfo: true,
         wrongfulConvictionInfo: true,
         postExonerationInfo: true,
-        metaData: true,
-      },
-    });
+        metaData: true
+      }
+    })
 
     if (!existingExoneree) {
-      return res.status(404).json({ error: 'Exoneree not found' });
+      return res.status(404).json({ error: 'Exoneree not found' })
     }
 
     const updatedExoneree = await prisma.exoneree.update({
@@ -134,24 +135,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         personalInfo: updatedData.personalInfo
           ? { update: updatedData.personalInfo }
           : undefined,
-        caseInfo: updatedData.caseInfo ? { update: updatedData.caseInfo } : undefined,
-        legalInfo: updatedData.legalInfo ? { update: updatedData.legalInfo } : undefined,
+        caseInfo: updatedData.caseInfo
+          ? { update: updatedData.caseInfo }
+          : undefined,
+        legalInfo: updatedData.legalInfo
+          ? { update: updatedData.legalInfo }
+          : undefined,
         wrongfulConvictionInfo: updatedData.wrongfulConvictionInfo
           ? { update: updatedData.wrongfulConvictionInfo }
           : undefined,
         postExonerationInfo: updatedData.postExonerationInfo
           ? { update: updatedData.postExonerationInfo }
           : undefined,
-        metaData: updatedData.metaData ? { update: updatedData.metaData } : undefined,
-      },
-    });
+        metaData: updatedData.metaData
+          ? { update: updatedData.metaData }
+          : undefined
+      }
+    })
 
-    return res.status(200).json({ message: 'Exoneree updated successfully', data: updatedExoneree });
-  } catch (error: any) {
-    console.error('Error updating exoneree:', error);
+    return res
+      .status(200)
+      .json({ message: 'Exoneree updated successfully', data: updatedExoneree })
+  } catch (error) {
+    console.error('Error updating exoneree:', error)
     if (error.code === 'P2025') {
-      return res.status(404).json({ error: 'Exoneree not found' });
+      return res.status(404).json({ error: 'Exoneree not found' })
     }
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: 'Internal server error' })
   }
 }
