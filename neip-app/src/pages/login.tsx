@@ -16,21 +16,13 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const { isSignedIn } = useAuth();
   const router = useRouter();
-  // const { signOut } = useClerk();    // used to sign out for testing
 
   const handleLogin = async () => {
     if (!isLoaded) return; // make sure Clerk is loaded
 
-    // console.log("user id", userId);
-    // console.log("password", password);
-
     if (isSignedIn) {
       alert("You are already logged in!");
       return;
-
-      // used for testing to automtically sign out any signed in accounts
-      // await signOut();
-      // console.log("previous account logged out")
     }
 
     try {

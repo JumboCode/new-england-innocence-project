@@ -17,7 +17,7 @@ const AuthEntryBox: React.FC<AuthEntryBoxProps> = ({ placeholder, type = 'text',
     borderBottom: '2.5px solid #44B4EF',  // Blue underline
     outline: 'none',
     color: '#333',
-    textAlign: 'center' as 'center',
+    textAlign: 'center',
   };
 
   return <input type={type} placeholder={placeholder} style={inputStyle} onChange={onChange} />;
