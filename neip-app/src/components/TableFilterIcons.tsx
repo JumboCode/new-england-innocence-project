@@ -4,6 +4,8 @@ import { CgTrash } from "react-icons/cg"; //<CgTrash />
 import { CgExport } from "react-icons/cg"; //<CgExport />
 import { CgAdd } from "react-icons/cg"; // <CgAdd />
 import { CgSearch } from "react-icons/cg"; // <CgSearch />
+
+
 interface TableFilterIconsProps {
     icon?: React.ReactNode; // Accepts any valid React node (e.g., <img>, <svg>, etc.)
     filled: boolean;
@@ -12,8 +14,9 @@ interface TableFilterIconsProps {
     borderRadius: boolean;
     height?: string;
     width?: string;
+    onOpenFilter: () => void;
 }
-const TableFilterIcons: React.FC<TableFilterIconsProps> = ({ icon, filled, text, border, height, width }) => {
+const TableFilterIcons: React.FC<TableFilterIconsProps> = ({ icon, filled, text, border, height, width, onOpenFilter }) => {
   const IconButtonStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
@@ -31,7 +34,9 @@ const TableFilterIcons: React.FC<TableFilterIconsProps> = ({ icon, filled, text,
     width: width, // Use the width prop
   };
   return (
-    <button style={IconButtonStyle}>
+    <button style={IconButtonStyle}
+    onClick={onOpenFilter}
+    >
       {filled ? (
         <>
           <span>{text}</span>

@@ -13,6 +13,7 @@ import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai';
 import { MdFilterList } from 'react-icons/md';
 import ActionMenuComponent from "@/components/ActionMenuComponent";
 import TableFilterIcons from "@/components/TableFilterIcons";
+import OpenFilterSidebar from "../components/OpenFilterSidebar";
 
 // Dynamic import for the Ant Design Table component
 const Table = dynamic(() => import("antd").then((mod) => mod.Table), { ssr: false });
@@ -229,6 +230,8 @@ const HomePage: React.FC = () => {
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 });
   const [selectedCell, setSelectedCell] = useState<{ record: any; columnKey: string } | null>(null);
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const filteredColumns = columns.filter((column) =>
   selectedColumns.includes(column.key)
 ).map(column => ({
@@ -264,6 +267,16 @@ const closeActionMenu = () => {
   setSelectedCell(null);
 };
 
+const closeFilterSidebar = () => {
+  setIsSidebarOpen(false);
+};
+
+const openFilterSidebar = () => {
+  setIsSidebarOpen(true);
+};
+
+const noop: () => void = () => {};
+
   return (
     <div style={{ height: '100vh', backgroundColor: 'white', marginLeft: '60px' }}>
 
@@ -272,27 +285,34 @@ const closeActionMenu = () => {
             <img src="/caseview_logo2.png" alt="Logo" style={{ height: '35px', width: 'auto', marginLeft: '17px', backgroundColor: 'white' }} />
         </div>
 
+        {/* Render the OpenFiterSideBar if it's visible*/}
+        {isSidebarOpen && <OpenFilterSidebar onClose={closeFilterSidebar} />}
+
         {/* Open Filter Sidebar Button - Top Right */}
-        <div style={{ textAlign: 'center', display: 'flex', justifyContent: 'flex-end' }}>
-            <button style={{
-                backgroundColor: '#0F6A9A',
-                color: 'white',
-                padding: '16px 24px',
-                border: 'none',
-                cursor: 'pointer',
-                marginLeft: '1279px',
-                // marginRight: '100px',
-                display: 'flex',
-                alignItems: 'center',
-                fontSize: '11px',
-            }}>Open filter sidebar
-                <Image src={ArrowIcon} alt="arrow icon" style={{ marginLeft: '12px' }} height="5.21" width="10.42"></Image>
-            </button>
-        </div>
+          <div style={{ textAlign: 'center', display: 'flex', justifyContent: 'flex-end' }}>
+              <button 
+                onClick={() => setIsSidebarOpen(true)}
+                style={{
+                  backgroundColor: '#0F6A9A',
+                  color: 'white',
+                  padding: '16px 24px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  marginLeft: '1279px',
+                  // marginRight: '100px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontSize: '11px',
+              }}
+              >
+                Open filter sidebar
+                  <Image src={ArrowIcon} alt="arrow icon" style={{ marginLeft: '12px' }} height="5.21" width="10.42"></Image>
+              </button>
+          </div>
 
         {/* Main Content */}
         <div style={{ padding: '20px' }}>
-
+          
             {/* "Home Database" Heading */}
             <h1 style={{ color: '#101828', fontWeight: 'bold', fontSize: '30px', marginTop: '-25px', marginLeft: '15px' }}>Home Database</h1>
 
@@ -348,6 +368,7 @@ const closeActionMenu = () => {
                             border={false}
                             borderRadius={false}
                             height="35px"
+                            onOpenFilter={noop}
                             />
                         ))}
                     <TableFilterIcons
@@ -358,6 +379,7 @@ const closeActionMenu = () => {
                         borderRadius={false}
                         height="35px"
                         width="120px"
+                        onOpenFilter={openFilterSidebar}
                     />
                 </div>
                 <div style={{ marginLeft: 'auto', marginRight: '20px' }}>
@@ -369,6 +391,7 @@ const closeActionMenu = () => {
                     borderRadius={true}
                     height="35px"
                     width="185px"
+                    onOpenFilter={noop}
                     />
                 </div>
             </div>
