@@ -246,8 +246,8 @@ const HomePage: React.FC = () => {
   selectedColumns.includes(column.key)
 ).map(column => ({
   ...column,
-  onCell: (record) => ({
-    onClick: (event) => handleCellClick(event, record, column.key),
+  onCell: (record: any) => ({
+    onClick: (event: any) => handleCellClick(event, record, column.key),
   }),
 }));
 

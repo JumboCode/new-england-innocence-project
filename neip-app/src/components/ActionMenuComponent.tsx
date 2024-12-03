@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 
-interface ActionMenuComponentProps {
-    onClose?: () => void; // Define the onClose prop as an optional function
-}
-
-const ActionMenuComponent: React.FC<ActionMenuComponentProps> = ({ onClose }) => {
+const ActionMenuComponent = ({ onClose } : {onClose : any}) => {
     const [isVisible, setIsVisible] = useState(true);
-    const [isClicked, setIsClicked] = useState<string | null>(null);
+    const [isClicked, setIsClicked] = useState<null | string>(null);
 
     const close = () => {
         setIsVisible(false);
         onClose?.(); // Call the parent's onClose handler
     };
 
-    const click = (item: string) => {
+    const click = ( item: string) => {
         setIsClicked(item);
     };
 
@@ -89,6 +85,6 @@ const ActionMenuComponent: React.FC<ActionMenuComponentProps> = ({ onClose }) =>
             </div>
         </div>
     );
-};
+}
 
 export default ActionMenuComponent;

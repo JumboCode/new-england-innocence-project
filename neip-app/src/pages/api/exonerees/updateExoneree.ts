@@ -156,7 +156,7 @@ export default async function handler (
     return res
       .status(200)
       .json({ message: 'Exoneree updated successfully', data: updatedExoneree })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error updating exoneree:', error)
     if (error.code === 'P2025') {
       return res.status(404).json({ error: 'Exoneree not found' })
