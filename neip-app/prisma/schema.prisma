@@ -39,7 +39,7 @@ model PersonalInfo {
 model CaseInfo {
   id              Int       @id @default(autoincrement())
   caseNumber      String    @unique
-  jurisdictionId  Int       @unique
+  jurisdictionId  Int       
   yearsInPrison   Int
   arrestDate      String
   convictionDate  String

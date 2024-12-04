@@ -1,7 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  log: ['query', 'info', 'warn', 'error'],
+});
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
@@ -28,40 +30,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const newExoneree = await prisma.exoneree.create({
       data: {
         personalInfo: {
-          connectOrCreate: {
-            where: { email: personalInfo.email },
-            create: personalInfo,
-          },
+          create: personalInfo,
         },
         caseInfo: {
-          connectOrCreate: {
-            where: { caseNumber: caseInfo.caseNumber }, 
-            create: caseInfo,
-          },
+          create: caseInfo,
         },
         legalInfo: {
-          connectOrCreate: {
-            where: { id: legalInfo.id || 0 }, 
-            create: legalInfo,
-          },
+          create: legalInfo,
         },
         wrongfulConvictionInfo: {
-          connectOrCreate: {
-            where: { id: wrongfulConvictionInfo.id || 0 }, 
-            create: wrongfulConvictionInfo,
-          },
+          create: wrongfulConvictionInfo,
         },
         postExonerationInfo: {
-          connectOrCreate: {
-            where: { id: postExonerationInfo.id || 0 },
-            create: postExonerationInfo,
-          },
+          create: postExonerationInfo,
         },
         metaData: {
-          connectOrCreate: {
-            where: { id: metaData.id || 0 },
-            create: metaData,
-          },
+          create: metaData,
         },
       },
       include: {
