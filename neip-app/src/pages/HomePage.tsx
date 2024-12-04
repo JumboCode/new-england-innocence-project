@@ -9,6 +9,8 @@ import PlusIcon from "../img/plus.png";
 import ArrowIcon from "../img/arrow_icon.png";
 import AddExonereeModal from '@/components/AddExonereeModal';
 import ActionMenuComponent from "@/components/ActionMenuComponent";
+import SelectColumnsModal from "@/components/SelectColumnsModal";
+import { Button } from "@mui/material";
 
 // Dynamic import for the Ant Design Table component
 const Table = dynamic(() => import("antd").then((mod) => mod.Table), { ssr: false });
@@ -203,158 +205,172 @@ const columns = [
 ];
 
 const HomePage: React.FC = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-  const handleOpenModal = () => setModalOpen(true);
-  const handleCloseModal = () => setModalOpen(false);
-
-  const [selectedColumns] = useState([
-    "name",
-    "dob",
-    "race",
-    "ethnicity",
-    "phoneNumber",
-    "address",
-    "email",
-    "caseNumber",
-    "crimeType",
-  ]);
-
-  const [actionMenuVisible, setActionMenuVisible] = useState(false);
-  const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 });
-  const [selectedCell, setSelectedCell] = useState<{ record: any; columnKey: string } | null>(null);
-
-  const filteredColumns = columns.filter((column) =>
-  selectedColumns.includes(column.key)
-).map(column => ({
-  ...column,
-  onCell: (record, rowIndex) => ({
-    onClick: (event) => handleCellClick(event, record, column.key),
-  }),
-}));
-
-const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement>, record: any, columnKey: string) => {
-  event.stopPropagation();
+    const [modalOpen, setModalOpen] = useState(false);
+    const [columnsModalOpen, setColumnsModalOpen] = useState(false);
+    
+    // Initialize selectedColumns with all column keys
+    const [selectedColumns, setSelectedColumns] = useState<string[]>(
+      columns.map(col => col.key)
+    );
   
-  const cellElement = event.currentTarget as HTMLTableCellElement;
-  const boundingRect = cellElement.getBoundingClientRect();
+    const handleOpenModal = () => setModalOpen(true);
+    const handleCloseModal = () => setModalOpen(false);
+    
+    const handleColumnsModalOpen = () => setColumnsModalOpen(true);
+    const handleColumnsModalClose = () => setColumnsModalOpen(false);
   
-  if (selectedCell && 
-      (selectedCell.record !== record || selectedCell.columnKey !== columnKey)) {
-    setActionMenuVisible(false);
-    setTimeout(() => {
-      setActionMenuPosition({ x: boundingRect.left, y: boundingRect.top });
-      setSelectedCell({ record, columnKey });
-      setActionMenuVisible(true);
-    }, 50);
-  } else {
-    setActionMenuPosition({ x: boundingRect.left, y: boundingRect.top });
-    setSelectedCell({ record, columnKey });
-    setActionMenuVisible(true);
-  }
-};
-
-const closeActionMenu = () => {
-  setActionMenuVisible(false);
-  setSelectedCell(null);
-};
-
-  return (
-    <div style={{ height: '100vh', backgroundColor: 'white' }}>
-
+    const handleColumnSelectionChange = (newSelectedColumns: string[]) => {
+      setSelectedColumns(newSelectedColumns);
+    };
+  
+    const [actionMenuVisible, setActionMenuVisible] = useState(false);
+    const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 });
+    const [selectedCell, setSelectedCell] = useState<{ record: any; columnKey: string } | null>(null);
+  
+    const filteredColumns = columns.filter((column) =>
+      selectedColumns.includes(column.key)
+    ).map(column => ({
+      ...column,
+      onCell: (record, rowIndex) => ({
+        onClick: (event) => handleCellClick(event, record, column.key),
+      }),
+    }));
+  
+    const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement>, record: any, columnKey: string) => {
+      event.stopPropagation();
+      
+      const cellElement = event.currentTarget as HTMLTableCellElement;
+      const boundingRect = cellElement.getBoundingClientRect();
+      
+      if (selectedCell && 
+          (selectedCell.record !== record || selectedCell.columnKey !== columnKey)) {
+        setActionMenuVisible(false);
+        setTimeout(() => {
+          setActionMenuPosition({ x: boundingRect.left, y: boundingRect.top });
+          setSelectedCell({ record, columnKey });
+          setActionMenuVisible(true);
+        }, 50);
+      } else {
+        setActionMenuPosition({ x: boundingRect.left, y: boundingRect.top });
+        setSelectedCell({ record, columnKey });
+        setActionMenuVisible(true);
+      }
+    };
+  
+    const closeActionMenu = () => {
+      setActionMenuVisible(false);
+      setSelectedCell(null);
+    };
+  
+    return (
+      <div style={{ height: '100vh', backgroundColor: 'white' }}>
         {/* Top Banner */}
         <div style={{ backgroundColor: '#033550', color: 'white', display: 'flex', alignItems: 'center', width: 'auto', height: '56px' }}>
-            <img src="/caseview_logo2.png" alt="Logo" style={{ height: '35px', width: 'auto', marginLeft: '17px', backgroundColor: 'white' }} />
+          <img src="/caseview_logo2.png" alt="Logo" style={{ height: '35px', width: 'auto', marginLeft: '17px', backgroundColor: 'white' }} />
         </div>
-
+  
         {/* Open Filter Sidebar Button - Top Right */}
         <div style={{ textAlign: 'center', display: 'flex', justifyContent: 'flex-end' }}>
-            <button style={{
-                backgroundColor: '#0F6A9A',
-                color: 'white',
-                padding: '16px 24px',
-                border: 'none',
-                cursor: 'pointer',
-                marginLeft: '1279px',
-                // marginRight: '100px',
-                display: 'flex',
-                alignItems: 'center',
-                fontSize: '11px',
-            }}>Open filter sidebar
-                <Image src={ArrowIcon} alt="arrow icon" style={{ marginLeft: '12px' }} height="5.21" width="10.42"></Image>
-            </button>
+          <button style={{
+            backgroundColor: '#0F6A9A',
+            color: 'white',
+            padding: '16px 24px',
+            border: 'none',
+            cursor: 'pointer',
+            marginLeft: '1279px',
+            display: 'flex',
+            alignItems: 'center',
+            fontSize: '11px',
+          }}>
+            Open filter sidebar
+            <Image src={ArrowIcon} alt="arrow icon" style={{ marginLeft: '12px' }} height="5.21" width="10.42" />
+          </button>
         </div>
-
+  
         {/* Main Content */}
         <div style={{ padding: '20px' }}>
-
-            {/* "Home Database" Heading */}
-            <h1 style={{ color: '#101828', fontWeight: 'bold', fontSize: '30px', marginTop: '-25px', marginLeft: '15px' }}>Home Database</h1>
-
-            {/* Search Bar and Action Buttons Container */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '17px' }}>
-                {/* Search Bar */}
-                <div style={{ flex: 1, maxWidth: '300px', marginLeft: '15px' }}>
-                    <SearchEntryBox />
-                </div>
-
-                {/* Action Buttons */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '16px', marginRight: '15px' }}>
-                <IconTextButton
-                        icon={<Image src={TrashIcon} alt="trash icon" width="20" height="20"></Image>}
-                        filled={false}
-                        text="Delete"
-                        border={false}
-                        height="44px"
-                        width="104px"
-                    />
-                    <IconTextButton
-                        icon={<Image src={UploadIcon} alt="upload icon" width="24" height="24"></Image>}
-                        filled={false}
-                        text="Export to CSV"
-                        border={true}
-                        height="44px"
-                        width="159px"
-                    />
-                    <IconTextButton
-                        onClick={handleOpenModal}
-                        icon={<Image src={PlusIcon} alt="plus icon" width="14" height="14"></Image>}
-                        filled={true}
-                        text="Add new exoneree file"
-                        border={false}
-                        height="44px"
-                        width="209px"
-                    />
-                    <AddExonereeModal open={modalOpen} handleClose={handleCloseModal}/>
-                </div>
+          {/* "Home Database" Heading */}
+          <h1 style={{ color: '#101828', fontWeight: 'bold', fontSize: '30px', marginTop: '-25px', marginLeft: '15px' }}>Home Database</h1>
+  
+          {/* Search Bar and Action Buttons Container */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '17px' }}>
+            {/* Search Bar */}
+            <div style={{ flex: 1, maxWidth: '300px', marginLeft: '15px' }}>
+              <SearchEntryBox />
             </div>
-
-            {/* Placeholder for Database Display */}
-            <div style={{ height: '60vh', backgroundColor: 'white' }}>
-                
-                {/* Database Display */}
-                <Table 
-                    dataSource={dataSource} 
-                    columns={filteredColumns} 
-                    scroll={{ x: 'max-content' }} 
-                />;
+  
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '16px', marginRight: '15px' }}>
+              <Button
+                onClick={handleColumnsModalOpen}
+                variant="outlined"
+                sx={{ height: '44px' }}
+              >
+                Manage columns
+              </Button>
+              <IconTextButton
+                icon={<Image src={TrashIcon} alt="trash icon" width="20" height="20" />}
+                filled={false}
+                text="Delete"
+                border={false}
+                height="44px"
+                width="104px"
+              />
+              <IconTextButton
+                icon={<Image src={UploadIcon} alt="upload icon" width="24" height="24" />}
+                filled={false}
+                text="Export to CSV"
+                border={true}
+                height="44px"
+                width="159px"
+              />
+              <IconTextButton
+                onClick={handleOpenModal}
+                icon={<Image src={PlusIcon} alt="plus icon" width="14" height="14" />}
+                filled={true}
+                text="Add new exoneree file"
+                border={false}
+                height="44px"
+                width="209px"
+              />
             </div>
+          </div>
+  
+          {/* Database Display */}
+          <div style={{ height: '60vh', backgroundColor: 'white' }}>
+            <Table 
+              dataSource={dataSource} 
+              columns={filteredColumns} 
+              scroll={{ x: 'max-content' }} 
+            />
+          </div>
         </div>
-
-    {/* Action Menu */}
-    {actionMenuVisible && (
-      <div
-        style={{
-          position: "absolute",
-          top: actionMenuPosition.y,
-          left: actionMenuPosition.x,
-          zIndex: 1000,
-        }}
-      >
-        <ActionMenuComponent onClose={closeActionMenu} />
+  
+        {/* Modals */}
+        <AddExonereeModal open={modalOpen} handleClose={handleCloseModal} />
+        <SelectColumnsModal
+          open={columnsModalOpen}
+          handleClose={handleColumnsModalClose}
+          columns={columns}
+          selectedColumns={selectedColumns}
+          onColumnSelectionChange={handleColumnSelectionChange}
+        />
+  
+        {/* Action Menu */}
+        {actionMenuVisible && (
+          <div
+            style={{
+              position: "absolute",
+              top: actionMenuPosition.y,
+              left: actionMenuPosition.x,
+              zIndex: 1000,
+            }}
+          >
+            <ActionMenuComponent onClose={closeActionMenu} />
+          </div>
+        )}
       </div>
-    )}
-  </div>
-);
-};
-
-export default HomePage;
+    );
+  };
+  
+  export default HomePage;
