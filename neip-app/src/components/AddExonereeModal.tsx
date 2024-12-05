@@ -5,6 +5,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import LabelAndEntry from "../components/LabelAndEntry"
 
 const style = {
   position: "absolute",
@@ -53,7 +54,18 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
   const renderTabContent = () => {
     switch (activeTab) {
       case 0:
-        return <div>Personal Info</div>;
+        return <div>Personal Info
+                <div style={{borderTop: '200px', marginRight: 'auto'}}>
+                <LabelAndEntry
+                  label={"First Name"}
+                  placeholder={"First Name"}
+                  width="177px"
+                  height='35px'
+                />
+                </div>
+
+                
+               </div>;
       case 1:
         return <div>Case Info</div>;
       case 2:
