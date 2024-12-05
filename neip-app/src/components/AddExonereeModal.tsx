@@ -93,6 +93,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
             style: { display: "none" },
           }}
         >
+
           <Tab sx={tabSx(0)} label="Personal Info" />
           <Tab sx={tabSx(1)} label="Case Info" />
           <Tab sx={tabSx(2)} label="Legal Info" />

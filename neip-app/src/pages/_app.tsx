@@ -19,6 +19,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ClerkProvider {...pageProps}>
             <Component {...pageProps} />
         </ClerkProvider>
+        
     );
 }
 
