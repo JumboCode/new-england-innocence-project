@@ -2,17 +2,17 @@ curl -X POST http://localhost:3000/api/exonerees/addExoneree \
    -H "Content-Type: application/json" \
    -d '{
     "personalInfo": {
-      "name": "John Doe",
+      "name": "John Doe 1",
       "dateOfBirth": "1980-01-01T00:00:00.000Z",
       "gender": "M",
       "race": "Caucasian",
       "ethnicity": "Non-Hispanic",
       "phoneNumber": "123-456-7890",
       "address": "123 Main St, Anytown, USA",
-      "email": "johndoe@example.com"
+      "email": "johndoe2@example.com"
     },
     "caseInfo": {
-      "caseNumber": "A123456",
+      "caseNumber": "A1234562",
       "jurisdictionId": 1,
       "yearsInPrison": 10,
       "arrestDate": "2005-01-01T00:00:00.000Z",
