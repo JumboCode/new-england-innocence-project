@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
 
 /*const NavItem = () => {
     return (

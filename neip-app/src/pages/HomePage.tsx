@@ -8,8 +8,25 @@ import UploadIcon from "../img/Upload.png";
 import PlusIcon from "../img/plus.png";
 import ArrowIcon from "../img/arrow_icon.png";
 import AddExonereeModal from '@/components/AddExonereeModal';
+import { FaFilter } from 'react-icons/fa';
+import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai';
+import { MdFilterList } from 'react-icons/md';
 import ActionMenuComponent from "@/components/ActionMenuComponent";
+import TableFilterIcons from "@/components/TableFilterIcons";
 
+// TODO: This is a bandaid solution for Vercel deployment. 
+// In the future we will want to dynamically determine columns based off this
+interface TableRowData {
+  name: string;
+  dob: string;
+  race: string;
+  ethnicity: string;
+  phoneNumber: string;
+  address: string;
+  email: string;
+  caseNumber: string;
+  crimeType: string;
+}
 // Dynamic import for the Ant Design Table component
 const Table = dynamic(() => import("antd").then((mod) => mod.Table), { ssr: false });
 
@@ -219,20 +236,22 @@ const HomePage: React.FC = () => {
     "crimeType",
   ]);
 
+  const [selectedFilters] = useState(['Detective', 'Male', 'Test']);
+
   const [actionMenuVisible, setActionMenuVisible] = useState(false);
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 });
-  const [selectedCell, setSelectedCell] = useState<{ record: any; columnKey: string } | null>(null);
+  const [selectedCell, setSelectedCell] = useState<{ record: TableRowData; columnKey: string } | null>(null);
 
   const filteredColumns = columns.filter((column) =>
   selectedColumns.includes(column.key)
 ).map(column => ({
   ...column,
-  onCell: (record, rowIndex) => ({
-    onClick: (event) => handleCellClick(event, record, column.key),
+  onCell: (record: any) => ({
+    onClick: (event: any) => handleCellClick(event, record, column.key),
   }),
 }));
 
-const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement>, record: any, columnKey: string) => {
+const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement>, record: TableRowData, columnKey: string) => {
   event.stopPropagation();
   
   const cellElement = event.currentTarget as HTMLTableCellElement;
@@ -259,7 +278,7 @@ const closeActionMenu = () => {
 };
 
   return (
-    <div style={{ height: '100vh', backgroundColor: 'white' }}>
+    <div style={{ height: '100vh', backgroundColor: 'white', marginLeft: '60px' }}>
 
         {/* Top Banner */}
         <div style={{ backgroundColor: '#033550', color: 'white', display: 'flex', alignItems: 'center', width: 'auto', height: '56px' }}>
@@ -328,7 +347,55 @@ const closeActionMenu = () => {
                 </div>
             </div>
 
-            {/* Placeholder for Database Display */}
+            {/* Table Filter Info */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '20px', borderColor: '#E1E0E0', borderWidth: '1px', borderBottom: 'none' }}>
+                <div style={{ display: 'flex', gap: '12px', marginLeft: '20px', marginTop: '10px', marginBottom: '10px' }}>
+                    {/* <Image src={PlusIcon} alt="funnel" style={{ width: '16px', height: '16px', marginTop: '10px' }} ></Image>  */}
+                    <FaFilter style={{ width: '16px', height: '16px', marginTop: '10px' }} />
+                    {selectedFilters.map((filter, index) => (
+                        <TableFilterIcons
+                            key={index}
+                            icon={<AiOutlineClose style={{ width: '16px', height: '16px', color: 'black' }} />}
+                            filled={true}
+                            text={filter}
+                            border={false}
+                            borderRadius={false}
+                            height="35px"
+                            />
+                        ))}
+                    <TableFilterIcons
+                        icon={<AiOutlinePlus style={{ width: '16px', height: '16px', color: 'black' }} />}
+                        filled={false}
+                        text="Filter"
+                        border={false}
+                        borderRadius={false}
+                        height="35px"
+                        width="120px"
+                    />
+                </div>
+                <div style={{ marginLeft: 'auto', marginRight: '20px' }}>
+                  <TableFilterIcons
+                    icon={<MdFilterList style={{ width: '16px', height: '16px', color: 'black' }} />}
+                    filled={false}
+                    text="Manage Columns"
+                    border={true}
+                    borderRadius={true}
+                    height="35px"
+                    width="185px"
+                    />
+                </div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0px', borderColor: '#E1E0E0', borderWidth: '1px', borderTop: 'none' }}>
+                <div style={{ display: 'flex', gap: '4px', marginLeft: '20px', marginTop: '2px', marginBottom: '6px' }}>
+                    <span style={{ color: '#ABACBE', fontSize: '12px' }}>Showing</span>
+                    <span style={{ color: '#000000', fontSize: '12px' }}>x</span>
+                    <span style={{ color: '#ABACBE', fontSize: '12px' }}>from</span>
+                    <span style={{ color: '#000000', fontSize: '12px' }}>x</span>
+                    <span style={{ color: '#ABACBE', fontSize: '12px' }}>results</span>
+                </div>
+            </div>
+
+            {/* Database Display */}
             <div style={{ height: '60vh', backgroundColor: 'white' }}>
                 
                 {/* Database Display */}
