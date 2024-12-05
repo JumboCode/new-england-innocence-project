@@ -1,9 +1,17 @@
 import { PrismaClient } from '@prisma/client';
+import { Pool, neonConfig } from '@neondatabase/serverless'
+import { PrismaNeon } from '@prisma/adapter-neon'
 import { NextApiRequest, NextApiResponse } from 'next';
+import dotenv from 'dotenv'
+import ws from 'ws'
 
-const prisma = new PrismaClient({
-  log: ['query', 'info', 'warn', 'error'],
-});
+dotenv.config()
+neonConfig.webSocketConstructor = ws
+const connectionString = `${process.env.DATABASE_URL}`
+
+const pool = new Pool({ connectionString })
+const adapter = new PrismaNeon(pool)
+const prisma = new PrismaClient({adapter, log: ['query', 'info', 'warn', 'error'] })
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
@@ -45,8 +53,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           create: postExonerationInfo,
         },
         metaData: {
-          create: metaData,
+          connectOrCreate: {
+            where: { id: metaData.id || 0 },
+            create: metaData,
+          },
         },
+        
       },
       include: {
         personalInfo: true,
