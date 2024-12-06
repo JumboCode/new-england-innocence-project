@@ -14,7 +14,7 @@ const WelcomePage: React.FC = () => {
 
   const buttonContainerStyle = {
     display: "flex",
-    flexDirection: "column" as "columnc",
+    flexDirection: "column" as "column",
     gap: "15px",
     marginTop: "20px",
   };
