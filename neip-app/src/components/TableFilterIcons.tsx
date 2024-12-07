@@ -1,10 +1,5 @@
 // components/IconTextButton.tsx
 import React from 'react';
-import { CgTrash } from "react-icons/cg"; //<CgTrash />
-import { CgExport } from "react-icons/cg"; //<CgExport />
-import { CgAdd } from "react-icons/cg"; // <CgAdd />
-import { CgSearch } from "react-icons/cg"; // <CgSearch />
-
 
 interface TableFilterIconsProps {
     icon?: React.ReactNode; // Accepts any valid React node (e.g., <img>, <svg>, etc.)
