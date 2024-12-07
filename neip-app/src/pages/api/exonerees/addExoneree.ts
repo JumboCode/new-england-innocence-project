@@ -11,7 +11,7 @@ const connectionString = `${process.env.DATABASE_URL}`
 
 const pool = new Pool({ connectionString })
 const adapter = new PrismaNeon(pool)
-const prisma = new PrismaClient({adapter, log: ['query', 'info', 'warn', 'error'] })
+const prisma = new PrismaClient({adapter})
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
