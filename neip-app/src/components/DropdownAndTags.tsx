@@ -22,13 +22,6 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
     }
   };
 
-  const handleAddNewTag = (inputValue: string) => {
-    if (inputValue && !selectedTags.includes(inputValue)) {
-      setSelectedTags([...selectedTags, inputValue]);
-      setAvailableOptions([...availableOptions, { value: inputValue, label: inputValue }]);
-    }
-  };
-
   const removeTag = (tagToRemove: string) => {
     setSelectedTags(selectedTags.filter((tag) => tag !== tagToRemove));
   };
@@ -37,10 +30,14 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
     control: (provided) => ({
       ...provided,
       color: '#004085',
+      minHeight: '40px',
     }),
-    singleValue: (provided) => ({
+    singleValue: () => ({
+      display: 'none',
+    }),
+    placeholder: (provided) => ({
       ...provided,
-      color: '#004085',
+      color: '#667085',
     }),
     option: (provided, state) => ({
       ...provided,
@@ -123,18 +120,6 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
           isClearable
           isSearchable
           onChange={handleSelectChange}
-          onInputChange={(inputValue, { action }) => {
-            if (action === 'input-change' && inputValue.trim() !== '') {
-              handleAddNewTag(inputValue);
-            }
-          }}
-          onKeyDown={(e) => {
-            const target = e.currentTarget as HTMLInputElement;
-            if (e.key === 'Enter' && target.value.trim() !== '') {
-              handleAddNewTag(target.value.trim());
-              e.preventDefault();
-            }
-          }}
           styles={customStyles}
         />
       </div>
