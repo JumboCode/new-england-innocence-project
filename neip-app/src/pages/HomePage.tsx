@@ -189,7 +189,7 @@ const dataSource = [
     lastUpdated: "09/30/2021",
     createdAt: "05/01/2014",
   },
-];  
+];
 
 // Table columns configuration
 const columns = [
@@ -202,175 +202,206 @@ const columns = [
   { title: "Email", dataIndex: "email", key: "email" },
   { title: "Case Number", dataIndex: "caseNumber", key: "caseNumber" },
   { title: "Crime Type", dataIndex: "crimeType", key: "crimeType" },
+  { title: "Gender", dataIndex: "gender", key: "gender" },
+  { title: "Jurisdiction", dataIndex: "jurisdiction", key: "jurisdiction" },
+  { title: "Years In Prison", dataIndex: "yearsInPrison", key: "yearsInPrison" },
+  { title: "Arrest Date", dataIndex: "arrestDate", key: "arrestDate" },
+  { title: "Conviction Date", dataIndex: "convictionDate", key: "convictionDate" },
+  { title: "Freedom Date", dataIndex: "freedomDate", key: "freedomDate" },
+  { title: "Exoneration Date", dataIndex: "exonerationDate", key: "exonerationDate" },
+  { title: "Sentence", dataIndex: "sentence", key: "sentence" },
+  { title: "Original Charges", dataIndex: "originalCharges", key: "originalCharges" },
+  { title: "Conviction Method", dataIndex: "convictionMethod", key: "convictionMethod" },
+  { title: "Exoneration Method", dataIndex: "exonerationMethod", key: "exonerationMethod" },
+  { title: "Legal Representation", dataIndex: "legalRepresentation", key: "legalRepresentation" },
+  { title: "Prosecutor", dataIndex: "prosecutor", key: "prosecutor" },
+  { title: "Detectives Involved", dataIndex: "detectivesInvolved", key: "detectivesInvolved" },
+  { title: "False Confession", dataIndex: "falseConfession", key: "falseConfession" },
+  { title: "Eyewitness Misidentification", dataIndex: "eyewitnessMisidentification", key: "eyewitnessMisidentification" },
+  { title: "Inadequate Legal Defense", dataIndex: "inadequateLegalDefense", key: "inadequateLegalDefense" },
+  { title: "Police Prosecutorial Misconduct", dataIndex: "policeProsecutorialMisconduct", key: "policeProsecutorialMisconduct" },
+  { title: "Forensic Evidence", dataIndex: "forensicEvidence", key: "forensicEvidence" },
+  { title: "Informant Testimony", dataIndex: "informantTestimony", key: "informantTestimony" },
+  { title: "Compensation", dataIndex: "compensation", key: "compensation" },
+  { title: "Reentry Support", dataIndex: "reentrySupport", key: "reentrySupport" },
+  { title: "Public Apology", dataIndex: "publicApology", key: "publicApology" },
+  { title: "Current Status", dataIndex: "currentStatus", key: "currentStatus" },
+  { title: "Media Coverage", dataIndex: "mediaCoverage", key: "mediaCoverage" },
+  { title: "Advocacy Involvement", dataIndex: "advocacyInvolvement", key: "advocacyInvolvement" },
+  { title: "Educational Background", dataIndex: "educationalBackground", key: "educationalBackground" },
+  { title: "Health Info", dataIndex: "healthInfo", key: "healthInfo" },
+  { title: "Data Source", dataIndex: "dataSource", key: "dataSource" },
+  { title: "Last Updated", dataIndex: "lastUpdated", key: "lastUpdated" },
+  { title: "Created At", dataIndex: "createdAt", key: "createdAt" }
 ];
 
 const HomePage: React.FC = () => {
-    const [modalOpen, setModalOpen] = useState(false);
-    const [columnsModalOpen, setColumnsModalOpen] = useState(false);
-    
-    // Initialize selectedColumns with all column keys
-    const [selectedColumns, setSelectedColumns] = useState<string[]>(
-      columns.map(col => col.key)
-    );
-  
-    const handleOpenModal = () => setModalOpen(true);
-    const handleCloseModal = () => setModalOpen(false);
-    
-    const handleColumnsModalOpen = () => setColumnsModalOpen(true);
-    const handleColumnsModalClose = () => setColumnsModalOpen(false);
-  
-    const handleColumnSelectionChange = (newSelectedColumns: string[]) => {
-      setSelectedColumns(newSelectedColumns);
-    };
-  
-    const [actionMenuVisible, setActionMenuVisible] = useState(false);
-    const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 });
-    const [selectedCell, setSelectedCell] = useState<{ record: any; columnKey: string } | null>(null);
-  
-    const filteredColumns = columns.filter((column) =>
-      selectedColumns.includes(column.key)
-    ).map(column => ({
-      ...column,
-      onCell: (record, rowIndex) => ({
-        onClick: (event) => handleCellClick(event, record, column.key),
-      }),
-    }));
-  
-    const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement>, record: any, columnKey: string) => {
-      event.stopPropagation();
-      
-      const cellElement = event.currentTarget as HTMLTableCellElement;
-      const boundingRect = cellElement.getBoundingClientRect();
-      
-      if (selectedCell && 
-          (selectedCell.record !== record || selectedCell.columnKey !== columnKey)) {
-        setActionMenuVisible(false);
-        setTimeout(() => {
-          setActionMenuPosition({ x: boundingRect.left, y: boundingRect.top });
-          setSelectedCell({ record, columnKey });
-          setActionMenuVisible(true);
-        }, 50);
-      } else {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [columnsModalOpen, setColumnsModalOpen] = useState(false);
+
+  // Initialize selectedColumns with all column keys
+  const [selectedColumns, setSelectedColumns] = useState<string[]>(
+    columns.map(col => col.key)
+  );
+
+  const handleOpenModal = () => setModalOpen(true);
+  const handleCloseModal = () => setModalOpen(false);
+
+  const handleColumnsModalOpen = () => setColumnsModalOpen(true);
+  const handleColumnsModalClose = () => setColumnsModalOpen(false);
+
+  const handleColumnSelectionChange = (newSelectedColumns: string[]) => {
+    setSelectedColumns(newSelectedColumns);
+  };
+
+  const [actionMenuVisible, setActionMenuVisible] = useState(false);
+  const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 });
+  const [selectedCell, setSelectedCell] = useState<{ record: any; columnKey: string } | null>(null);
+
+  const filteredColumns = columns.filter((column) =>
+    selectedColumns.includes(column.key)
+  ).map(column => ({
+    ...column,
+    onCell: (record, rowIndex) => ({
+      onClick: (event) => handleCellClick(event, record, column.key),
+    }),
+  }));
+
+  const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement>, record: any, columnKey: string) => {
+    event.stopPropagation();
+
+    const cellElement = event.currentTarget as HTMLTableCellElement;
+    const boundingRect = cellElement.getBoundingClientRect();
+
+    if (selectedCell &&
+      (selectedCell.record !== record || selectedCell.columnKey !== columnKey)) {
+      setActionMenuVisible(false);
+      setTimeout(() => {
         setActionMenuPosition({ x: boundingRect.left, y: boundingRect.top });
         setSelectedCell({ record, columnKey });
         setActionMenuVisible(true);
-      }
-    };
-  
-    const closeActionMenu = () => {
-      setActionMenuVisible(false);
-      setSelectedCell(null);
-    };
-  
-    return (
-      <div style={{ height: '100vh', backgroundColor: 'white' }}>
-        {/* Top Banner */}
-        <div style={{ backgroundColor: '#033550', color: 'white', display: 'flex', alignItems: 'center', width: 'auto', height: '56px' }}>
-          <img src="/caseview_logo2.png" alt="Logo" style={{ height: '35px', width: 'auto', marginLeft: '17px', backgroundColor: 'white' }} />
-        </div>
-  
-        {/* Open Filter Sidebar Button - Top Right */}
-        <div style={{ textAlign: 'center', display: 'flex', justifyContent: 'flex-end' }}>
-          <button style={{
-            backgroundColor: '#0F6A9A',
-            color: 'white',
-            padding: '16px 24px',
-            border: 'none',
-            cursor: 'pointer',
-            marginLeft: '1279px',
-            display: 'flex',
-            alignItems: 'center',
-            fontSize: '11px',
-          }}>
-            Open filter sidebar
-            <Image src={ArrowIcon} alt="arrow icon" style={{ marginLeft: '12px' }} height="5.21" width="10.42" />
-          </button>
-        </div>
-  
-        {/* Main Content */}
-        <div style={{ padding: '20px' }}>
-          {/* "Home Database" Heading */}
-          <h1 style={{ color: '#101828', fontWeight: 'bold', fontSize: '30px', marginTop: '-25px', marginLeft: '15px' }}>Home Database</h1>
-  
-          {/* Search Bar and Action Buttons Container */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '17px' }}>
-            {/* Search Bar */}
-            <div style={{ flex: 1, maxWidth: '300px', marginLeft: '15px' }}>
-              <SearchEntryBox />
-            </div>
-  
-            {/* Action Buttons */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '16px', marginRight: '15px' }}>
-              <Button
-                onClick={handleColumnsModalOpen}
-                variant="outlined"
-                sx={{ height: '44px' }}
-              >
-                Manage columns
-              </Button>
-              <IconTextButton
-                icon={<Image src={TrashIcon} alt="trash icon" width="20" height="20" />}
-                filled={false}
-                text="Delete"
-                border={false}
-                height="44px"
-                width="104px"
-              />
-              <IconTextButton
-                icon={<Image src={UploadIcon} alt="upload icon" width="24" height="24" />}
-                filled={false}
-                text="Export to CSV"
-                border={true}
-                height="44px"
-                width="159px"
-              />
-              <IconTextButton
-                onClick={handleOpenModal}
-                icon={<Image src={PlusIcon} alt="plus icon" width="14" height="14" />}
-                filled={true}
-                text="Add new exoneree file"
-                border={false}
-                height="44px"
-                width="209px"
-              />
-            </div>
+      }, 50);
+    } else {
+      setActionMenuPosition({ x: boundingRect.left, y: boundingRect.top });
+      setSelectedCell({ record, columnKey });
+      setActionMenuVisible(true);
+    }
+  };
+
+  const closeActionMenu = () => {
+    setActionMenuVisible(false);
+    setSelectedCell(null);
+  };
+
+  return (
+    <div style={{ height: '100vh', backgroundColor: 'white' }}>
+      {/* Top Banner */}
+      <div style={{ backgroundColor: '#033550', color: 'white', display: 'flex', alignItems: 'center', width: 'auto', height: '56px' }}>
+        <img src="/caseview_logo2.png" alt="Logo" style={{ height: '35px', width: 'auto', marginLeft: '17px', backgroundColor: 'white' }} />
+      </div>
+
+      {/* Open Filter Sidebar Button - Top Right */}
+      <div style={{ textAlign: 'center', display: 'flex', justifyContent: 'flex-end' }}>
+        <button style={{
+          backgroundColor: '#0F6A9A',
+          color: 'white',
+          padding: '16px 24px',
+          border: 'none',
+          cursor: 'pointer',
+          marginLeft: '1279px',
+          display: 'flex',
+          alignItems: 'center',
+          fontSize: '11px',
+        }}>
+          Open filter sidebar
+          <Image src={ArrowIcon} alt="arrow icon" style={{ marginLeft: '12px' }} height="5.21" width="10.42" />
+        </button>
+      </div>
+
+      {/* Main Content */}
+      <div style={{ padding: '20px' }}>
+        {/* "Home Database" Heading */}
+        <h1 style={{ color: '#101828', fontWeight: 'bold', fontSize: '30px', marginTop: '-25px', marginLeft: '15px' }}>Home Database</h1>
+
+        {/* Search Bar and Action Buttons Container */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '17px' }}>
+          {/* Search Bar */}
+          <div style={{ flex: 1, maxWidth: '300px', marginLeft: '15px' }}>
+            <SearchEntryBox />
           </div>
-  
-          {/* Database Display */}
-          <div style={{ height: '60vh', backgroundColor: 'white' }}>
-            <Table 
-              dataSource={dataSource} 
-              columns={filteredColumns} 
-              scroll={{ x: 'max-content' }} 
+
+          {/* Action Buttons */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '16px', marginRight: '15px' }}>
+            <Button
+              onClick={handleColumnsModalOpen}
+              variant="outlined"
+              sx={{ height: '44px' }}
+            >
+              Manage columns
+            </Button>
+            <IconTextButton
+              icon={<Image src={TrashIcon} alt="trash icon" width="20" height="20" />}
+              filled={false}
+              text="Delete"
+              border={false}
+              height="44px"
+              width="104px"
+            />
+            <IconTextButton
+              icon={<Image src={UploadIcon} alt="upload icon" width="24" height="24" />}
+              filled={false}
+              text="Export to CSV"
+              border={true}
+              height="44px"
+              width="159px"
+            />
+            <IconTextButton
+              onClick={handleOpenModal}
+              icon={<Image src={PlusIcon} alt="plus icon" width="14" height="14" />}
+              filled={true}
+              text="Add new exoneree file"
+              border={false}
+              height="44px"
+              width="209px"
             />
           </div>
         </div>
-  
-        {/* Modals */}
-        <AddExonereeModal open={modalOpen} handleClose={handleCloseModal} />
-        <SelectColumnsModal
-          open={columnsModalOpen}
-          handleClose={handleColumnsModalClose}
-          columns={columns}
-          selectedColumns={selectedColumns}
-          onColumnSelectionChange={handleColumnSelectionChange}
-        />
-  
-        {/* Action Menu */}
-        {actionMenuVisible && (
-          <div
-            style={{
-              position: "absolute",
-              top: actionMenuPosition.y,
-              left: actionMenuPosition.x,
-              zIndex: 1000,
-            }}
-          >
-            <ActionMenuComponent onClose={closeActionMenu} />
-          </div>
-        )}
+
+        {/* Database Display */}
+        <div style={{ height: '60vh', backgroundColor: 'white' }}>
+          <Table
+            dataSource={dataSource}
+            columns={filteredColumns}
+            scroll={{ x: 'max-content' }}
+          />
+        </div>
       </div>
-    );
-  };
-  
-  export default HomePage;
+
+      {/* Modals */}
+      <AddExonereeModal open={modalOpen} handleClose={handleCloseModal} />
+      <SelectColumnsModal
+        open={columnsModalOpen}
+        handleClose={handleColumnsModalClose}
+        columns={columns}
+        selectedColumns={selectedColumns}
+        onColumnSelectionChange={handleColumnSelectionChange}
+      />
+
+      {/* Action Menu */}
+      {actionMenuVisible && (
+        <div
+          style={{
+            position: "absolute",
+            top: actionMenuPosition.y,
+            left: actionMenuPosition.x,
+            zIndex: 1000,
+          }}
+        >
+          <ActionMenuComponent onClose={closeActionMenu} />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default HomePage;

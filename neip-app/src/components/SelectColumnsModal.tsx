@@ -97,7 +97,10 @@ const SelectColumnsModal: React.FC<SelectColumnsModalProps> = ({
           }}
         />
 
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        <Box sx={{
+          display: "flex", flexDirection: "column", gap: 1, maxHeight: "300px",
+          overflowY: "auto",
+        }}>
           {columns.map((column) => (
             <FormControlLabel
               key={column.key}
