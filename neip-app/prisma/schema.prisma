@@ -47,8 +47,8 @@ model CaseInfo {
   exonerationDate DateTime
   crimeType       String
   sentence        String
-  state           String
   country         String
+  state           String
   exoneree        Exoneree?
 }
 
@@ -80,9 +80,9 @@ model PostExonerationInfo {
   publicApology      Boolean
   compensationAmount Int
   compensationDate   DateTime
-  occupation         String
-  currentState       String
   currentCountry     String
+  currentState       String
+  occupation         String
   exoneree           Exoneree?
 }
 

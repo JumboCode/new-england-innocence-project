@@ -5,15 +5,15 @@ curl -X POST http://localhost:3000/api/exonerees/addExoneree \
       "name": "John Doe",
       "dateOfBirth": "1980-01-01T00:00:00.000Z",
       "gender": "M",
-      "race": "Caucasian",
+      "race": "Black",
       "ethnicity": "Non-Hispanic",
       "phoneNumber": "123-456-7890",
       "address": "123 Main St, Anytown, USA",
-      "email": "johndoe@example.com"
+      "email": "brody@example.com"
     },
     "caseInfo": {
-      "caseNumber": "A123456",
-      "jurisdictionId": 1,
+      "caseNumber": "A5940930",
+      "jurisdictionId": 2,
       "yearsInPrison": 10,
       "arrestDate": "2005-01-01T00:00:00.000Z",
       "convictionDate": "2006-01-01T00:00:00.000Z",
