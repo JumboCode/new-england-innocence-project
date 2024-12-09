@@ -13,7 +13,7 @@ import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai';
 import { MdFilterList } from 'react-icons/md';
 import ActionMenuComponent from "@/components/ActionMenuComponent";
 import SelectColumnsModal from "@/components/SelectColumnsModal";
-import { Button } from "@mui/material";
+// import { Button } from "@mui/material";
 import TableFilterIcons from "@/components/TableFilterIcons";
 import OpenFilterSidebar from "../components/OpenFilterSidebar";
 
@@ -284,8 +284,8 @@ const HomePage: React.FC = () => {
     selectedColumns.includes(column.key)
   ).map(column => ({
     ...column,
-    onCell: (record, rowIndex) => ({
-      onClick: (event) => handleCellClick(event, record, column.key),
+    onCell: (record: any) => ({
+      onClick: (event: any) => handleCellClick(event, record, column.key),
     }),
   }));
 
@@ -376,7 +376,7 @@ const noop: () => void = () => {};
                 <IconTextButton
                         icon={<Image src={TrashIcon} alt="trash icon" width="20" height="20"></Image>}
                         filled={false}
-                        text="Delete KEEP"
+                        text="Delete"
                         border={false}
                         height="44px"
                         width="104px"
@@ -433,7 +433,7 @@ const noop: () => void = () => {};
                   <TableFilterIcons
                     icon={<MdFilterList style={{ width: '16px', height: '16px', color: 'black' }} />}
                     filled={false}
-                    text="Manage Columns REAL"
+                    text="Manage Columns"
                     border={true}
                     borderRadius={true}
                     height="35px"
