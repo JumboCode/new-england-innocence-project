@@ -326,11 +326,11 @@ const openFilterSidebar = () => {
 const noop: () => void = () => {};
 
   return (
-    <div style={{ height: '100vh', backgroundColor: 'white', marginLeft: '60px' }}>
+    <div style={{ height: '100vh', backgroundColor: 'white', width: '100vw', paddingLeft: '60px'}}>
 
         {/* Top Banner */}
-        <div style={{ backgroundColor: '#033550', color: 'white', display: 'flex', alignItems: 'center', width: 'auto', height: '56px' }}>
-            <img src="/caseview_logo2.png" alt="Logo" style={{ height: '35px', width: 'auto', marginLeft: '17px', backgroundColor: 'white' }} />
+        <div style={{ backgroundColor: '#033550', color: 'white', display: 'flex', alignItems: 'center', height: '56px' }}>
+            <img src="/caseview_logo2.png" alt="Logo" style={{ height: '35px', marginLeft: '17px', backgroundColor: 'white' }} />
         </div>
 
         {/* Render the OpenFiterSideBar if it's visible*/}
@@ -460,7 +460,7 @@ const noop: () => void = () => {};
                     dataSource={dataSource} 
                     columns={filteredColumns} 
                     scroll={{ x: 'max-content' }} 
-                />;
+                />
             </div>
 
     {/* Action Menu */}
