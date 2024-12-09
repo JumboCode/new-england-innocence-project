@@ -12,6 +12,8 @@ import { FaFilter } from 'react-icons/fa';
 import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai';
 import { MdFilterList } from 'react-icons/md';
 import ActionMenuComponent from "@/components/ActionMenuComponent";
+import SelectColumnsModal from "@/components/SelectColumnsModal";
+// import { Button } from "@mui/material";
 import TableFilterIcons from "@/components/TableFilterIcons";
 import OpenFilterSidebar from "../components/OpenFilterSidebar";
 
@@ -205,7 +207,7 @@ const dataSource = [
     lastUpdated: "09/30/2021",
     createdAt: "05/01/2014",
   },
-];  
+];
 
 // Table columns configuration
 const columns = [
@@ -218,24 +220,57 @@ const columns = [
   { title: "Email", dataIndex: "email", key: "email" },
   { title: "Case Number", dataIndex: "caseNumber", key: "caseNumber" },
   { title: "Crime Type", dataIndex: "crimeType", key: "crimeType" },
+  { title: "Gender", dataIndex: "gender", key: "gender" },
+  { title: "Jurisdiction", dataIndex: "jurisdiction", key: "jurisdiction" },
+  { title: "Years In Prison", dataIndex: "yearsInPrison", key: "yearsInPrison" },
+  { title: "Arrest Date", dataIndex: "arrestDate", key: "arrestDate" },
+  { title: "Conviction Date", dataIndex: "convictionDate", key: "convictionDate" },
+  { title: "Freedom Date", dataIndex: "freedomDate", key: "freedomDate" },
+  { title: "Exoneration Date", dataIndex: "exonerationDate", key: "exonerationDate" },
+  { title: "Sentence", dataIndex: "sentence", key: "sentence" },
+  { title: "Original Charges", dataIndex: "originalCharges", key: "originalCharges" },
+  { title: "Conviction Method", dataIndex: "convictionMethod", key: "convictionMethod" },
+  { title: "Exoneration Method", dataIndex: "exonerationMethod", key: "exonerationMethod" },
+  { title: "Legal Representation", dataIndex: "legalRepresentation", key: "legalRepresentation" },
+  { title: "Prosecutor", dataIndex: "prosecutor", key: "prosecutor" },
+  { title: "Detectives Involved", dataIndex: "detectivesInvolved", key: "detectivesInvolved" },
+  { title: "False Confession", dataIndex: "falseConfession", key: "falseConfession" },
+  { title: "Eyewitness Misidentification", dataIndex: "eyewitnessMisidentification", key: "eyewitnessMisidentification" },
+  { title: "Inadequate Legal Defense", dataIndex: "inadequateLegalDefense", key: "inadequateLegalDefense" },
+  { title: "Police Prosecutorial Misconduct", dataIndex: "policeProsecutorialMisconduct", key: "policeProsecutorialMisconduct" },
+  { title: "Forensic Evidence", dataIndex: "forensicEvidence", key: "forensicEvidence" },
+  { title: "Informant Testimony", dataIndex: "informantTestimony", key: "informantTestimony" },
+  { title: "Compensation", dataIndex: "compensation", key: "compensation" },
+  { title: "Reentry Support", dataIndex: "reentrySupport", key: "reentrySupport" },
+  { title: "Public Apology", dataIndex: "publicApology", key: "publicApology" },
+  { title: "Current Status", dataIndex: "currentStatus", key: "currentStatus" },
+  { title: "Media Coverage", dataIndex: "mediaCoverage", key: "mediaCoverage" },
+  { title: "Advocacy Involvement", dataIndex: "advocacyInvolvement", key: "advocacyInvolvement" },
+  { title: "Educational Background", dataIndex: "educationalBackground", key: "educationalBackground" },
+  { title: "Health Info", dataIndex: "healthInfo", key: "healthInfo" },
+  { title: "Data Source", dataIndex: "dataSource", key: "dataSource" },
+  { title: "Last Updated", dataIndex: "lastUpdated", key: "lastUpdated" },
+  { title: "Created At", dataIndex: "createdAt", key: "createdAt" }
 ];
 
 const HomePage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [columnsModalOpen, setColumnsModalOpen] = useState(false);
+
+  // Initialize selectedColumns with all column keys
+  const [selectedColumns, setSelectedColumns] = useState<string[]>(
+    columns.map(col => col.key)
+  );
+
   const handleOpenModal = () => setModalOpen(true);
   const handleCloseModal = () => setModalOpen(false);
 
-  const [selectedColumns] = useState([
-    "name",
-    "dob",
-    "race",
-    "ethnicity",
-    "phoneNumber",
-    "address",
-    "email",
-    "caseNumber",
-    "crimeType",
-  ]);
+  const handleColumnsModalOpen = () => setColumnsModalOpen(true);
+  const handleColumnsModalClose = () => setColumnsModalOpen(false);
+
+  const handleColumnSelectionChange = (newSelectedColumns: string[]) => {
+    setSelectedColumns(newSelectedColumns);
+  };
 
   const [selectedFilters] = useState(['Detective', 'Male', 'Test']);
 
@@ -246,39 +281,39 @@ const HomePage: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const filteredColumns = columns.filter((column) =>
-  selectedColumns.includes(column.key)
-).map(column => ({
-  ...column,
-  onCell: (record: any) => ({
-    onClick: (event: any) => handleCellClick(event, record, column.key),
-  }),
-}));
+    selectedColumns.includes(column.key)
+  ).map(column => ({
+    ...column,
+    onCell: (record: any) => ({
+      onClick: (event: any) => handleCellClick(event, record, column.key),
+    }),
+  }));
 
-const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement>, record: TableRowData, columnKey: string) => {
-  event.stopPropagation();
-  
-  const cellElement = event.currentTarget as HTMLTableCellElement;
-  const boundingRect = cellElement.getBoundingClientRect();
-  
-  if (selectedCell && 
+  const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement>, record: any, columnKey: string) => {
+    event.stopPropagation();
+
+    const cellElement = event.currentTarget as HTMLTableCellElement;
+    const boundingRect = cellElement.getBoundingClientRect();
+
+    if (selectedCell &&
       (selectedCell.record !== record || selectedCell.columnKey !== columnKey)) {
-    setActionMenuVisible(false);
-    setTimeout(() => {
+      setActionMenuVisible(false);
+      setTimeout(() => {
+        setActionMenuPosition({ x: boundingRect.left, y: boundingRect.top });
+        setSelectedCell({ record, columnKey });
+        setActionMenuVisible(true);
+      }, 50);
+    } else {
       setActionMenuPosition({ x: boundingRect.left, y: boundingRect.top });
       setSelectedCell({ record, columnKey });
       setActionMenuVisible(true);
-    }, 50);
-  } else {
-    setActionMenuPosition({ x: boundingRect.left, y: boundingRect.top });
-    setSelectedCell({ record, columnKey });
-    setActionMenuVisible(true);
-  }
-};
+    }
+  };
 
-const closeActionMenu = () => {
-  setActionMenuVisible(false);
-  setSelectedCell(null);
-};
+  const closeActionMenu = () => {
+    setActionMenuVisible(false);
+    setSelectedCell(null);
+  };
 
 const closeFilterSidebar = () => {
   setIsSidebarOpen(false);
@@ -363,7 +398,6 @@ const noop: () => void = () => {};
                         height="44px"
                         width="209px"
                     />
-                    <AddExonereeModal open={modalOpen} handleClose={handleCloseModal}/>
                 </div>
             </div>
 
@@ -404,7 +438,7 @@ const noop: () => void = () => {};
                     borderRadius={true}
                     height="35px"
                     width="185px"
-                    onOpenFilter={noop}
+                    onOpenFilter={handleColumnsModalOpen}
                     />
                 </div>
             </div>
@@ -428,7 +462,6 @@ const noop: () => void = () => {};
                     scroll={{ x: 'max-content' }} 
                 />;
             </div>
-        </div>
 
     {/* Action Menu */}
     {actionMenuVisible && (
@@ -443,8 +476,19 @@ const noop: () => void = () => {};
         <ActionMenuComponent onClose={closeActionMenu} />
       </div>
     )}
-  </div>
-);
+    </div>  
+
+      {/* Modals */}
+      <AddExonereeModal open={modalOpen} handleClose={handleCloseModal} />
+      <SelectColumnsModal
+        open={columnsModalOpen}
+        handleClose={handleColumnsModalClose}
+        columns={columns}
+        selectedColumns={selectedColumns}
+        onColumnSelectionChange={handleColumnSelectionChange}
+      />
+    </div>
+  );
 };
 
 export default HomePage;

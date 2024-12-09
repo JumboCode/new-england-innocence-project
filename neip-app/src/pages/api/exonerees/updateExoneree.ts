@@ -121,12 +121,12 @@ export default async function handler (
         legalInfo: true,
         wrongfulConvictionInfo: true,
         postExonerationInfo: true,
-        metaData: true
-      }
-    })
+        metaData: true,
+      },
+    });
 
     if (!existingExoneree) {
-      return res.status(404).json({ error: 'Exoneree not found' })
+      return res.status(404).json({ error: 'Exoneree not found' });
     }
 
     const updatedExoneree = await prisma.exoneree.update({
@@ -135,32 +135,24 @@ export default async function handler (
         personalInfo: updatedData.personalInfo
           ? { update: updatedData.personalInfo }
           : undefined,
-        caseInfo: updatedData.caseInfo
-          ? { update: updatedData.caseInfo }
-          : undefined,
-        legalInfo: updatedData.legalInfo
-          ? { update: updatedData.legalInfo }
-          : undefined,
+        caseInfo: updatedData.caseInfo ? { update: updatedData.caseInfo } : undefined,
+        legalInfo: updatedData.legalInfo ? { update: updatedData.legalInfo } : undefined,
         wrongfulConvictionInfo: updatedData.wrongfulConvictionInfo
           ? { update: updatedData.wrongfulConvictionInfo }
           : undefined,
         postExonerationInfo: updatedData.postExonerationInfo
           ? { update: updatedData.postExonerationInfo }
           : undefined,
-        metaData: updatedData.metaData
-          ? { update: updatedData.metaData }
-          : undefined
-      }
-    })
+        metaData: updatedData.metaData ? { update: updatedData.metaData } : undefined,
+      },
+    });
 
-    return res
-      .status(200)
-      .json({ message: 'Exoneree updated successfully', data: updatedExoneree })
+    return res.status(200).json({ message: 'Exoneree updated successfully', data: updatedExoneree });
   } catch (error: any) {
-    console.error('Error updating exoneree:', error)
+    console.error('Error updating exoneree:', error);
     if (error.code === 'P2025') {
-      return res.status(404).json({ error: 'Exoneree not found' })
+      return res.status(404).json({ error: 'Exoneree not found' });
     }
-    return res.status(500).json({ error: 'Internal server error' })
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }

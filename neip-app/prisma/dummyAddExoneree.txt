@@ -1,4 +1,4 @@
-curl -X POST http://localhost:3000/api/exonerees/addExoneree \
+curl -X POST http://localhost:3000/api/exonerees/updateExoneree \
    -H "Content-Type: application/json" \
    -d '{
     "personalInfo": {
