@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-interface LabelAndEntryProps {
+interface LabelAndDropdownProps {
    label: string;
    placeholder: string;
    width?: string;
@@ -9,7 +9,7 @@ interface LabelAndEntryProps {
    borderRadius?: string;
 }
 
-const LabelAndEntry: React.FC<LabelAndEntryProps> = ({label, placeholder, width, height, borderRadius}) => {
+const LabelAndDropdown: React.FC<LabelAndDropdownProps> = ({label, placeholder, width, height, borderRadius}) => {
     const containerStyle: React.CSSProperties = {
         display: 'flex',
         flexDirection: 'column',
@@ -52,4 +52,4 @@ const LabelAndEntry: React.FC<LabelAndEntryProps> = ({label, placeholder, width,
     )
 };
 
-export default LabelAndEntry;
+export default LabelAndDropdown;

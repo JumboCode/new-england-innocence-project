@@ -23,8 +23,9 @@ const LabelAndEntry: React.FC<LabelAndEntryProps> = ({label, dropdownOptions, pl
     //     padding: '2px',
     // };
 
-    const selectStyle: React.CSSProperties = {
-        control: (provided: any) => ({
+    const selectStyle = {
+      control: (base: any) => ({
+        ...base,
         display: 'flex',
         color: 'black',
         fontSize: '13px',
@@ -35,12 +36,12 @@ const LabelAndEntry: React.FC<LabelAndEntryProps> = ({label, dropdownOptions, pl
         width: width,
         height: "45px",
         appearance: "none",
-        }),
-
-        indicatorSeparator: () => ({
-             display: 'none', //hide the separator between the arrow
-        })
+      }),
+      indicatorSeparator: () => ({
+        display: 'none', // Hides the separator between the arrow and the value
+      }),
     };
+    
 
     // const labelStyle: React.CSSProperties = {
     //     color: '#667085',
@@ -54,7 +55,7 @@ const LabelAndEntry: React.FC<LabelAndEntryProps> = ({label, dropdownOptions, pl
     //     fontFamily: 'Inter, sans-serif',
     // };
  
-    const DropdownIndicator = (props: any) => (
+    const DropdownIndicator = () => (
     <Image src={DropDown} alt="dropdown icon" height={12} width={12} />
   );
 

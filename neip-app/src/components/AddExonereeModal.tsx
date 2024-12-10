@@ -60,96 +60,137 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
     switch (activeTab) {
       case 0:
         const personalLeftIcons = [
-          <Image src={PersonalInfoIcon} alt="personal info icon" height="5.21" width="10.42"></Image>,
-          <Image src={EditIcon} alt="edit icon" style={{ marginLeft: '200px' }} height="5.21" width="10.42"></Image>,
-          <LabelAndEntry
-          label={"First Name"}
-          placeholder={""}
-          width="40%"
-          height='35px'
-          borderRadius='20px'
-        />,
-        <LabelAndEntry
-          label={"Last Name"}
-          placeholder={""}
-          width="40%"
-          height='35px'
-          borderRadius='20px'
-        />,
-        <LabelAndEntry
-          label={"Phone Number"}
-          placeholder={""}
-          width="40%"
-          height='35px'
-          borderRadius='20px'
-        />,
-        <LabelAndEntry
-          label={"Email"}
-          placeholder={""}
-          width="40%"
-          height='35px'
-          borderRadius='20px'
-        />,
+          <React.Fragment key="personal-info-icon">
+            <Image src={PersonalInfoIcon} alt="personal info icon" height="5.21" width="10.42" />
+          </React.Fragment>,
+          <React.Fragment key="edit-icon">
+            <Image src={EditIcon} alt="edit icon" style={{ marginLeft: '200px' }} height="5.21" width="10.42" />
+          </React.Fragment>,
+          <React.Fragment key="first-name-entry">
+            <LabelAndEntry
+              label={"First Name"}
+              placeholder={""}
+              width="40%"
+              height="35px"
+              borderRadius="20px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="last-name-entry">
+            <LabelAndEntry
+              label={"Last Name"}
+              placeholder={""}
+              width="40%"
+              height="35px"
+              borderRadius="20px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="phone-number-entry">
+            <LabelAndEntry
+              label={"Phone Number"}
+              placeholder={""}
+              width="40%"
+              height="35px"
+              borderRadius="20px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="email-entry">
+            <LabelAndEntry
+              label={"Email"}
+              placeholder={""}
+              width="40%"
+              height="35px"
+              borderRadius="20px"
+            />
+          </React.Fragment>,
         ];
+        
 
         const personalRightIcons = [
-          <LabelAndEntry
-          label={"DOB"}
-          placeholder={"xx/xx/xxx"}
-          width="48%"
-          height='36px'
-          borderRadius='10px'
-          />,
-          <LabelAndDropdown
-          key="gender"
-          label = {"Gender"}
-          dropdownOptions={["Male", "Female"]}
-          placeholder = {"Gender"}
-          width = "210px"
-          />,
-          <LabelAndDropdown
-          key="race"
-          label = {"Race"}
-          dropdownOptions={["White", "Black", "Asian", "Hispanic or Latino", "American Indian or Alaska Native", "Native Hawaiian or Pacific Islander"]}
-          placeholder = {"Race"}
-          width = "210px"
-          />,
-          <LabelAndDropdown
-          key="ethnicity"
-          label = {"Ethnicity"}
-          dropdownOptions={["American Indian/Alaska Native", "Asian", "Black", "Hispanic or Latino", "Middle Eastern or North African", "White/European"]}
-          placeholder = {"Ethnicity"}
-          width = "210px"
-          />,
-          <LabelAndEntry
-          label={"Address"}
-          placeholder={"Address"}
-          width="48%"
-          height="72px"
-          borderRadius='10px'
-          />,
-          <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
-            <IconTextButton
-            filled={true}
-            text="Save"
-            border={false}
-            height="44px"
-            width="104px"
+          <React.Fragment key="dob-entry">
+            <LabelAndEntry
+              label={"DOB"}
+              placeholder={"xx/xx/xxxx"}
+              width="48%"
+              height="36px"
+              borderRadius="10px"
             />
-          </div>,
+          </React.Fragment>,
+          <React.Fragment key="gender-dropdown">
+            <LabelAndDropdown
+              label={"Gender"}
+              dropdownOptions={["Male", "Female"]}
+              placeholder={"Gender"}
+              width="210px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="race-dropdown">
+            <LabelAndDropdown
+              label={"Race"}
+              dropdownOptions={[
+                "White",
+                "Black",
+                "Asian",
+                "Hispanic or Latino",
+                "American Indian or Alaska Native",
+                "Native Hawaiian or Pacific Islander",
+              ]}
+              placeholder={"Race"}
+              width="210px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="ethnicity-dropdown">
+            <LabelAndDropdown
+              label={"Ethnicity"}
+              dropdownOptions={[
+                "American Indian/Alaska Native",
+                "Asian",
+                "Black",
+                "Hispanic or Latino",
+                "Middle Eastern or North African",
+                "White/European",
+              ]}
+              placeholder={"Ethnicity"}
+              width="210px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="address-entry">
+            <LabelAndEntry
+              label={"Address"}
+              placeholder={"Address"}
+              width="48%"
+              height="72px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="save-button">
+            <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
+              <IconTextButton
+                filled={true}
+                text="Save"
+                border={false}
+                height="44px"
+                width="104px"
+              />
+            </div>
+          </React.Fragment>,
         ];
+        
         return <div>
                 <div style={{display: 'flex', marginTop: '50px', marginRight: '10px', marginLeft: '100px'}}>
                   {/* Left Column */}
                   <div style={{ flex: 1, marginRight: 'auto', marginLeft: '90px' }}>
-                    {personalLeftIcons.map((icon) => (
-                      <div style={{ marginBottom: "3px" }}>{icon}</div>
+                    {personalLeftIcons.map((icon, index) => (
+                      <div key={index} style={{ marginBottom: "3px" }}>
+                        {icon}
+                      </div>
                     ))}
                   </div>
                   {/* Right Column */}
                   <div style={{ flex: 1, marginLeft: "10px" }}>
-                    {personalRightIcons.map((icon) => (
-                      <div style={{ marginBottom: "3px" }}>{icon}</div>
+                    {personalRightIcons.map((icon, index) => (
+                      <div key={index} style={{ marginBottom: "3px" }}>
+                        {icon}
+                      </div>
                     ))}
                   </div>
                   
@@ -157,95 +198,119 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
                </div>;
       case 1:
         const caseLeftIcons = [
-          <LabelAndEntry
-          label={"Case Number"}
-          placeholder={"XXXXXXXXXXXX"}
-          width="60%"
-          height='35px'
-          borderRadius='10px'
-        />,
-        <LabelAndEntry
-          label={"Jurisdiction"}
-          placeholder={"City, State"}
-          width="60%"
-          height='35px'
-          borderRadius= '10px'
-        />,
-        <LabelAndEntry
-          label={"Years in Prison"}
-          placeholder={" X years"}
-          width="60%"
-          height='35px'
-          borderRadius='10px'
-        />,
-        <LabelAndEntry
-          label={"Arrest Date"}
-          placeholder={"XX/XX/XXX"}
-          width="60%"
-          height='35px'
-          borderRadius='10px'
-        />,
-        <LabelAndEntry
-        label={"Conviction Date"}
-        placeholder={"XX/XX/XXX"}
-        width="60%"
-        height='35px'
-        borderRadius='10px'
-      />,
+          <React.Fragment key="case-number">
+            <LabelAndEntry
+              label={"Case Number"}
+              placeholder={"XXXXXXXXXXXX"}
+              width="60%"
+              height="35px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="jurisdiction">
+            <LabelAndEntry
+              label={"Jurisdiction"}
+              placeholder={"City, State"}
+              width="60%"
+              height="35px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="years-in-prison">
+            <LabelAndEntry
+              label={"Years in Prison"}
+              placeholder={"X years"}
+              width="60%"
+              height="35px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="arrest-date">
+            <LabelAndEntry
+              label={"Arrest Date"}
+              placeholder={"XX/XX/XXX"}
+              width="60%"
+              height="35px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="conviction-date">
+            <LabelAndEntry
+              label={"Conviction Date"}
+              placeholder={"XX/XX/XXX"}
+              width="60%"
+              height="35px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
         ];
+        
 
         const caseRightIcons = [
-          <LabelAndEntry
-          label={"Freedom Date"}
-          placeholder={"XX/XX/XXX"}
-          width="60%"
-          height='36px'
-          borderRadius='10px'
-          />,
-          <LabelAndEntry
-          label={"Exoneration Date"}
-          placeholder={"XX/XX/XXX"}
-          width="60%"
-          height='36px'
-          borderRadius='10px'
-          />,
-        
-          <LabelAndDropdown
-          key="crime"
-          label = {"Crime Type"}
-          dropdownOptions={["Felony", "Misdemeanor"]}
-          placeholder = {"Crime Type"}
-          width = "265px"
-          />,
-          <LabelAndEntry
-          label={"Sentence"}
-          placeholder={"Sentence"}
-          width="60%"
-          height="36px"
-          borderRadius='10px'
-          />,
-          <div style={{ marginTop: "30px", marginLeft: "80px" }}>
-          <IconTextButton
-          filled={true}
-          text="Save"
-          border={false}
-          height="44px"
-          width="104px"
-          />
-        </div>,
+          <React.Fragment key="freedom-date">
+            <LabelAndEntry
+              label={"Freedom Date"}
+              placeholder={"XX/XX/XXX"}
+              width="60%"
+              height="36px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="exoneration-date">
+            <LabelAndEntry
+              label={"Exoneration Date"}
+              placeholder={"XX/XX/XXX"}
+              width="60%"
+              height="36px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="crime-type-dropdown">
+            <LabelAndDropdown
+              label={"Crime Type"}
+              dropdownOptions={["Felony", "Misdemeanor"]}
+              placeholder={"Crime Type"}
+              width="265px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="sentence-entry">
+            <LabelAndEntry
+              label={"Sentence"}
+              placeholder={"Sentence"}
+              width="60%"
+              height="36px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="save-button">
+            <div style={{ marginTop: "30px", marginLeft: "80px" }}>
+              <IconTextButton
+                filled={true}
+                text="Save"
+                border={false}
+                height="44px"
+                width="104px"
+              />
+            </div>
+          </React.Fragment>,
         ];
+        
         return <div>
                 <div style={{display: 'flex', marginTop: '50px', marginRight: '10px', marginLeft: '100px'}}>
                   {/* Left Column */}
                   <div style={{ flex: 1, marginRight: 'auto', marginLeft: '90px' }}>
-                    {caseLeftIcons.map((icon) => (
-                      <div style={{ marginBottom: "3px" }}>{icon}</div>
+                    {caseLeftIcons.map((icon, index) => (
+                      <div key={index} style={{ marginBottom: "3px" }}>
+                        {icon}
+                      </div>
                     ))}
                   </div>
                   {/* Right Column */}
                   <div style={{ flex: 1, marginLeft: "10px" }}>
-                    {caseRightIcons.map((icon) => (
-                      <div style={{ marginBottom: "3px" }}>{icon}</div>
+                    {caseRightIcons.map((icon, index) => (
+                      <div key={index} style={{ marginBottom: "3px" }}>
+                        {icon}
+                      </div>
                     ))}
                   </div>
                   
