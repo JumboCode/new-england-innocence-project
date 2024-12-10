@@ -16,12 +16,12 @@ const LabelAndEntry: React.FC<LabelAndEntryProps> = ({label, dropdownOptions, pl
         label: option,
     }));
 
-    const containerStyle: React.CSSProperties = {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        padding: '2px',
-    };
+    // const containerStyle: React.CSSProperties = {
+    //     display: 'flex',
+    //     flexDirection: 'column',
+    //     alignItems: 'flex-start',
+    //     padding: '2px',
+    // };
 
     const selectStyle: React.CSSProperties = {
         control: (provided: any) => ({
@@ -42,17 +42,17 @@ const LabelAndEntry: React.FC<LabelAndEntryProps> = ({label, dropdownOptions, pl
         })
     };
 
-    const labelStyle: React.CSSProperties = {
-        color: '#667085',
-        fontSize: '13px',
-        fontFamily: 'Inter, sans-serif',
-        padding: '10px 2px',
-    };
-    const placeHolderStyle: React.CSSProperties = {
-        color: '#CCDDF8',
-        fontSize: '13px',
-        fontFamily: 'Inter, sans-serif',
-    };
+    // const labelStyle: React.CSSProperties = {
+    //     color: '#667085',
+    //     fontSize: '13px',
+    //     fontFamily: 'Inter, sans-serif',
+    //     padding: '10px 2px',
+    // };
+    // const placeHolderStyle: React.CSSProperties = {
+    //     color: '#CCDDF8',
+    //     fontSize: '13px',
+    //     fontFamily: 'Inter, sans-serif',
+    // };
  
     const DropdownIndicator = (props: any) => (
     <Image src={DropDown} alt="dropdown icon" height={12} width={12} />
@@ -63,7 +63,7 @@ const LabelAndEntry: React.FC<LabelAndEntryProps> = ({label, dropdownOptions, pl
       <label style={{ color: '#667085', fontSize: '13px', fontFamily: 'Inter, sans-serif', padding: '10px 2px' }}>
         {label}
       </label>
-
+      
       {/* React Select component */}
       <Select
         options={options}

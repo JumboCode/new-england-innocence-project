@@ -101,18 +101,21 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           borderRadius='10px'
           />,
           <LabelAndDropdown
+          key="gender"
           label = {"Gender"}
           dropdownOptions={["Male", "Female"]}
           placeholder = {"Gender"}
           width = "210px"
           />,
           <LabelAndDropdown
+          key="race"
           label = {"Race"}
           dropdownOptions={["White", "Black", "Asian", "Hispanic or Latino", "American Indian or Alaska Native", "Native Hawaiian or Pacific Islander"]}
           placeholder = {"Race"}
           width = "210px"
           />,
           <LabelAndDropdown
+          key="ethnicity"
           label = {"Ethnicity"}
           dropdownOptions={["American Indian/Alaska Native", "Asian", "Black", "Hispanic or Latino", "Middle Eastern or North African", "White/European"]}
           placeholder = {"Ethnicity"}
@@ -208,6 +211,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           />,
         
           <LabelAndDropdown
+          key="crime"
           label = {"Crime Type"}
           dropdownOptions={["Felony", "Misdemeanor"]}
           placeholder = {"Crime Type"}
