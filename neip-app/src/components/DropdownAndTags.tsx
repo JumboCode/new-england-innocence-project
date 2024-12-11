@@ -1,3 +1,5 @@
+//Dropdown & Tags Component
+
 import React, { useState } from 'react';
 import Select, { StylesConfig } from 'react-select';
 
@@ -31,13 +33,14 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
       ...provided,
       color: '#004085',
       minHeight: '40px',
+      minWidth: '300px',
     }),
     singleValue: () => ({
       display: 'none',
     }),
     placeholder: (provided) => ({
       ...provided,
-      color: '#667085',
+      color: '#CCDDF8',
     }),
     option: (provided, state) => ({
       ...provided,
@@ -63,10 +66,11 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
           }
 
           .dropdown-and-tags label {
-              font-weight: bold;
+              font-weight: 500;
+              font-size: 16px;
               margin-bottom: 8px;
               display: block;
-              color: #5a5b5c;
+              color: #667085;
           }
 
           .tags-container {
@@ -74,15 +78,17 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
               flex-wrap: wrap;
               gap: 8px;
               margin-bottom: 8px;
+              font-size: 13px;
           }
 
           .tag {
-              background-color: #d4e7ff;
-              color: #004085;
+              background-color: #CCDDF8;
+              color: #535862;
               padding: 4px 8px;
               border-radius: 4px;
               display: flex;
               align-items: center;
+              border-radius: 15px;
           }
 
           .remove-tag {
@@ -109,7 +115,7 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
                 className="remove-tag"
                 onClick={() => removeTag(tag)}
               >
-                X
+                Χ
               </button>
             </div>
           ))}
