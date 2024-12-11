@@ -34,6 +34,8 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
       color: '#004085',
       minHeight: '40px',
       minWidth: '300px',
+      borderRadius: '11px',
+      borderColor: '#CCDDF8',
     }),
     singleValue: () => ({
       display: 'none',
@@ -51,6 +53,7 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
         color: '#004085',
       },
     }),
+  
     menu: (provided) => ({
       ...provided,
       zIndex: 999,
@@ -79,7 +82,7 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
               flex-wrap: wrap;
               gap: 8px;
               margin-bottom: 8px;
-              font-size: 13px;
+              font-size: 16px;
           }
 
           .tag {
