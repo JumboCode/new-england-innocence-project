@@ -63,6 +63,7 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
         {`
           .dropdown-and-tags {
               margin-bottom: 16px;
+              width: 293px;
           }
 
           .dropdown-and-tags label {
