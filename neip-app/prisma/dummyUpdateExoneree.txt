@@ -1,18 +1,20 @@
-curl -X POST http://localhost:3000/api/exonerees/updateExoneree \
-   -H "Content-Type: application/json" \
-   -d '{
+curl -X PUT http://localhost:3000/api/exonerees/updateExoneree \
+-H "Content-Type: application/json" \
+-d '{
+  "id": 1,
+  "updatedData": {
     "personalInfo": {
-      "name": "John Doe 1",
+      "name": "John Doe",
       "dateOfBirth": "1980-01-01T00:00:00.000Z",
       "gender": "M",
-      "race": "Black",
+      "race": "Caucasian",
       "ethnicity": "Non-Hispanic",
       "phoneNumber": "123-456-7890",
       "address": "123 Main St, Anytown, USA",
-      "email": "johndoe2@example.com"
+      "email": "johndoe@example.com"
     },
     "caseInfo": {
-      "caseNumber": "A1234562",
+      "caseNumber": "A123456",
       "jurisdictionId": 1,
       "yearsInPrison": 10,
       "arrestDate": "2005-01-01T00:00:00.000Z",
@@ -54,4 +56,5 @@ curl -X POST http://localhost:3000/api/exonerees/updateExoneree \
       "lastUpdated": "2024-11-11T00:00:00.000Z",
       "createdAt": "2024-11-11T00:00:00.000Z"
     }
-  }'
+  }
+}'

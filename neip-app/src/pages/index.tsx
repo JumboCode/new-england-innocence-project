@@ -1,19 +1,26 @@
-// pages/index.tsx
-// import Homepage from '@/app/pages/homepage'
-import NavBar from '../components/NavBar'
-import LoginPage from './login'
-import AuthButton from '@/components/AuthButton'
-import AuthEntryBox from '@/components/SignupAuthEntryBox'
-import Signup from './Signup'
-import HomePage from './HomePage'
+import NavBar from '../components/NavBar';
+import HomePage from './HomePage';
+import DropdownAndTags from '../components/DropdownAndTags';
 
 const Homepage = () => {
+  const options = ['Detective 1', 'Detective 2', 'Detective 3'];
   return (
-    <>
-      <HomePage />
-      <NavBar />
-    </>
-  )
-}
+    <div className="flex h-screen">
+      <div>
+        <NavBar />
+      </div>
+      <div className="flex-1">
+        <HomePage />
+      </div>
+      <div className="fixed bottom-8 left-8" style={{ marginLeft: 100, marginBottom: 100 }}>
+        <DropdownAndTags
+          label="Detectives Involved"
+          placeholder="Detective"
+          options={options}
+        />
+      </div>
+    </div>
+  );
+};
 
 export default Homepage;

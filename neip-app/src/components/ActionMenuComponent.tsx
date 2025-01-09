@@ -1,48 +1,49 @@
 import React, { useState } from 'react';
 
-const ActionMenuComponent = ({}) => {
+const ActionMenuComponent = ({ onClose } : {onClose : any}) => {
     const [isVisible, setIsVisible] = useState(true);
+    const [isClicked, setIsClicked] = useState<null | string>(null);
 
     const close = () => {
         setIsVisible(false);
+        onClose?.(); // Call the parent's onClose handler
+    };
+
+    const click = ( item: string) => {
+        setIsClicked(item);
     };
 
     if (!isVisible) {
         return null;
     }
 
-    const [isClicked, setIsClicked] = useState(null);
-
-    const click = (item) => {
-        setIsClicked(item);
-    };
-
     return (
         <div style={{
-            // Create the rectangular shape
             width: '140px',
             height: '142px',
-            border: '1.5px solid', // Gray edge on the border
-            borderColor: 'rgba(102,112,133,255)', // Border color
-            backgroundColor: 'white', // Color of rectangle
+            border: '1.5px solid',
+            borderColor: 'rgba(102,112,133,255)',
+            backgroundColor: 'white',
             display: 'flex',
-            flexDirection: 'column', // Change the direction to column
-            justifyContent: 'flex-start', // Align items to the top
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)', // Added shadow for better visibility
         }}>
-            <div style={{display: 'flex',
-                justifyContent: 'flex-end', 
+            <div style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
                 paddingRight: '10px',
                 marginBottom: '-5px',
-                paddingTop:'3px',
+                paddingTop: '3px',
                 color: 'black',
             }}>
-                <button onClick = {close}>
+                <button onClick={close}>
                     X
                 </button>
             </div>
             <div onClick={() => click("Open")} style={{
                 textAlign: 'left',
-                color: 'black',
+                color: isClicked === "Open" ? 'white' : 'black',
                 paddingBottom: '5px',
                 paddingLeft: '13px',
                 paddingRight: '13px',
@@ -52,7 +53,7 @@ const ActionMenuComponent = ({}) => {
                 Open
             </div>
             <div onClick={() => click("Edit")} style={{
-                color: 'black',
+                color: isClicked === "Edit" ? 'white' : 'black',
                 paddingBottom: '5px',
                 paddingLeft: '13px',
                 paddingRight: '13px',
@@ -62,7 +63,7 @@ const ActionMenuComponent = ({}) => {
                 Edit
             </div>
             <div onClick={() => click("Share")} style={{
-                color: 'black',
+                color: isClicked === "Share" ? 'white' : 'black',
                 paddingBottom: '5px',
                 paddingLeft: '13px',
                 paddingRight: '13px',
@@ -72,7 +73,7 @@ const ActionMenuComponent = ({}) => {
                 Share
             </div>
             <div onClick={() => click("Delete")} style={{
-                color: 'black',
+                color: isClicked === "Delete" ? 'white' : 'black',
                 paddingBottom: '5px',
                 paddingLeft: '13px',
                 paddingRight: '13px',
@@ -85,7 +86,5 @@ const ActionMenuComponent = ({}) => {
         </div>
     );
 }
-
-
 
 export default ActionMenuComponent;
