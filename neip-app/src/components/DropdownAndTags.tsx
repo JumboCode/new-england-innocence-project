@@ -11,7 +11,7 @@ interface DropdownAndTagsProps {
 
 const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, options }) => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [availableOptions, setAvailableOptions] = useState(
+  const [availableOptions] = useState(
     options.map((option) => ({ value: option, label: option }))
   );
 
