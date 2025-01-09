@@ -12,13 +12,6 @@ const Homepage = () => {
       <div className="flex-1">
         <HomePage />
       </div>
-      <div className="fixed bottom-8 left-8" style={{ marginLeft: 100, marginBottom: 100 }}>
-        <DropdownAndTags
-          label="Detectives Involved"
-          placeholder="Detective"
-          options={options}
-        />
-      </div>
     </div>
   );
 };
