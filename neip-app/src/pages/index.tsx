@@ -1,8 +1,9 @@
-// Import necessary components
 import NavBar from '../components/NavBar';
 import HomePage from './HomePage';
+import DropdownAndTags from '../components/DropdownAndTags';
 
 const Homepage = () => {
+  const options = ['Detective 1', 'Detective 2', 'Detective 3'];
   return (
     <div className="flex h-screen">
       <div>
@@ -10,6 +11,13 @@ const Homepage = () => {
       </div>
       <div className="flex-1">
         <HomePage />
+      </div>
+      <div className="fixed bottom-8 left-8" style={{ marginLeft: 100, marginBottom: 100 }}>
+        <DropdownAndTags
+          label="Detectives Involved"
+          placeholder="Detective"
+          options={options}
+        />
       </div>
     </div>
   );
