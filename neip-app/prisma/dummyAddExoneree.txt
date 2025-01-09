@@ -5,7 +5,7 @@ curl -X POST http://localhost:3000/api/exonerees/updateExoneree \
       "name": "John Doe 1",
       "dateOfBirth": "1980-01-01T00:00:00.000Z",
       "gender": "M",
-      "race": "Caucasian",
+      "race": "Black",
       "ethnicity": "Non-Hispanic",
       "phoneNumber": "123-456-7890",
       "address": "123 Main St, Anytown, USA",

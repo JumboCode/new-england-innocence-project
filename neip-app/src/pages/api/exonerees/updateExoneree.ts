@@ -121,12 +121,12 @@ export default async function handler (
         legalInfo: true,
         wrongfulConvictionInfo: true,
         postExonerationInfo: true,
-        metaData: true,
-      },
-    });
+        metaData: true
+      }
+    })
 
     if (!existingExoneree) {
-      return res.status(404).json({ error: 'Exoneree not found' });
+      return res.status(404).json({ error: 'Exoneree not found' })
     }
 
     const updatedExoneree = await prisma.exoneree.update({
