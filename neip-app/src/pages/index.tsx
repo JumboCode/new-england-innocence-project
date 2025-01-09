@@ -6,7 +6,7 @@ const Homepage = () => {
   const options = ['Detective 1', 'Detective 2', 'Detective 3'];
   return (
     <div className="flex h-screen">
-      <div className="w-1/4 bg-gray-100">
+      <div>
         <NavBar />
       </div>
       <div className="flex-1">

@@ -1,6 +1,5 @@
 // components/AuthButton.tsx
 import React from "react";
-import { useRouter } from "next/navigation";
 import Link from 'next/link';
 
 interface AuthButtonProps {
