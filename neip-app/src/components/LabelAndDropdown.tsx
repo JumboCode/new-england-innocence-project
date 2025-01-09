@@ -33,7 +33,6 @@ const LabelAndEntry: React.FC<LabelAndEntryProps> = ({label, dropdownOptions, pl
         border: '1px solid #CCDDF8',
         borderRadius: '10px',
         padding: '10px 16px',
-        width: width,
         height: "45px",
         appearance: "none",
       }),
@@ -60,7 +59,8 @@ const LabelAndEntry: React.FC<LabelAndEntryProps> = ({label, dropdownOptions, pl
   );
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: '2px' }}>
+    <div style={{width}}>
+    {/* <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: '2px' }}> */}
       <label style={{ color: '#667085', fontSize: '13px', fontFamily: 'Inter, sans-serif', padding: '10px 2px' }}>
         {label}
       </label>
@@ -73,6 +73,7 @@ const LabelAndEntry: React.FC<LabelAndEntryProps> = ({label, dropdownOptions, pl
         components={{ DropdownIndicator }}
       />
     </div>
+    // </div>
   );
 };
 export default LabelAndEntry;

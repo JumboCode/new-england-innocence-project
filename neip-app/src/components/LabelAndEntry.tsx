@@ -9,7 +9,7 @@ interface LabelAndDropdownProps {
    borderRadius?: string;
 }
 
-const LabelAndDropdown: React.FC<LabelAndDropdownProps> = ({label, placeholder, width, height, borderRadius}) => {
+const LabelAndDropdown: React.FC<LabelAndDropdownProps> = ({label, placeholder = "", width, height, borderRadius}) => {
     const containerStyle: React.CSSProperties = {
         display: 'flex',
         flexDirection: 'column',

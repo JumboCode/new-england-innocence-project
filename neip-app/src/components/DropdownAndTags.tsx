@@ -7,9 +7,11 @@ interface DropdownAndTagsProps {
   label: string;
   placeholder: string;
   options: string[];
+  width: string;
+  height: string;
 }
 
-const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, options }) => {
+const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, options, width, height}) => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [availableOptions] = useState(
     options.map((option) => ({ value: option, label: option }))
@@ -32,9 +34,9 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
     control: (provided) => ({
       ...provided,
       color: '#004085',
-      minHeight: '40px',
-      minWidth: '300px',
-      borderRadius: '11px',
+      minHeight: height,
+      minWidth: width,
+      borderRadius: '10px',
       borderColor: '#CCDDF8',
     }),
     singleValue: () => ({
@@ -61,17 +63,16 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
   };
 
   return (
-    <div>
+    <div style={{ width }}>
       <style>
         {`
           .dropdown-and-tags {
               margin-bottom: 16px;
-              width: 293px;
           }
 
           .dropdown-and-tags label {
               font-weight: 500;
-              font-size: 16px;
+              font-size: 13px;
               margin-bottom: 8px;
               display: block;
               color: #667085;
@@ -82,7 +83,7 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
               flex-wrap: wrap;
               gap: 8px;
               margin-bottom: 8px;
-              font-size: 16px;
+              font-size: 13px;
           }
 
           .tag {

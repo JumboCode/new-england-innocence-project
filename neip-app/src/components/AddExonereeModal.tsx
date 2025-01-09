@@ -8,6 +8,7 @@ import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import LabelAndEntry from "../components/LabelAndEntry"
 import LabelAndDropdown from "../components/LabelAndDropdown"
+import DropdownAndTags from "../components/DropdownAndTags"
 import PersonalInfoIcon from "../img/PersonalInfoIcon.png";
 import EditIcon from "../img/EditIcon.png";
 import IconTextButton from "../components/IconTextButton";
@@ -156,7 +157,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           <React.Fragment key="address-entry">
             <LabelAndEntry
               label={"Address"}
-              placeholder={"Address"}
               width="48%"
               height="72px"
               borderRadius="10px"
@@ -219,7 +219,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           <React.Fragment key="years-in-prison">
             <LabelAndEntry
               label={"Years in Prison"}
-              placeholder={"X years"}
               width="60%"
               height="35px"
               borderRadius="10px"
@@ -276,7 +275,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           <React.Fragment key="sentence-entry">
             <LabelAndEntry
               label={"Sentence"}
-              placeholder={"Sentence"}
               width="60%"
               height="36px"
               borderRadius="10px"
@@ -317,13 +315,359 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
                 </div>
                </div>;
       case 2:
-        return <div>Legal Info</div>;
+        const legalLeftIcons = [
+          <React.Fragment key="original-charges">
+            <DropdownAndTags
+              label={"Original Charges"}
+              placeholder={"Charge"}
+              options={[]}
+              width="60%"
+              height="35px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="conviction-method">
+            <LabelAndEntry
+              label={"Conviction Method"}
+              width="60%"
+              height="35px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="exoneration-method">
+            <LabelAndEntry
+              label={"Exoneration Method"}
+              width="60%"
+              height="35px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+        ];
+        
+        const legalRightIcons = [
+          <React.Fragment key="prosecutor">
+            <LabelAndEntry
+              label={"Prosecutor"}
+              width="60%"
+              height="36px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="detectives-involved">
+            <DropdownAndTags
+              label={"Detectives Involved"}
+              placeholder={"Detective"}
+              options={[]}
+              width="60%"
+              height="36px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="save-button">
+            <div style={{ marginTop: "30px", marginLeft: "80px" }}>
+              <IconTextButton
+                filled={true}
+                text="Save"
+                border={false}
+                height="44px"
+                width="104px"
+              />
+            </div>
+          </React.Fragment>,
+        ];
+        
+        return <div>
+                <div style={{display: 'flex', marginTop: '50px', marginRight: '10px', marginLeft: '100px'}}>
+                  {/* Left Column */}
+                  <div style={{ flex: 1, marginRight: 'auto', marginLeft: '90px' }}>
+                    {legalLeftIcons.map((icon, index) => (
+                      <div key={index} style={{ marginBottom: "3px" }}>
+                        {icon}
+                      </div>
+                    ))}
+                  </div>
+                  {/* Right Column */}
+                  <div style={{ flex: 1, marginLeft: "10px" }}>
+                    {legalRightIcons.map((icon, index) => (
+                      <div key={index} style={{ marginBottom: "3px" }}>
+                        {icon}
+                      </div>
+                    ))}
+                  </div>
+                  
+                </div>
+               </div>;
       case 3:
-        return <div>Circumstances of Wrongful Conviction</div>;
+        const circumstancesLeftIcons = [,
+          <React.Fragment key="false-confession">
+            <LabelAndDropdown
+              label={"False confession"}
+              placeholder={"[Yes/No]"}
+              dropdownOptions={["Yes", "No"]}
+              width="60%"
+              height="36px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="eyewitness-misidentification">
+            <LabelAndDropdown
+              label={"Eyewitness misidentification"}
+              placeholder={"[Yes/No]"}
+              dropdownOptions={["Yes", "No"]}
+              width="60%"
+              height="36px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="inadequate-legal-defense">
+            <LabelAndDropdown
+              label={"Inadequate legal defense"}
+              placeholder={"[Yes/No]"}
+              dropdownOptions={["Yes", "No"]}
+              width="60%"
+              height="36px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="police-prosecutorial-misconduct">
+            <LabelAndDropdown
+              label={"Police/Prosecutorial misconduct"}
+              placeholder={"[Yes/No]"}
+              dropdownOptions={["Yes", "No"]}
+              width="60%"
+              height="36px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+        ];
+        
+
+        const circumstancesRightIcons = [
+          <React.Fragment key="forensic-evidence">
+            <LabelAndDropdown
+              label={"Forensic Evidence"}
+              placeholder={"[Yes/No]"}
+              dropdownOptions={["Yes", "No"]}
+              width="60%"
+              height="36px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="informant-testimony">
+            <LabelAndEntry
+              label={"Informant Testimony"}
+              width="60%"
+              height="36px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="save-button">
+            <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
+              <IconTextButton
+                filled={true}
+                text="Save"
+                border={false}
+                height="44px"
+                width="104px"
+              />
+            </div>
+          </React.Fragment>,
+        ];
+        
+        return <div>
+          <div style={{display: 'flex', marginTop: '50px', marginRight: '10px', marginLeft: '100px'}}>
+            <div style={{ flex: 1, marginRight: 'auto', marginLeft: '90px' }}>
+              {circumstancesLeftIcons.map((icon, index) => (
+                <div key={index} style={{ marginBottom: "3px" }}>
+                  {icon}
+                </div>
+              ))}
+            </div>
+            <div style={{ flex: 1, marginLeft: "10px" }}>
+              {circumstancesRightIcons.map((icon, index) => (
+                <div key={index} style={{ marginBottom: "3px" }}>
+                  {icon}
+                </div>
+              ))}
+            </div>
+            
+          </div>
+        </div>;
+
       case 4:
-        return <div>Post Exoneration Info</div>;
+        const postexonerationLeftIcons = [,
+          <React.Fragment key="compensation-amount">
+            <LabelAndEntry
+              label={"Compensation"}
+              placeholder={"Amount"}
+              dropdownOptions={["Yes", "No"]}
+              width="60%"
+              height="36px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="compensation-date">
+            <LabelAndEntry
+              label={"Compensation Date"}
+              placeholder={"xx/xx/xxxx"}
+              width="60%"
+              height="36px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="reentry-support">
+            <LabelAndDropdown
+              label={"Reentry support"}
+              placeholder={"[Yes/No]"}
+              dropdownOptions={["Yes", "No"]}
+              width="60%"
+              height="36px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="public-apology">
+            <LabelAndDropdown
+              label={"Public apology"}
+              placeholder={"[Yes/No]"}
+              dropdownOptions={["Yes", "No"]}
+              width="60%"
+              height="36px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="current-status">
+            <LabelAndDropdown
+              label={"Current status"}
+              placeholder={"status"}
+              dropdownOptions={["Freed but still fighting", "Plea deal", "Exonerated"]}
+              width="60%"
+              height="36px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+        ];
+        
+
+        const postexonerationRightIcons = [
+          <React.Fragment key="current-occupation">
+            <LabelAndEntry
+              label={"Current occupation"}
+              width="60%"
+              height="36px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="place-of-residence">
+            <LabelAndEntry
+              label={"Place of residence"}
+              placeholder={"Address"}
+              width="60%"
+              height="72px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="save-button">
+            <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
+              <IconTextButton
+                filled={true}
+                text="Save"
+                border={false}
+                height="44px"
+                width="104px"
+              />
+            </div>
+          </React.Fragment>,
+        ];
+        
+        return <div>
+          <div style={{display: 'flex', marginTop: '50px', marginRight: '10px', marginLeft: '100px'}}>
+            <div style={{ flex: 1, marginRight: 'auto', marginLeft: '90px' }}>
+              {postexonerationLeftIcons.map((icon, index) => (
+                <div key={index} style={{ marginBottom: "3px" }}>
+                  {icon}
+                </div>
+              ))}
+            </div>
+            <div style={{ flex: 1, marginLeft: "10px" }}>
+              {postexonerationRightIcons.map((icon, index) => (
+                <div key={index} style={{ marginBottom: "3px" }}>
+                  {icon}
+                </div>
+              ))}
+            </div>
+            
+          </div>
+        </div>;
+
       case 5:
-        return <div>Additional Info</div>;
+        const additionalLeftIcons = [,
+          <React.Fragment key="media-coverage">
+            <LabelAndEntry
+              label={"Media coverage"}
+              placeholder={"link"}
+              width="60%"
+              height="36px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="advocacy-involvement">
+            <LabelAndEntry
+              label={"Advocacy involvement"}
+              width="60%"
+              height="72px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="educational-background">
+            <LabelAndEntry
+              label={"Educational background"}
+              width="60%"
+              height="72px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+        ];
+
+        const additionalRightIcons = [
+          <React.Fragment key="health-info">
+            <LabelAndEntry
+              label={"Health information"}
+              width="60%"
+              height="72px"
+              borderRadius="10px"
+            />
+          </React.Fragment>,
+          <React.Fragment key="save-button">
+            <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
+              <IconTextButton
+                filled={true}
+                text="Save"
+                border={false}
+                height="44px"
+                width="104px"
+              />
+            </div>
+          </React.Fragment>,
+        ];
+        
+        return <div>
+          <div style={{display: 'flex', marginTop: '50px', marginRight: '10px', marginLeft: '100px'}}>
+            <div style={{ flex: 1, marginRight: 'auto', marginLeft: '90px' }}>
+              {additionalLeftIcons.map((icon, index) => (
+                <div key={index} style={{ marginBottom: "3px" }}>
+                  {icon}
+                </div>
+              ))}
+            </div>
+            <div style={{ flex: 1, marginLeft: "10px" }}>
+              {additionalRightIcons.map((icon, index) => (
+                <div key={index} style={{ marginBottom: "3px" }}>
+                  {icon}
+                </div>
+              ))}
+            </div>
+            
+          </div>
+        </div>;
+
       default:
         return <div>Personal Info</div>;
     }
