@@ -13,9 +13,10 @@ interface DropdownAndTagsProps {
 
 const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, options, width, height}) => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [availableOptions] = useState(
+  const [availableOptions, setAvailableOptions] = useState(
     options.map((option) => ({ value: option, label: option }))
   );
+  const [inputValue, setInputValue] = useState<string>("");
 
   const handleSelectChange = (selectedOption: any) => {
     if (selectedOption) {
@@ -28,6 +29,18 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
 
   const removeTag = (tagToRemove: string) => {
     setSelectedTags(selectedTags.filter((tag) => tag !== tagToRemove));
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" && inputValue) {
+      if (!selectedTags.includes(inputValue)) {
+        const newOption = { value: inputValue, label: inputValue };
+        setSelectedTags([...selectedTags, inputValue]);
+        setAvailableOptions([...availableOptions, newOption]);
+      }
+      setInputValue(""); 
+      event.preventDefault();
+    }
   };
 
   const customStyles: StylesConfig<any> = {
@@ -60,6 +73,10 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
     menu: (provided) => ({
       ...provided,
       zIndex: 999,
+    }),
+    clearIndicator: (provided) => ({
+      ...provided,
+      display: 'none', 
     }),
   };
 
@@ -132,6 +149,13 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
           isSearchable
           onChange={handleSelectChange}
           styles={customStyles}
+          inputValue={inputValue}
+          onInputChange={(value, action) => {
+            if (action.action === "input-change") {
+              setInputValue(value);
+            }
+          }}
+          onKeyDown={handleKeyDown}
         />
       </div>
     </div>
