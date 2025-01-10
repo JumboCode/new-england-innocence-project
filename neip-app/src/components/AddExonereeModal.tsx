@@ -73,7 +73,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={""}
               width="40%"
               height="35px"
-              borderRadius="20px"
+              borderRadius="10px"
             />
           </React.Fragment>,
           <React.Fragment key="last-name-entry">
@@ -82,7 +82,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={""}
               width="40%"
               height="35px"
-              borderRadius="20px"
+              borderRadius="10px"
             />
           </React.Fragment>,
           <React.Fragment key="phone-number-entry">
@@ -91,7 +91,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={""}
               width="40%"
               height="35px"
-              borderRadius="20px"
+              borderRadius="10px"
             />
           </React.Fragment>,
           <React.Fragment key="email-entry">
@@ -100,7 +100,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={""}
               width="40%"
               height="35px"
-              borderRadius="20px"
+              borderRadius="10px"
             />
           </React.Fragment>,
         ];
@@ -164,12 +164,11 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           </React.Fragment>,
           <React.Fragment key="save-button">
             <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
-              <IconTextButton
+            <IconTextButton
                 filled={true}
                 text="Save"
-                border={false}
-                height="44px"
-                width="104px"
+                height="40px"
+                width="106px"
               />
             </div>
           </React.Fragment>,
@@ -281,13 +280,12 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
             />
           </React.Fragment>,
           <React.Fragment key="save-button">
-            <div style={{ marginTop: "30px", marginLeft: "80px" }}>
+            <div>
               <IconTextButton
                 filled={true}
                 text="Save"
-                border={false}
-                height="44px"
-                width="104px"
+                height="40px"
+                width="106px"
               />
             </div>
           </React.Fragment>,
@@ -363,12 +361,11 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           </React.Fragment>,
           <React.Fragment key="save-button">
             <div style={{ marginTop: "30px", marginLeft: "80px" }}>
-              <IconTextButton
+            <IconTextButton
                 filled={true}
                 text="Save"
-                border={false}
-                height="44px"
-                width="104px"
+                height="40px"
+                width="106px"
               />
             </div>
           </React.Fragment>,
@@ -461,12 +458,11 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           </React.Fragment>,
           <React.Fragment key="save-button">
             <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
-              <IconTextButton
+            <IconTextButton
                 filled={true}
                 text="Save"
-                border={false}
-                height="44px"
-                width="104px"
+                height="40px"
+                width="106px"
               />
             </div>
           </React.Fragment>,
@@ -566,12 +562,11 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           </React.Fragment>,
           <React.Fragment key="save-button">
             <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
-              <IconTextButton
+            <IconTextButton
                 filled={true}
                 text="Save"
-                border={false}
-                height="44px"
-                width="104px"
+                height="40px"
+                width="106px"
               />
             </div>
           </React.Fragment>,
@@ -637,12 +632,11 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           </React.Fragment>,
           <React.Fragment key="save-button">
             <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
-              <IconTextButton
+            <IconTextButton
                 filled={true}
                 text="Save"
-                border={false}
-                height="44px"
-                width="104px"
+                height="40px"
+                width="106px"
               />
             </div>
           </React.Fragment>,

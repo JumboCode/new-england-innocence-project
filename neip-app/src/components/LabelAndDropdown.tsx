@@ -32,8 +32,10 @@ const LabelAndEntry: React.FC<LabelAndEntryProps> = ({label, dropdownOptions, pl
         fontFamily: 'Inter, sans-serif',
         border: '1px solid #CCDDF8',
         borderRadius: '10px',
-        padding: '10px 16px',
-        height: "45px",
+        paddingRight: '10px',
+        marginTop: '5px',
+        marginBottom: '15px',
+        height: "36px",
         appearance: "none",
       }),
       indicatorSeparator: () => ({

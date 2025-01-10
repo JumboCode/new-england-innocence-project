@@ -15,6 +15,7 @@ const IconTextButton: React.FC<IconTextButtonProps> = ({ icon, filled, text, bor
   const IconButtonStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
     fontFamily: 'Inter, sans-serif',
     color: filled ? 'white' : 'black',
     borderRadius: '8px', 
