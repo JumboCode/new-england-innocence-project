@@ -9,7 +9,7 @@ interface LabelAndDropdownProps {
    borderRadius?: string;
 }
 
-const LabelAndDropdown: React.FC<LabelAndDropdownProps> = ({label, placeholder, width, height, borderRadius}) => {
+const LabelAndDropdown: React.FC<LabelAndDropdownProps> = ({label, placeholder = "", width, height, borderRadius}) => {
     const containerStyle: React.CSSProperties = {
         display: 'flex',
         flexDirection: 'column',
@@ -27,13 +27,15 @@ const LabelAndDropdown: React.FC<LabelAndDropdownProps> = ({label, placeholder, 
         padding: '10px 10px',
         width: width,
         height: height,
+        marginTop: '5px',
+        marginBottom: '15px',
     };
 
     const labelStyle: React.CSSProperties = {
         color: '#667085',
         fontSize: '13px',
         fontFamily: 'Inter, sans-serif',
-        padding: '10px 2px',
+        // padding: '10px 2px',
     };
     // const placeHolderstyle: React.CSSProperties = {
     //     color: '#CCDDF8',

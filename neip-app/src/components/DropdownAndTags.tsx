@@ -7,13 +7,16 @@ interface DropdownAndTagsProps {
   label: string;
   placeholder: string;
   options: string[];
+  width: string;
+  height: string;
 }
 
-const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, options }) => {
+const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, options, width, height}) => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [availableOptions] = useState(
+  const [availableOptions, setAvailableOptions] = useState(
     options.map((option) => ({ value: option, label: option }))
   );
+  const [inputValue, setInputValue] = useState<string>("");
 
   const handleSelectChange = (selectedOption: any) => {
     if (selectedOption) {
@@ -28,21 +31,34 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
     setSelectedTags(selectedTags.filter((tag) => tag !== tagToRemove));
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" && inputValue) {
+      if (!selectedTags.includes(inputValue)) {
+        const newOption = { value: inputValue, label: inputValue };
+        setSelectedTags([...selectedTags, inputValue]);
+        setAvailableOptions([...availableOptions, newOption]);
+      }
+      setInputValue(""); 
+      event.preventDefault();
+    }
+  };
+
   const customStyles: StylesConfig<any> = {
     control: (provided) => ({
       ...provided,
       color: '#004085',
-      minHeight: '40px',
-      minWidth: '300px',
-      borderRadius: '11px',
+      minHeight: height,
+      minWidth: width,
+      borderRadius: '10px',
       borderColor: '#CCDDF8',
+      fontSize: '13px',
     }),
     singleValue: () => ({
       display: 'none',
     }),
     placeholder: (provided) => ({
       ...provided,
-      color: '#CCDDF8',
+      color: '#999999',
     }),
     option: (provided, state) => ({
       ...provided,
@@ -58,21 +74,23 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
       ...provided,
       zIndex: 999,
     }),
+    clearIndicator: (provided) => ({
+      ...provided,
+      display: 'none', 
+    }),
   };
 
   return (
-    <div>
+    <div style={{ width }}>
       <style>
         {`
           .dropdown-and-tags {
               margin-bottom: 16px;
-              width: 293px;
           }
 
           .dropdown-and-tags label {
               font-weight: 500;
-              font-size: 16px;
-              margin-bottom: 8px;
+              font-size: 13px;
               display: block;
               color: #667085;
           }
@@ -82,7 +100,7 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
               flex-wrap: wrap;
               gap: 8px;
               margin-bottom: 8px;
-              font-size: 16px;
+              font-size: 13px;
           }
 
           .tag {
@@ -131,6 +149,13 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
           isSearchable
           onChange={handleSelectChange}
           styles={customStyles}
+          inputValue={inputValue}
+          onInputChange={(value, action) => {
+            if (action.action === "input-change") {
+              setInputValue(value);
+            }
+          }}
+          onKeyDown={handleKeyDown}
         />
       </div>
     </div>
