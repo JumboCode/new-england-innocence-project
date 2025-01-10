@@ -164,8 +164,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           </React.Fragment>,
           <React.Fragment key="save-button">
             <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
-            <IconTextButton
+              <IconTextButton
                 filled={true}
+                border={false}
                 text="Save"
                 height="40px"
                 width="106px"
@@ -283,6 +284,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
             <div>
               <IconTextButton
                 filled={true}
+                border={false}
                 text="Save"
                 height="40px"
                 width="106px"
@@ -361,8 +363,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           </React.Fragment>,
           <React.Fragment key="save-button">
             <div style={{ marginTop: "30px", marginLeft: "80px" }}>
-            <IconTextButton
+              <IconTextButton
                 filled={true}
+                border={false}
                 text="Save"
                 height="40px"
                 width="106px"
@@ -400,8 +403,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={"[Yes/No]"}
               dropdownOptions={["Yes", "No"]}
               width="60%"
-              height="36px"
-              borderRadius="10px"
             />
           </React.Fragment>,
           <React.Fragment key="eyewitness-misidentification">
@@ -410,8 +411,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={"[Yes/No]"}
               dropdownOptions={["Yes", "No"]}
               width="60%"
-              height="36px"
-              borderRadius="10px"
             />
           </React.Fragment>,
           <React.Fragment key="inadequate-legal-defense">
@@ -420,8 +419,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={"[Yes/No]"}
               dropdownOptions={["Yes", "No"]}
               width="60%"
-              height="36px"
-              borderRadius="10px"
             />
           </React.Fragment>,
           <React.Fragment key="police-prosecutorial-misconduct">
@@ -430,8 +427,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={"[Yes/No]"}
               dropdownOptions={["Yes", "No"]}
               width="60%"
-              height="36px"
-              borderRadius="10px"
             />
           </React.Fragment>,
         ];
@@ -444,22 +439,19 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={"[Yes/No]"}
               dropdownOptions={["Yes", "No"]}
               width="60%"
-              height="36px"
-              borderRadius="10px"
             />
           </React.Fragment>,
           <React.Fragment key="informant-testimony">
             <LabelAndEntry
               label={"Informant Testimony"}
               width="60%"
-              height="36px"
-              borderRadius="10px"
             />
           </React.Fragment>,
           <React.Fragment key="save-button">
             <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
-            <IconTextButton
+              <IconTextButton
                 filled={true}
+                border={false}
                 text="Save"
                 height="40px"
                 width="106px"
@@ -494,7 +486,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
             <LabelAndEntry
               label={"Compensation"}
               placeholder={"Amount"}
-              dropdownOptions={["Yes", "No"]}
               width="60%"
               height="36px"
               borderRadius="10px"
@@ -515,8 +506,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={"[Yes/No]"}
               dropdownOptions={["Yes", "No"]}
               width="60%"
-              height="36px"
-              borderRadius="10px"
             />
           </React.Fragment>,
           <React.Fragment key="public-apology">
@@ -525,8 +514,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={"[Yes/No]"}
               dropdownOptions={["Yes", "No"]}
               width="60%"
-              height="36px"
-              borderRadius="10px"
             />
           </React.Fragment>,
           <React.Fragment key="current-status">
@@ -535,8 +522,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={"status"}
               dropdownOptions={["Freed but still fighting", "Plea deal", "Exonerated"]}
               width="60%"
-              height="36px"
-              borderRadius="10px"
             />
           </React.Fragment>,
         ];
@@ -564,6 +549,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
             <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
             <IconTextButton
                 filled={true}
+                border={false}
                 text="Save"
                 height="40px"
                 width="106px"
@@ -634,6 +620,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
             <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
             <IconTextButton
                 filled={true}
+                border={false}
                 text="Save"
                 height="40px"
                 width="106px"

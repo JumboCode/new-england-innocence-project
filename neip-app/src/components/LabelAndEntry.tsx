@@ -3,7 +3,7 @@ import React from 'react';
 
 interface LabelAndDropdownProps {
    label: string;
-   placeholder: string;
+   placeholder?: string;
    width?: string;
    height?: string;
    borderRadius?: string;
@@ -22,7 +22,6 @@ const LabelAndDropdown: React.FC<LabelAndDropdownProps> = ({label, placeholder =
         fontSize: '13px',
         fontFamily: 'Inter, sans-serif',
         border: '1px solid #CCDDF8',
-        //borderRadius: '20px',
         borderRadius: borderRadius,
         padding: '10px 10px',
         width: width,
