@@ -34,6 +34,49 @@ interface AddExonereeModalProps {
 const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }) => {
   const [activeTab, setActiveTab] = useState(0);
 
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    email: "",
+    dob: "",
+    gender: "",
+    race: "",
+    ethnicity: "",
+    address: "",
+    caseNumber: "",
+    jurisdiction: "",
+    yearsInPrison: "",
+    arrestDate: "",
+    convictionDate: "",
+    freedomDate: "",
+    exonerationDate: "",
+    crimeType: "",
+    sentence: "",
+    originalCharges: [],
+    convictionMethod: "",
+    exonerationMethod: "",
+    prosecutor: "",
+    detectivesInvolved: [],
+    falseConfession: "",
+    eyewitnessMisidentification: "",
+    inadequateLegalDefense: "",
+    policeProsecutorialMisconduct: "",
+    forensicEvidence: "",
+    informantTestimony: "",
+    compensationAmount: "",
+    compensationDate: "",
+    reentrySupport: "",
+    publicApology: "",
+    currentStatus: "",
+    currentOccupation: "",
+    placeOfResidence: "",
+    mediaCoverage: "",
+    advocacyInvolvement: "",
+    educationalBackground: "",
+    healthInfo: "",
+  });
+  
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
@@ -56,6 +99,14 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
         color: "white",
     },
   });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };  
 
   const renderTabContent = () => {
     switch (activeTab) {
