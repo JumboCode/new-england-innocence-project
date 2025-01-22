@@ -108,3 +108,13 @@ enum Gender {
   F
   OTHER
 }
+
+model ChargesDropdownOption {
+  id         Int      @id @default(autoincrement())
+  value      String   @unique
+}
+
+model DetectiveDropdownOption {
+  id         Int      @id @default(autoincrement())
+  value      String   @unique
+}
