@@ -162,17 +162,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               borderRadius="10px"
             />
           </React.Fragment>,
-          <React.Fragment key="save-button">
-            <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
-              <IconTextButton
-                filled={true}
-                border={false}
-                text="Save"
-                height="40px"
-                width="106px"
-              />
-            </div>
-          </React.Fragment>,
         ];
         
         return <div>
@@ -280,17 +269,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               borderRadius="10px"
             />
           </React.Fragment>,
-          <React.Fragment key="save-button">
-            <div>
-              <IconTextButton
-                filled={true}
-                border={false}
-                text="Save"
-                height="40px"
-                width="106px"
-              />
-            </div>
-          </React.Fragment>,
         ];
         
         return <div>
@@ -360,17 +338,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="60%"
               height="36px"
             />
-          </React.Fragment>,
-          <React.Fragment key="save-button">
-            <div style={{ marginTop: "30px", marginLeft: "80px" }}>
-              <IconTextButton
-                filled={true}
-                border={false}
-                text="Save"
-                height="40px"
-                width="106px"
-              />
-            </div>
           </React.Fragment>,
         ];
         
@@ -446,17 +413,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               label={"Informant Testimony"}
               width="60%"
             />
-          </React.Fragment>,
-          <React.Fragment key="save-button">
-            <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
-              <IconTextButton
-                filled={true}
-                border={false}
-                text="Save"
-                height="40px"
-                width="106px"
-              />
-            </div>
           </React.Fragment>,
         ];
         
@@ -545,17 +501,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               borderRadius="10px"
             />
           </React.Fragment>,
-          <React.Fragment key="save-button">
-            <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
-            <IconTextButton
-                filled={true}
-                border={false}
-                text="Save"
-                height="40px"
-                width="106px"
-              />
-            </div>
-          </React.Fragment>,
         ];
         
         return <div>
@@ -583,7 +528,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           <React.Fragment key="media-coverage">
             <LabelAndEntry
               label={"Media coverage"}
-              placeholder={"link"}
               width="60%"
               height="36px"
               borderRadius="10px"
@@ -616,12 +560,12 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               borderRadius="10px"
             />
           </React.Fragment>,
-          <React.Fragment key="save-button">
+          <React.Fragment key="submit-button">
             <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
             <IconTextButton
                 filled={true}
                 border={false}
-                text="Save"
+                text="Submit"
                 height="40px"
                 width="106px"
               />
