@@ -34,6 +34,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
+    console.log(caseInfo)
+
   try {
     const newExoneree = await prisma.exoneree.create({
       data: {
@@ -74,6 +76,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : 'An unexpected error occurred';
+      console.log(error);
     return res
       .status(400)
       .json({ error: `Failed to create Exoneree: ${errorMessage}` });
