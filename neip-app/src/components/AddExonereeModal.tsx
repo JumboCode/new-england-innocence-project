@@ -202,11 +202,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
         alert('First name and last name are required!');
         return;
       }
-
-      if (!formattedData.caseInfo.jurisdiction) {
-        console.log("this appears, insanity should happen")
-        return
-      }
   
       const response = await fetch('/api/exonerees/addExoneree', {
         method: 'POST',
