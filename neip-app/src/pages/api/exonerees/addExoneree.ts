@@ -34,9 +34,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-    console.log(caseInfo)
-
   try {
+    const metaDataInput = metaData.id
+      ? {
+          connect: { id: metaData.id }, // Connect if ID exists
+        }
+      : {
+          create: metaData, // Create if no ID exists
+        };
+
     const newExoneree = await prisma.exoneree.create({
       data: {
         personalInfo: {
@@ -54,13 +60,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         postExonerationInfo: {
           create: postExonerationInfo,
         },
-        metaData: {
-          connectOrCreate: {
-            where: { id: metaData.id || 0 },
-            create: metaData,
-          },
-        },
-        
+        metaData: metaDataInput,
       },
       include: {
         personalInfo: true,

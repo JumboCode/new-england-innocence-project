@@ -13,7 +13,6 @@ import DropdownAndTags from "../components/DropdownAndTags"
 import PersonalInfoIcon from "../img/PersonalInfoIcon.png";
 import EditIcon from "../img/EditIcon.png";
 import IconTextButton from "../components/IconTextButton";
-import { metadata } from "../../layout";
 
 const style = {
   position: "absolute",
@@ -153,16 +152,14 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           state: formData.state
         },
         legalInfo: {
-        //   originalCharges: formData.originalCharges,  ADD THIS BACK WHEN FIXED
-          originalCharges: "manslaughter",
+          originalCharges: formData.originalCharges,
 
         //   TODO: FIX TYPE FOR CONVICTIONMETHOD, EXONERATIONMETHOD, DETECTIVESINVOLVED, INFORMANTTESTIMONY, EITHER STRING OR ARRAY BUT NOT BOTH
           convictionMethod: [formData.convictionMethod],
           exonerationMethod: [formData.exonerationMethod],
           legalRepresentation: formData.legalRepresentation,
           prosecutor: formData.prosecutor,
-        //   detectivesInvolved: formData.detectivesInvolved  ADD THIS BACK WHEN FIXED
-          detectivesInvolved: ["detective joey"]
+          detectivesInvolved: [formData.detectivesInvolved]
         },
         wrongfulConvictionInfo: {
           falseConfession: formData.falseConfession === 'Yes',
@@ -179,9 +176,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           publicApology: formData.publicApology === 'Yes',
           currentCountry: formData.currentCountry,
           currentState: formData.currentState,
-        //   currentStatus: formData.currentStatus,           I don't think this exists in the model
           occupation: formData.currentOccupation,
-        //   placeOfResidence: formData.placeOfResidence      I don't think this exists in the model
         },
         additionalInfo: {
           mediaCoverage: formData.mediaCoverage,
@@ -191,9 +186,10 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           id: 0  // This will be replaced by the actual ID if it exists
         },
         metaData: {
-            dataSource: "marten's pocket",
-            lastUpdated: "marten's pocket",
-            createdAt: "marten's pocket - hi from bill",
+            // TODO: Add something for this, currently just temporary empty strings.
+            dataSource: "",
+            lastUpdated: "",
+            createdAt: "",
         }
       };
   
