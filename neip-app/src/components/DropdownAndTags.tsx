@@ -1,6 +1,4 @@
-//Dropdown & Tags Component
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Select, { StylesConfig } from 'react-select';
 
 interface DropdownAndTagsProps {
@@ -9,34 +7,56 @@ interface DropdownAndTagsProps {
   options: string[];
   width: string;
   height: string;
+  value?: string[];
+  onChange?: (name: string, value: string[]) => void;
+  name: string;
 }
 
-const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, options, width, height}) => {
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ 
+  label, 
+  placeholder, 
+  options, 
+  width, 
+  height,
+  value = [],
+  onChange,
+  name
+}) => {
+  const [selectedTags, setSelectedTags] = useState<string[]>(value);
   const [availableOptions, setAvailableOptions] = useState(
     options.map((option) => ({ value: option, label: option }))
   );
   const [inputValue, setInputValue] = useState<string>("");
 
+  useEffect(() => {
+    setSelectedTags(value);
+  }, [value]);
+
   const handleSelectChange = (selectedOption: any) => {
     if (selectedOption) {
       const selectedValue = selectedOption.value;
       if (!selectedTags.includes(selectedValue)) {
-        setSelectedTags([...selectedTags, selectedValue]);
+        const newTags = [...selectedTags, selectedValue];
+        setSelectedTags(newTags);
+        onChange?.(name, newTags);
       }
     }
   };
 
   const removeTag = (tagToRemove: string) => {
-    setSelectedTags(selectedTags.filter((tag) => tag !== tagToRemove));
+    const newTags = selectedTags.filter((tag) => tag !== tagToRemove);
+    setSelectedTags(newTags);
+    onChange?.(name, newTags);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter" && inputValue) {
       if (!selectedTags.includes(inputValue)) {
         const newOption = { value: inputValue, label: inputValue };
-        setSelectedTags([...selectedTags, inputValue]);
+        const newTags = [...selectedTags, inputValue];
+        setSelectedTags(newTags);
         setAvailableOptions([...availableOptions, newOption]);
+        onChange?.(name, newTags);
       }
       setInputValue(""); 
       event.preventDefault();
@@ -69,7 +89,6 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
         color: '#004085',
       },
     }),
-  
     menu: (provided) => ({
       ...provided,
       zIndex: 999,
@@ -137,7 +156,7 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
                 className="remove-tag"
                 onClick={() => removeTag(tag)}
               >
-                Χ
+                ×
               </button>
             </div>
           ))}
