@@ -34,5 +34,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     } catch (error) {
         return res.status(400).json({ error: 'Failed to get IDs'});
+        console.log(error);
     }
 }
