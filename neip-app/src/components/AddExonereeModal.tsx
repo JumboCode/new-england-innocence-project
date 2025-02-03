@@ -599,6 +599,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
                 }));
               }}
               name="originalCharges"
+              apiUrl="Charge"
             />
           </React.Fragment>,
           <React.Fragment key="conviction-method">
@@ -663,6 +664,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
                 }));
               }}
               name="detectivesInvolved"
+              apiUrl="Detective"
             />
           </React.Fragment>,
         ];
