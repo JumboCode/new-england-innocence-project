@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
 }
 
@@ -40,7 +40,6 @@ model PersonalInfo {
 model CaseInfo {
   id              Int       @id @default(autoincrement())
   caseNumber      String    @unique
-  jurisdiction    String       
   yearsInPrison   Int
   arrestDate      String
   convictionDate  String
@@ -50,6 +49,7 @@ model CaseInfo {
   sentence        String
   country         String
   state           String
+  jurisdiction    String
   exoneree        Exoneree?
 }
 
@@ -80,10 +80,10 @@ model PostExonerationInfo {
   reentrySupport     String[]
   publicApology      Boolean
   compensationAmount Int
-  compensationDate   DateTime
   currentCountry     String
   currentState       String
   occupation         String
+  compensationDate   DateTime
   exoneree           Exoneree?
 }
 
@@ -103,18 +103,18 @@ model MetaData {
   exoneree    Exoneree?
 }
 
+model ChargesDropdownOption {
+  id    Int    @id @default(autoincrement())
+  value String @unique
+}
+
+model DetectiveDropdownOption {
+  id    Int    @id @default(autoincrement())
+  value String @unique
+}
+
 enum Gender {
   M
   F
   OTHER
-}
-
-model ChargesDropdownOption {
-  id         Int      @id @default(autoincrement())
-  value      String   @unique
-}
-
-model DetectiveDropdownOption {
-  id         Int      @id @default(autoincrement())
-  value      String   @unique
 }
