@@ -35,6 +35,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
+    const metaDataInput = metaData.id
+      ? {
+          connect: { id: metaData.id }, // Connect if ID exists
+        }
+      : {
+          create: metaData, // Create if no ID exists
+        };
+
     const newExoneree = await prisma.exoneree.create({
       data: {
         personalInfo: {
@@ -52,13 +60,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         postExonerationInfo: {
           create: postExonerationInfo,
         },
-        metaData: {
-          connectOrCreate: {
-            where: { id: metaData.id || 0 },
-            create: metaData,
-          },
-        },
-        
+        metaData: metaDataInput,
       },
       include: {
         personalInfo: true,
@@ -74,6 +76,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : 'An unexpected error occurred';
+      console.log(error);
     return res
       .status(400)
       .json({ error: `Failed to create Exoneree: ${errorMessage}` });
