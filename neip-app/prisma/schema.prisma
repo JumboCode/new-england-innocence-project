@@ -31,9 +31,9 @@ model PersonalInfo {
   gender      Gender
   race        String
   ethnicity   String
-  phoneNumber String
-  address     String
-  email       String    @unique
+  phoneNumber String?
+  address     String?
+  email       String?    @unique
   exoneree    Exoneree?
 }
 
