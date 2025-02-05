@@ -256,6 +256,8 @@ const columns = [
 const HomePage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [columnsModalOpen, setColumnsModalOpen] = useState(false);
+  // const [exonerees, setExonerees] = useState([]); //for error: Cannot find name 'setExonerees'.ts(2304)
+  const [exonerees, setExonerees] = useState<any[]>(dataSource); // ✅ Keeps initial table data
 
   // Initialize selectedColumns with all column keys
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
@@ -368,7 +370,7 @@ const noop: () => void = () => {};
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '17px' }}>
                 {/* Search Bar */}
                 <div style={{ flex: 1, maxWidth: '300px', marginLeft: '15px' }}>
-                    <SearchEntryBox />
+                  <SearchEntryBox setExonerees={setExonerees} />
                 </div>
 
                 {/* Action Buttons */}
@@ -457,7 +459,7 @@ const noop: () => void = () => {};
                 
                 {/* Database Display */}
                 <Table 
-                    dataSource={dataSource} 
+                    dataSource={dataSource} //so that search results update the table
                     columns={filteredColumns} 
                     scroll={{ x: 'max-content' }} 
                 />
