@@ -1,15 +1,34 @@
 // components/SearchEntryBox.tsx
 
-import React from 'react';
+import React, { useState } from "react"; // Added useState to manage search input
 import { CgSearch } from "react-icons/cg";
 
 interface SearchEntryBoxProps {
-    placeholder?: string;
-    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    value?: string;
+    // placeholder?: string;
+    // onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    // value?: string;
+    setExonerees: (data: any[]) => void; // Added prop to update displayed exonerees
 }
 
-const SearchEntryBox: React.FC<SearchEntryBoxProps> = ({ placeholder = "Search", onChange, value }) => {
+const SearchEntryBox: React.FC<SearchEntryBoxProps> = ({ setExonerees }) => {
+    //chat
+    const SearchEntryBox: React.FC<SearchEntryBoxProps> = ({ setExonerees }) => {
+        const [query, setQuery] = useState(""); // Stores the user's search input
+      
+        const handleSearch = async () => {
+          if (!query.trim()) return; // Prevent empty searches
+      
+          try {
+            const response = await fetch(`/api/exonerees/search?keyword=${encodeURIComponent(query)}`);
+            if (!response.ok) throw new Error("Search failed");
+      
+            const data = await response.json();
+            setExonerees(data); // Updates the displayed exonerees list
+          } catch (error) {
+            console.error("Error fetching search results:", error);
+          }
+        };
+    
     return (
         <div style={containerStyle}>
             <input
