@@ -11,9 +11,9 @@ import AddExonereeModal from '@/components/AddExonereeModal';
 import { FaFilter } from 'react-icons/fa';
 import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai';
 import { MdFilterList } from 'react-icons/md';
+import { CgLogOut } from "react-icons/cg";
 import ActionMenuComponent from "@/components/ActionMenuComponent";
 import SelectColumnsModal from "@/components/SelectColumnsModal";
-// import { Button } from "@mui/material";
 import TableFilterIcons from "@/components/TableFilterIcons";
 import OpenFilterSidebar from "../components/OpenFilterSidebar";
 
@@ -323,6 +323,11 @@ const openFilterSidebar = () => {
   setIsSidebarOpen(true);
 };
 
+const handleLogout = () => {
+  console.log("Logout button clicked! (API integration needed)");
+  // To-do: Call logout API and redirect user to login page
+};
+
 const noop: () => void = () => {};
 
   return (
@@ -331,6 +336,17 @@ const noop: () => void = () => {};
         {/* Top Banner */}
         <div style={{ backgroundColor: '#033550', color: 'white', display: 'flex', alignItems: 'center', height: '56px' }}>
             <img src="/caseview_logo2.png" alt="Logo" style={{ height: '35px', marginLeft: '17px', backgroundColor: 'white' }} />
+            <div style={{ marginLeft: "auto" }}> 
+              <IconTextButton
+              icon={<CgLogOut size={20} />}
+              filled={false}
+              text="Logout"
+              border={false}
+              onClick={handleLogout}
+              height="40px"
+              width="100px"
+              />
+            </div>
         </div>
 
         {/* Render the OpenFiterSideBar if it's visible*/}
