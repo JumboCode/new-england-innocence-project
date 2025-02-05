@@ -473,7 +473,7 @@ const noop: () => void = () => {};
           zIndex: 1000,
         }}
       >
-        <ActionMenuComponent onClose={closeActionMenu} />
+        <ActionMenuComponent exonereeId={"2"} onClose={closeActionMenu} />
       </div>
     )}
     </div>  
