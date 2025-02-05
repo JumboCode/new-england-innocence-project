@@ -128,7 +128,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 metaData: true,
             }
         });
-        console.log("🔍 Final Query Results:", results); // ✅ Debugging to check if Prisma found any results
+        console.log("🔍 Final Query Results:", results); // debugging to check if Prisma found any results
         return res.status(200).json(results.length > 0 ? results : []);
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";

@@ -256,8 +256,7 @@ const columns = [
 const HomePage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [columnsModalOpen, setColumnsModalOpen] = useState(false);
-  // const [exonerees, setExonerees] = useState([]); //for error: Cannot find name 'setExonerees'.ts(2304)
-  const [exonerees, setExonerees] = useState<any[]>(dataSource); // ✅ Keeps initial table data
+  const [exonerees, setExonerees] = useState<any[]>(dataSource); // keeps initial table data
 
   // Initialize selectedColumns with all column keys
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
@@ -459,7 +458,7 @@ const noop: () => void = () => {};
                 
                 {/* Database Display */}
                 <Table 
-                    dataSource={dataSource} //so that search results update the table
+                    dataSource={exonerees} //so that search results update the table
                     columns={filteredColumns} 
                     scroll={{ x: 'max-content' }} 
                 />
