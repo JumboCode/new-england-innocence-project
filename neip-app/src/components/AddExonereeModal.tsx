@@ -285,7 +285,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           </React.Fragment>,
           <React.Fragment key="first-name-entry">
             <LabelAndEntry
-              label={"First Name"}
+              label={"First Name*"}
               placeholder={""}
               width="40%"
               height="35px"
@@ -297,7 +297,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           </React.Fragment>,
           <React.Fragment key="last-name-entry">
             <LabelAndEntry
-              label={"Last Name"}
+              label={"Last Name*"}
               placeholder={""}
               width="40%"
               height="35px"
@@ -309,7 +309,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           </React.Fragment>,
           <React.Fragment key="phone-number-entry">
             <LabelAndEntry
-              label={"*Phone Number"}
+              label={"Phone Number"}
               placeholder={""}
               width="40%"
               height="35px"
@@ -321,7 +321,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           </React.Fragment>,
           <React.Fragment key="email-entry">
             <LabelAndEntry
-              label={"*Email"}
+              label={"Email"}
               placeholder={""}
               width="40%"
               height="35px"
@@ -337,7 +337,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
         const personalRightIcons = [
           <React.Fragment key="dob-entry">
             <LabelAndEntry
-              label={"DOB"}
+              label={"DOB*"}
               placeholder={"xx/xx/xxxx"}
               width="48%"
               height="36px"
@@ -349,7 +349,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           </React.Fragment>,
           <React.Fragment key="gender-dropdown">
             <LabelAndDropdown
-              label={"Gender"}
+              label={"Gender*"}
               dropdownOptions={["Male", "Female"]}
               placeholder={"Gender"}
               width="210px"
@@ -360,7 +360,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           </React.Fragment>,
           <React.Fragment key="race-dropdown">
             <LabelAndDropdown
-              label={"Race"}
+              label={"Race*"}
               dropdownOptions={[
                 "White",
                 "Black",
@@ -378,7 +378,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           </React.Fragment>,
           <React.Fragment key="ethnicity-dropdown">
             <LabelAndDropdown
-              label={"Ethnicity"}
+              label={"Ethnicity*"}
               dropdownOptions={[
                 "American Indian/Alaska Native",
                 "Asian",
@@ -396,7 +396,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           </React.Fragment>,
           <React.Fragment key="address-entry">
             <LabelAndEntry
-              label={"*Address"}
+              label={"Address"}
               width="48%"
               height="72px"
               borderRadius="10px"
