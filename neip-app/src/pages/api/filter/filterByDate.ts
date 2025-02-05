@@ -62,6 +62,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         let exonerees;
         const parsedDate = new Date(date);
 
+        console.log(parsedDate)
+
         if (constraint === 'before') {
             if ('findMany' in model) {
                 if (model == prisma.caseInfo) {
