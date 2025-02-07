@@ -34,7 +34,6 @@ interface AddExonereeModalProps {
 
 const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }) => {
 
-
   const [activeTab, setActiveTab] = useState(0);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -62,7 +61,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
     exonerationMethod: "",
     legalRepresentation: "",
     prosecutor: "",
-    detectivesInvolved: [],
+    detectivesInvolved: "detective",
     falseConfession: "",
     eyewitnessMisidentification: "",
     inadequateLegalDefense: "",
@@ -85,9 +84,13 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
   });
 
 
+  const [dirty, setDirty] = useState(false);
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
+
+
+
 
   const tabSx = (tabIndex: number) => ({
     fontSize: "12px",
@@ -123,6 +126,28 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
         ...prevData,
         [event.target.name]: event.target.value
       }));
+      setDirty(true);
+    }
+  };
+
+  // Function to check if the form has unsaved changes
+  const hasUnsavedChanges = () => {
+    return dirty;
+  };
+
+  // Modified handleClose function to add the alert
+  const handleCloseModal = () => {
+    if (hasUnsavedChanges()) {
+      // Show alert if form has changed
+      const shouldClose = window.confirm("You have unsaved changes. Are you sure you want to close?");
+
+      if (shouldClose) {
+        // Proceed to close the modal if user confirms
+        handleClose();
+      }
+    } else {
+      // Close without confirmation if no changes were made
+      handleClose();
     }
   };
 
@@ -196,7 +221,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
       };
 
       // Basic validation
-      if (!formattedData.personalInfo.name || !formattedData.personalInfo.dateOfBirth || !formattedData.personalInfo.gender || formattedData.personalInfo.race || formattedData.personalInfo.ethnicity) {
+      if (!formattedData.personalInfo.name || !formattedData.personalInfo.dateOfBirth || !formattedData.personalInfo.gender || !formattedData.personalInfo.race || !formattedData.personalInfo.ethnicity) {
         alert('Not all of the fields are filled out!');
         return;
       }
@@ -1003,11 +1028,11 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
   };
 
   return (
-    <Modal open={open} onClose={handleClose} aria-labelledby="add-exoneree-modal">
+    <Modal open={open} onClose={handleCloseModal} aria-labelledby="add-exoneree-modal">
       <Box sx={style}>
         <IconButton
           aria-label="close"
-          onClick={handleClose}
+          onClick={handleCloseModal}
           sx={{
             position: "absolute",
             top: 8,
