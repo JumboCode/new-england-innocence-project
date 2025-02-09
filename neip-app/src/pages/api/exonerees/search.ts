@@ -88,7 +88,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     { caseInfo: { country: { contains: keyword, mode: 'insensitive' } } },
                     { caseInfo: { state: { contains: keyword, mode: 'insensitive' } } },
                    
-
                     { legalInfo: { originalCharges: { contains: keyword, mode: 'insensitive' } } },
                     { legalInfo: { id: { in: convictionMethodIds } } },         // array
                     { legalInfo: { id: { in: exonerationMethodIds } } },        // array
