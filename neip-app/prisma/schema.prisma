@@ -34,10 +34,7 @@ model PersonalInfo {
   phoneNumber String?
   address     String?
   email       String?   @unique
-<<<<<<< HEAD
-=======
   imageURL    String?
->>>>>>> 54c746f7d1d7d927e0d232b41b0f6289c32fd71e
   exoneree    Exoneree?
 }
 

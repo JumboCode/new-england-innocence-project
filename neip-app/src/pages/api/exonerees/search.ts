@@ -89,7 +89,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     { caseInfo: { state: { contains: keyword, mode: 'insensitive' } } },
                    
 
-                    { legalInfo: { originalCharges: { contains: keyword, mode: 'insensitive' } } },
+                    { legalInfo: { originalCharges: { has: keyword } } },
                     { legalInfo: { id: { in: convictionMethodIds } } },         // array
                     { legalInfo: { id: { in: exonerationMethodIds } } },        // array
                     { legalInfo: { legalRepresentation: { contains: keyword, mode: 'insensitive' } } },
