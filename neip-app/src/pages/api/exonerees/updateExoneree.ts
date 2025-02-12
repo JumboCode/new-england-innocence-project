@@ -49,7 +49,8 @@ const WrongfulConvictionInfoSchema = z.object({
   policeMisconduct: z.boolean(),
   prosecutorialMisconduct: z.boolean(),
   forensicEvidence: z.boolean(),
-  informantTestimony: z.boolean()
+  informantTestimony: z.boolean(),
+  otherInfo: z.string()
 })
 
 const PostExonerationInfoSchema = z.object({

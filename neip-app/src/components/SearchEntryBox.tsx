@@ -88,6 +88,7 @@ const SearchEntryBox: React.FC<SearchEntryBoxProps> = ({ setExonerees }) => {
             ?.informantTestimony
             ? 'Yes'
             : 'No',
+            otherInfo: exoneree.wrongfulConvictionInfo?.otherInfo || 'N/A',
           compensation: `$${exoneree.postExonerationInfo?.compensationAmount ||
             0}`,
           reentrySupport:

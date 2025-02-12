@@ -71,6 +71,7 @@ const dataSource = [
     prosecutorialMisconduct: 'Yes',
     forensicEvidence: 'Paper Bag',
     informantTestimony: 'Yes',
+    otherInfo: '',
     compensation: '$500',
     reentrySupport: 'Yes',
     publicApology: 'No',
@@ -117,6 +118,7 @@ const dataSource = [
     prosecutorialMisconduct: 'Yes',
     forensicEvidence: 'DNA',
     informantTestimony: 'No',
+    otherInfo: '',
     compensation: '$1,200,000',
     reentrySupport: 'Yes',
     publicApology: 'Yes',
@@ -163,6 +165,7 @@ const dataSource = [
     prosecutorialMisconduct: 'No',
     forensicEvidence: 'Audit',
     informantTestimony: 'Yes',
+    otherInfo: '',
     compensation: '$200,000',
     reentrySupport: 'Yes',
     publicApology: 'No',
@@ -209,6 +212,7 @@ const dataSource = [
     prosecutorialMisconduct: 'Yes',
     forensicEvidence: 'Surveillance',
     informantTestimony: 'No',
+    otherInfo: '',
     compensation: '$800,000',
     reentrySupport: 'No',
     publicApology: 'Yes',
@@ -316,6 +320,11 @@ const columns = [
     title: 'Informant Testimony',
     dataIndex: 'informantTestimony',
     key: 'informantTestimony'
+  },
+  {
+    title: 'Other Info',
+    dataIndex: 'otherInfo',
+    key: 'otherInfo'
   },
   { title: 'Compensation', dataIndex: 'compensation', key: 'compensation' },
   {

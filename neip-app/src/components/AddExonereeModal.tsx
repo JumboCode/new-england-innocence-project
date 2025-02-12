@@ -74,6 +74,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
     prosecutorialMisconduct: '',
     forensicEvidence: '',
     informantTestimony: '',
+    otherInfo: '',
     compensationAmount: '',
     compensationDate: '',
     reentrySupport: '',
@@ -187,7 +188,8 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
             formData.prosecutorialMisconduct === 'Yes',
           forensicEvidence: formData.forensicEvidence === 'Yes',
           informantTestimony:
-            formData.informantTestimony === 'Yes' ? true : false
+            formData.informantTestimony === 'Yes' ? true : false,
+          otherInfo: formData.otherInfo
         },
         postExonerationInfo: {
           compensationAmount: parseFloat(formData.compensationAmount) || 0,
@@ -854,7 +856,16 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               onChange={handleChange}
               name='informantTestimony'
             />
-          </React.Fragment>
+          </React.Fragment>,
+          <React.Fragment key='other-info'>
+          <LabelAndEntry
+            label={'Other Info'}
+            width='60%'
+            value={formData.otherInfo}
+            onChange={handleChange}
+            name='otherInfo'
+          />
+        </React.Fragment>
         ]
 
         return (
