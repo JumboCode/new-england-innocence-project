@@ -30,9 +30,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             Prisma.sql`
                 SELECT id
                 FROM "LegalInfo"
-                WHERE "convictionMethod"::text ILIKE '%' || ${keyword} || '%'
+                WHERE ${keyword} = ANY("convictionMethod")
             `
         );
+        // WHERE "convictionMethod"::text ILIKE '%' || ${keyword} || '%'
 
         const rawExonerationMethodMatches = await prisma.$queryRaw<
             { id: number }[]
@@ -74,7 +75,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const results = await prisma.exoneree.findMany({
             where: {
                 OR: [
-                    { personalInfo: { name: { contains: keyword, mode: 'insensitive' } } },
+                    // { personalInfo: { name: { contains: keyword, mode: 'insensitive' } } }, 
+                    // deleting this to make the search less specific
+                    { personalInfo: { name: { startsWith: keyword, mode: 'insensitive' } } },
                     { personalInfo: { race: { contains: keyword, mode: 'insensitive' } } },
                     { personalInfo: { ethnicity: { contains: keyword, mode: 'insensitive' } } },
                     { personalInfo: { phoneNumber: { contains: keyword, mode: 'insensitive' } } },
@@ -125,10 +128,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 metaData: true,
             }
         });
-
+        console.log("🔍 Final Query Results:", results); // debugging to check if Prisma found any results
         return res.status(200).json(results.length > 0 ? results : []);
-    } catch (error) {
-        console.error('Search error:', error);
-        return res.status(400).json({ error: 'Failed to fetch exonerees' });
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
+        console.error("❌ Search error:", errorMessage);
+        return res.status(500).json({ error: `Internal Server Error: ${errorMessage}` });
     }
 }
