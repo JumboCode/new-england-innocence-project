@@ -123,6 +123,13 @@ model JurisdictionDropdownOption {
   value String @unique
 }
 
+model Officer {
+  id    Int    @id @default(autoincrement())
+  name  String 
+  media String?
+  notes String?
+}
+
 enum Gender {
   M
   F
