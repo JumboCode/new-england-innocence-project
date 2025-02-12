@@ -65,7 +65,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         // Extract IDs from the results
-        const exonereeIds = exonerees.map((exoneree) => exoneree.id);
+        const exonereeIds = exonerees ? exonerees.map((exoneree) => exoneree.id) : [];
 
         return res.status(200).json({ ids: exonereeIds });
 
