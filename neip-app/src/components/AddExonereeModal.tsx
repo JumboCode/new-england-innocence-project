@@ -692,10 +692,10 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               name='prosecutor'
             />
           </React.Fragment>,
-          <React.Fragment key='detectives-involved'>
+          <React.Fragment key='officers-involved'>
             <DropdownAndTags
-              label={'Detectives Involved'}
-              placeholder={'Detective'}
+              label={'Officers Involved'}
+              placeholder={'Officer'}
               options={[]}
               width='60%'
               height='36px'
@@ -707,7 +707,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
                 }))
               }}
               name='officersInvolved'
-              apiUrl='Detective'
+              apiUrl='officer'
             />
           </React.Fragment>
         ]

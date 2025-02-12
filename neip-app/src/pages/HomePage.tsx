@@ -264,7 +264,7 @@ const columns = [
   },
   { title: 'Prosecutor', dataIndex: 'prosecutor', key: 'prosecutor' },
   {
-    title: 'Detectives Involved',
+    title: 'Officers Involved',
     dataIndex: 'officersInvolved',
     key: 'officersInvolved'
   },
@@ -343,7 +343,7 @@ const HomePage: React.FC = () => {
     setSelectedColumns(newSelectedColumns)
   }
 
-  const [selectedFilters] = useState(['Detective', 'Male', 'Test'])
+  const [selectedFilters] = useState(['officer', 'Male', 'Test'])
 
   const [actionMenuVisible, setActionMenuVisible] = useState(false)
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 })

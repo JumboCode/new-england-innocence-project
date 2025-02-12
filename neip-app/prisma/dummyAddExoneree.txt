@@ -30,7 +30,7 @@ curl -X POST http://localhost:3000/api/exonerees/updateExoneree \
       "exonerationMethod": ["DNA Evidence"],
       "legalRepresentation": "Public Defender",
       "prosecutor": "Jane Smith",
-      "officersInvolved": ["Detective 1", "Detective 2"]
+      "officersInvolved": ["officer 1", "officer 2"]
     },
     "wrongfulConvictionInfo": {
       "falseConfession": false,

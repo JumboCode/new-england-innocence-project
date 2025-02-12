@@ -58,7 +58,7 @@ describe('Prisma CRUD operations', () => {
         exonerationMethod: ['New Evidence'],
         legalRepresentation: 'Private Lawyer',
         prosecutor: 'Tom Smith',
-        officersInvolved: ['Detective B']
+        officersInvolved: ['officer B']
       }
     })
 

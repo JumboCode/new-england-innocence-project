@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client'
 import { Pool, neonConfig } from '@neondatabase/serverless'
 import { PrismaNeon } from '@prisma/adapter-neon'
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next'
 import dotenv from 'dotenv'
 import ws from 'ws'
 
@@ -11,19 +11,22 @@ const connectionString = `${process.env.DATABASE_URL}`
 
 const pool = new Pool({ connectionString })
 const adapter = new PrismaNeon(pool)
-const prisma = new PrismaClient({adapter})
+const prisma = new PrismaClient({ adapter })
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler (
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ error: 'Method not allowed' })
   }
 
   try {
-    const detectives = await prisma.detectiveDropdownOption.findMany();
-    const value = detectives.map((detective) => detective.value);
-    return res.status(200).json(value);
+    const officers = await prisma.officerDropdownOption.findMany()
+    const value = officers.map(officer => officer.value)
+    return res.status(200).json(value)
   } catch (error) {
-    console.error(error);
-    return res.status(400).json({ error: 'Failed to retrieve tags' });
+    console.error(error)
+    return res.status(400).json({ error: 'Failed to retrieve tags' })
   }
 }
