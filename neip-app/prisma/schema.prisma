@@ -34,6 +34,10 @@ model PersonalInfo {
   phoneNumber String?
   address     String?
   email       String?   @unique
+<<<<<<< HEAD
+=======
+  imageURL    String?
+>>>>>>> 54c746f7d1d7d927e0d232b41b0f6289c32fd71e
   exoneree    Exoneree?
 }
 
@@ -55,12 +59,12 @@ model CaseInfo {
 
 model LegalInfo {
   id                  Int       @id @default(autoincrement())
-  originalCharges     String[]
   convictionMethod    String[]
   exonerationMethod   String[]
   legalRepresentation String?
   prosecutor          String?
   detectivesInvolved  String[]
+  originalCharges     String[]
   exoneree            Exoneree?
 }
 
@@ -109,6 +113,11 @@ model ChargesDropdownOption {
 }
 
 model DetectiveDropdownOption {
+  id    Int    @id @default(autoincrement())
+  value String @unique
+}
+
+model JurisdictionDropdownOption {
   id    Int    @id @default(autoincrement())
   value String @unique
 }
