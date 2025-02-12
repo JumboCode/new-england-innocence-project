@@ -45,6 +45,7 @@ const SearchEntryBox: React.FC<SearchEntryBoxProps> = ({ setExonerees }) => {
           crimeType: exoneree.caseInfo?.crimeType || 'N/A',
           gender: exoneree.personalInfo?.gender || 'N/A',
           jurisdiction: exoneree.caseInfo?.jurisdiction || 'N/A',
+          exonerationNumber: exoneree.caseInfo?.exonerationNumber || 'N/A',
           yearsInPrison: exoneree.caseInfo?.yearsInPrison || 'N/A',
           arrestDate: exoneree.caseInfo?.arrestDate || 'N/A',
           convictionDate: exoneree.caseInfo?.convictionDate || 'N/A',
@@ -116,7 +117,8 @@ const SearchEntryBox: React.FC<SearchEntryBoxProps> = ({ setExonerees }) => {
           caseNumber: exoneree.caseInfo?.caseNumber || 'N/A',
           crimeType: exoneree.caseInfo?.crimeType || 'N/A',
           gender: exoneree.personalInfo?.gender || 'N/A',
-          jurisdiction: exoneree.caseInfo?.jurisdiction || 'N/A'
+          jurisdiction: exoneree.caseInfo?.jurisdiction || 'N/A',
+          exonerationNumber: exoneree.caseInfo?.exonerationNumber || 'N/A'
         }))
       )
     } catch (error) {

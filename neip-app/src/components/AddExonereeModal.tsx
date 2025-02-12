@@ -50,6 +50,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
     address: '',
     caseNumber: '',
     jurisdiction: '',
+    exonerationNumber: '',
     yearsInPrison: '',
     arrestDate: '',
     convictionDate: '',
@@ -152,6 +153,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         caseInfo: {
           caseNumber: formData.caseNumber,
           jurisdiction: formData.jurisdiction,
+          exonerationNumber: formData.exonerationNumber,
           yearsInPrison: parseInt(formData.yearsInPrison) || 0,
           arrestDate: formData.arrestDate,
           convictionDate: formData.convictionDate,
@@ -247,6 +249,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         address: '',
         caseNumber: '',
         jurisdiction: '',
+        exonerationNumber: '',
         yearsInPrison: '',
         arrestDate: '',
         convictionDate: '',
@@ -480,6 +483,18 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               name='caseNumber'
             />
           </React.Fragment>,
+          <React.Fragment key='exonerationNumber'>
+          <LabelAndEntry
+            label={'Exoneration Number'}
+            placeholder={'XXXXXXXXXXXX'}
+            width='60%'
+            height='35px'
+            borderRadius='10px'
+            value={formData.exonerationNumber}
+            onChange={handleChange}
+            name='exonerationNumber'
+          />
+        </React.Fragment>,
           <React.Fragment key='jurisdiction'>
             <LabelAndEntry
               label={'Jurisdiction'}
@@ -491,7 +506,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               onChange={handleChange}
               name='jurisdiction'
             />
-          </React.Fragment>,
+            </React.Fragment>,
           <React.Fragment key='years-in-prison'>
             <LabelAndEntry
               label={'Years in Prison'}

@@ -61,9 +61,9 @@ model LegalInfo {
   exonerationMethod   String[]
   legalRepresentation String?
   prosecutor          String?
+  judge               String?
   officersInvolved    String[]
   originalCharges     String[]
-  judge               String?
   exoneree            Exoneree?
 }
 

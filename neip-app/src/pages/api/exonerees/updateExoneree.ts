@@ -20,6 +20,7 @@ const PersonalInfoSchema = z.object({
 const CaseInfoSchema = z.object({
   caseNumber: z.string(),
   jurisdictionId: z.number(),
+  exonerationNumber: z.string(),
   yearsInPrison: z.number(),
   arrestDate: z.string(),
   convictionDate: z.string(),
