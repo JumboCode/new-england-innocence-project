@@ -6,6 +6,7 @@ import AuthBox from '../components/AuthBox';
 import AuthButton from '../components/AuthButton';
 import AuthEntryBox from '../components/AuthEntryBox';
 import { useRouter } from 'next/router';
+import { createClerkClient } from "@clerk/clerk-sdk-node";
 
 import { useSignIn, useAuth } from '@clerk/nextjs';
 
@@ -16,38 +17,58 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const { isSignedIn } = useAuth();
   const router = useRouter();
+  const clerkClient = createClerkClient({
+    secretKey: process.env.NEXT_PUBLIC_CLERK_FRONTEND_API, 
+  });
 
   const handleLogin = async () => {
-    if (!isLoaded) return; // make sure Clerk is loaded
-
+    if (!isLoaded) return;
+  
     if (isSignedIn) {
       alert("You are already logged in!");
       return;
     }
-
+  
     try {
+      const { data: users } = await clerkClient.users.getUserList();
+      const user = users.find((u) => 
+        u.emailAddresses.some((e) => e.emailAddress === userId)
+      );
+  
+      if (!user) {
+        alert("User not found. Please sign up first.");
+        return;
+      }
+  
+      const emailVerified = user.emailAddresses.some(
+        (e) => e.emailAddress === userId && e.verification?.status === "verified"
+      );
+  
+      if (!emailVerified) {
+        alert("Your email is not verified. Please check your email and verify your account.");
+        return;
+      }
+  
       const result = await signIn.create({
         identifier: userId,
         password: password,
+        strategy: "password",
       });
-
+  
       if (result.status === "complete") {
-        router.push('/dashboard');
-      } 
-      else {
-        router.push('/login');
+        router.push("/dashboard");
+        alert("Login successful!");
+      } else {
+        router.push("/login");
       }
-
-      alert("Login successful!");
-      
     } catch (err: any) {
       console.error("Login failed:", err);
       alert(`Login failed. ${err.errors ? err.errors[0].message : "Please check your credentials."}`);
-      router.push('/login');    // TODO: need to find a more efficient way to remain on login w/o re-rendering
+      router.push("/login");
     }
   };
 
-
+  
   return (
     <div style={{
       display: 'flex',

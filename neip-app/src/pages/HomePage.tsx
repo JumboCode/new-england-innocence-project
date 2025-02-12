@@ -16,6 +16,7 @@ import ActionMenuComponent from "@/components/ActionMenuComponent";
 import SelectColumnsModal from "@/components/SelectColumnsModal";
 import TableFilterIcons from "@/components/TableFilterIcons";
 import OpenFilterSidebar from "../components/OpenFilterSidebar";
+import { useClerk } from "@clerk/nextjs";
 
 // TODO: This is a bandaid solution for Vercel deployment. 
 // In the future we will want to dynamically determine columns based off this
@@ -323,9 +324,32 @@ const openFilterSidebar = () => {
   setIsSidebarOpen(true);
 };
 
-const handleLogout = () => {
-  console.log("Logout button clicked! (API integration needed)");
-  // To-do: Call logout API and redirect user to login page
+const handleLogout = async () => {
+  try {
+    const { session } = useClerk();
+    const sessionId = session?.id;
+
+    if (!sessionId) {
+      console.error("No session ID found. User might not be logged in.");
+      return;
+    }
+
+    const response = await fetch("/api/auth/signout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ sessionId }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Logout failed: ${response.statusText}`);
+    }
+
+    window.location.href = "/login";
+  } catch (error) {
+    console.error("Logout error:", error);
+  }
 };
 
 const noop: () => void = () => {};
