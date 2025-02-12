@@ -65,6 +65,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
     exonerationMethod: '',
     legalRepresentation: '',
     prosecutor: '',
+    judge: '',
     officersInvolved: [],
     falseConfession: '',
     eyewitnessMisidentification: '',
@@ -172,6 +173,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           exonerationMethod: [formData.exonerationMethod],
           legalRepresentation: formData.legalRepresentation,
           prosecutor: formData.prosecutor,
+          judge: formData.judge,
           officersInvolved: formData.officersInvolved
         },
         wrongfulConvictionInfo: {
@@ -264,6 +266,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         exonerationMethod: '',
         legalRepresentation: '',
         prosecutor: '',
+        judge: '',
         officersInvolved: [],
         falseConfession: '',
         eyewitnessMisidentification: '',
@@ -711,6 +714,17 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               name='prosecutor'
             />
           </React.Fragment>,
+                    <React.Fragment key='judge'>
+                    <LabelAndEntry
+                      label={'Judge'}
+                      width='60%'
+                      height='36px'
+                      borderRadius='10px'
+                      value={formData.prosecutor}
+                      onChange={handleChange}
+                      name='judge'
+                    />
+                  </React.Fragment>,
           <React.Fragment key='officers-involved'>
             <DropdownAndTags
               label={'Officers Involved'}

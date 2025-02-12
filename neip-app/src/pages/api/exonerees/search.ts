@@ -132,6 +132,11 @@ export default async function handler (
               prosecutor: { contains: keyword, mode: 'insensitive' }
             }
           },
+          {
+            legalInfo: {
+              judge: { contains: keyword, mode: 'insensitive' }
+            }
+          },
           { legalInfo: { id: { in: officersInvolvedIds } } }, // array
 
           { postExonerationInfo: { id: { in: reentrySupportIds } } }, // array

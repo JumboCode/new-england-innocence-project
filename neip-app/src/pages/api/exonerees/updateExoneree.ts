@@ -38,6 +38,7 @@ const LegalInfoSchema = z.object({
   exonerationMethod: z.array(z.string()),
   legalRepresentation: z.string(),
   prosecutor: z.string(),
+  judge: z.string(),
   officersInvolved: z.array(z.string())
 })
 

@@ -59,6 +59,7 @@ const SearchEntryBox: React.FC<SearchEntryBoxProps> = ({ setExonerees }) => {
             exoneree.legalInfo?.exonerationMethod?.join(', ') || 'N/A',
           legalRepresentation: exoneree.legalInfo?.legalRepresentation || 'N/A',
           prosecutor: exoneree.legalInfo?.prosecutor || 'N/A',
+          judge: exoneree.legalInfo?.judge || 'N/A',
           officersInvolved:
             exoneree.legalInfo?.officersInvolved?.join(', ') || 'N/A',
           falseConfession: exoneree.wrongfulConvictionInfo?.falseConfession
