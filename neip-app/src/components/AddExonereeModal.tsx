@@ -159,7 +159,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           exonerationMethod: [formData.exonerationMethod],
           legalRepresentation: formData.legalRepresentation,
           prosecutor: formData.prosecutor,
-          detectivesInvolved: [formData.detectivesInvolved]
+          detectivesInvolved: formData.detectivesInvolved
         },
         wrongfulConvictionInfo: {
           falseConfession: formData.falseConfession === 'Yes',
