@@ -11,7 +11,7 @@ const connectionString = `${process.env.DATABASE_URL}`
 
 const pool = new Pool({ connectionString })
 const adapter = new PrismaNeon(pool)
-const prisma = new PrismaClient({adapter})
+const prisma = new PrismaClient({ adapter })
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
@@ -24,12 +24,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } = req.body;
 
   if (
-    !personalInfo ||
-    !caseInfo ||
-    !legalInfo ||
-    !wrongfulConvictionInfo ||
-    !postExonerationInfo ||
-    !metaData
+    !personalInfo.name || !personalInfo.dateOfBirth || !personalInfo.gender ||
+    !personalInfo.race || !personalInfo.ethnicity
   ) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
@@ -37,46 +33,72 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const metaDataInput = metaData.id
       ? {
-          connect: { id: metaData.id }, // Connect if ID exists
-        }
+        connect: { id: metaData.id }, // Connect if ID exists
+      }
       : {
-          create: metaData, // Create if no ID exists
-        };
+        create: metaData, // Create if no ID exists
+      };
 
     const newExoneree = await prisma.exoneree.create({
       data: {
         personalInfo: {
-          create: personalInfo,
+          create: {
+            name: personalInfo.name,
+            dateOfBirth: personalInfo.dateOfBirth,
+            race: personalInfo.race,
+            ethnicity: personalInfo.ethnicity,
+            gender: personalInfo.gender,
+            ...(personalInfo.address && { address: { create: personalInfo.address } }),
+            ...(personalInfo.email && { email: { create: personalInfo.email } }),
+            ...(personalInfo.phoneNumber && { address: { create: personalInfo.phoneNumber } }),
+          }
         },
-        caseInfo: {
-          create: caseInfo,
-        },
-        legalInfo: {
-          create: legalInfo,
-        },
-        wrongfulConvictionInfo: {
-          create: wrongfulConvictionInfo,
-        },
-        postExonerationInfo: {
-          create: postExonerationInfo,
-        },
-        metaData: metaDataInput,
-      },
-      include: {
-        personalInfo: true,
-        caseInfo: true,
-        legalInfo: true,
-        wrongfulConvictionInfo: true,
-        postExonerationInfo: true,
-        metaData: true,
-      },
+        ...(caseInfo && { caseInfo: { create: caseInfo } }),
+        ...(legalInfo && { legalInfo: { create: legalInfo } }),
+        ...(wrongfulConvictionInfo && { wrongfulConvictionInfo: { create: wrongfulConvictionInfo } }),
+        ...(postExonerationInfo && { postExonerationInfo: { create: postExonerationInfo } }),
+        ...(metaDataInput && { metaData: metaDataInput }),
+
+
+        // caseInfo: {
+        //   create: {
+        //     ...(caseInfo && { caseInfo: { create: caseInfo } }),
+        //   }
+        // },
+        // legalInfo: {
+        //   create: {
+        //     ...(legalInfo && { legalInfo: { create: legalInfo } }),
+        //   }
+        // },
+        // wrongfulConvictionInfo: {
+        //   create: {
+        //     ...(wrongfulConvictionInfo && { wrongfulConvictionInfo: { create: wrongfulConvictionInfo } }),
+        //   },
+        // },
+        // postExonerationInfo: {
+        //   create: {
+        //     ...(postExonerationInfo && { postExonerationInfo: { create: postExonerationInfo } }),
+        //   }
+        // },
+        // ...(metaDataInput && { metaData: metaDataInput }),
+
+
+        // include: {
+        // personalInfo: true,
+        // caseInfo: true,
+        // legalInfo: true,
+        // wrongfulConvictionInfo: true,
+        // postExonerationInfo: true,
+        // metaData: true,
+        // },
+      }
     });
 
     return res.status(201).json(newExoneree);
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : 'An unexpected error occurred';
-      console.log(error);
+    console.log(error);
     return res
       .status(400)
       .json({ error: `Failed to create Exoneree: ${errorMessage}` });
