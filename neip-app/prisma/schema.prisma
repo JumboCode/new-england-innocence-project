@@ -39,19 +39,20 @@ model PersonalInfo {
 }
 
 model CaseInfo {
-  id              Int       @id @default(autoincrement())
-  caseNumber      String?   @unique
-  yearsInPrison   Int?
-  arrestDate      String?
-  convictionDate  String?
-  freedomDate     String?
-  exonerationDate String?
-  crimeType       String?
-  sentence        String?
-  country         String?
-  state           String?
-  jurisdiction    String?
-  exoneree        Exoneree?
+  id                Int       @id @default(autoincrement())
+  caseNumber        String?   @unique
+  yearsInPrison     Int?
+  arrestDate        String?
+  convictionDate    String?
+  freedomDate       String?
+  exonerationDate   String?
+  crimeType         String?
+  sentence          String?
+  country           String?
+  state             String?
+  jurisdiction      String?
+  exonerationNumber Int?
+  exoneree          Exoneree?
 }
 
 model LegalInfo {
@@ -60,7 +61,8 @@ model LegalInfo {
   exonerationMethod   String[]
   legalRepresentation String?
   prosecutor          String?
-  detectivesInvolved  String[]
+  judge               String?
+  officersInvolved    String[]
   originalCharges     String[]
   exoneree            Exoneree?
 }
@@ -70,9 +72,11 @@ model WrongfulConvictionInfo {
   falseConfession               Boolean?
   eyewitnessMisidentification   Boolean?
   inadequateLegalDefense        Boolean?
-  policeProsecutorialMisconduct Boolean?
+  policeMisconduct              Boolean?
+  prosecutorialMisconduct       Boolean?
   forensicEvidence              Boolean?
   informantTestimony            Boolean?
+  otherInfo                     String?
   exoneree                      Exoneree?
 }
 
@@ -109,7 +113,7 @@ model ChargesDropdownOption {
   value String @unique
 }
 
-model DetectiveDropdownOption {
+model OfficersDropdownOption {
   id    Int    @id @default(autoincrement())
   value String @unique
 }
