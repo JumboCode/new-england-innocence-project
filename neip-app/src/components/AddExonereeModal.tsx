@@ -707,7 +707,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
                 }))
               }}
               name='officersInvolved'
-              apiUrl='officer'
+              apiUrl='Officer'
             />
           </React.Fragment>
         ]

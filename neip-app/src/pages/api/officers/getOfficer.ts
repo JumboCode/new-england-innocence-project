@@ -17,24 +17,16 @@ export default async function handler (
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== 'POST') {
+  if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { value } = req.body
-
-  console.log(req.body)
-  if (!value || typeof value !== 'string') {
-    return res.status(400).json({ error: 'Invalid input' })
-  }
-
   try {
-    await prisma.officerDropdownOption.create({
-      data: { value: value }
-    })
-    return res.status(200).json({ message: 'Tag added successfully' })
+    const officers = await prisma.OfficersDropdownOption.findMany()
+    const value = officers.map(officer => officer.value)
+    return res.status(200).json(value)
   } catch (error) {
     console.error(error)
-    return res.status(400).json({ error: 'Failed to add tag' })
+    return res.status(400).json({ error: 'Failed to retrieve tags' })
   }
 }

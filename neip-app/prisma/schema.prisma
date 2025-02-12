@@ -113,7 +113,7 @@ model ChargesDropdownOption {
   value String @unique
 }
 
-model officerDropdownOption {
+model OfficersDropdownOption {
   id    Int    @id @default(autoincrement())
   value String @unique
 }
