@@ -2,9 +2,9 @@
 
 import { PrismaClient } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { z } from 'zod';
+import { z } from 'zod'
 
-const Gender = z.enum(["M", "F", "OTHER"]);
+const Gender = z.enum(['M', 'F', 'OTHER'])
 
 const PersonalInfoSchema = z.object({
   name: z.string(),
@@ -14,8 +14,8 @@ const PersonalInfoSchema = z.object({
   ethnicity: z.string(),
   phoneNumber: z.string(),
   address: z.string(),
-  email: z.string(),
-});
+  email: z.string()
+})
 
 const CaseInfoSchema = z.object({
   caseNumber: z.string(),
@@ -28,8 +28,8 @@ const CaseInfoSchema = z.object({
   crimeType: z.string(),
   sentence: z.string(),
   state: z.string(),
-  country: z.string(),
-});
+  country: z.string()
+})
 
 const LegalInfoSchema = z.object({
   originalCharges: z.string(),
@@ -37,8 +37,8 @@ const LegalInfoSchema = z.object({
   exonerationMethod: z.array(z.string()),
   legalRepresentation: z.string(),
   prosecutor: z.string(),
-  detectivesInvolved: z.array(z.string()),
-});
+  officersInvolved: z.array(z.string())
+})
 
 const WrongfulConvictionInfoSchema = z.object({
   falseConfession: z.boolean(),
@@ -46,8 +46,8 @@ const WrongfulConvictionInfoSchema = z.object({
   inadequateLegalDefense: z.boolean(),
   policeProsecutorialMisconduct: z.boolean(),
   forensicEvidence: z.boolean(),
-  informantTestimony: z.boolean(),
-});
+  informantTestimony: z.boolean()
+})
 
 const PostExonerationInfoSchema = z.object({
   reentrySupport: z.array(z.string()),
@@ -56,21 +56,21 @@ const PostExonerationInfoSchema = z.object({
   compensationDate: z.string(),
   occupation: z.string(),
   currentState: z.string(),
-  currentCountry: z.string(),
-});
+  currentCountry: z.string()
+})
 
 const AdditionalInfoSchema = z.object({
   mediaCoverage: z.array(z.string()),
   advocacyInvolvement: z.string(),
   educationalBackground: z.string(),
-  healthInfo: z.string(),
-});
+  healthInfo: z.string()
+})
 
 const MetaDataSchema = z.object({
   dataSource: z.string(),
   lastUpdated: z.string(),
-  createdAt: z.string(),
-});
+  createdAt: z.string()
+})
 
 const UpdatedExonereeDataSchema = z.object({
   personalInfo: PersonalInfoSchema.optional(),
@@ -79,18 +79,18 @@ const UpdatedExonereeDataSchema = z.object({
   wrongfulConvictionInfo: WrongfulConvictionInfoSchema.optional(),
   postExonerationInfo: PostExonerationInfoSchema.optional(),
   additionalInfo: AdditionalInfoSchema.optional(),
-  metaData: MetaDataSchema.optional(),
-});
+  metaData: MetaDataSchema.optional()
+})
 
 const prisma = new PrismaClient()
 
-function validateUpdatedData(data: unknown): boolean {
+function validateUpdatedData (data: unknown): boolean {
   try {
-    UpdatedExonereeDataSchema.parse(data);
-    return true;
+    UpdatedExonereeDataSchema.parse(data)
+    return true
   } catch (error) {
-    console.error('Validation error:', error);
-    return false;
+    console.error('Validation error:', error)
+    return false
   }
 }
 
@@ -109,7 +109,7 @@ export default async function handler (
   }
 
   if (!validateUpdatedData(updatedData)) {
-    return res.status(400).json({ error: 'Invalid data format' });
+    return res.status(400).json({ error: 'Invalid data format' })
   }
 
   try {
@@ -135,24 +135,32 @@ export default async function handler (
         personalInfo: updatedData.personalInfo
           ? { update: updatedData.personalInfo }
           : undefined,
-        caseInfo: updatedData.caseInfo ? { update: updatedData.caseInfo } : undefined,
-        legalInfo: updatedData.legalInfo ? { update: updatedData.legalInfo } : undefined,
+        caseInfo: updatedData.caseInfo
+          ? { update: updatedData.caseInfo }
+          : undefined,
+        legalInfo: updatedData.legalInfo
+          ? { update: updatedData.legalInfo }
+          : undefined,
         wrongfulConvictionInfo: updatedData.wrongfulConvictionInfo
           ? { update: updatedData.wrongfulConvictionInfo }
           : undefined,
         postExonerationInfo: updatedData.postExonerationInfo
           ? { update: updatedData.postExonerationInfo }
           : undefined,
-        metaData: updatedData.metaData ? { update: updatedData.metaData } : undefined,
-      },
-    });
+        metaData: updatedData.metaData
+          ? { update: updatedData.metaData }
+          : undefined
+      }
+    })
 
-    return res.status(200).json({ message: 'Exoneree updated successfully', data: updatedExoneree });
-  } catch (error: any) {
-    console.error('Error updating exoneree:', error);
+    return res
+      .status(200)
+      .json({ message: 'Exoneree updated successfully', data: updatedExoneree })
+  } catch (error) {
+    console.error('Error updating exoneree:', error)
     if (error.code === 'P2025') {
-      return res.status(404).json({ error: 'Exoneree not found' });
+      return res.status(404).json({ error: 'Exoneree not found' })
     }
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: 'Internal server error' })
   }
 }

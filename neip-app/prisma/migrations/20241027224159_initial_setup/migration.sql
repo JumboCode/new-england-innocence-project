@@ -80,7 +80,7 @@ CREATE TABLE "LegalInfo" (
     "exonerationMethod" TEXT[],
     "legalRepresentation" TEXT NOT NULL,
     "prosecutor" TEXT NOT NULL,
-    "detectivesInvolved" TEXT[],
+    "officersInvolved" TEXT[],
 
     CONSTRAINT "LegalInfo_pkey" PRIMARY KEY ("id")
 );
