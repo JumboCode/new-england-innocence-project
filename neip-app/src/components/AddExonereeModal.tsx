@@ -277,6 +277,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         prosecutorialMisconduct: '',
         forensicEvidence: '',
         informantTestimony: '',
+        otherInfo: '',
         compensationAmount: '',
         compensationDate: '',
         reentrySupport: '',

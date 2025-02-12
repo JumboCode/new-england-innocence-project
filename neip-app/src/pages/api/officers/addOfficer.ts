@@ -29,7 +29,7 @@ export default async function handler (
   }
 
   try {
-    await prisma.OfficersDropdownOption.create({
+    await prisma.officersDropdownOption.create({
       data: { value: value }
     })
     return res.status(200).json({ message: 'Tag added successfully' })

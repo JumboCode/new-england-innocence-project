@@ -22,7 +22,7 @@ export default async function handler (
   }
 
   try {
-    const officers = await prisma.OfficersDropdownOption.findMany()
+    const officers = await prisma.officersDropdownOption.findMany()
     const value = officers.map(officer => officer.value)
     return res.status(200).json(value)
   } catch (error) {

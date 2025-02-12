@@ -160,11 +160,14 @@ export default async function handler (
     return res
       .status(200)
       .json({ message: 'Exoneree updated successfully', data: updatedExoneree })
-  } catch (error) {
-    console.error('Error updating exoneree:', error)
-    if (error.code === 'P2025') {
-      return res.status(404).json({ error: 'Exoneree not found' })
+    } catch (error) {
+      console.error('Error updating exoneree:', error);
+    
+      if ((error as { code?: string }).code === 'P2025') {
+        return res.status(404).json({ error: 'Exoneree not found' });
+      }
+    
+      return res.status(500).json({ error: 'Internal server error' });
     }
-    return res.status(500).json({ error: 'Internal server error' })
-  }
+    
 }
