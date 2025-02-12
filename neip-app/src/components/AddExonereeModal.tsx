@@ -68,7 +68,8 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
     falseConfession: '',
     eyewitnessMisidentification: '',
     inadequateLegalDefense: '',
-    policeProsecutorialMisconduct: '',
+    policeMisconduct: '',
+    prosecutorialMisconduct: '',
     forensicEvidence: '',
     informantTestimony: '',
     compensationAmount: '',
@@ -176,8 +177,10 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           eyewitnessMisidentification:
             formData.eyewitnessMisidentification === 'Yes',
           inadequateLegalDefense: formData.inadequateLegalDefense === 'Yes',
-          policeProsecutorialMisconduct:
-            formData.policeProsecutorialMisconduct === 'Yes',
+          policeMisconduct:
+            formData.policeMisconduct === 'Yes',
+          prosecutorialMisconduct:
+            formData.prosecutorialMisconduct === 'Yes',
           forensicEvidence: formData.forensicEvidence === 'Yes',
           informantTestimony:
             formData.informantTestimony === 'Yes' ? true : false
@@ -262,7 +265,8 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         falseConfession: '',
         eyewitnessMisidentification: '',
         inadequateLegalDefense: '',
-        policeProsecutorialMisconduct: '',
+        policeMisconduct: '',
+        prosecutorialMisconduct: '',
         forensicEvidence: '',
         informantTestimony: '',
         compensationAmount: '',
@@ -777,17 +781,28 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               name='inadequateLegalDefense'
             />
           </React.Fragment>,
-          <React.Fragment key='police-prosecutorial-misconduct'>
+          <React.Fragment key='police-misconduct'>
             <LabelAndDropdown
-              label={'Police/Prosecutorial misconduct'}
+              label={'Police misconduct'}
               placeholder={'[Yes/No]'}
               dropdownOptions={['Yes', 'No']}
               width='60%'
-              value={formData.policeProsecutorialMisconduct}
+              value={formData.policeMisconduct}
               onChange={handleChange}
-              name='policeProsecutorialMisconduct'
+              name='policeMisconduct'
             />
-          </React.Fragment>
+          </React.Fragment>,
+                    <React.Fragment key='prosecutorial-misconduct'>
+                    <LabelAndDropdown
+                      label={'Prosecutorial misconduct'}
+                      placeholder={'[Yes/No]'}
+                      dropdownOptions={['Yes', 'No']}
+                      width='60%'
+                      value={formData.prosecutorialMisconduct}
+                      onChange={handleChange}
+                      name='prosecutorialMisconduct'
+                    />
+                  </React.Fragment>
         ]
 
         const circumstancesRightIcons = [

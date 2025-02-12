@@ -38,7 +38,8 @@ curl -X PUT http://localhost:3000/api/exonerees/updateExoneree \
       "falseConfession": false,
       "eyewitnessMisidentification": true,
       "inadequateLegalDefense": true,
-      "policeProsecutorialMisconduct": true,
+      "policeMisconduct": true,
+      "prosecutorialMisconduct": true,
       "forensicEvidence": true,
       "informantTestimony": false
     },

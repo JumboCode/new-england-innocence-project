@@ -71,8 +71,12 @@ const SearchEntryBox: React.FC<SearchEntryBoxProps> = ({ setExonerees }) => {
             ?.inadequateLegalDefense
             ? 'Yes'
             : 'No',
-          policeProsecutorialMisconduct: exoneree.wrongfulConvictionInfo
-            ?.policeProsecutorialMisconduct
+          policeMisconduct: exoneree.wrongfulConvictionInfo
+            ?.policeMisconduct
+            ? 'Yes'
+            : 'No',
+          prosecutorialMisconduct: exoneree.wrongfulConvictionInfo
+            ?.prosecutorialMisconduct
             ? 'Yes'
             : 'No',
           forensicEvidence: exoneree.wrongfulConvictionInfo?.forensicEvidence

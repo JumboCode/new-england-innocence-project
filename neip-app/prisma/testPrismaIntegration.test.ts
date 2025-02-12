@@ -68,7 +68,8 @@ describe('Prisma CRUD operations', () => {
         falseConfession: false,
         eyewitnessMisidentification: false,
         inadequateLegalDefense: true,
-        policeProsecutorialMisconduct: false,
+        policeMisconduct: false,
+        prosecutorialMisconduct: false,
         forensicEvidence: true,
         informantTestimony: false
       }

@@ -65,7 +65,8 @@ const dataSource = [
     falseConfession: 'No',
     eyewitnessMisidentification: 'No',
     inadequateLegalDefense: 'Yes',
-    policeProsecutorialMisconduct: 'Yes',
+    policeMisconduct: 'Yes',
+    prosecutorialMisconduct: 'Yes',
     forensicEvidence: 'Paper Bag',
     informantTestimony: 'Yes',
     compensation: '$500',
@@ -108,7 +109,8 @@ const dataSource = [
     falseConfession: 'Yes',
     eyewitnessMisidentification: 'Yes',
     inadequateLegalDefense: 'No',
-    policeProsecutorialMisconduct: 'Yes',
+    policeMisconduct: 'Yes',
+    prosecutorialMisconduct: 'Yes',
     forensicEvidence: 'DNA',
     informantTestimony: 'No',
     compensation: '$1,200,000',
@@ -151,7 +153,8 @@ const dataSource = [
     falseConfession: 'No',
     eyewitnessMisidentification: 'No',
     inadequateLegalDefense: 'Yes',
-    policeProsecutorialMisconduct: 'No',
+    policeMisconduct: 'No',
+    prosecutorialMisconduct: 'No',
     forensicEvidence: 'Audit',
     informantTestimony: 'Yes',
     compensation: '$200,000',
@@ -194,7 +197,8 @@ const dataSource = [
     falseConfession: 'No',
     eyewitnessMisidentification: 'No',
     inadequateLegalDefense: 'No',
-    policeProsecutorialMisconduct: 'Yes',
+    policeMisconduct: 'Yes',
+    prosecutorialMisconduct: 'Yes',
     forensicEvidence: 'Surveillance',
     informantTestimony: 'No',
     compensation: '$800,000',
@@ -284,9 +288,14 @@ const columns = [
     key: 'inadequateLegalDefense'
   },
   {
-    title: 'Police Prosecutorial Misconduct',
-    dataIndex: 'policeProsecutorialMisconduct',
-    key: 'policeProsecutorialMisconduct'
+    title: 'Police Misconduct',
+    dataIndex: 'policeMisconduct',
+    key: 'policeMisconduct'
+  },
+  {
+    title: 'Prosecutorial Misconduct',
+    dataIndex: 'prosecutorialMisconduct',
+    key: 'prosecutorialMisconduct'
   },
   {
     title: 'Forensic Evidence',
