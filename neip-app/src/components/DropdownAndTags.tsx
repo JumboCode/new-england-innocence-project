@@ -1,6 +1,4 @@
-//Dropdown & Tags Component
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Select, { StylesConfig } from 'react-select';
 
 interface DropdownAndTagsProps {
@@ -9,37 +7,93 @@ interface DropdownAndTagsProps {
   options: string[];
   width: string;
   height: string;
+  value?: string[];
+  onChange?: (name: string, value: string[]) => void;
+  name: string;
+  apiUrl: string;
 }
 
-const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, options, width, height}) => {
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ 
+  label, 
+  placeholder, 
+  options, 
+  width, 
+  height,
+  value = [],
+  onChange,
+  name,
+  apiUrl
+}) => {
+  const [selectedTags, setSelectedTags] = useState<string[]>(value);
   const [availableOptions, setAvailableOptions] = useState(
     options.map((option) => ({ value: option, label: option }))
   );
   const [inputValue, setInputValue] = useState<string>("");
 
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const response = await fetch(`/api/${apiUrl.toLocaleLowerCase()}s/get${apiUrl}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        const options = data.map((item: string) => ({ value: item, label: item }));
+        setAvailableOptions(options);
+      } catch (error) {
+        console.error(`Failed to fetch ${apiUrl} options:`, error);
+      }
+    };
+
+    fetchOptions();
+  }, [apiUrl]);
+
+  useEffect(() => {
+    setSelectedTags(value);
+  }, [value]);
+
   const handleSelectChange = (selectedOption: any) => {
     if (selectedOption) {
       const selectedValue = selectedOption.value;
       if (!selectedTags.includes(selectedValue)) {
-        setSelectedTags([...selectedTags, selectedValue]);
+        const newTags = [...selectedTags, selectedValue];
+        setSelectedTags(newTags);
+        onChange?.(name, newTags);
       }
     }
   };
 
   const removeTag = (tagToRemove: string) => {
-    setSelectedTags(selectedTags.filter((tag) => tag !== tagToRemove));
+    const newTags = selectedTags.filter((tag) => tag !== tagToRemove);
+    setSelectedTags(newTags);
+    onChange?.(name, newTags);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter" && inputValue) {
+  const handleKeyDown = async (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' && inputValue) {
       if (!selectedTags.includes(inputValue)) {
         const newOption = { value: inputValue, label: inputValue };
-        setSelectedTags([...selectedTags, inputValue]);
+        const newTags = [...selectedTags, inputValue];
+        setSelectedTags(newTags);
         setAvailableOptions([...availableOptions, newOption]);
+
+        try {
+            const response = await fetch(`/api/${apiUrl.toLocaleLowerCase()}s/add${apiUrl}`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ value: inputValue }),
+            });
+            if (!response.ok) {
+                throw new Error(`Failed to add ${apiUrl} option`);
+            }
+        } catch (error) {
+            console.error(`Failed to add ${apiUrl} option:`, error);
+            setSelectedTags(prev => prev.filter(tag => tag !== inputValue));
+            setAvailableOptions(prev => prev.filter(option => option.value !== inputValue));
+            onChange?.(name, selectedTags.filter(tag => tag !== inputValue));
+        }
       }
-      setInputValue(""); 
-      event.preventDefault();
+      setInputValue('');
     }
   };
 
@@ -69,7 +123,6 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
         color: '#004085',
       },
     }),
-  
     menu: (provided) => ({
       ...provided,
       zIndex: 999,
@@ -137,7 +190,7 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ label, placeholder, o
                 className="remove-tag"
                 onClick={() => removeTag(tag)}
               >
-                Χ
+                ×
               </button>
             </div>
           ))}

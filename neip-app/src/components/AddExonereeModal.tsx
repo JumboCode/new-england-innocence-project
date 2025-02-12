@@ -1,3 +1,4 @@
+//AddExonereeModal.tsx
 import React, { useState } from "react";
 import Image from "next/image";
 import Modal from "@mui/material/Modal";
@@ -6,8 +7,8 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import LabelAndEntry from "../components/LabelAndEntry"
-import LabelAndDropdown from "../components/LabelAndDropdown"
+import LabelAndEntry from "./LabelAndEntry"
+import LabelAndDropdown from "./LabelAndDropdown"
 import DropdownAndTags from "../components/DropdownAndTags"
 import PersonalInfoIcon from "../img/PersonalInfoIcon.png";
 import EditIcon from "../img/EditIcon.png";
@@ -34,6 +35,54 @@ interface AddExonereeModalProps {
 const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }) => {
   const [activeTab, setActiveTab] = useState(0);
 
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    email: "",
+    dob: "",
+    gender: "",
+    race: "",
+    ethnicity: "",
+    address: "",
+    caseNumber: "",
+    jurisdiction: "",
+    yearsInPrison: "",
+    arrestDate: "",
+    convictionDate: "",
+    freedomDate: "",
+    exonerationDate: "",
+    crimeType: "",
+    sentence: "",
+    country: "",
+    state: "",
+    originalCharges: [],
+    convictionMethod: "",
+    exonerationMethod: "",
+    legalRepresentation: "",
+    prosecutor: "",
+    detectivesInvolved: [],
+    falseConfession: "",
+    eyewitnessMisidentification: "",
+    inadequateLegalDefense: "",
+    policeProsecutorialMisconduct: "",
+    forensicEvidence: "",
+    informantTestimony: "",
+    compensationAmount: "",
+    compensationDate: "",
+    reentrySupport: "",
+    publicApology: "",
+    currentCountry: "",
+    currentState: "",
+    currentStatus: "",
+    currentOccupation: "",
+    placeOfResidence: "",
+    mediaCoverage: "",
+    advocacyInvolvement: "",
+    educationalBackground: "",
+    healthInfo: "",
+  });
+  
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
@@ -57,6 +106,171 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
     },
   });
 
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | string,
+    value?: string[]
+  ) => {
+    if (Array.isArray(value)) {
+      setFormData(prevData => ({
+        ...prevData,
+        [e as string]: value
+      }));
+    } else if ((e as React.ChangeEvent<HTMLInputElement | HTMLSelectElement>).target) {
+      const event = e as React.ChangeEvent<HTMLInputElement | HTMLSelectElement>;
+      setFormData(prevData => ({
+        ...prevData,
+        [event.target.name]: event.target.value
+      }));
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      // Restructure the form data into the expected format
+      const formattedData = {
+        personalInfo: {
+          name: formData.firstName + " " + formData.lastName,
+          phoneNumber: formData.phoneNumber,
+          email: formData.email,
+          dateOfBirth: formData.dob,
+          gender: formData.gender === "Male" ? "M" : formData.gender === "Female" ? "F" : "OTHER",
+          race: formData.race,
+          ethnicity: formData.ethnicity,
+          address: formData.address
+        },
+        caseInfo: {
+          caseNumber: formData.caseNumber,
+          jurisdiction: formData.jurisdiction,
+          yearsInPrison: parseInt(formData.yearsInPrison) || 0,
+          arrestDate: formData.arrestDate,
+          convictionDate: formData.convictionDate,
+          freedomDate: formData.freedomDate,
+          exonerationDate: formData.exonerationDate,
+          crimeType: formData.crimeType,
+          sentence: formData.sentence,
+          country: formData.country,
+          state: formData.state
+        },
+        legalInfo: {
+          originalCharges: formData.originalCharges,
+
+        //   TODO: FIX TYPE FOR CONVICTIONMETHOD, EXONERATIONMETHOD, DETECTIVESINVOLVED, INFORMANTTESTIMONY, EITHER STRING OR ARRAY BUT NOT BOTH
+          convictionMethod: [formData.convictionMethod],
+          exonerationMethod: [formData.exonerationMethod],
+          legalRepresentation: formData.legalRepresentation,
+          prosecutor: formData.prosecutor,
+          detectivesInvolved: [formData.detectivesInvolved]
+        },
+        wrongfulConvictionInfo: {
+          falseConfession: formData.falseConfession === 'Yes',
+          eyewitnessMisidentification: formData.eyewitnessMisidentification === 'Yes',
+          inadequateLegalDefense: formData.inadequateLegalDefense === 'Yes',
+          policeProsecutorialMisconduct: formData.policeProsecutorialMisconduct === 'Yes',
+          forensicEvidence: formData.forensicEvidence === 'Yes',
+          informantTestimony: formData.informantTestimony === "Yes" ? true : false,
+        },
+        postExonerationInfo: {
+          compensationAmount: parseFloat(formData.compensationAmount) || 0,
+          compensationDate: new Date(formData.compensationDate),
+          reentrySupport: [formData.reentrySupport],
+          publicApology: formData.publicApology === 'Yes',
+          currentCountry: formData.currentCountry,
+          currentState: formData.currentState,
+          occupation: formData.currentOccupation,
+        },
+        additionalInfo: {
+          mediaCoverage: formData.mediaCoverage,
+          advocacyInvolvement: formData.advocacyInvolvement,
+          educationalBackground: formData.educationalBackground,
+          healthInformation: formData.healthInfo,
+          id: 0  // This will be replaced by the actual ID if it exists
+        },
+        metaData: {
+            // TODO: Add something for this, currently just temporary empty strings.
+            dataSource: "",
+            lastUpdated: "",
+            createdAt: "",
+        }
+      };
+  
+      // Basic validation
+      if (!formattedData.personalInfo.name) {
+        alert('First name and last name are required!');
+        return;
+      }
+  
+      const response = await fetch('/api/exonerees/addExoneree', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formattedData)
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+      }
+  
+      const result = await response.json();
+      console.log('Successfully added exoneree:', result);
+      
+      // Close the modal and reset form
+      handleClose();
+      setFormData({
+        firstName: "",
+        lastName: "",
+        phoneNumber: "",
+        email: "",
+        dob: "",
+        gender: "",
+        race: "",
+        ethnicity: "",
+        address: "",
+        caseNumber: "",
+        jurisdiction: "",
+        yearsInPrison: "",
+        arrestDate: "",
+        convictionDate: "",
+        freedomDate: "",
+        exonerationDate: "",
+        crimeType: "",
+        sentence: "",
+        country: "",
+        state: "",
+        originalCharges: [],
+        convictionMethod: "",
+        exonerationMethod: "",
+        legalRepresentation: "",
+        prosecutor: "",
+        detectivesInvolved: [],
+        falseConfession: "",
+        eyewitnessMisidentification: "",
+        inadequateLegalDefense: "",
+        policeProsecutorialMisconduct: "",
+        forensicEvidence: "",
+        informantTestimony: "",
+        compensationAmount: "",
+        compensationDate: "",
+        reentrySupport: "",
+        publicApology: "",
+        currentCountry: "",
+        currentState: "",
+        currentStatus: "",
+        currentOccupation: "",
+        placeOfResidence: "",
+        mediaCoverage: "",
+        advocacyInvolvement: "",
+        educationalBackground: "",
+        healthInfo: ""
+      });
+  
+    } catch (error) {
+      console.error('Error adding exoneree:', error);
+      alert(error instanceof Error ? error.message : 'Failed to add exoneree. Please try again.');
+    }
+  };
+
   const renderTabContent = () => {
     switch (activeTab) {
       case 0:
@@ -74,6 +288,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="40%"
               height="35px"
               borderRadius="10px"
+              value={formData.firstName}
+              onChange={handleChange}
+              name="firstName"
             />
           </React.Fragment>,
           <React.Fragment key="last-name-entry">
@@ -83,6 +300,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="40%"
               height="35px"
               borderRadius="10px"
+              value={formData.lastName}
+              onChange={handleChange}
+              name="lastName"
             />
           </React.Fragment>,
           <React.Fragment key="phone-number-entry">
@@ -92,6 +312,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="40%"
               height="35px"
               borderRadius="10px"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              name="phoneNumber"
             />
           </React.Fragment>,
           <React.Fragment key="email-entry">
@@ -101,6 +324,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="40%"
               height="35px"
               borderRadius="10px"
+              value={formData.email}
+              onChange={handleChange}
+              name="email"
             />
           </React.Fragment>,
         ];
@@ -114,6 +340,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="48%"
               height="36px"
               borderRadius="10px"
+              value={formData.dob}
+              onChange={handleChange}
+              name="dob"
             />
           </React.Fragment>,
           <React.Fragment key="gender-dropdown">
@@ -122,6 +351,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               dropdownOptions={["Male", "Female"]}
               placeholder={"Gender"}
               width="210px"
+              value={formData.gender}
+              onChange={handleChange}
+              name="gender"
             />
           </React.Fragment>,
           <React.Fragment key="race-dropdown">
@@ -137,6 +369,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               ]}
               placeholder={"Race"}
               width="210px"
+              value={formData.race}
+              onChange={handleChange}
+              name="race"
             />
           </React.Fragment>,
           <React.Fragment key="ethnicity-dropdown">
@@ -152,6 +387,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               ]}
               placeholder={"Ethnicity"}
               width="210px"
+              value={formData.ethnicity}
+              onChange={handleChange}
+              name="ethnicity"
             />
           </React.Fragment>,
           <React.Fragment key="address-entry">
@@ -160,18 +398,10 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="48%"
               height="72px"
               borderRadius="10px"
+              value={formData.address}
+              onChange={handleChange}
+              name="address"
             />
-          </React.Fragment>,
-          <React.Fragment key="save-button">
-            <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
-              <IconTextButton
-                filled={true}
-                border={false}
-                text="Save"
-                height="40px"
-                width="106px"
-              />
-            </div>
           </React.Fragment>,
         ];
         
@@ -205,6 +435,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="60%"
               height="35px"
               borderRadius="10px"
+              value={formData.caseNumber}
+              onChange={handleChange}
+              name="caseNumber"
             />
           </React.Fragment>,
           <React.Fragment key="jurisdiction">
@@ -214,6 +447,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="60%"
               height="35px"
               borderRadius="10px"
+              value={formData.jurisdiction}
+              onChange={handleChange}
+              name="jurisdiction"
             />
           </React.Fragment>,
           <React.Fragment key="years-in-prison">
@@ -222,6 +458,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="60%"
               height="35px"
               borderRadius="10px"
+              value={formData.yearsInPrison}
+              onChange={handleChange}
+              name="yearsInPrison"
             />
           </React.Fragment>,
           <React.Fragment key="arrest-date">
@@ -231,6 +470,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="60%"
               height="35px"
               borderRadius="10px"
+              value={formData.arrestDate}
+              onChange={handleChange}
+              name="arrestDate"
             />
           </React.Fragment>,
           <React.Fragment key="conviction-date">
@@ -240,6 +482,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="60%"
               height="35px"
               borderRadius="10px"
+              value={formData.convictionDate}
+              onChange={handleChange}
+              name="convictionDate"
             />
           </React.Fragment>,
         ];
@@ -253,6 +498,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="60%"
               height="36px"
               borderRadius="10px"
+              value={formData.freedomDate}
+              onChange={handleChange}
+              name="freedomDate"
             />
           </React.Fragment>,
           <React.Fragment key="exoneration-date">
@@ -262,6 +510,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="60%"
               height="36px"
               borderRadius="10px"
+              value={formData.exonerationDate}
+              onChange={handleChange}
+              name="exonerationDate"
             />
           </React.Fragment>,
           <React.Fragment key="crime-type-dropdown">
@@ -270,6 +521,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               dropdownOptions={["Felony", "Misdemeanor"]}
               placeholder={"Crime Type"}
               width="265px"
+              value={formData.crimeType}
+              onChange={handleChange}
+              name="crimeType"
             />
           </React.Fragment>,
           <React.Fragment key="sentence-entry">
@@ -278,19 +532,33 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="60%"
               height="36px"
               borderRadius="10px"
+              value={formData.sentence}
+              onChange={handleChange}
+              name="sentence"
             />
           </React.Fragment>,
-          <React.Fragment key="save-button">
-            <div>
-              <IconTextButton
-                filled={true}
-                border={false}
-                text="Save"
-                height="40px"
-                width="106px"
-              />
-            </div>
-          </React.Fragment>,
+          <React.Fragment key="country">
+          <LabelAndEntry
+            label={"Country"}
+            width="60%"
+            height="36px"
+            borderRadius="10px"
+            value={formData.country}
+            onChange={handleChange}
+            name="country"
+          />
+        </React.Fragment>,
+          <React.Fragment key="state">
+          <LabelAndEntry
+            label={"State"}
+            width="60%"
+            height="36px"
+            borderRadius="10px"
+            value={formData.state}
+            onChange={handleChange}
+            name="state"
+          />
+        </React.Fragment>,
         ];
         
         return <div>
@@ -323,6 +591,15 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               options={[]}
               width="60%"
               height="35px"
+              value={formData.originalCharges}
+              onChange={(name, value) => {
+                setFormData(prev => ({
+                  ...prev,
+                  [name]: value
+                }));
+              }}
+              name="originalCharges"
+              apiUrl="Charge"
             />
           </React.Fragment>,
           <React.Fragment key="conviction-method">
@@ -331,6 +608,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="60%"
               height="35px"
               borderRadius="10px"
+              value={formData.convictionMethod}
+              onChange={handleChange}
+              name="convictionMethod"
             />
           </React.Fragment>,
           <React.Fragment key="exoneration-method">
@@ -339,17 +619,34 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="60%"
               height="35px"
               borderRadius="10px"
+              value={formData.exonerationMethod}
+              onChange={handleChange}
+              name="exonerationMethod"
             />
           </React.Fragment>,
         ];
         
         const legalRightIcons = [
+          <React.Fragment key="legalRepresentation">
+            <LabelAndEntry
+              label={"Legal Representation"}
+              width="60%"
+              height="36px"
+              borderRadius="10px"
+              value={formData.legalRepresentation}
+              onChange={handleChange}
+              name="legalRepresentation"
+            />
+          </React.Fragment>,
           <React.Fragment key="prosecutor">
             <LabelAndEntry
               label={"Prosecutor"}
               width="60%"
               height="36px"
               borderRadius="10px"
+              value={formData.prosecutor}
+              onChange={handleChange}
+              name="prosecutor"
             />
           </React.Fragment>,
           <React.Fragment key="detectives-involved">
@@ -359,18 +656,16 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               options={[]}
               width="60%"
               height="36px"
+              value={formData.detectivesInvolved}
+              onChange={(name, value) => {
+                setFormData(prev => ({
+                  ...prev,
+                  [name]: value
+                }));
+              }}
+              name="detectivesInvolved"
+              apiUrl="Detective"
             />
-          </React.Fragment>,
-          <React.Fragment key="save-button">
-            <div style={{ marginTop: "30px", marginLeft: "80px" }}>
-              <IconTextButton
-                filled={true}
-                border={false}
-                text="Save"
-                height="40px"
-                width="106px"
-              />
-            </div>
           </React.Fragment>,
         ];
         
@@ -403,6 +698,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={"[Yes/No]"}
               dropdownOptions={["Yes", "No"]}
               width="60%"
+              value={formData.falseConfession}
+              onChange={handleChange}
+              name="falseConfession"
             />
           </React.Fragment>,
           <React.Fragment key="eyewitness-misidentification">
@@ -411,6 +709,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={"[Yes/No]"}
               dropdownOptions={["Yes", "No"]}
               width="60%"
+              value={formData.eyewitnessMisidentification}
+              onChange={handleChange}
+              name="eyewitnessMisidentification"
             />
           </React.Fragment>,
           <React.Fragment key="inadequate-legal-defense">
@@ -419,6 +720,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={"[Yes/No]"}
               dropdownOptions={["Yes", "No"]}
               width="60%"
+              value={formData.inadequateLegalDefense}
+              onChange={handleChange}
+              name="inadequateLegalDefense"
             />
           </React.Fragment>,
           <React.Fragment key="police-prosecutorial-misconduct">
@@ -427,6 +731,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={"[Yes/No]"}
               dropdownOptions={["Yes", "No"]}
               width="60%"
+              value={formData.policeProsecutorialMisconduct}
+              onChange={handleChange}
+              name="policeProsecutorialMisconduct"
             />
           </React.Fragment>,
         ];
@@ -439,24 +746,19 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={"[Yes/No]"}
               dropdownOptions={["Yes", "No"]}
               width="60%"
+              value={formData.forensicEvidence}
+              onChange={handleChange}
+              name="forensicEvidence"
             />
           </React.Fragment>,
           <React.Fragment key="informant-testimony">
             <LabelAndEntry
               label={"Informant Testimony"}
               width="60%"
+              value={formData.informantTestimony}
+              onChange={handleChange}
+              name="informantTestimony"
             />
-          </React.Fragment>,
-          <React.Fragment key="save-button">
-            <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
-              <IconTextButton
-                filled={true}
-                border={false}
-                text="Save"
-                height="40px"
-                width="106px"
-              />
-            </div>
           </React.Fragment>,
         ];
         
@@ -489,6 +791,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="60%"
               height="36px"
               borderRadius="10px"
+              value={formData.compensationAmount}
+              onChange={handleChange}
+              name="compensationAmount"
             />
           </React.Fragment>,
           <React.Fragment key="compensation-date">
@@ -498,6 +803,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="60%"
               height="36px"
               borderRadius="10px"
+              value={formData.compensationDate}
+              onChange={handleChange}
+              name="compensationDate"
             />
           </React.Fragment>,
           <React.Fragment key="reentry-support">
@@ -506,6 +814,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={"[Yes/No]"}
               dropdownOptions={["Yes", "No"]}
               width="60%"
+              value={formData.reentrySupport}
+              onChange={handleChange}
+              name="reentrySupport"
             />
           </React.Fragment>,
           <React.Fragment key="public-apology">
@@ -514,14 +825,44 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               placeholder={"[Yes/No]"}
               dropdownOptions={["Yes", "No"]}
               width="60%"
+              value={formData.publicApology}
+              onChange={handleChange}
+              name="publicApology"
             />
           </React.Fragment>,
+          <React.Fragment key="current-country">
+          <LabelAndEntry
+            label={"Current Country"}
+            placeholder={""}
+            width="60%"
+            height="36px"
+            borderRadius="10px"
+            value={formData.currentCountry}
+            onChange={handleChange}
+            name="currentCountry"
+          />
+        </React.Fragment>,
+          <React.Fragment key="current-state">
+          <LabelAndEntry
+            label={"Current State"}
+            placeholder={""}
+            width="60%"
+            height="36px"
+            borderRadius="10px"
+            value={formData.currentState}
+            onChange={handleChange}
+            name="currentState"
+          />
+        </React.Fragment>,
           <React.Fragment key="current-status">
             <LabelAndDropdown
               label={"Current status"}
               placeholder={"status"}
               dropdownOptions={["Freed but still fighting", "Plea deal", "Exonerated"]}
               width="60%"
+              value={formData.currentStatus}
+              onChange={handleChange}
+              name="currentStatus"
             />
           </React.Fragment>,
         ];
@@ -534,6 +875,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="60%"
               height="36px"
               borderRadius="10px"
+              value={formData.currentOccupation}
+              onChange={handleChange}
+              name="currentOccupation"
             />
           </React.Fragment>,
           <React.Fragment key="place-of-residence">
@@ -543,18 +887,10 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="60%"
               height="72px"
               borderRadius="10px"
+              value={formData.placeOfResidence}
+              onChange={handleChange}
+              name="placeOfResidence"
             />
-          </React.Fragment>,
-          <React.Fragment key="save-button">
-            <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
-            <IconTextButton
-                filled={true}
-                border={false}
-                text="Save"
-                height="40px"
-                width="106px"
-              />
-            </div>
           </React.Fragment>,
         ];
         
@@ -583,10 +919,12 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           <React.Fragment key="media-coverage">
             <LabelAndEntry
               label={"Media coverage"}
-              placeholder={"link"}
               width="60%"
               height="36px"
               borderRadius="10px"
+              value={formData.mediaCoverage}
+              onChange={handleChange}
+              name="mediaCoverage"
             />
           </React.Fragment>,
           <React.Fragment key="advocacy-involvement">
@@ -595,6 +933,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="60%"
               height="72px"
               borderRadius="10px"
+              value={formData.advocacyInvolvement}
+              onChange={handleChange}
+              name="advocacyInvolvement"
             />
           </React.Fragment>,
           <React.Fragment key="educational-background">
@@ -603,6 +944,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="60%"
               height="72px"
               borderRadius="10px"
+              value={formData.educationalBackground}
+              onChange={handleChange}
+              name="educationalBackground"
             />
           </React.Fragment>,
         ];
@@ -614,16 +958,20 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               width="60%"
               height="72px"
               borderRadius="10px"
+              value={formData.healthInfo}
+              onChange={handleChange}
+              name="healthInfo"
             />
           </React.Fragment>,
-          <React.Fragment key="save-button">
+          <React.Fragment key="submit-button">
             <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
             <IconTextButton
                 filled={true}
                 border={false}
-                text="Save"
+                text="Submit"
                 height="40px"
                 width="106px"
+                onClick={handleSubmit}
               />
             </div>
           </React.Fragment>,
