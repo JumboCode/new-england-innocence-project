@@ -1,6 +1,6 @@
 // -- look over
 
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../../../utils/database/connectToDb'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { z } from 'zod'
 
@@ -85,8 +85,6 @@ const UpdatedExonereeDataSchema = z.object({
   additionalInfo: AdditionalInfoSchema.optional(),
   metaData: MetaDataSchema.optional()
 })
-
-const prisma = new PrismaClient()
 
 function validateUpdatedData (data: unknown): boolean {
   try {
