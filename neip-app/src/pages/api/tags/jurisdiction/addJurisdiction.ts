@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '../../../utils/database/connectToDb'
+import { prisma } from '../../../../utils/database/connectToDb'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
