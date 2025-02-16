@@ -61,23 +61,23 @@ model LegalInfo {
   exonerationMethod   String[]
   legalRepresentation String?
   prosecutor          String?
-  judge               String?
   officersInvolved    String[]
   originalCharges     String[]
+  judge               String?
   exoneree            Exoneree?
 }
 
 model WrongfulConvictionInfo {
-  id                            Int       @id @default(autoincrement())
-  falseConfession               Boolean?
-  eyewitnessMisidentification   Boolean?
-  inadequateLegalDefense        Boolean?
-  policeMisconduct              Boolean?
-  prosecutorialMisconduct       Boolean?
-  forensicEvidence              Boolean?
-  informantTestimony            Boolean?
-  otherInfo                     String?
-  exoneree                      Exoneree?
+  id                          Int       @id @default(autoincrement())
+  falseConfession             Boolean?
+  eyewitnessMisidentification Boolean?
+  inadequateLegalDefense      Boolean?
+  forensicEvidence            Boolean?
+  informantTestimony          Boolean?
+  otherInfo                   String?
+  policeMisconduct            Boolean?
+  prosecutorialMisconduct     Boolean?
+  exoneree                    Exoneree?
 }
 
 model PostExonerationInfo {
@@ -121,6 +121,13 @@ model OfficersDropdownOption {
 model JurisdictionDropdownOption {
   id    Int    @id @default(autoincrement())
   value String @unique
+}
+
+model Officer {
+  id          Int @id @default(autoincrement())
+  name       String @unique
+  notes      String?
+  MediaLinks String?
 }
 
 enum Gender {

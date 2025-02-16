@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { prisma } from '../../../utils/database/connectToDb'
+import { prisma } from '../../../../utils/database/connectToDb'
 
 export default async function handler (
   req: NextApiRequest,
@@ -17,7 +17,7 @@ export default async function handler (
   }
 
   try {
-    await prisma.officersDropdownOption.create({
+    await prisma.chargesDropdownOption.create({
       data: { value: value }
     })
     return res.status(200).json({ message: 'Tag added successfully' })
