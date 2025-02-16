@@ -973,11 +973,12 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           <React.Fragment key='current-status'>
             <LabelAndDropdown
               label={'Current status'}
-              placeholder={'status'}
+              placeholder={'Select status'}
               dropdownOptions={[
                 'Freed but still fighting',
                 'Plea deal',
-                'Exonerated'
+                'Exonerated',
+                'Return to custody'
               ]}
               width='60%'
               value={formData.currentStatus}
