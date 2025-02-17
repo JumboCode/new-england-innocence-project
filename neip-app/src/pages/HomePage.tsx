@@ -324,29 +324,46 @@ const openFilterSidebar = () => {
   setIsSidebarOpen(true);
 };
 
+// const handleLogout = async () => {
+//   try {
+//     const { session } = useClerk();
+//     const sessionId = session?.id;
+
+//     if (!sessionId) {
+//       console.error("No session ID found. User might not be logged in.");
+//       return;
+//     }
+
+//     const response = await fetch("/api/auth/signout", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({ sessionId }),
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`Logout failed: ${response.statusText}`);
+//     }
+
+//     window.location.href = "/login";
+//   } catch (error) {
+//     console.error("Logout error:", error);
+//   }
+// };
+
 const handleLogout = async () => {
   try {
-    const { session } = useClerk();
-    const sessionId = session?.id;
-
-    if (!sessionId) {
-      console.error("No session ID found. User might not be logged in.");
-      return;
-    }
-
     const response = await fetch("/api/auth/signout", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ sessionId }),
+      headers: { "Content-Type": "application/json" },
     });
 
     if (!response.ok) {
       throw new Error(`Logout failed: ${response.statusText}`);
     }
 
-    window.location.href = "/login";
+    window.location.href = "/login"; // Redirect to login page after successful logout
   } catch (error) {
     console.error("Logout error:", error);
   }
