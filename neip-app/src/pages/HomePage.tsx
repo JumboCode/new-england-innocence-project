@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import IconTextButton from "../components/IconTextButton";
 import SearchEntryBox from "../components/SearchEntryBox";
@@ -20,15 +21,56 @@ import OpenFilterSidebar from "../components/OpenFilterSidebar";
 // TODO: This is a bandaid solution for Vercel deployment. 
 // In the future we will want to dynamically determine columns based off this
 interface TableRowData {
-  name: string;
-  dob: string;
-  race: string;
-  ethnicity: string;
-  phoneNumber: string;
-  address: string;
-  email: string;
-  caseNumber: string;
-  crimeType: string;
+  // name: string;
+  // dob: string;
+  // race: string;
+  // ethnicity: string;
+  // phoneNumber: string;
+  // address: string;
+  // email: string;
+  // caseNumber: string;
+  // crimeType: string;
+    key: number;
+    name: string;
+    dob: string;
+    gender: string;
+    race: string;
+    ethnicity: string;
+    phoneNumber: string;
+    address: string;
+    email: string;
+    caseNumber: string;
+    jurisdiction: string;
+    yearsInPrison: number;
+    arrestDate: string;
+    convictionDate: string;
+    freedomDate: string;
+    exonerationDate: string;
+    crimeType: string;
+    sentence: string;
+    originalCharges: string;
+    convictionMethod: string;
+    exonerationMethod: string;
+    legalRepresentation: string;
+    prosecutor: string;
+    detectivesInvolved: string;
+    falseConfession: boolean;
+    eyewitnessMisidentification: boolean;
+    inadequateLegalDefense: boolean;
+    policeProsecutorialMisconduct: boolean;
+    forensicEvidence: boolean;
+    informantTestimony: boolean;
+    compensation: number;
+    reentrySupport: string,
+    publicApology: boolean,
+    currentStatus: string;
+    mediaCoverage: string;
+    advocacyInvolvement: string;
+    educationalBackground: string;
+    healthInfo: string;
+    dataSource: string;
+    lastUpdated: string;
+    createdAt: string;
 }
 // Dynamic import for the Ant Design Table component
 const Table = dynamic(() => import("antd").then((mod) => mod.Table), { ssr: false });
@@ -312,7 +354,7 @@ const HomePage: React.FC = () => {
 
   const closeActionMenu = () => {
     setActionMenuVisible(false);
-    setSelectedCell(null);
+    //setSelectedCell(null);
   };
 
 const closeFilterSidebar = () => {
@@ -473,7 +515,10 @@ const noop: () => void = () => {};
           zIndex: 1000,
         }}
       >
-        <ActionMenuComponent onClose={closeActionMenu} />
+        if (selectedCell != null) {
+          selectedCell.record.key
+        }
+        <ActionMenuComponent onClose={closeActionMenu} selectedExoneree={dataSource[0]} />
       </div>
     )}
     </div>  

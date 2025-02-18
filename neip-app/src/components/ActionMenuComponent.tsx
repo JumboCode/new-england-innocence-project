@@ -1,16 +1,27 @@
 import React, { useState } from 'react';
+import EditExonereeModal from './EditExonereeModal';
 
-const ActionMenuComponent = ({ onClose } : {onClose : any}) => {
+const ActionMenuComponent = ({ onClose, selectedExoneree } : {onClose : any, selectedExoneree : any}) => {
     const [isVisible, setIsVisible] = useState(true);
     const [isClicked, setIsClicked] = useState<null | string>(null);
+
+    const [modalOpen, setModalOpen] = useState(false);
+
+
+    const handleOpenModal = () => setModalOpen(true);
+    const handleCloseModal = () => setModalOpen(false);
+
 
     const close = () => {
         setIsVisible(false);
         onClose?.(); // Call the parent's onClose handler
     };
 
-    const click = ( item: string) => {
+    const click = ( item: string, exonereeData: any) => {
         setIsClicked(item);
+        if (item === "Edit" && selectedExoneree) {
+            handleOpenModal();
+        }
     };
 
     if (!isVisible) {
@@ -41,7 +52,7 @@ const ActionMenuComponent = ({ onClose } : {onClose : any}) => {
                     X
                 </button>
             </div>
-            <div onClick={() => click("Open")} style={{
+            <div onClick={() => click("Open", selectedExoneree)} style={{
                 textAlign: 'left',
                 color: isClicked === "Open" ? 'white' : 'black',
                 paddingBottom: '5px',
@@ -52,7 +63,7 @@ const ActionMenuComponent = ({ onClose } : {onClose : any}) => {
             }}>
                 Open
             </div>
-            <div onClick={() => click("Edit")} style={{
+            <div onClick={() => click("Edit", selectedExoneree)} style={{
                 color: isClicked === "Edit" ? 'white' : 'black',
                 paddingBottom: '5px',
                 paddingLeft: '13px',
@@ -62,7 +73,7 @@ const ActionMenuComponent = ({ onClose } : {onClose : any}) => {
             }}>
                 Edit
             </div>
-            <div onClick={() => click("Share")} style={{
+            <div onClick={() => click("Share", selectedExoneree)} style={{
                 color: isClicked === "Share" ? 'white' : 'black',
                 paddingBottom: '5px',
                 paddingLeft: '13px',
@@ -72,7 +83,7 @@ const ActionMenuComponent = ({ onClose } : {onClose : any}) => {
             }}>
                 Share
             </div>
-            <div onClick={() => click("Delete")} style={{
+            <div onClick={() => click("Delete", selectedExoneree)} style={{
                 color: isClicked === "Delete" ? 'white' : 'black',
                 paddingBottom: '5px',
                 paddingLeft: '13px',
@@ -83,6 +94,7 @@ const ActionMenuComponent = ({ onClose } : {onClose : any}) => {
             }}>
                 Delete
             </div>
+            <EditExonereeModal open={modalOpen} handleClose={handleCloseModal} selectedExoneree={selectedExoneree}/>
         </div>
     );
 }
