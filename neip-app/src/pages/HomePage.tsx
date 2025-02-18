@@ -16,7 +16,6 @@ import ActionMenuComponent from "@/components/ActionMenuComponent";
 import SelectColumnsModal from "@/components/SelectColumnsModal";
 import TableFilterIcons from "@/components/TableFilterIcons";
 import OpenFilterSidebar from "../components/OpenFilterSidebar";
-import { useClerk } from "@clerk/nextjs";
 
 // TODO: This is a bandaid solution for Vercel deployment. 
 // In the future we will want to dynamically determine columns based off this
