@@ -208,7 +208,7 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({ open, handleClose
           advocacyInvolvement: formData.advocacyInvolvement,
           educationalBackground: formData.educationalBackground,
           healthInformation: formData.healthInfo,
-          id: 0  // This will be replaced by the actual ID if it exists
+          id: 0 // This will be replaced by the actual ID if it exists
         },
         metaData: {
             // TODO: Add something for this, currently just temporary empty strings.

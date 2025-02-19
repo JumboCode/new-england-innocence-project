@@ -17,7 +17,7 @@ const ActionMenuComponent = ({ onClose, selectedExoneree } : {onClose : any, sel
         onClose?.(); // Call the parent's onClose handler
     };
 
-    const click = ( item: string, exonereeData: any) => {
+    const click = ( item: string, selectedExoneree: any) => {
         setIsClicked(item);
         if (item === "Edit" && selectedExoneree) {
             handleOpenModal();
@@ -38,7 +38,7 @@ const ActionMenuComponent = ({ onClose, selectedExoneree } : {onClose : any, sel
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'flex-start',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)', // Added shadow for better visibility
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
         }}>
             <div style={{
                 display: 'flex',

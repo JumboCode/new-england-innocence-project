@@ -515,10 +515,8 @@ const noop: () => void = () => {};
           zIndex: 1000,
         }}
       >
-        if (selectedCell != null) {
-          selectedCell.record.key
-        }
-        <ActionMenuComponent onClose={closeActionMenu} selectedExoneree={dataSource[0]} />
+
+        <ActionMenuComponent onClose={closeActionMenu} selectedExoneree={selectedCell?.record} />
       </div>
     )}
     </div>  
