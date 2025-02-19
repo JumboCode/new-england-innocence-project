@@ -19,6 +19,11 @@ export default async function handler (
     return res.status(400).json({ error: 'Email and password are required' })
   }
 
+  if (!email.endsWith('@newenglandinnocence.org')) {
+    console.log('Invalid email domain.');
+    return res.status(400).json({ error: 'Only @newenglandinnocence.org emails are allowed' });
+  }
+
   try {
     // added to ensure creation process is working
     const user = await clerkClient.users.createUser({
@@ -27,7 +32,7 @@ export default async function handler (
     })
 
     console.log('User created successfully:', user)
-    return res.status(200).json({ success: true })
+    return res.status(200).json({ success: true, message: 'Verification email sent' })
   } catch (error) {
     console.error('User creation error:', error)
     return res.status(500).json({ error: error })

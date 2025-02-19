@@ -20,7 +20,7 @@
     "@mui/material": "^6.1.8",
     "@neondatabase/serverless": "^0.10.4",
     "@prisma/adapter-neon": "^6.0.1",
-    "@prisma/client": "^5.21.1",
+    "@prisma/client": "^5.22.0",
     "antd": "^5.22.1",
     "dotenv": "^16.4.7",
     "next": "^14.2.17",
