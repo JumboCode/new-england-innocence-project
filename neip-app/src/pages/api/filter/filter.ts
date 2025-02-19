@@ -50,6 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         let finalList: number[][] = []; // List of lists to store IDs
 
+        //make each filter call
         for (const filter of filters) {
             let endpoint = "";
 
@@ -96,8 +97,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Step 2: Apply "or" operations first
         for (let i = 0; i < operators.length; i++) {
             if (operators[i] === "or") {
-                finalList[i] = Array.from(new Set([...finalList[i], ...finalList[i + 1]])); // Union
-                finalList.splice(i + 1, 1); // Remove the merged list
+                finalList[i] = Array.from(new Set([...finalList[i], ...finalList[i + 1]])); // replace two lists with merged list
+                finalList.splice(i + 1, 1); // Remove the second list
                 operators.splice(i, 1); // Remove used operator
                 i--; // Adjust index after removal
             }
@@ -106,8 +107,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Step 3: Apply "and" operations
         for (let i = 0; i < operators.length; i++) {
             if (operators[i] === "and") {
-                finalList[i] = finalList[i].filter(id => finalList[i + 1].includes(id)); // Intersection
-                finalList.splice(i + 1, 1); // Remove the merged list
+                finalList[i] = finalList[i].filter(id => finalList[i + 1].includes(id)); // replace two lists with merged list
+                finalList.splice(i + 1, 1); // Remove the second list
                 operators.splice(i, 1); // Remove used operator
                 i--; // Adjust index after removal
             }
