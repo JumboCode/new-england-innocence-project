@@ -209,16 +209,18 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         },
         metaData: {
           // TODO: Add something for this, currently just temporary empty strings.
-          dataSource: '',
-          lastUpdated: '',
-          createdAt: ''
+          dataSource: "",
+          lastUpdated: "",
+          createdAt: "",
         }
-      }
+      };
 
       // Basic validation
-      if (!formattedData.personalInfo.name) {
-        alert('First name and last name are required!')
-        return
+      if (!formattedData.personalInfo.name || !formattedData.personalInfo.dateOfBirth
+        || !formattedData.personalInfo.gender || !formattedData.personalInfo.race
+        || !formattedData.personalInfo.ethnicity) {
+        alert('Required fields are missing');
+        return;
       }
 
       const response = await fetch('/api/exonerees/addExoneree', {
@@ -227,7 +229,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(formattedData)
-      })
+      });
 
       if (!response.ok) {
         const errorData = await response.json()
@@ -236,8 +238,8 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         )
       }
 
-      const result = await response.json()
-      console.log('Successfully added exoneree:', result)
+      const result = await response.json();
+      console.log('Successfully added exoneree:', result);
 
       // Close the modal and reset form
       handleClose()
@@ -325,11 +327,11 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           </React.Fragment>,
           <React.Fragment key='first-name-entry'>
             <LabelAndEntry
-              label={'First Name'}
-              placeholder={''}
-              width='40%'
-              height='35px'
-              borderRadius='10px'
+              label={"First Name*"}
+              placeholder={""}
+              width="40%"
+              height="35px"
+              borderRadius="10px"
               value={formData.firstName}
               onChange={handleChange}
               name='firstName'
@@ -337,11 +339,11 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           </React.Fragment>,
           <React.Fragment key='last-name-entry'>
             <LabelAndEntry
-              label={'Last Name'}
-              placeholder={''}
-              width='40%'
-              height='35px'
-              borderRadius='10px'
+              label={"Last Name*"}
+              placeholder={""}
+              width="40%"
+              height="35px"
+              borderRadius="10px"
               value={formData.lastName}
               onChange={handleChange}
               name='lastName'
@@ -370,8 +372,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               onChange={handleChange}
               name='email'
             />
-          </React.Fragment>
-        ]
+          </React.Fragment>,
+        ];
+
 
         const personalRightIcons = [
           <React.Fragment key='dob-entry'>
@@ -547,8 +550,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               onChange={handleChange}
               name='convictionDate'
             />
-          </React.Fragment>
-        ]
+          </React.Fragment>,
+        ];
+
 
         const caseRightIcons = [
           <React.Fragment key='freedom-date'>
@@ -691,8 +695,8 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               onChange={handleChange}
               name='exonerationMethod'
             />
-          </React.Fragment>
-        ]
+          </React.Fragment>,
+        ];
 
         const legalRightIcons = [
           <React.Fragment key='legalRepresentation'>
@@ -985,8 +989,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               onChange={handleChange}
               name='currentStatus'
             />
-          </React.Fragment>
-        ]
+          </React.Fragment>,
+        ];
+
 
         const postexonerationRightIcons = [
           <React.Fragment key='current-occupation'>

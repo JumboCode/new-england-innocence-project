@@ -1,7 +1,9 @@
 // TODO
+import { PrismaClient } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '../../../utils/database/connectToDb'
+
+const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'POST') {
@@ -41,21 +43,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Query the database for Exoneree IDs
         if (constraint === "is") {
             exonerees = await prisma.exoneree.findMany({
-                where:  { 
-                    [model_name]: { 
-                        [field]: value 
-                    } 
+                where: {
+                    [model_name]: {
+                        [field]: value
+                    }
                 },
                 select: { id: true },
             });
 
         } else if (constraint === "is not") {
             exonerees = await prisma.exoneree.findMany({
-                where:  { 
+                where: {
                     NOT: {
-                        [model_name]: { 
-                            [field]: value 
-                        } 
+                        [model_name]: {
+                            [field]: value
+                        }
                     }
                 },
                 select: { id: true },
@@ -71,6 +73,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         console.error('Filter error:', error);
         return res.status(400).json({ error: 'Failed to fetch exonerees' });
     }
-
-   
 }
