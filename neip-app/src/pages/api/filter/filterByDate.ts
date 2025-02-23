@@ -34,12 +34,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Destructure the request body
-    const { date, field, table, constraint, } = req.body;
+    const { value, field, table, constraint, } = req.body;
 
     // Validate the input
-    if (!date || !field || !constraint || !table) {
-        return res.status(400).json({ message: 'Missing required fields: date, field, or constraint' });
+    if (!value || !field || !constraint || !table) {
+        return res.status(400).json({ message: 'Missing required fields: value, field, or constraint' });
     }
+
+    const date = value
 
     if (!isValidDate(date)) {
         return res.status(400).json({ message: 'Invalid date format. Use YYYY-MM-DD' });
@@ -61,6 +63,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Construct the Prisma query based on the constraint
         let exonerees;
         const parsedDate = new Date(date);
+
+        // const data = await model.findMany({
+        //     select: {
+        //         convictionDate: true,
+        //     },
+        // });
+        // console.log(data);
 
         if (constraint === 'before') {
             if ('findMany' in model) {
@@ -93,9 +102,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             });
 
         }
+        console.log(exonerees);
         if (!exonerees || exonerees.length === 0) {
             return res.status(200).json([]);
         }
+
         // Return the list of Exoneree IDs
         return res.status(200).json(exonerees.map(exoneree => exoneree.id));
     } catch (error) {
@@ -106,3 +117,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         await prisma.$disconnect();
     }
 }
+
+
+// {
+//     "type": "date",
+//     "value": "2000-01-01",
+//     "field": "convictionDate",
+//     "constraint": "before",
+//     "table": "caseInfo"
+// }
