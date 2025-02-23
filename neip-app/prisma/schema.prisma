@@ -33,12 +33,8 @@ model PersonalInfo {
   ethnicity   String
   phoneNumber String?
   address     String?
-<<<<<<< HEAD
-  email       String?    @unique
-=======
   email       String?   @unique
   imageURL    String?
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
   exoneree    Exoneree?
 }
 
