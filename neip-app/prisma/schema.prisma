@@ -33,73 +33,82 @@ model PersonalInfo {
   ethnicity   String
   phoneNumber String?
   address     String?
+<<<<<<< HEAD
   email       String?    @unique
+=======
+  email       String?   @unique
+  imageURL    String?
+>>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
   exoneree    Exoneree?
 }
 
 model CaseInfo {
-  id              Int       @id @default(autoincrement())
-  caseNumber      String    @unique
-  yearsInPrison   Int
-  arrestDate      String
-  convictionDate  String
-  freedomDate     String
-  exonerationDate String
-  crimeType       String
-  sentence        String
-  country         String
-  state           String
-  jurisdiction    String
-  exoneree        Exoneree?
+  id                Int       @id @default(autoincrement())
+  caseNumber        String?   @unique
+  yearsInPrison     Int?
+  arrestDate        String?
+  convictionDate    String?
+  freedomDate       String?
+  exonerationDate   String?
+  crimeType         String?
+  sentence          String?
+  country           String?
+  state             String?
+  jurisdiction      String?
+  exonerationNumber Int?
+  exoneree          Exoneree?
 }
 
 model LegalInfo {
   id                  Int       @id @default(autoincrement())
-  originalCharges     String
   convictionMethod    String[]
-  exonerationMethod   String[]
-  legalRepresentation String
-  prosecutor          String
-  detectivesInvolved  String[]
+  exonerationMethod   String
+  legalRepresentation String?
+  prosecutor          String?
+  officersInvolved    String[]
+  originalCharges     String[]
+  judge               String?
   exoneree            Exoneree?
 }
 
 model WrongfulConvictionInfo {
-  id                            Int       @id @default(autoincrement())
-  falseConfession               Boolean
-  eyewitnessMisidentification   Boolean
-  inadequateLegalDefense        Boolean
-  policeProsecutorialMisconduct Boolean
-  forensicEvidence              Boolean
-  informantTestimony            Boolean
-  exoneree                      Exoneree?
+  id                          Int       @id @default(autoincrement())
+  falseConfession             Boolean?
+  eyewitnessMisidentification Boolean?
+  inadequateLegalDefense      Boolean?
+  forensicEvidence            Boolean?
+  informantTestimony          Boolean?
+  otherInfo                   String?
+  policeMisconduct            Boolean?
+  prosecutorialMisconduct     Boolean?
+  exoneree                    Exoneree?
 }
 
 model PostExonerationInfo {
   id                 Int       @id @default(autoincrement())
   reentrySupport     String[]
-  publicApology      Boolean
-  compensationAmount Int
-  currentCountry     String
-  currentState       String
-  occupation         String
-  compensationDate   DateTime
+  publicApology      Boolean?
+  compensationAmount Int?
+  currentCountry     String?
+  currentState       String?
+  occupation         String?
+  compensationDate   DateTime?
   exoneree           Exoneree?
 }
 
 model AdditionalInfo {
   id                    Int      @id @default(autoincrement())
   mediaCoverage         String[]
-  advocacyInvolvement   String
-  educationalBackground String
-  healthInfo            String
+  advocacyInvolvement   String?
+  educationalBackground String?
+  healthInfo            String?
 }
 
 model MetaData {
   id          Int       @id @default(autoincrement())
-  dataSource  String
-  lastUpdated String
-  createdAt   String
+  dataSource  String?
+  lastUpdated String?
+  createdAt   String?
   exoneree    Exoneree?
 }
 
@@ -108,9 +117,21 @@ model ChargesDropdownOption {
   value String @unique
 }
 
-model DetectiveDropdownOption {
+model OfficersDropdownOption {
   id    Int    @id @default(autoincrement())
   value String @unique
+}
+
+model JurisdictionDropdownOption {
+  id    Int    @id @default(autoincrement())
+  value String @unique
+}
+
+model Officer {
+  id          Int @id @default(autoincrement())
+  name       String @unique
+  notes      String?
+  MediaLinks String?
 }
 
 enum Gender {

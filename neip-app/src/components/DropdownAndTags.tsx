@@ -10,6 +10,7 @@ interface DropdownAndTagsProps {
   value?: string[];
   onChange?: (name: string, value: string[]) => void;
   name: string;
+  apiUrl: string;
 }
 
 const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({ 
@@ -20,13 +21,32 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({
   height,
   value = [],
   onChange,
-  name
+  name,
+  apiUrl
 }) => {
   const [selectedTags, setSelectedTags] = useState<string[]>(value);
   const [availableOptions, setAvailableOptions] = useState(
     options.map((option) => ({ value: option, label: option }))
   );
   const [inputValue, setInputValue] = useState<string>("");
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const response = await fetch(`/api/${apiUrl.toLocaleLowerCase()}s/get${apiUrl}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        const options = data.map((item: string) => ({ value: item, label: item }));
+        setAvailableOptions(options);
+      } catch (error) {
+        console.error(`Failed to fetch ${apiUrl} options:`, error);
+      }
+    };
+
+    fetchOptions();
+  }, [apiUrl]);
 
   useEffect(() => {
     setSelectedTags(value);
@@ -49,17 +69,31 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({
     onChange?.(name, newTags);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter" && inputValue) {
+  const handleKeyDown = async (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' && inputValue) {
       if (!selectedTags.includes(inputValue)) {
         const newOption = { value: inputValue, label: inputValue };
         const newTags = [...selectedTags, inputValue];
         setSelectedTags(newTags);
         setAvailableOptions([...availableOptions, newOption]);
-        onChange?.(name, newTags);
+
+        try {
+            const response = await fetch(`/api/${apiUrl.toLocaleLowerCase()}s/add${apiUrl}`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ value: inputValue }),
+            });
+            if (!response.ok) {
+                throw new Error(`Failed to add ${apiUrl} option`);
+            }
+        } catch (error) {
+            console.error(`Failed to add ${apiUrl} option:`, error);
+            setSelectedTags(prev => prev.filter(tag => tag !== inputValue));
+            setAvailableOptions(prev => prev.filter(option => option.value !== inputValue));
+            onChange?.(name, selectedTags.filter(tag => tag !== inputValue));
+        }
       }
-      setInputValue(""); 
-      event.preventDefault();
+      setInputValue('');
     }
   };
 

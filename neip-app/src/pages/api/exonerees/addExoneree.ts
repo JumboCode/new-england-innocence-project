@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-import { Pool, neonConfig } from '@neondatabase/serverless'
-import { PrismaNeon } from '@prisma/adapter-neon'
 import { NextApiRequest, NextApiResponse } from 'next';
+<<<<<<< HEAD
 import dotenv from 'dotenv'
 import ws from 'ws'
 
@@ -12,6 +10,9 @@ const connectionString = `${process.env.DATABASE_URL}`
 const pool = new Pool({ connectionString })
 const adapter = new PrismaNeon(pool)
 const prisma = new PrismaClient({ adapter })
+=======
+import { prisma } from '../../../utils/database/connectToDb'
+>>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
@@ -24,12 +25,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } = req.body;
 
   if (
-    !personalInfo ||
-    !caseInfo ||
-    !legalInfo ||
-    !wrongfulConvictionInfo ||
-    !postExonerationInfo ||
-    !metaData
+    !personalInfo.name || !personalInfo.dateOfBirth || !personalInfo.gender ||
+    !personalInfo.race || !personalInfo.ethnicity
   ) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
@@ -46,30 +43,56 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const newExoneree = await prisma.exoneree.create({
       data: {
         personalInfo: {
-          create: personalInfo,
+          create: {
+            name: personalInfo.name,
+            dateOfBirth: personalInfo.dateOfBirth,
+            race: personalInfo.race,
+            ethnicity: personalInfo.ethnicity,
+            gender: personalInfo.gender,
+            ...(personalInfo.address && { address: { create: personalInfo.address } }),
+            ...(personalInfo.email && { email: { create: personalInfo.email } }),
+            ...(personalInfo.phoneNumber && { address: { create: personalInfo.phoneNumber } }),
+          }
         },
-        caseInfo: {
-          create: caseInfo,
-        },
-        legalInfo: {
-          create: legalInfo,
-        },
-        wrongfulConvictionInfo: {
-          create: wrongfulConvictionInfo,
-        },
-        postExonerationInfo: {
-          create: postExonerationInfo,
-        },
-        metaData: metaDataInput,
-      },
-      include: {
-        personalInfo: true,
-        caseInfo: true,
-        legalInfo: true,
-        wrongfulConvictionInfo: true,
-        postExonerationInfo: true,
-        metaData: true,
-      },
+        ...(caseInfo && { caseInfo: { create: caseInfo } }),
+        ...(legalInfo && { legalInfo: { create: legalInfo } }),
+        ...(wrongfulConvictionInfo && { wrongfulConvictionInfo: { create: wrongfulConvictionInfo } }),
+        ...(postExonerationInfo && { postExonerationInfo: { create: postExonerationInfo } }),
+        ...(metaDataInput && { metaData: metaDataInput }),
+
+
+        // caseInfo: {
+        //   create: {
+        //     ...(caseInfo && { caseInfo: { create: caseInfo } }),
+        //   }
+        // },
+        // legalInfo: {
+        //   create: {
+        //     ...(legalInfo && { legalInfo: { create: legalInfo } }),
+        //   }
+        // },
+        // wrongfulConvictionInfo: {
+        //   create: {
+        //     ...(wrongfulConvictionInfo && { wrongfulConvictionInfo: { create: wrongfulConvictionInfo } }),
+        //   },
+        // },
+        // postExonerationInfo: {
+        //   create: {
+        //     ...(postExonerationInfo && { postExonerationInfo: { create: postExonerationInfo } }),
+        //   }
+        // },
+        // ...(metaDataInput && { metaData: metaDataInput }),
+
+
+        // include: {
+        // personalInfo: true,
+        // caseInfo: true,
+        // legalInfo: true,
+        // wrongfulConvictionInfo: true,
+        // postExonerationInfo: true,
+        // metaData: true,
+        // },
+      }
     });
 
     return res.status(201).json(newExoneree);
