@@ -1,18 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-<<<<<<< HEAD
-import dotenv from 'dotenv'
-import ws from 'ws'
-
-dotenv.config()
-neonConfig.webSocketConstructor = ws
-const connectionString = `${process.env.DATABASE_URL}`
-
-const pool = new Pool({ connectionString })
-const adapter = new PrismaNeon(pool)
-const prisma = new PrismaClient({ adapter })
-=======
 import { prisma } from '../../../utils/database/connectToDb'
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
@@ -49,9 +36,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             race: personalInfo.race,
             ethnicity: personalInfo.ethnicity,
             gender: personalInfo.gender,
-            ...(personalInfo.address && { address: { create: personalInfo.address } }),
-            ...(personalInfo.email && { email: { create: personalInfo.email } }),
-            ...(personalInfo.phoneNumber && { address: { create: personalInfo.phoneNumber } }),
+            ...(personalInfo.address && { address: personalInfo.address } ),
+            ...(personalInfo.email && { email: personalInfo.email } ),
+            ...(personalInfo.phoneNumber && { phoneNumber: personalInfo.phoneNumber } ),
           }
         },
         ...(caseInfo && { caseInfo: { create: caseInfo } }),

@@ -61,33 +61,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
     country: '',
     state: '',
     originalCharges: [],
-<<<<<<< HEAD
-    convictionMethod: "",
-    exonerationMethod: "",
-    legalRepresentation: "",
-    prosecutor: "",
-    detectivesInvolved: [],
-    falseConfession: "",
-    eyewitnessMisidentification: "",
-    inadequateLegalDefense: "",
-    policeProsecutorialMisconduct: "",
-    forensicEvidence: "",
-    informantTestimony: "",
-    compensationAmount: "",
-    compensationDate: "",
-    reentrySupport: "",
-    publicApology: "",
-    currentCountry: "",
-    currentState: "",
-    currentStatus: "",
-    currentOccupation: "",
-    placeOfResidence: "",
-    mediaCoverage: "",
-    advocacyInvolvement: "",
-    educationalBackground: "",
-    healthInfo: "",
-  });
-=======
     convictionMethod: '',
     exonerationMethod: '',
     legalRepresentation: '',
@@ -116,7 +89,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
     educationalBackground: '',
     healthInfo: ''
   })
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue)
@@ -136,17 +108,10 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
     '&:hover': {
       backgroundColor: activeTab === tabIndex ? '#6AA9F9' : '#E3F2FD'
     },
-<<<<<<< HEAD
-    "&.Mui-selected": {
-      color: "white",
-    },
-  });
-=======
     '&.Mui-selected': {
       color: 'white'
     }
   })
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | string,
@@ -204,11 +169,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         legalInfo: {
           originalCharges: formData.originalCharges,
 
-<<<<<<< HEAD
-          //   TODO: FIX TYPE FOR CONVICTIONMETHOD, EXONERATIONMETHOD, DETECTIVESINVOLVED, INFORMANTTESTIMONY, EITHER STRING OR ARRAY BUT NOT BOTH
-=======
           //   TODO: FIX TYPE FOR CONVICTIONMETHOD, EXONERATIONMETHOD, officersInvolved, INFORMANTTESTIMONY, EITHER STRING OR ARRAY BUT NOT BOTH
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
           convictionMethod: [formData.convictionMethod],
           exonerationMethod: [formData.exonerationMethod],
           legalRepresentation: formData.legalRepresentation,
@@ -248,7 +209,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         },
         metaData: {
           // TODO: Add something for this, currently just temporary empty strings.
-<<<<<<< HEAD
           dataSource: "",
           lastUpdated: "",
           createdAt: "",
@@ -261,18 +221,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         || !formattedData.personalInfo.ethnicity) {
         alert('Required fields are missing');
         return;
-=======
-          dataSource: '',
-          lastUpdated: '',
-          createdAt: ''
-        }
-      }
-
-      // Basic validation
-      if (!formattedData.personalInfo.name) {
-        alert('First name and last name are required!')
-        return
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
       }
 
       const response = await fetch('/api/exonerees/addExoneree', {
@@ -281,11 +229,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(formattedData)
-<<<<<<< HEAD
       });
-=======
-      })
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
 
       if (!response.ok) {
         const errorData = await response.json()
@@ -294,13 +238,8 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         )
       }
 
-<<<<<<< HEAD
       const result = await response.json();
       console.log('Successfully added exoneree:', result);
-=======
-      const result = await response.json()
-      console.log('Successfully added exoneree:', result)
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
 
       // Close the modal and reset form
       handleClose()
@@ -327,34 +266,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         country: '',
         state: '',
         originalCharges: [],
-<<<<<<< HEAD
-        convictionMethod: "",
-        exonerationMethod: "",
-        legalRepresentation: "",
-        prosecutor: "",
-        detectivesInvolved: [],
-        falseConfession: "",
-        eyewitnessMisidentification: "",
-        inadequateLegalDefense: "",
-        policeProsecutorialMisconduct: "",
-        forensicEvidence: "",
-        informantTestimony: "",
-        compensationAmount: "",
-        compensationDate: "",
-        reentrySupport: "",
-        publicApology: "",
-        currentCountry: "",
-        currentState: "",
-        currentStatus: "",
-        currentOccupation: "",
-        placeOfResidence: "",
-        mediaCoverage: "",
-        advocacyInvolvement: "",
-        educationalBackground: "",
-        healthInfo: ""
-      });
-
-=======
         convictionMethod: '',
         exonerationMethod: '',
         legalRepresentation: '',
@@ -383,7 +294,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         educationalBackground: '',
         healthInfo: ''
       })
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
     } catch (error) {
       console.error('Error adding exoneree:', error)
       alert(
@@ -417,19 +327,11 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           </React.Fragment>,
           <React.Fragment key='first-name-entry'>
             <LabelAndEntry
-<<<<<<< HEAD
               label={"First Name*"}
               placeholder={""}
               width="40%"
               height="35px"
               borderRadius="10px"
-=======
-              label={'First Name'}
-              placeholder={''}
-              width='40%'
-              height='35px'
-              borderRadius='10px'
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
               value={formData.firstName}
               onChange={handleChange}
               name='firstName'
@@ -437,19 +339,11 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           </React.Fragment>,
           <React.Fragment key='last-name-entry'>
             <LabelAndEntry
-<<<<<<< HEAD
               label={"Last Name*"}
               placeholder={""}
               width="40%"
               height="35px"
               borderRadius="10px"
-=======
-              label={'Last Name'}
-              placeholder={''}
-              width='40%'
-              height='35px'
-              borderRadius='10px'
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
               value={formData.lastName}
               onChange={handleChange}
               name='lastName'
@@ -478,31 +372,18 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               onChange={handleChange}
               name='email'
             />
-<<<<<<< HEAD
           </React.Fragment>,
         ];
 
-=======
-          </React.Fragment>
-        ]
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
 
         const personalRightIcons = [
           <React.Fragment key='dob-entry'>
             <LabelAndEntry
-<<<<<<< HEAD
-              label={"DOB*"}
-              placeholder={"xx/xx/xxxx"}
-              width="48%"
-              height="36px"
-              borderRadius="10px"
-=======
               label={'DOB'}
               placeholder={'xx/xx/xxxx'}
               width='48%'
               height='36px'
               borderRadius='10px'
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
               value={formData.dob}
               onChange={handleChange}
               name='dob'
@@ -510,17 +391,10 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           </React.Fragment>,
           <React.Fragment key='gender-dropdown'>
             <LabelAndDropdown
-<<<<<<< HEAD
-              label={"Gender*"}
-              dropdownOptions={["Male", "Female"]}
-              placeholder={"Gender"}
-              width="210px"
-=======
               label={'Gender'}
               dropdownOptions={['Male', 'Female']}
               placeholder={'Gender'}
               width='210px'
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
               value={formData.gender}
               onChange={handleChange}
               name='gender'
@@ -528,11 +402,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           </React.Fragment>,
           <React.Fragment key='race-dropdown'>
             <LabelAndDropdown
-<<<<<<< HEAD
-              label={"Race*"}
-=======
               label={'Race'}
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
               dropdownOptions={[
                 'White',
                 'Black',
@@ -550,11 +420,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           </React.Fragment>,
           <React.Fragment key='ethnicity-dropdown'>
             <LabelAndDropdown
-<<<<<<< HEAD
-              label={"Ethnicity*"}
-=======
               label={'Ethnicity'}
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
               dropdownOptions={[
                 'American Indian/Alaska Native',
                 'Asian',
@@ -580,32 +446,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               onChange={handleChange}
               name='address'
             />
-<<<<<<< HEAD
-          </React.Fragment>,
-        ];
-
-        return <div>
-          <div style={{ display: 'flex', marginTop: '50px', marginRight: '10px', marginLeft: '100px' }}>
-            {/* Left Column */}
-            <div style={{ flex: 1, marginRight: 'auto', marginLeft: '90px' }}>
-              {personalLeftIcons.map((icon, index) => (
-                <div key={index} style={{ marginBottom: "3px" }}>
-                  {icon}
-                </div>
-              ))}
-            </div>
-            {/* Right Column */}
-            <div style={{ flex: 1, marginLeft: "10px" }}>
-              {personalRightIcons.map((icon, index) => (
-                <div key={index} style={{ marginBottom: "3px" }}>
-                  {icon}
-                </div>
-              ))}
-            </div>
-
-          </div>
-        </div>;
-=======
           </React.Fragment>
         ]
 
@@ -638,7 +478,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
             </div>
           </div>
         )
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
       case 1:
         const caseLeftIcons = [
           <React.Fragment key='case-number'>
@@ -711,14 +550,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               onChange={handleChange}
               name='convictionDate'
             />
-<<<<<<< HEAD
           </React.Fragment>,
         ];
 
-=======
-          </React.Fragment>
-        ]
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
 
         const caseRightIcons = [
           <React.Fragment key='freedom-date'>
@@ -767,53 +601,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               name='sentence'
             />
           </React.Fragment>,
-<<<<<<< HEAD
-          <React.Fragment key="country">
-            <LabelAndEntry
-              label={"Country"}
-              width="60%"
-              height="36px"
-              borderRadius="10px"
-              value={formData.country}
-              onChange={handleChange}
-              name="country"
-            />
-          </React.Fragment>,
-          <React.Fragment key="state">
-            <LabelAndEntry
-              label={"State"}
-              width="60%"
-              height="36px"
-              borderRadius="10px"
-              value={formData.state}
-              onChange={handleChange}
-              name="state"
-            />
-          </React.Fragment>,
-        ];
-
-        return <div>
-          <div style={{ display: 'flex', marginTop: '50px', marginRight: '10px', marginLeft: '100px' }}>
-            {/* Left Column */}
-            <div style={{ flex: 1, marginRight: 'auto', marginLeft: '90px' }}>
-              {caseLeftIcons.map((icon, index) => (
-                <div key={index} style={{ marginBottom: "3px" }}>
-                  {icon}
-                </div>
-              ))}
-            </div>
-            {/* Right Column */}
-            <div style={{ flex: 1, marginLeft: "10px" }}>
-              {caseRightIcons.map((icon, index) => (
-                <div key={index} style={{ marginBottom: "3px" }}>
-                  {icon}
-                </div>
-              ))}
-            </div>
-
-          </div>
-        </div>;
-=======
           <React.Fragment key='country'>
             <LabelAndEntry
               label={'Country'}
@@ -867,7 +654,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
             </div>
           </div>
         )
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
       case 2:
         const legalLeftIcons = [
           <React.Fragment key='original-charges'>
@@ -909,13 +695,8 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               onChange={handleChange}
               name='exonerationMethod'
             />
-<<<<<<< HEAD
           </React.Fragment>,
         ];
-=======
-          </React.Fragment>
-        ]
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
 
         const legalRightIcons = [
           <React.Fragment key='legalRepresentation'>
@@ -968,32 +749,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               name='officersInvolved'
               apiUrl='Officer'
             />
-<<<<<<< HEAD
-          </React.Fragment>,
-        ];
-
-        return <div>
-          <div style={{ display: 'flex', marginTop: '50px', marginRight: '10px', marginLeft: '100px' }}>
-            {/* Left Column */}
-            <div style={{ flex: 1, marginRight: 'auto', marginLeft: '90px' }}>
-              {legalLeftIcons.map((icon, index) => (
-                <div key={index} style={{ marginBottom: "3px" }}>
-                  {icon}
-                </div>
-              ))}
-            </div>
-            {/* Right Column */}
-            <div style={{ flex: 1, marginLeft: "10px" }}>
-              {legalRightIcons.map((icon, index) => (
-                <div key={index} style={{ marginBottom: "3px" }}>
-                  {icon}
-                </div>
-              ))}
-            </div>
-
-          </div>
-        </div>;
-=======
           </React.Fragment>
         ]
 
@@ -1026,7 +781,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
             </div>
           </div>
         )
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
       case 3:
         const circumstancesLeftIcons = [
           ,
@@ -1074,10 +828,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               name='policeMisconduct'
             />
           </React.Fragment>,
-<<<<<<< HEAD
-        ];
-
-=======
                     <React.Fragment key='prosecutorial-misconduct'>
                     <LabelAndDropdown
                       label={'Prosecutorial misconduct'}
@@ -1090,7 +840,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
                     />
                   </React.Fragment>
         ]
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
 
         const circumstancesRightIcons = [
           <React.Fragment key='forensic-evidence'>
@@ -1113,27 +862,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               name='informantTestimony'
             />
           </React.Fragment>,
-<<<<<<< HEAD
-        ];
-
-        return <div>
-          <div style={{ display: 'flex', marginTop: '50px', marginRight: '10px', marginLeft: '100px' }}>
-            <div style={{ flex: 1, marginRight: 'auto', marginLeft: '90px' }}>
-              {circumstancesLeftIcons.map((icon, index) => (
-                <div key={index} style={{ marginBottom: "3px" }}>
-                  {icon}
-                </div>
-              ))}
-            </div>
-            <div style={{ flex: 1, marginLeft: "10px" }}>
-              {circumstancesRightIcons.map((icon, index) => (
-                <div key={index} style={{ marginBottom: "3px" }}>
-                  {icon}
-                </div>
-              ))}
-            </div>
-
-=======
           <React.Fragment key='other-info'>
           <LabelAndEntry
             label={'Other Info'}
@@ -1170,7 +898,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
                 ))}
               </div>
             </div>
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
           </div>
         )
 
@@ -1223,33 +950,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               name='publicApology'
             />
           </React.Fragment>,
-<<<<<<< HEAD
-          <React.Fragment key="current-country">
-            <LabelAndEntry
-              label={"Current Country"}
-              placeholder={""}
-              width="60%"
-              height="36px"
-              borderRadius="10px"
-              value={formData.currentCountry}
-              onChange={handleChange}
-              name="currentCountry"
-            />
-          </React.Fragment>,
-          <React.Fragment key="current-state">
-            <LabelAndEntry
-              label={"Current State"}
-              placeholder={""}
-              width="60%"
-              height="36px"
-              borderRadius="10px"
-              value={formData.currentState}
-              onChange={handleChange}
-              name="currentState"
-            />
-          </React.Fragment>,
-          <React.Fragment key="current-status">
-=======
           <React.Fragment key='current-country'>
             <LabelAndEntry
               label={'Current Country'}
@@ -1275,7 +975,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
             />
           </React.Fragment>,
           <React.Fragment key='current-status'>
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
             <LabelAndDropdown
               label={'Current status'}
               placeholder={'Select status'}
@@ -1290,14 +989,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               onChange={handleChange}
               name='currentStatus'
             />
-<<<<<<< HEAD
           </React.Fragment>,
         ];
 
-=======
-          </React.Fragment>
-        ]
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
 
         const postexonerationRightIcons = [
           <React.Fragment key='current-occupation'>
@@ -1322,28 +1016,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               onChange={handleChange}
               name='placeOfResidence'
             />
-<<<<<<< HEAD
-          </React.Fragment>,
-        ];
-
-        return <div>
-          <div style={{ display: 'flex', marginTop: '50px', marginRight: '10px', marginLeft: '100px' }}>
-            <div style={{ flex: 1, marginRight: 'auto', marginLeft: '90px' }}>
-              {postexonerationLeftIcons.map((icon, index) => (
-                <div key={index} style={{ marginBottom: "3px" }}>
-                  {icon}
-                </div>
-              ))}
-            </div>
-            <div style={{ flex: 1, marginLeft: "10px" }}>
-              {postexonerationRightIcons.map((icon, index) => (
-                <div key={index} style={{ marginBottom: "3px" }}>
-                  {icon}
-                </div>
-              ))}
-            </div>
-
-=======
           </React.Fragment>
         ]
 
@@ -1372,7 +1044,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
                 ))}
               </div>
             </div>
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
           </div>
         )
 
@@ -1426,10 +1097,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               name='healthInfo'
             />
           </React.Fragment>,
-<<<<<<< HEAD
-          <React.Fragment key="submit-button">
-            <div style={{ textAlign: "center", marginTop: "30px", marginLeft: "50px" }}>
-=======
           <React.Fragment key='submit-button'>
             <div
               style={{
@@ -1438,7 +1105,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
                 marginLeft: '50px'
               }}
             >
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
               <IconTextButton
                 filled={true}
                 border={false}
@@ -1448,28 +1114,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
                 onClick={handleSubmit}
               />
             </div>
-<<<<<<< HEAD
-          </React.Fragment>,
-        ];
-
-        return <div>
-          <div style={{ display: 'flex', marginTop: '50px', marginRight: '10px', marginLeft: '100px' }}>
-            <div style={{ flex: 1, marginRight: 'auto', marginLeft: '90px' }}>
-              {additionalLeftIcons.map((icon, index) => (
-                <div key={index} style={{ marginBottom: "3px" }}>
-                  {icon}
-                </div>
-              ))}
-            </div>
-            <div style={{ flex: 1, marginLeft: "10px" }}>
-              {additionalRightIcons.map((icon, index) => (
-                <div key={index} style={{ marginBottom: "3px" }}>
-                  {icon}
-                </div>
-              ))}
-            </div>
-
-=======
           </React.Fragment>
         ]
 
@@ -1498,7 +1142,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
                 ))}
               </div>
             </div>
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
           </div>
         )
 

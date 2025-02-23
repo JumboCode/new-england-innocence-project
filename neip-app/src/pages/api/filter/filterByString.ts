@@ -1,15 +1,9 @@
 // TODO
-<<<<<<< HEAD
 import { PrismaClient } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const prisma = new PrismaClient();
-=======
-import { Prisma } from '@prisma/client';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '../../../utils/database/connectToDb'
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'POST') {
@@ -49,36 +43,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Query the database for Exoneree IDs
         if (constraint === "is") {
             exonerees = await prisma.exoneree.findMany({
-<<<<<<< HEAD
                 where: {
                     [model_name]: {
                         [field]: value
                     }
-=======
-                where:  { 
-                    [model_name]: { 
-                        [field]: value 
-                    } 
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
                 },
                 select: { id: true },
             });
 
         } else if (constraint === "is not") {
             exonerees = await prisma.exoneree.findMany({
-<<<<<<< HEAD
                 where: {
                     NOT: {
                         [model_name]: {
                             [field]: value
                         }
-=======
-                where:  { 
-                    NOT: {
-                        [model_name]: { 
-                            [field]: value 
-                        } 
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b
                     }
                 },
                 select: { id: true },
@@ -94,11 +73,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         console.error('Filter error:', error);
         return res.status(400).json({ error: 'Failed to fetch exonerees' });
     }
-
-<<<<<<< HEAD
-
 }
-=======
-   
-}
->>>>>>> 618e24ba849f613e845f470eab3182c51d3e810b

@@ -1,18 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { PrismaClient } from '@prisma/client';
-import { Pool, neonConfig } from '@neondatabase/serverless'
-import { PrismaNeon } from '@prisma/adapter-neon'
-import dotenv from 'dotenv'
-import ws from 'ws'
-
-//connect to database
-dotenv.config()
-neonConfig.webSocketConstructor = ws
-const connectionString = `${process.env.DATABASE_URL}`
-
-const pool = new Pool({ connectionString })
-const adapter = new PrismaNeon(pool)
-const prisma = new PrismaClient({ adapter })
+import { prisma } from '../../../utils/database/connectToDb'
 
 // Helper function to validate the date format (YYYY-MM-DD)
 const isValidDate = (date: string): boolean => {
@@ -29,7 +16,7 @@ const tableMapping = {
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method !== 'POST') {
+    if (req.method !== 'GET') {
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
 
@@ -62,45 +49,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         // Construct the Prisma query based on the constraint
         let exonerees;
-        const parsedDate = new Date(date);
-        console.log(parsedDate)
-
-        // const data = await model.findMany({
-        //     select: {
-        //         convictionDate: true,
-        //     },
-        // });
-        // console.log(data);
+        // const parsedDate = new Date(date);
 
         if (constraint === 'before') {
-            if ('findMany' in model) {
-                if (model == prisma.caseInfo) {
 
-                }
-            }
-            exonerees = await model.findMany({
-                where: {
-                    [field]: {
-                        lt: date,  // Less than the given date
-                    },
-                },
-                select: {
-                    id: true,
-                },
+            const modelAny = model as any;
+            exonerees = await modelAny.findMany({
+              where: { [field]: { lt: date } },
+              select: { id: true },
             });
+            
         } else if (constraint === 'after') {
 
-            exonerees = await model.findMany({
-                where: {
-                    [field]: {
-                        gt: date,  // Greater than the given date
-                    },
-                },
-                select: {
-                    id: true,
-
-                },
+            const modelAny = model as any;
+            exonerees = await modelAny.findMany({
+              where: { [field]: { gt: date } },
+              select: { id: true },
             });
+            
 
         }
         console.log(exonerees);
@@ -109,7 +75,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         // Return the list of Exoneree IDs
-        return res.status(200).json(exonerees.map(exoneree => exoneree.id));
+        return res.status(200).json(exonerees.map((exoneree: { id: number }) => exoneree.id));
     } catch (error) {
         console.error('Error filtering exonerees by date:', error);
         return res.status(500).json({ message: 'Internal Server Error' });
@@ -118,12 +84,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         await prisma.$disconnect();
     }
 }
-
-
-// {
-//     "type": "date",
-//     "value": "2000-01-01",
-//     "field": "convictionDate",
-//     "constraint": "before",
-//     "table": "caseInfo"
-// }
