@@ -1,19 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-import { Pool, neonConfig } from '@neondatabase/serverless'
-import { PrismaNeon } from '@prisma/adapter-neon'
 import { NextApiRequest, NextApiResponse } from 'next';
-import dotenv from 'dotenv'
-import ws from 'ws'
-
-
-//connect to the database
-dotenv.config()
-neonConfig.webSocketConstructor = ws
-const connectionString = `${process.env.DATABASE_URL}`
-
-const pool = new Pool({ connectionString })
-const adapter = new PrismaNeon(pool)
-const prisma = new PrismaClient({ adapter })
 
 //parse the JSON body
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -24,9 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Destructure the request body
     const { operators, filters } = req.body;
 
-
-
-    let finalList: number[][] = []; // List of lists to store IDs
+    const finalList: number[][] = []; // List of lists to store IDs
 
     //make each filter call
     for (const filter of filters) {
@@ -34,11 +17,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         // Determine which API endpoint to call
         if (filter.type === "date") {
-            endpoint = "http://localhost:3000/api/filter/filterByDate";
+            endpoint = "/api/filter/filterByDate";
         } else if (filter.type === "string") {
-            endpoint = "http://localhost:3000/api/filter/filterByString";
+            endpoint = "/api/filter/filterByString";
         } else if (filter.type === "int") {
-            endpoint = "http://localhost:3000/api/filter/filterByInt";
+            endpoint = "/api/filter/filterByInt";
         } else {
             console.error(`Invalid filter type: ${filter.type}`);
             continue; // Skip this filter
@@ -162,8 +145,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 ]
             }
              */
-
-
-
-
-

@@ -63,6 +63,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Construct the Prisma query based on the constraint
         let exonerees;
         const parsedDate = new Date(date);
+        console.log(parsedDate)
 
         // const data = await model.findMany({
         //     select: {
