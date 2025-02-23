@@ -36,9 +36,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             race: personalInfo.race,
             ethnicity: personalInfo.ethnicity,
             gender: personalInfo.gender,
-            ...(personalInfo.address && { address: { create: personalInfo.address } }),
-            ...(personalInfo.email && { email: { create: personalInfo.email } }),
-            ...(personalInfo.phoneNumber && { address: { create: personalInfo.phoneNumber } }),
+            ...(personalInfo.address && { address: personalInfo.address }),
+            ...(personalInfo.email && { email: personalInfo.email }),
+            ...(personalInfo.phoneNumber && { phoneNumber: personalInfo.phoneNumber }),
+
           }
         },
         ...(caseInfo && { caseInfo: { create: caseInfo } }),
