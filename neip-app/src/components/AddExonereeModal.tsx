@@ -13,6 +13,10 @@ import DropdownAndTags from "../components/DropdownAndTags"
 import PersonalInfoIcon from "../img/PersonalInfoIcon.png";
 import EditIcon from "../img/EditIcon.png";
 import IconTextButton from "../components/IconTextButton";
+import CustomDatePicker from "../components/CustomDatePicker";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 const style = {
   position: "absolute",
@@ -40,7 +44,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
     lastName: "",
     phoneNumber: "",
     email: "",
-    dob: "",
+    dob: null as Date | null,
     gender: "",
     race: "",
     ethnicity: "",
@@ -48,10 +52,10 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
     caseNumber: "",
     jurisdiction: "",
     yearsInPrison: "",
-    arrestDate: "",
-    convictionDate: "",
-    freedomDate: "",
-    exonerationDate: "",
+    arrestDate: null as Date | null,
+    convictionDate: null as Date | null,
+    freedomDate: null as Date | null,
+    exonerationDate: null as Date | null,
     crimeType: "",
     sentence: "",
     country: "",
@@ -67,9 +71,13 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
     inadequateLegalDefense: "",
     policeProsecutorialMisconduct: "",
     forensicEvidence: "",
+    
+    
+    
+    
     informantTestimony: "",
     compensationAmount: "",
-    compensationDate: "",
+    compensationDate: null as Date | null,
     reentrySupport: "",
     publicApology: "",
     currentCountry: "",
@@ -124,6 +132,86 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
     }
   };
 
+  const handleDateChange = (date: Date | null, fieldName: keyof typeof formData) => {
+    setFormData(prevData => ({
+      ...prevData,
+      [fieldName]: date, // Store Date object directly
+    }));
+  };
+
+  <CustomDatePicker
+  label="Date of Birth"
+  selectedDate={formData.dob}
+  onChange={(date) => handleDateChange(date, "dob")}
+  name="dob"
+  />
+
+  //<div>
+  //  <CustomDatePicker
+  //    label="Date of Birth"
+  //    selectedDate={formData.dob} // Ensure formData exists
+  //    onChange={(date) => handleDateChange(date, "dob")}
+  //    name="dob"
+  //  />
+  //</div>
+
+
+  return (
+  <div>
+    <CustomDatePicker
+      label="Arrest Date"
+      selectedDate={formData.arrestDate} // Ensure formData exists
+      onChange={(date) => handleDateChange(date, "arrestDate")}
+      name="arrestDate"
+    />
+  </div>
+  );
+
+  return (
+  <div>
+    <CustomDatePicker
+      label="Conviction Date"
+      selectedDate={formData.convictionDate} // Ensure formData exists
+      onChange={(date) => handleDateChange(date, "convictionDate")}
+      name="convictionDate"
+    />
+  </div>
+  );
+
+  return (
+  <div>
+    <CustomDatePicker
+      label="Freedom Date"
+      selectedDate={formData.freedomDate} // Ensure formData exists
+      onChange={(date) => handleDateChange(date, "freedomDate")}
+      name="freedomDate"
+    />
+  </div>
+  );
+
+  return (
+  <div>
+    <CustomDatePicker
+      label="Exoneration Date"
+      selectedDate={formData.exonerationDate} // Ensure formData exists
+      onChange={(date) => handleDateChange(date, "exonerationDate")}
+      name="exonerationDate"
+    />
+  </div>
+  );
+
+  return (
+  <div>
+    <CustomDatePicker
+      label="Compensation Date"
+      selectedDate={formData.compensationDate} // Ensure formData exists
+      onChange={(date) => handleDateChange(date, "compensationDate")}
+      name="compensationDate"
+    />
+  </div>
+  );
+
+
   const handleSubmit = async () => {
     try {
       // Restructure the form data into the expected format
@@ -132,7 +220,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           name: formData.firstName + " " + formData.lastName,
           phoneNumber: formData.phoneNumber,
           email: formData.email,
-          dateOfBirth: formData.dob,
+          dateOfBirth: formData.dob ? formData.dob.toISOString().split("T")[0] : "",
           gender: formData.gender === "Male" ? "M" : formData.gender === "Female" ? "F" : "OTHER",
           race: formData.race,
           ethnicity: formData.ethnicity,
@@ -142,10 +230,10 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
           caseNumber: formData.caseNumber,
           jurisdiction: formData.jurisdiction,
           yearsInPrison: parseInt(formData.yearsInPrison) || 0,
-          arrestDate: formData.arrestDate,
-          convictionDate: formData.convictionDate,
-          freedomDate: formData.freedomDate,
-          exonerationDate: formData.exonerationDate,
+          arrestDate: formData.arrestDate ? formData.arrestDate.toISOString().split("T")[0] : "",
+          convictionDate: formData.convictionDate ? formData.convictionDate.toISOString().split("T")[0] : "",
+          freedomDate: formData.freedomDate ? formData.freedomDate.toISOString().split("T")[0] : "",
+          exonerationDate: formData.exonerationDate ? formData.exonerationDate.toISOString().split("T")[0] : "",
           crimeType: formData.crimeType,
           sentence: formData.sentence,
           country: formData.country,
@@ -171,7 +259,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
         },
         postExonerationInfo: {
           compensationAmount: parseFloat(formData.compensationAmount) || 0,
-          compensationDate: new Date(formData.compensationDate),
+          compensationDate: formData.compensationDate ? formData.compensationDate.toISOString().split("T")[0] : "",
           reentrySupport: [formData.reentrySupport],
           publicApology: formData.publicApology === 'Yes',
           currentCountry: formData.currentCountry,
@@ -198,6 +286,18 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
         alert('First name and last name are required!');
         return;
       }
+
+      if(isNaN(formattedData.caseInfo.yearsInPrison) ||
+         isNaN(formattedData.postExonerationInfo.compensationAmount)) {
+        alert('Please enter a number for numerical fields!')
+        return;
+      }
+
+      //potential numeric fields
+      //!isNaN(formattedData.personalInfo.phoneNumber) || 
+      //!isNaN(formattedData.caseInfo.caseNumber) || 
+      //!isNaN(formattedData.caseInfo.yearsInPrison) || 
+      //!isNaN(formattedData.postExonerationInfo.compensationAmount)
   
       const response = await fetch('/api/exonerees/addExoneree', {
         method: 'POST',
@@ -341,7 +441,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               height="36px"
               borderRadius="10px"
               value={formData.dob}
-              onChange={handleChange}
+              onChange={(date) => handleDateChange(date, "dob")}
               name="dob"
             />
           </React.Fragment>,
@@ -471,7 +571,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               height="35px"
               borderRadius="10px"
               value={formData.arrestDate}
-              onChange={handleChange}
+              onChange={(date) => handleDateChange(date, "arrestDate")}
               name="arrestDate"
             />
           </React.Fragment>,
@@ -483,7 +583,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               height="35px"
               borderRadius="10px"
               value={formData.convictionDate}
-              onChange={handleChange}
+              onChange={(date) => handleDateChange(date, "convictionDate")}
               name="convictionDate"
             />
           </React.Fragment>,
@@ -499,7 +599,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               height="36px"
               borderRadius="10px"
               value={formData.freedomDate}
-              onChange={handleChange}
+              onChange={(date) => handleDateChange(date, "freedomDate")}
               name="freedomDate"
             />
           </React.Fragment>,
@@ -511,7 +611,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               height="36px"
               borderRadius="10px"
               value={formData.exonerationDate}
-              onChange={handleChange}
+              onChange={(date) => handleDateChange(date, "arrestDate")}
               name="exonerationDate"
             />
           </React.Fragment>,
@@ -802,7 +902,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
               height="36px"
               borderRadius="10px"
               value={formData.compensationDate}
-              onChange={handleChange}
+              onChange={(date) => handleDateChange(date, "compensationDate")}
               name="compensationDate"
             />
           </React.Fragment>,
