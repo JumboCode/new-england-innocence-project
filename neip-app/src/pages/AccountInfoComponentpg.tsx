@@ -4,7 +4,8 @@ const AccountInfo = () => {
     return (
         <div>
             <h2>Account Information</h2>
-            <AccountInfoComponent />  {/* Displaying the imported component */}
+            <AccountInfoComponent type="administration" />
+            {/* <AccountInfoComponent type="intern" /> */}
         </div>
     );
 };
