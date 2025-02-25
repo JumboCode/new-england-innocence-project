@@ -14,7 +14,6 @@ import PersonalInfoIcon from "../img/PersonalInfoIcon.png";
 import EditIcon from "../img/EditIcon.png";
 import IconTextButton from "../components/IconTextButton";
 import CustomDatePicker from "../components/CustomDatePicker";
-import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
