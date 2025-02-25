@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import XlCoseIcon from "../img/close.png";
+import AndOr from "./AndOr";
+import FilterSelection from "./FilterSelection";
 
 interface OpenFilterSidebar {
     onClose: () => void;
