@@ -1,14 +1,11 @@
 import { useState } from "react";
-import Image from "next/image";
-import UserProfileSquare from "../img/user-profile-square.png"
 
 interface AccountInfoProps {
     type: string; // Name will be passed as a string prop
+    userProfilePicture: React.ReactNode; //accepts any react node, ideally <Image>
 }
 
-
-
-const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type }) => {
+const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePicture }) => {
     //css styles for account info items
     const formStyle: React.CSSProperties = {
         width: "405px",
@@ -83,17 +80,8 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type }) => {
 
     return (
         <form onSubmit={handleSubmit} style={formStyle}>
-            <Image
-                src={UserProfileSquare}
-                alt='user profile icon'
-                width='90'
-                height='90'
-                style={{
-                    top: "274px",
-                    left: "121px",
-                    display: "block"
-                }}
-            ></Image>
+            {userProfilePicture && <span>{userProfilePicture}</span>}
+
             <label>Name:</label>
             <input type="text" text-align="center" name="name" placeholder="First Name Last Name" value={formData.name} onChange={handleChange} style={inputTextStyle} />
 
