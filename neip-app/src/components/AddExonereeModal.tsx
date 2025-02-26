@@ -155,7 +155,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         caseInfo: {
           caseNumber: formData.caseNumber,
           jurisdiction: formData.jurisdiction,
-          exonerationNumber: formData.exonerationNumber,
+          exonerationNumber: parseInt(formData.exonerationNumber) || 0,
           yearsInPrison: parseInt(formData.yearsInPrison) || 0,
           arrestDate: formData.arrestDate,
           convictionDate: formData.convictionDate,
@@ -171,7 +171,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
 
           //   TODO: FIX TYPE FOR CONVICTIONMETHOD, EXONERATIONMETHOD, officersInvolved, INFORMANTTESTIMONY, EITHER STRING OR ARRAY BUT NOT BOTH
           convictionMethod: [formData.convictionMethod],
-          exonerationMethod: [formData.exonerationMethod],
+          exonerationMethod: formData.exonerationMethod,
           legalRepresentation: formData.legalRepresentation,
           prosecutor: formData.prosecutor,
           judge: formData.judge,
