@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ActionMenuComponent = ({ onClose } : {onClose : any}) => {
+const ActionMenuComponent = ({ onClose }: { onClose: any }) => {
     const [isVisible, setIsVisible] = useState(true);
     const [isClicked, setIsClicked] = useState<null | string>(null);
 
@@ -9,7 +9,7 @@ const ActionMenuComponent = ({ onClose } : {onClose : any}) => {
         onClose?.(); // Call the parent's onClose handler
     };
 
-    const click = ( item: string) => {
+    const click = (item: string) => {
         setIsClicked(item);
     };
 
