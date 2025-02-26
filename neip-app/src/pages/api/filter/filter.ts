@@ -82,7 +82,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             finalList.push(exonereeIds); // Store each list of IDs in final list
         } catch (error) {
             console.error('Filter error:', error);
-            return res.status(500).json({ error: `Failed to get IDs: ${error.message}` });
+            return res.status(500).json({ error: `Failed to get IDs` });
         }
     }
 
