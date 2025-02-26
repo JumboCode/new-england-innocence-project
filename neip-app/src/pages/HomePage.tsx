@@ -432,312 +432,312 @@ const HomePage: React.FC = () => {
     setIsSidebarOpen(true)
   }
 
-const handleLogout = async () => {
-  try {
-    const response = await fetch("/api/auth/signout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    });
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/api/auth/signout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
 
-    if (!response.ok) {
-      throw new Error(`Logout failed: ${response.statusText}`);
+      if (!response.ok) {
+        throw new Error(`Logout failed: ${response.statusText}`);
+      }
+
+      window.location.href = "/login"; // Redirect to login page after successful logout
+    } catch (error) {
+      console.error("Logout error:", error);
     }
+  };
 
-    window.location.href = "/login"; // Redirect to login page after successful logout
-  } catch (error) {
-    console.error("Logout error:", error);
-  }
-};
+  const noop: () => void = () => { };
 
-const noop: () => void = () => {};
-
-return (
-  <div
-    style={{
-      height: '100vh',
-      backgroundColor: 'white',
-      width: '100vw',
-      paddingLeft: '60px'
-    }}
-  >
-    {/* Top Banner */}
-    <div style={{ backgroundColor: '#033550', color: 'white', display: 'flex', alignItems: 'center', height: '56px' }}>
-            <img src="/caseview_logo2.png" alt="Logo" style={{ height: '35px', marginLeft: '17px', backgroundColor: 'white' }} />
-            <div style={{ marginLeft: "auto" }}> 
-              <IconTextButton
-              icon={<CgLogOut size={20} />}
-              filled={false}
-              text="Logout"
-              border={false}
-              onClick={handleLogout}
-              height="40px"
-              width="100px"
-              />
-            </div>
-        </div>
-
-    {/* Render the OpenFiterSideBar if it's visible*/}
-    {isSidebarOpen && <OpenFilterSidebar onClose={closeFilterSidebar} />}
-
-    {/* Open Filter Sidebar Button - Top Right */}
+  return (
     <div
       style={{
-        textAlign: 'center',
-        display: 'flex',
-        justifyContent: 'flex-end'
+        height: '100vh',
+        backgroundColor: 'white',
+        width: '100vw',
+        paddingLeft: '60px'
       }}
     >
-      <button
-        onClick={() => setIsSidebarOpen(true)}
-        style={{
-          backgroundColor: '#0F6A9A',
-          color: 'white',
-          padding: '16px 24px',
-          border: 'none',
-          cursor: 'pointer',
-          marginLeft: '1279px',
-          // marginRight: '100px',
-          display: 'flex',
-          alignItems: 'center',
-          fontSize: '11px'
-        }}
-      >
-        Open filter sidebar
-        <Image
-          src={ArrowIcon}
-          alt='arrow icon'
-          style={{ marginLeft: '12px' }}
-          height='5.21'
-          width='10.42'
-        ></Image>
-      </button>
-    </div>
+      {/* Top Banner */}
+      <div style={{ backgroundColor: '#033550', color: 'white', display: 'flex', alignItems: 'center', height: '56px' }}>
+        <img src="/caseview_logo2.png" alt="Logo" style={{ height: '35px', marginLeft: '17px', backgroundColor: 'white' }} />
+        <div style={{ marginLeft: "auto" }}>
+          <IconTextButton
+            icon={<CgLogOut size={20} />}
+            filled={false}
+            text="Logout"
+            border={false}
+            onClick={handleLogout}
+            height="40px"
+            width="100px"
+          />
+        </div>
+      </div>
 
-    {/* Main Content */}
-    <div style={{ padding: '20px' }}>
-      {/* "Home Database" Heading */}
-      <h1
-        style={{
-          color: '#101828',
-          fontWeight: 'bold',
-          fontSize: '30px',
-          marginTop: '-25px',
-          marginLeft: '15px'
-        }}
-      >
-        Home Database
-      </h1>
+      {/* Render the OpenFiterSideBar if it's visible*/}
+      {isSidebarOpen && <OpenFilterSidebar onClose={closeFilterSidebar} />}
 
-      {/* Search Bar and Action Buttons Container */}
+      {/* Open Filter Sidebar Button - Top Right */}
       <div
         style={{
+          textAlign: 'center',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginTop: '17px'
+          justifyContent: 'flex-end'
         }}
       >
-        {/* Search Bar */}
-        <div style={{ flex: 1, maxWidth: '300px', marginLeft: '15px' }}>
-          <SearchEntryBox setExonerees={setExonerees} />
-        </div>
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          style={{
+            backgroundColor: '#0F6A9A',
+            color: 'white',
+            padding: '16px 24px',
+            border: 'none',
+            cursor: 'pointer',
+            marginLeft: '1279px',
+            // marginRight: '100px',
+            display: 'flex',
+            alignItems: 'center',
+            fontSize: '11px'
+          }}
+        >
+          Open filter sidebar
+          <Image
+            src={ArrowIcon}
+            alt='arrow icon'
+            style={{ marginLeft: '12px' }}
+            height='5.21'
+            width='10.42'
+          ></Image>
+        </button>
+      </div>
 
-        {/* Action Buttons */}
+      {/* Main Content */}
+      <div style={{ padding: '20px' }}>
+        {/* "Home Database" Heading */}
+        <h1
+          style={{
+            color: '#101828',
+            fontWeight: 'bold',
+            fontSize: '30px',
+            marginTop: '-25px',
+            marginLeft: '15px'
+          }}
+        >
+          Home Database
+        </h1>
+
+        {/* Search Bar and Action Buttons Container */}
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'flex-end',
-            gap: '16px',
-            marginRight: '15px'
+            justifyContent: 'space-between',
+            marginTop: '17px'
           }}
         >
-          <IconTextButton
-            icon={
-              <Image
-                src={TrashIcon}
-                alt='trash icon'
-                width='20'
-                height='20'
-              ></Image>
-            }
-            filled={false}
-            text='Delete'
-            border={false}
-            height='44px'
-            width='104px'
-          />
-          <IconTextButton
-            icon={
-              <Image
-                src={UploadIcon}
-                alt='upload icon'
-                width='24'
-                height='24'
-              ></Image>
-            }
-            filled={false}
-            text='Export to CSV'
-            border={true}
-            height='44px'
-            width='159px'
-          />
-          <IconTextButton
-            onClick={handleOpenModal}
-            icon={
-              <Image
-                src={PlusIcon}
-                alt='plus icon'
-                width='14'
-                height='14'
-              ></Image>
-            }
-            filled={true}
-            text='Add new exoneree file'
-            border={false}
-            height='44px'
-            width='209px'
-          />
-        </div>
-      </div>
+          {/* Search Bar */}
+          <div style={{ flex: 1, maxWidth: '300px', marginLeft: '15px' }}>
+            <SearchEntryBox setExonerees={setExonerees} />
+          </div>
 
-      {/* Table Filter Info */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginTop: '20px',
-          borderColor: '#E1E0E0',
-          borderWidth: '1px',
-          borderBottom: 'none'
-        }}
-      >
+          {/* Action Buttons */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              gap: '16px',
+              marginRight: '15px'
+            }}
+          >
+            <IconTextButton
+              icon={
+                <Image
+                  src={TrashIcon}
+                  alt='trash icon'
+                  width='20'
+                  height='20'
+                ></Image>
+              }
+              filled={false}
+              text='Delete'
+              border={false}
+              height='44px'
+              width='104px'
+            />
+            <IconTextButton
+              icon={
+                <Image
+                  src={UploadIcon}
+                  alt='upload icon'
+                  width='24'
+                  height='24'
+                ></Image>
+              }
+              filled={false}
+              text='Export to CSV'
+              border={true}
+              height='44px'
+              width='159px'
+            />
+            <IconTextButton
+              onClick={handleOpenModal}
+              icon={
+                <Image
+                  src={PlusIcon}
+                  alt='plus icon'
+                  width='14'
+                  height='14'
+                ></Image>
+              }
+              filled={true}
+              text='Add new exoneree file'
+              border={false}
+              height='44px'
+              width='209px'
+            />
+          </div>
+        </div>
+
+        {/* Table Filter Info */}
         <div
           style={{
             display: 'flex',
-            gap: '12px',
-            marginLeft: '20px',
-            marginTop: '10px',
-            marginBottom: '10px'
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginTop: '20px',
+            borderColor: '#E1E0E0',
+            borderWidth: '1px',
+            borderBottom: 'none'
           }}
         >
-          {/* <Image src={PlusIcon} alt="funnel" style={{ width: '16px', height: '16px', marginTop: '10px' }} ></Image>  */}
-          <FaFilter
-            style={{ width: '16px', height: '16px', marginTop: '10px' }}
-          />
-          {selectedFilters.map((filter, index) => (
+          <div
+            style={{
+              display: 'flex',
+              gap: '12px',
+              marginLeft: '20px',
+              marginTop: '10px',
+              marginBottom: '10px'
+            }}
+          >
+            {/* <Image src={PlusIcon} alt="funnel" style={{ width: '16px', height: '16px', marginTop: '10px' }} ></Image>  */}
+            <FaFilter
+              style={{ width: '16px', height: '16px', marginTop: '10px' }}
+            />
+            {selectedFilters.map((filter, index) => (
+              <TableFilterIcons
+                key={index}
+                icon={
+                  <AiOutlineClose
+                    style={{ width: '16px', height: '16px', color: 'black' }}
+                  />
+                }
+                filled={true}
+                text={filter}
+                border={false}
+                borderRadius={false}
+                height='35px'
+                onOpenFilter={noop}
+              />
+            ))}
             <TableFilterIcons
-              key={index}
               icon={
-                <AiOutlineClose
+                <AiOutlinePlus
                   style={{ width: '16px', height: '16px', color: 'black' }}
                 />
               }
-              filled={true}
-              text={filter}
+              filled={false}
+              text='Filter'
               border={false}
               borderRadius={false}
               height='35px'
-              onOpenFilter={noop}
+              width='120px'
+              onOpenFilter={openFilterSidebar}
             />
-          ))}
-          <TableFilterIcons
-            icon={
-              <AiOutlinePlus
-                style={{ width: '16px', height: '16px', color: 'black' }}
-              />
-            }
-            filled={false}
-            text='Filter'
-            border={false}
-            borderRadius={false}
-            height='35px'
-            width='120px'
-            onOpenFilter={openFilterSidebar}
-          />
+          </div>
+          <div style={{ marginLeft: 'auto', marginRight: '20px' }}>
+            <TableFilterIcons
+              icon={
+                <MdFilterList
+                  style={{ width: '16px', height: '16px', color: 'black' }}
+                />
+              }
+              filled={false}
+              text='Manage Columns'
+              border={true}
+              borderRadius={true}
+              height='35px'
+              width='185px'
+              onOpenFilter={handleColumnsModalOpen}
+            />
+          </div>
         </div>
-        <div style={{ marginLeft: 'auto', marginRight: '20px' }}>
-          <TableFilterIcons
-            icon={
-              <MdFilterList
-                style={{ width: '16px', height: '16px', color: 'black' }}
-              />
-            }
-            filled={false}
-            text='Manage Columns'
-            border={true}
-            borderRadius={true}
-            height='35px'
-            width='185px'
-            onOpenFilter={handleColumnsModalOpen}
-          />
-        </div>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginTop: '0px',
-          borderColor: '#E1E0E0',
-          borderWidth: '1px',
-          borderTop: 'none'
-        }}
-      >
         <div
           style={{
             display: 'flex',
-            gap: '4px',
-            marginLeft: '20px',
-            marginTop: '2px',
-            marginBottom: '6px'
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginTop: '0px',
+            borderColor: '#E1E0E0',
+            borderWidth: '1px',
+            borderTop: 'none'
           }}
         >
-          <span style={{ color: '#ABACBE', fontSize: '12px' }}>Showing</span>
-          <span style={{ color: '#000000', fontSize: '12px' }}>x</span>
-          <span style={{ color: '#ABACBE', fontSize: '12px' }}>from</span>
-          <span style={{ color: '#000000', fontSize: '12px' }}>x</span>
-          <span style={{ color: '#ABACBE', fontSize: '12px' }}>results</span>
+          <div
+            style={{
+              display: 'flex',
+              gap: '4px',
+              marginLeft: '20px',
+              marginTop: '2px',
+              marginBottom: '6px'
+            }}
+          >
+            <span style={{ color: '#ABACBE', fontSize: '12px' }}>Showing</span>
+            <span style={{ color: '#000000', fontSize: '12px' }}>x</span>
+            <span style={{ color: '#ABACBE', fontSize: '12px' }}>from</span>
+            <span style={{ color: '#000000', fontSize: '12px' }}>x</span>
+            <span style={{ color: '#ABACBE', fontSize: '12px' }}>results</span>
+          </div>
         </div>
-      </div>
 
-      {/* Database Display */}
-      <div style={{ height: '60vh', backgroundColor: 'white' }}>
         {/* Database Display */}
-        <Table
-          dataSource={exonerees} //so that search results update the table
-          columns={filteredColumns}
-          scroll={{ x: 'max-content' }}
-        />
+        <div style={{ height: '60vh', backgroundColor: 'white' }}>
+          {/* Database Display */}
+          <Table
+            dataSource={exonerees} //so that search results update the table
+            columns={filteredColumns}
+            scroll={{ x: 'max-content' }}
+          />
+        </div>
+
+        {/* Action Menu */}
+        {actionMenuVisible && (
+          <div
+            style={{
+              position: 'absolute',
+              top: actionMenuPosition.y,
+              left: actionMenuPosition.x,
+              zIndex: 1000
+            }}
+          >
+            <ActionMenuComponent onClose={closeActionMenu} />
+          </div>
+        )}
       </div>
 
-      {/* Action Menu */}
-      {actionMenuVisible && (
-        <div
-          style={{
-            position: 'absolute',
-            top: actionMenuPosition.y,
-            left: actionMenuPosition.x,
-            zIndex: 1000
-          }}
-        >
-          <ActionMenuComponent onClose={closeActionMenu} />
-        </div>
-      )}
+      {/* Modals */}
+      <AddExonereeModal open={modalOpen} handleClose={handleCloseModal} />
+      <SelectColumnsModal
+        open={columnsModalOpen}
+        handleClose={handleColumnsModalClose}
+        columns={columns}
+        selectedColumns={selectedColumns}
+        onColumnSelectionChange={handleColumnSelectionChange}
+      />
     </div>
-
-    {/* Modals */}
-    <AddExonereeModal open={modalOpen} handleClose={handleCloseModal} />
-    <SelectColumnsModal
-      open={columnsModalOpen}
-      handleClose={handleColumnsModalClose}
-      columns={columns}
-      selectedColumns={selectedColumns}
-      onColumnSelectionChange={handleColumnSelectionChange}
-    />
-  </div>
-)
+  )
 }
 
 export default HomePage
