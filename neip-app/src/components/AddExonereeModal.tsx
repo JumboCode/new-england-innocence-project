@@ -13,6 +13,7 @@ import DropdownAndTags from "../components/DropdownAndTags"
 import PersonalInfoIcon from "../img/PersonalInfoIcon.png";
 import EditIcon from "../img/EditIcon.png";
 import IconTextButton from "../components/IconTextButton";
+import CustomDatePicker from "../components/CustomDatePicker";
 
 const style = {
   position: "absolute",
@@ -106,20 +107,52 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
     },
   });
 
+  const parseDate = (dateString: string): Date | null => {
+    if (!dateString) return null;
+    
+    const [day, month, year] = dateString.split("/").map(Number); 
+    return new Date(year, month - 1, day); // Month is 0-indexed
+  };  
+
+  const formatDate = (date: Date | null) => {
+    if (!date) return "";
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const handleDateChange = (date: Date | null, fieldName: keyof typeof formData) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [fieldName]: date ? formatDate(date) : "", // Ensures formatted date is stored
+    }));
+  };
+  
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | string,
     value?: string[]
   ) => {
     if (Array.isArray(value)) {
-      setFormData(prevData => ({
+      setFormData((prevData) => ({
         ...prevData,
-        [e as string]: value
+        [e as string]: value,
       }));
     } else if ((e as React.ChangeEvent<HTMLInputElement | HTMLSelectElement>).target) {
       const event = e as React.ChangeEvent<HTMLInputElement | HTMLSelectElement>;
-      setFormData(prevData => ({
+      const { name, value } = event.target;
+  
+      if (name === "yearsInPrison" || name === "compensationAmount") {
+        // Validate numeric fields
+        if (!/^\d+(\.\d+)?$/.test(value) && value !== "") {
+          alert(`${name.replace(/([A-Z])/g, " $1")} must be a valid number.`);
+          return;
+        }
+      }
+  
+      setFormData((prevData) => ({
         ...prevData,
-        [event.target.name]: event.target.value
+        [name]: value,
       }));
     }
   };
@@ -141,7 +174,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
         caseInfo: {
           caseNumber: formData.caseNumber,
           jurisdiction: formData.jurisdiction,
-          yearsInPrison: parseInt(formData.yearsInPrison) || 0,
+          yearsInPrison: formData.yearsInPrison,
           arrestDate: formData.arrestDate,
           convictionDate: formData.convictionDate,
           freedomDate: formData.freedomDate,
@@ -198,6 +231,12 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
         alert('First name and last name are required!');
         return;
       }
+
+      //if(isNaN(formattedData.caseInfo.yearsInPrison) ||
+      //isNaN(formattedData.postExonerationInfo.compensationAmount)) {
+      //  alert('Please enter a number for numerical fields!')
+      //  return;
+      //}
   
       const response = await fetch('/api/exonerees/addExoneree', {
         method: 'POST',
@@ -334,15 +373,12 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
 
         const personalRightIcons = [
           <React.Fragment key="dob-entry">
-            <LabelAndEntry
-              label={"DOB"}
-              placeholder={"xx/xx/xxxx"}
-              width="48%"
-              height="36px"
-              borderRadius="10px"
-              value={formData.dob}
-              onChange={handleChange}
+            <CustomDatePicker
+              label="Date of Birth"
+              selectedDate={parseDate(formData.dob)}
+              onChange={(date) => handleDateChange(date, "dob")}
               name="dob"
+              style={{ marginBottom: "15px" }}
             />
           </React.Fragment>,
           <React.Fragment key="gender-dropdown">
@@ -464,27 +500,21 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
             />
           </React.Fragment>,
           <React.Fragment key="arrest-date">
-            <LabelAndEntry
-              label={"Arrest Date"}
-              placeholder={"XX/XX/XXX"}
-              width="60%"
-              height="35px"
-              borderRadius="10px"
-              value={formData.arrestDate}
-              onChange={handleChange}
+            <CustomDatePicker
+              label="Arrest Date"
+              selectedDate={parseDate(formData.arrestDate)}
+              onChange={(date) => handleDateChange(date, "arrestDate")}
               name="arrestDate"
+              style={{ marginBottom: "15px" }}
             />
           </React.Fragment>,
           <React.Fragment key="conviction-date">
-            <LabelAndEntry
-              label={"Conviction Date"}
-              placeholder={"XX/XX/XXX"}
-              width="60%"
-              height="35px"
-              borderRadius="10px"
-              value={formData.convictionDate}
-              onChange={handleChange}
+            <CustomDatePicker
+              label="Conviction Date"
+              selectedDate={parseDate(formData.convictionDate)}
+              onChange={(date) => handleDateChange(date, "convictionDate")}
               name="convictionDate"
+              style={{ marginBottom: "15px" }}
             />
           </React.Fragment>,
         ];
@@ -492,27 +522,21 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
 
         const caseRightIcons = [
           <React.Fragment key="freedom-date">
-            <LabelAndEntry
-              label={"Freedom Date"}
-              placeholder={"XX/XX/XXX"}
-              width="60%"
-              height="36px"
-              borderRadius="10px"
-              value={formData.freedomDate}
-              onChange={handleChange}
+            <CustomDatePicker
+              label="Freedom Date"
+              selectedDate={parseDate(formData.freedomDate)}
+              onChange={(date) => handleDateChange(date, "freedomDate")}
               name="freedomDate"
+              style={{ marginBottom: "15px" }}
             />
           </React.Fragment>,
           <React.Fragment key="exoneration-date">
-            <LabelAndEntry
-              label={"Exoneration Date"}
-              placeholder={"XX/XX/XXX"}
-              width="60%"
-              height="36px"
-              borderRadius="10px"
-              value={formData.exonerationDate}
-              onChange={handleChange}
+            <CustomDatePicker
+              label="Exoneration Date"
+              selectedDate={parseDate(formData.exonerationDate)}
+              onChange={(date) => handleDateChange(date, "exonerationDate")}
               name="exonerationDate"
+              style={{ marginBottom: "15px" }}
             />
           </React.Fragment>,
           <React.Fragment key="crime-type-dropdown">
@@ -795,15 +819,12 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({ open, handleClose }
             />
           </React.Fragment>,
           <React.Fragment key="compensation-date">
-            <LabelAndEntry
-              label={"Compensation Date"}
-              placeholder={"xx/xx/xxxx"}
-              width="60%"
-              height="36px"
-              borderRadius="10px"
-              value={formData.compensationDate}
-              onChange={handleChange}
+            <CustomDatePicker
+              label="Compensation Date"
+              selectedDate={parseDate(formData.compensationDate)}
+              onChange={(date) => handleDateChange(date, "compensationDate")}
               name="compensationDate"
+              style={{ marginBottom: "15px" }}
             />
           </React.Fragment>,
           <React.Fragment key="reentry-support">
