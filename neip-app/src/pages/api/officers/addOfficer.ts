@@ -1,0 +1,26 @@
+import { NextApiRequest, NextApiResponse } from 'next';
+import { prisma } from '../../../utils/database/connectToDb';
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
+  if (req.method !== "POST") {
+    return res.status(405).json({error: "Method Not Allowed"});
+  }
+
+  const { name, notes, MediaLinks } = req.body;
+
+  if (!name) {
+    return res.status(400).json({ error: 'Name is required' });
+  }
+
+  try {
+    const officer = await prisma.officer.create({
+      data: { name, notes, MediaLinks },
+    });
+
+    res.status(201).json(officer);
+
+  } catch (error) {
+    res.status(500).json({ error: "Failed to add officer" })
+  }
+}
