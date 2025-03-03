@@ -17,6 +17,8 @@ import SelectColumnsModal from '@/components/SelectColumnsModal'
 // import { Button } from "@mui/material";
 import TableFilterIcons from '@/components/TableFilterIcons'
 import OpenFilterSidebar from '../components/OpenFilterSidebar'
+import getAllExonerees from '@/pages/api/exonerees/getAllExonerees'
+// neip-app/src/pages/api/exonerees/getAllExonerees.ts
 
 // TODO: This is a bandaid solution for Vercel deployment.
 // In the future we will want to dynamically determine columns based off this
