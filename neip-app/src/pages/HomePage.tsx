@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import IconTextButton from "../components/IconTextButton";
 import SearchEntryBox from "../components/SearchEntryBox";
