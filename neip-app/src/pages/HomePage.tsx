@@ -18,7 +18,6 @@ import SelectColumnsModal from '@/components/SelectColumnsModal'
 import TableFilterIcons from '@/components/TableFilterIcons'
 import OpenFilterSidebar from '../components/OpenFilterSidebar'
 import getAllExonerees from '@/pages/api/exonerees/getAllExonerees'
-// neip-app/src/pages/api/exonerees/getAllExonerees.ts
 
 // TODO: This is a bandaid solution for Vercel deployment.
 // In the future we will want to dynamically determine columns based off this
@@ -362,19 +361,22 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     const fetchExonerees = async () => {
       try {
-        const response = await fetch('/api/exonerees/getAllExonerees'); // Fetch data
+        const response = await fetch('/api/exonerees/getAllExonerees');
         if (!response.ok) {
-          throw new Error('Failed to fetch exonerees');
+          throw new Error(`Failed to fetch exonerees: ${response.statusText}`);
         }
+  
         const data = await response.json();
-        setExonerees(data.data); // Update state with real data
+        console.log("✅ API Response Data:", data); // 🔍 Debugging log
+        setExonerees(data.data); // ✅ Update state with real data
       } catch (error) {
-        console.error('Error fetching exonerees:', error);
+        console.error('🚨 Error fetching exonerees:', error);
       }
     };
   
     fetchExonerees();
-  }, []);  
+  }, []);
+  
 
   // Initialize selectedColumns with all column keys
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
@@ -728,6 +730,7 @@ const HomePage: React.FC = () => {
             dataSource={exonerees} 
             columns={filteredColumns}
             scroll={{ x: 'max-content' }}
+            locale={{ emptyText: 'No data available' }}
           />
         </div>
 
