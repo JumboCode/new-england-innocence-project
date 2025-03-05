@@ -13,7 +13,6 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
         top: "263px",
         left: "105px",
         border: "1px solid black",
-        marginTop: "1.5em",
         padding: "1em",
         display: "flex",
         flexDirection: "column",
