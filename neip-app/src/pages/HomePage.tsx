@@ -14,23 +14,61 @@ import { MdFilterList } from 'react-icons/md'
 import { CgLogOut } from "react-icons/cg";
 import ActionMenuComponent from '@/components/ActionMenuComponent'
 import SelectColumnsModal from '@/components/SelectColumnsModal'
-// import { Button } from "@mui/material";
 import TableFilterIcons from '@/components/TableFilterIcons'
 import OpenFilterSidebar from '../components/OpenFilterSidebar'
+import { saveAs } from 'file-saver';
 
 // TODO: This is a bandaid solution for Vercel deployment.
 // In the future we will want to dynamically determine columns based off this
+// Define the data structure type with an index signature
 interface TableRowData {
-  name: string
-  dob: string
-  race: string
-  ethnicity: string
-  phoneNumber: string
-  address: string
-  email: string
-  caseNumber: string
-  crimeType: string
+  [key: string]: string | number | undefined;
+  key: string;
+  name: string;
+  dob: string;
+  gender: string;
+  race: string;
+  ethnicity: string;
+  phoneNumber: string;
+  address: string;
+  email: string;
+  caseNumber: string;
+  jurisdiction: string;
+  exonerationNumber: string;
+  yearsInPrison: string;
+  arrestDate: string;
+  convictionDate: string;
+  freedomDate: string;
+  exonerationDate: string;
+  sentence: string;
+  originalCharges: string;
+  convictionMethod: string;
+  exonerationMethod: string;
+  legalRepresentation: string;
+  prosecutor: string;
+  judge: string;
+  officersInvolved: string;
+  falseConfession: string;
+  eyewitnessMisidentification: string;
+  inadequateLegalDefense: string;
+  policeMisconduct: string;
+  prosecutorialMisconduct: string;
+  forensicEvidence: string;
+  informantTestimony: string;
+  otherInfo: string;
+  compensation: string;
+  reentrySupport: string;
+  publicApology: string;
+  currentStatus: string;
+  mediaCoverage: string;
+  advocacyInvolvement: string;
+  educationalBackground: string;
+  healthInfo: string;
+  dataSource: string;
+  lastUpdated: string;
+  createdAt: string;
 }
+  
 // Dynamic import for the Ant Design Table component
 const Table = dynamic(() => import('antd').then(mod => mod.Table), {
   ssr: false
@@ -449,6 +487,25 @@ const HomePage: React.FC = () => {
     }
   };
 
+  const handleExportToCSV = async () => {
+    try {
+      const response = await fetch('/api/export', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ selectedColumns, data: dataSource }),
+      });
+  
+      if (response.ok) {
+        const blob = await response.blob();
+        saveAs(blob, 'exonerees.csv');  // Trigger file download
+      } else {
+        console.error('Export failed:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error exporting data:', error);
+    }
+  };  
+
   const noop: () => void = () => { };
 
   return (
@@ -569,18 +626,19 @@ const HomePage: React.FC = () => {
             />
             <IconTextButton
               icon={
-                <Image
+                  <Image
                   src={UploadIcon}
                   alt='upload icon'
                   width='24'
                   height='24'
-                ></Image>
+                  />
               }
               filled={false}
               text='Export to CSV'
               border={true}
               height='44px'
               width='159px'
+              onClick={handleExportToCSV}
             />
             <IconTextButton
               onClick={handleOpenModal}
