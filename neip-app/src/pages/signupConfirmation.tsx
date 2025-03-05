@@ -10,7 +10,17 @@ const Checkmark = dynamic(() => import('react-checkmark').then(mod => mod.Checkm
 
 const SignupConfirmation: React.FC = () => {
     return (
-        <AuthBox prop={<SignupConfirmationContent />}/>
+        <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          backgroundColor: '#f4f4f4',
+        }}
+        >
+            <AuthBox prop={<SignupConfirmationContent />}/>
+        </div>
     );
 }
 
