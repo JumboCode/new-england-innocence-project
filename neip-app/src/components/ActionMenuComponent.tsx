@@ -1,6 +1,13 @@
+import { Action } from '@prisma/client/runtime/library';
 import React, { useState } from 'react';
 
-const ActionMenuComponent = ({ onClose }: { onClose: any }) => {
+interface ActionMenuProps {
+    onClose: () => void;
+    exonereeId: number;
+    // onDelete: (id: number) => void;
+}
+
+const ActionMenuComponent: React.FC<ActionMenuProps> = ({ onClose, exonereeId }) => {
     const [isVisible, setIsVisible] = useState(true);
     const [isClicked, setIsClicked] = useState<null | string>(null);
 
@@ -11,6 +18,40 @@ const ActionMenuComponent = ({ onClose }: { onClose: any }) => {
 
     const click = (item: string) => {
         setIsClicked(item);
+        if (item === "Delete") {
+            handleDelete();
+        }
+    };
+
+    const handleDelete = async () => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this item?");
+        if (!confirmDelete) {
+            return;
+        }
+            
+        try {
+            console.log("Before the delete");
+            console.log(exonereeId);
+            const response = await fetch(`/api/exonerees/deleteExoneree?id=${exonereeId}`, {
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json',
+                }
+            });
+
+            console.log("Fetching the details");
+
+            if (!response.ok) {
+                console.log(response);
+                throw new Error(`Failed to delete. Server responded with ${response.status}`);
+            }
+
+            // onDeleteSuccess(exonereeId);
+            close();
+        } catch (error) {
+            console.error("Delete failed:", error);
+            alert("Unable to delete exoneree." + error);
+        }
     };
 
     if (!isVisible) {
