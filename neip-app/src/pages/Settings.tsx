@@ -1,10 +1,18 @@
 import AccountInfoComponent from "@/components/AccountInfo";
 import Image from "next/image";
 import UserProfileSquare from "../img/user-profile-square.png"
+import NavBar from '../components/NavBar'
 
 const AccountInfo = () => {
     return (
-        <div>
+        <div
+            style={{
+                height: '100vh',
+                backgroundColor: 'white',
+                width: '100vw',
+                paddingLeft: '90px'
+            }}
+        >
             <h2>Account Information</h2>
             <AccountInfoComponent type="administration"
                 userProfilePicture={
@@ -36,6 +44,7 @@ const AccountInfo = () => {
                     ></Image>
                 }
             /> */}
+            <NavBar />
         </div>
     );
 };
