@@ -21,7 +21,6 @@ import OpenFilterSidebar from '../components/OpenFilterSidebar'
 // TODO: This is a bandaid solution for Vercel deployment.
 // In the future we will want to dynamically determine columns based off this
 interface TableRowData {
-  id: number
   name: string
   dob: string
   race: string
@@ -40,7 +39,6 @@ const Table = dynamic(() => import('antd').then(mod => mod.Table), {
 // Dummy data for the table
 const dataSource = [
   {
-    id: 1,
     key: '1',
     name: 'Mike Johnson',
     dob: '10/10/2005',
@@ -88,7 +86,6 @@ const dataSource = [
     createdAt: '10/24/2024'
   },
   {
-    id: 2,
     key: '2',
     name: 'Sarah Carter',
     dob: '07/15/1995',
@@ -136,7 +133,6 @@ const dataSource = [
     createdAt: '03/10/2018'
   },
   {
-    id: 3,
     key: '3',
     name: 'John Smith',
     dob: '12/01/1988',
@@ -184,7 +180,6 @@ const dataSource = [
     createdAt: '01/15/2021'
   },
   {
-    id: 4,
     key: '4',
     name: 'Emily Davis',
     dob: '04/22/1990',
