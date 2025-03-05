@@ -2,6 +2,7 @@ import UsersComponent from "@/components/Users";
 import { useEffect, useState } from 'react';
 
 interface User {
+    id: number
     firstName: string;
     lastName: string;
     emailAddresses: { email: string }[]
@@ -9,44 +10,47 @@ interface User {
 }
 
 const ManageUsers = () => {
+    console.log("manage called");
     const [users, setUsers] = useState<User[]>([]);
     // Get the host from the request headers to construct absolute URLs
     const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
-    const host = 'localhost:3000';
+    const host = 'localhost:3002';
     const baseUrl = `${protocol}://${host}`;
 
     // Construct the full URL for the API endpoint
     const fullUrl = `${baseUrl}${"/api/auth/getUsers"}`;
-    const fetchUsers = async () => {
-        try {
-            const response = await fetch(fullUrl, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-
-            console.log(`Response status: ${response.status}`);
-
-            if (!response.ok) {
-                const errorData = await response.text();
-                console.error(`Error response: ${errorData}`);
-                throw new Error(`Error ${response.status}: ${errorData}`);
-            }
-
-            const data = await response.json();
-            const users = data.users
-            setUsers(users)
-            console.log(`Users:`, users);
-            return users
-        } catch (error) {
-            console.error('Filter error:', error);
-        }
-    }
 
     useEffect(() => {
+        console.log("useEffect called");
+        const fetchUsers = async () => {
+            console.log("useEffect called");
+            try {
+                const response = await fetch(fullUrl, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                console.log(`Response status: ${response.status}`);
+
+                if (!response.ok) {
+                    const errorData = await response.text();
+                    console.error(`Error response: ${errorData}`);
+                    throw new Error(`Error ${response.status}: ${errorData}`);
+                }
+
+                const data = await response.json();
+                const users = data.users
+                setUsers(users)
+                console.log(`Users:`, users);
+                return users
+            } catch (error) {
+                console.error('Filter error:', error);
+            }
+        }
         fetchUsers();  // Fetch users when the component mounts
-    }, []);
+    }, [fullUrl]);
 
     return (
         <div style={{ display: "flex", flexWrap: "wrap" }}>
@@ -69,7 +73,7 @@ const ManageUsers = () => {
                     const dateOnly = date.toISOString().split('T')[0];
                     console.log(`User: ${firstNameUsers} ${lastNameUsers}, Email: ${emailUsers}`);
                     return (
-                        <UsersComponent firstName={firstNameUsers} lastName={lastNameUsers} email={emailUsers} type="administration" dateCreated={dateOnly} />
+                        <UsersComponent key={user.id} firstName={firstNameUsers} lastName={lastNameUsers} email={emailUsers} type="administration" dateCreated={dateOnly} />
                     )
                 })}
         </div>
