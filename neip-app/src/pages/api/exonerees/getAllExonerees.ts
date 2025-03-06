@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '../../../utils/database/connectToDb'
+import { prisma } from '../../../utils/database/connectToDb';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'GET') {
@@ -7,11 +7,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-        console.log('✅ Prisma is being called!');
+        console.log('✅ Fetching exonerees from database...');
         
-        const exonerees = await prisma.exoneree.findMany();
-        console.log('✅ Fetched exonerees:', exonerees);
-        
+        const exonerees = await prisma.exoneree.findMany({
+            include: {
+                personalInfo: true, // Ensure this includes `dob`
+                caseInfo: true,
+                legalInfo: true,
+                postExonerationInfo: true,
+            }
+        });
+
+        console.log('✅ API Full Response:', JSON.stringify(exonerees, null, 2));
+
         return res.status(200).json({ 
             success: true,
             message: "Exonerees retrieved successfully",
