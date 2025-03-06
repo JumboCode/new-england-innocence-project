@@ -1,28 +1,3 @@
-// import { NextApiRequest, NextApiResponse } from 'next';
-// import { prisma } from '../../../utils/database/connectToDb'
-
-// export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-//     if (req.method !== 'GET') {
-//         return res.status(405).json({ message: 'Method Not Allowed' });
-//     }
-
-//     try {
-//         console.log('✅ Prisma is being called!');
-        
-//         const exonerees = await prisma.exoneree.findMany();
-//         console.log('✅ Fetched exonerees:', exonerees);
-        
-//         return res.status(200).json({ 
-//             success: true,
-//             message: "Exonerees retrieved successfully",
-//             data: exonerees              
-//         });
-//     } catch (error) {
-//         console.error('🚨 Prisma error:', error);
-//         return res.status(500).json({ message: 'Internal Server Error', error });
-//     }
-// }
-
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../utils/database/connectToDb';
 
@@ -32,20 +7,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-        console.log('✅ Prisma is being called!');
+        console.log('✅ Fetching exonerees from database...');
         
-        // Fetch exonerees and include related objects
         const exonerees = await prisma.exoneree.findMany({
             include: {
-                personalInfo: true, // Fetch full personalInfo object
-                caseInfo: true,     // Fetch full caseInfo object
-                legalInfo: true,    // Fetch full legalInfo object
-                postExonerationInfo: true, // Fetch full postExonerationInfo object
+                personalInfo: true, // Ensure this includes `dob`
+                caseInfo: true,
+                legalInfo: true,
+                postExonerationInfo: true,
             }
         });
 
-        console.log('✅ Fetched exonerees with full data:', exonerees);
-        
+        console.log('✅ API Full Response:', JSON.stringify(exonerees, null, 2));
+
         return res.status(200).json({ 
             success: true,
             message: "Exonerees retrieved successfully",

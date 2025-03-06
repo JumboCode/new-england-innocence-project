@@ -225,31 +225,48 @@ const HomePage: React.FC = () => {
         }
   
         // Convert API data to table format
-        const formattedData = jsonResponse.data.map((item: any, index: number) => ({
-          key: item.id || index.toString(),
-          name: item.personalInfo?.name || "N/A",
-          dob: item.personalInfo?.dob || "N/A",
-          gender: item.personalInfo?.gender || "N/A",
-          race: item.personalInfo?.race || "N/A",
-          ethnicity: item.personalInfo?.ethnicity || "N/A",
-          phoneNumber: item.personalInfo?.phoneNumber || "N/A",
-          address: item.personalInfo?.address || "N/A",
-          email: item.personalInfo?.email || "N/A",
-          caseNumber: item.caseInfo?.caseNumber || "N/A",
-          jurisdiction: item.caseInfo?.jurisdiction || "N/A",
-          exonerationNumber: item.caseInfo?.exonerationNumber || "N/A",
-          yearsInPrison: item.caseInfo?.yearsInPrison || "N/A",
-          arrestDate: item.caseInfo?.arrestDate || "N/A",
-          convictionDate: item.caseInfo?.convictionDate || "N/A",
-          freedomDate: item.caseInfo?.freedomDate || "N/A",
-          exonerationDate: item.caseInfo?.exonerationDate || "N/A",
-          crimeType: item.caseInfo?.crimeType || "N/A",
-          sentence: item.caseInfo?.sentence || "N/A",
-          originalCharges: item.caseInfo?.originalCharges || "N/A",
-          convictionMethod: item.legalInfo?.convictionMethod || "N/A",
-          exonerationMethod: item.legalInfo?.exonerationMethod || "N/A",
-          compensation: item.postExonerationInfo?.compensation || "N/A",
-        }));
+        const formattedData = jsonResponse.data.map((item: any, index: number) => {
+          let dobRaw = item.personalInfo?.dateOfBirth || ""; // Get raw date string
+      
+          // Normalize separators to ensure parsing works
+          dobRaw = dobRaw.replace(/[/.]/g, "-"); 
+      
+          // Attempt to parse into a valid date object
+          const dateParts = dobRaw.split("-");
+          let dob = "N/A";
+      
+          if (dateParts.length === 3) {
+              // Assume MM/DD/YYYY format even if incorrect
+              dob = `${dateParts[0].padStart(2, "0")}-${dateParts[1].padStart(2, "0")}-${dateParts[2]}`;
+          }
+      
+          return {          
+              key: item.id || index.toString(),
+              name: item.personalInfo?.name || "N/A",
+              dob, // ✅ Correctly formatted DOB
+              gender: item.personalInfo?.gender || "N/A",
+              race: item.personalInfo?.race || "N/A",
+              ethnicity: item.personalInfo?.ethnicity || "N/A",
+              phoneNumber: item.personalInfo?.phoneNumber || "N/A",
+              address: item.personalInfo?.address || "N/A",
+              email: item.personalInfo?.email || "N/A",
+              caseNumber: item.caseInfo?.caseNumber || "N/A",
+              jurisdiction: item.caseInfo?.jurisdiction || "N/A",
+              exonerationNumber: item.caseInfo?.exonerationNumber || "N/A",
+              yearsInPrison: item.caseInfo?.yearsInPrison || "N/A",
+              arrestDate: item.caseInfo?.arrestDate || "N/A",
+              convictionDate: item.caseInfo?.convictionDate || "N/A",
+              freedomDate: item.caseInfo?.freedomDate || "N/A",
+              exonerationDate: item.caseInfo?.exonerationDate || "N/A",
+              crimeType: item.caseInfo?.crimeType || "N/A",
+              sentence: item.caseInfo?.sentence || "N/A",
+              originalCharges: item.caseInfo?.originalCharges || "N/A",
+              convictionMethod: item.legalInfo?.convictionMethod || "N/A",
+              exonerationMethod: item.legalInfo?.exonerationMethod || "N/A",
+              compensation: item.postExonerationInfo?.compensation || "N/A",
+          };
+      });
+      
   
         console.log("✅ Formatted Exonerees Data:", formattedData);
         setExonerees(formattedData);
