@@ -14,220 +14,65 @@ import { MdFilterList } from 'react-icons/md'
 import { CgLogOut } from "react-icons/cg";
 import ActionMenuComponent from '@/components/ActionMenuComponent'
 import SelectColumnsModal from '@/components/SelectColumnsModal'
-// import { Button } from "@mui/material";
 import TableFilterIcons from '@/components/TableFilterIcons'
 import OpenFilterSidebar from '../components/OpenFilterSidebar'
-import getAllExonerees from '@/pages/api/exonerees/getAllExonerees'
+import { saveAs } from 'file-saver';
 
 // TODO: This is a bandaid solution for Vercel deployment.
 // In the future we will want to dynamically determine columns based off this
+// Define the data structure type with an index signature
 interface TableRowData {
-  name: string
-  dob: string
-  race: string
-  ethnicity: string
-  phoneNumber: string
-  address: string
-  email: string
-  caseNumber: string
-  crimeType: string
+  [key: string]: string | number | undefined;
+  key: string;
+  name: string;
+  dob: string;
+  gender: string;
+  race: string;
+  ethnicity: string;
+  phoneNumber: string;
+  address: string;
+  email: string;
+  caseNumber: string;
+  jurisdiction: string;
+  exonerationNumber: string;
+  yearsInPrison: string;
+  arrestDate: string;
+  convictionDate: string;
+  freedomDate: string;
+  exonerationDate: string;
+  sentence: string;
+  originalCharges: string;
+  convictionMethod: string;
+  exonerationMethod: string;
+  legalRepresentation: string;
+  prosecutor: string;
+  judge: string;
+  officersInvolved: string;
+  falseConfession: string;
+  eyewitnessMisidentification: string;
+  inadequateLegalDefense: string;
+  policeMisconduct: string;
+  prosecutorialMisconduct: string;
+  forensicEvidence: string;
+  informantTestimony: string;
+  otherInfo: string;
+  compensation: string;
+  reentrySupport: string;
+  publicApology: string;
+  currentStatus: string;
+  mediaCoverage: string;
+  advocacyInvolvement: string;
+  educationalBackground: string;
+  healthInfo: string;
+  dataSource: string;
+  lastUpdated: string;
+  createdAt: string;
 }
+  
 // Dynamic import for the Ant Design Table component
 const Table = dynamic(() => import('antd').then(mod => mod.Table), {
   ssr: false
 })
-
-// Dummy data for the table
-// const dataSource = [
-//   {
-//     key: '1',
-//     name: 'Mike Johnson',
-//     dob: '10/10/2005',
-//     gender: 'Male',
-//     race: 'White',
-//     ethnicity: 'Caucasian',
-//     phoneNumber: '123-456-7890',
-//     address: '123 Main St, Springfield',
-//     email: 'mike.johnson@example.com',
-//     caseNumber: '56789',
-//     jurisdiction: 'Federal',
-//     exonerationNumber: "11",
-//     yearsInPrison: '5',
-//     arrestDate: '10/10/2024',
-//     convictionDate: '11/10/2024',
-//     freedomDate: '11/12/2024',
-//     exonerationDate: '11/15/2024',
-//     crimeType: 'Misdemeanor',
-//     sentence: '2 years',
-//     originalCharges: 'Robbery',
-//     convictionMethod: 'Public',
-//     exonerationMethod: 'Prison',
-//     legalRepresentation: 'Yes',
-//     prosecutor: 'Joe',
-//     judge: 'John',
-//     officersInvolved: 'Yes',
-//     falseConfession: 'No',
-//     eyewitnessMisidentification: 'No',
-//     inadequateLegalDefense: 'Yes',
-//     policeMisconduct: 'Yes',
-//     prosecutorialMisconduct: 'Yes',
-//     forensicEvidence: 'Paper Bag',
-//     informantTestimony: 'Yes',
-//     otherInfo: '',
-//     compensation: '$500',
-//     reentrySupport: 'Yes',
-//     publicApology: 'No',
-//     currentStatus: 'In Jail',
-//     mediaCoverage: 'Yes',
-//     advocacyInvolvement: 'Yes',
-//     educationalBackground: 'High School',
-//     healthInfo: 'Good',
-//     dataSource: 'Internal',
-//     lastUpdated: '10/24/2024',
-//     createdAt: '10/24/2024'
-//   },
-//   {
-//     key: '2',
-//     name: 'Sarah Carter',
-//     dob: '07/15/1995',
-//     gender: 'Female',
-//     race: 'Black',
-//     ethnicity: 'African-American',
-//     phoneNumber: '987-654-3210',
-//     address: '456 Elm St, Boston',
-//     email: 'sarah.carter@example.com',
-//     caseNumber: '12345',
-//     jurisdiction: 'State',
-//     exonerationNumber: "32",
-//     yearsInPrison: '8',
-//     arrestDate: '03/10/2018',
-//     convictionDate: '06/10/2018',
-//     freedomDate: '06/10/2026',
-//     exonerationDate: '06/12/2026',
-//     crimeType: 'Felony',
-//     sentence: '10 years',
-//     originalCharges: 'Assault',
-//     convictionMethod: 'Jury Trial',
-//     exonerationMethod: 'DNA Evidence',
-//     legalRepresentation: 'Yes',
-//     prosecutor: 'Ted',
-//     judge: 'Tim',
-//     officersInvolved: 'No',
-//     falseConfession: 'Yes',
-//     eyewitnessMisidentification: 'Yes',
-//     inadequateLegalDefense: 'No',
-//     policeMisconduct: 'Yes',
-//     prosecutorialMisconduct: 'Yes',
-//     forensicEvidence: 'DNA',
-//     informantTestimony: 'No',
-//     otherInfo: '',
-//     compensation: '$1,200,000',
-//     reentrySupport: 'Yes',
-//     publicApology: 'Yes',
-//     currentStatus: 'Released',
-//     mediaCoverage: 'No',
-//     advocacyInvolvement: 'No',
-//     educationalBackground: 'College Graduate',
-//     healthInfo: 'Excellent',
-//     dataSource: 'External',
-//     lastUpdated: '06/20/2026',
-//     createdAt: '03/10/2018'
-//   },
-//   {
-//     key: '3',
-//     name: 'John Smith',
-//     dob: '12/01/1988',
-//     gender: 'Male',
-//     race: 'Hispanic',
-//     ethnicity: 'Latino',
-//     phoneNumber: '555-234-6789',
-//     address: '789 Pine St, Miami',
-//     email: 'john.smith@example.com',
-//     caseNumber: '78901',
-//     jurisdiction: 'County',
-//     exonerationNumber: "4",
-//     yearsInPrison: '3',
-//     arrestDate: '01/15/2021',
-//     convictionDate: '03/15/2021',
-//     freedomDate: '03/15/2024',
-//     exonerationDate: '03/20/2024',
-//     crimeType: 'Fraud',
-//     sentence: '5 years',
-//     originalCharges: 'Tax Evasion',
-//     convictionMethod: 'Bench Trial',
-//     exonerationMethod: 'Appeal',
-//     legalRepresentation: 'No',
-//     prosecutor: 'Bill',
-//     judge: 'Bob',
-//     officersInvolved: 'Yes',
-//     falseConfession: 'No',
-//     eyewitnessMisidentification: 'No',
-//     inadequateLegalDefense: 'Yes',
-//     policeMisconduct: 'No',
-//     prosecutorialMisconduct: 'No',
-//     forensicEvidence: 'Audit',
-//     informantTestimony: 'Yes',
-//     otherInfo: '',
-//     compensation: '$200,000',
-//     reentrySupport: 'Yes',
-//     publicApology: 'No',
-//     currentStatus: 'Released',
-//     mediaCoverage: 'Yes',
-//     advocacyInvolvement: 'Yes',
-//     educationalBackground: "Bachelor's Degree",
-//     healthInfo: 'Fair',
-//     dataSource: 'Internal',
-//     lastUpdated: '03/20/2024',
-//     createdAt: '01/15/2021'
-//   },
-//   {
-//     key: '4',
-//     name: 'Emily Davis',
-//     dob: '04/22/1990',
-//     gender: 'Female',
-//     race: 'Asian',
-//     ethnicity: 'Chinese',
-//     phoneNumber: '222-333-4444',
-//     address: '101 Birch St, Seattle',
-//     email: 'emily.davis@example.com',
-//     caseNumber: '11223',
-//     jurisdiction: 'Federal',
-//     exonerationNumber: "89",
-//     yearsInPrison: '7',
-//     arrestDate: '05/01/2014',
-//     convictionDate: '09/01/2014',
-//     freedomDate: '09/01/2021',
-//     exonerationDate: '09/15/2021',
-//     crimeType: 'Theft',
-//     sentence: '10 years',
-//     originalCharges: 'Grand Larceny',
-//     convictionMethod: 'Jury Trial',
-//     exonerationMethod: 'New Evidence',
-//     legalRepresentation: 'Yes',
-//     prosecutor: 'Sam',
-//     judge: 'Stan',
-//     officersInvolved: 'Yes',
-//     falseConfession: 'No',
-//     eyewitnessMisidentification: 'No',
-//     inadequateLegalDefense: 'No',
-//     policeMisconduct: 'Yes',
-//     prosecutorialMisconduct: 'Yes',
-//     forensicEvidence: 'Surveillance',
-//     informantTestimony: 'No',
-//     otherInfo: '',
-//     compensation: '$800,000',
-//     reentrySupport: 'No',
-//     publicApology: 'Yes',
-//     currentStatus: 'Released',
-//     mediaCoverage: 'Yes',
-//     advocacyInvolvement: 'No',
-//     educationalBackground: "Master's Degree",
-//     healthInfo: 'Good',
-//     dataSource: 'External',
-//     lastUpdated: '09/30/2021',
-//     createdAt: '05/01/2014'
-//   }
-// ]
 
 // Table columns configuration
 const columns = [
@@ -356,19 +201,58 @@ const columns = [
 const HomePage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [columnsModalOpen, setColumnsModalOpen] = useState(false)
-  const [exonerees, setExonerees] = useState<any[]>([]);
-  
+  const [exonerees, setExonerees] = useState<any[]>([]) 
+
+  // Initialize selectedColumns with all column keys
+  const [selectedColumns, setSelectedColumns] = useState<string[]>(
+    columns.map(col => col.key)
+  )
+
   useEffect(() => {
     const fetchExonerees = async () => {
       try {
-        const response = await fetch('/api/exonerees/getAllExonerees');
+        const response = await fetch('/api/exonerees/getAllExonerees'); // API Call
         if (!response.ok) {
           throw new Error(`Failed to fetch exonerees: ${response.statusText}`);
         }
   
-        const data = await response.json();
-        console.log("✅ API Response Data:", data); // 🔍 Debugging log
-        setExonerees(data.data); // ✅ Update state with real data
+        const jsonResponse = await response.json();
+        console.log("✅ API Response Data:", jsonResponse);
+  
+        if (!jsonResponse.data || !Array.isArray(jsonResponse.data)) {
+          console.error("🚨 Invalid response format", jsonResponse);
+          return;
+        }
+  
+        // Convert API data to table format
+        const formattedData = jsonResponse.data.map((item: any, index: number) => ({
+          key: item.id || index.toString(),
+          name: item.personalInfo?.name || "N/A",
+          dob: item.personalInfo?.dob || "N/A",
+          gender: item.personalInfo?.gender || "N/A",
+          race: item.personalInfo?.race || "N/A",
+          ethnicity: item.personalInfo?.ethnicity || "N/A",
+          phoneNumber: item.personalInfo?.phoneNumber || "N/A",
+          address: item.personalInfo?.address || "N/A",
+          email: item.personalInfo?.email || "N/A",
+          caseNumber: item.caseInfo?.caseNumber || "N/A",
+          jurisdiction: item.caseInfo?.jurisdiction || "N/A",
+          exonerationNumber: item.caseInfo?.exonerationNumber || "N/A",
+          yearsInPrison: item.caseInfo?.yearsInPrison || "N/A",
+          arrestDate: item.caseInfo?.arrestDate || "N/A",
+          convictionDate: item.caseInfo?.convictionDate || "N/A",
+          freedomDate: item.caseInfo?.freedomDate || "N/A",
+          exonerationDate: item.caseInfo?.exonerationDate || "N/A",
+          crimeType: item.caseInfo?.crimeType || "N/A",
+          sentence: item.caseInfo?.sentence || "N/A",
+          originalCharges: item.caseInfo?.originalCharges || "N/A",
+          convictionMethod: item.legalInfo?.convictionMethod || "N/A",
+          exonerationMethod: item.legalInfo?.exonerationMethod || "N/A",
+          compensation: item.postExonerationInfo?.compensation || "N/A",
+        }));
+  
+        console.log("✅ Formatted Exonerees Data:", formattedData);
+        setExonerees(formattedData);
       } catch (error) {
         console.error('🚨 Error fetching exonerees:', error);
       }
@@ -376,12 +260,6 @@ const HomePage: React.FC = () => {
   
     fetchExonerees();
   }, []);
-  
-
-  // Initialize selectedColumns with all column keys
-  const [selectedColumns, setSelectedColumns] = useState<string[]>(
-    columns.map(col => col.key)
-  )
 
   const handleOpenModal = () => setModalOpen(true)
   const handleCloseModal = () => setModalOpen(false)
@@ -469,6 +347,25 @@ const HomePage: React.FC = () => {
       console.error("Logout error:", error);
     }
   };
+
+  const handleExportToCSV = async () => {
+    try {
+      const response = await fetch('/api/export', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ selectedColumns, data: exonerees }),
+      });
+  
+      if (response.ok) {
+        const blob = await response.blob();
+        saveAs(blob, 'exonerees.csv');  // Trigger file download
+      } else {
+        console.error('Export failed:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error exporting data:', error);
+    }
+  };  
 
   const noop: () => void = () => { };
 
@@ -590,18 +487,19 @@ const HomePage: React.FC = () => {
             />
             <IconTextButton
               icon={
-                <Image
+                  <Image
                   src={UploadIcon}
                   alt='upload icon'
                   width='24'
                   height='24'
-                ></Image>
+                  />
               }
               filled={false}
               text='Export to CSV'
               border={true}
               height='44px'
               width='159px'
+              onClick={handleExportToCSV}
             />
             <IconTextButton
               onClick={handleOpenModal}
@@ -727,10 +625,9 @@ const HomePage: React.FC = () => {
         <div style={{ height: '60vh', backgroundColor: 'white' }}>
           {/* Database Display */}
           <Table
-            dataSource={exonerees} 
+            dataSource={exonerees} //so that search results update the table
             columns={filteredColumns}
             scroll={{ x: 'max-content' }}
-            locale={{ emptyText: 'No data available' }}
           />
         </div>
 
