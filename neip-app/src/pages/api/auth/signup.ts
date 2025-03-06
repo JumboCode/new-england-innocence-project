@@ -12,7 +12,7 @@ export default async function handler (
     secretKey: process.env.CLERK_SECRET_KEY
   })
 
-  const { email, password } = req.body
+  const { email, name, password } = req.body
 
   if (!email || !password) {
     console.log('Missing email or password.')
@@ -28,6 +28,7 @@ export default async function handler (
     // added to ensure creation process is working
     const user = await clerkClient.users.createUser({
       emailAddress: [email],
+      firstName: name,
       password: password
     })
 
