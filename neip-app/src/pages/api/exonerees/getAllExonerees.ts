@@ -14,9 +14,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 personalInfo: true, 
                 caseInfo: true,
                 legalInfo: true,
+                wrongfulConvictionInfo: true,  
                 postExonerationInfo: true,
+                metaData: true, 
             }
         });
+        
 
         // Helper function to format dates (handles Date objects and strings)
         const formatDate = (date: string | Date | null) => {
