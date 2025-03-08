@@ -23,6 +23,7 @@ import { saveAs } from 'file-saver'
 // Define the data structure type with an index signature
 interface TableRowData {
   [key: string]: string | number | undefined
+  id?: number
   key: string
   name: string
   dob: string
@@ -212,133 +213,125 @@ const HomePage: React.FC = () => {
     columns.map(col => col.key)
   )
 
-  useEffect(() => {
-    const fetchExonerees = async () => {
-      try {
-        const response = await fetch('/api/exonerees/getAllExonerees')
-        if (!response.ok) {
-          throw new Error(`Failed to fetch exonerees: ${response.statusText}`)
-        }
-
-        const jsonResponse = await response.json()
-        console.log('✅ API Response Data:', jsonResponse)
-
-        if (!jsonResponse.data || !Array.isArray(jsonResponse.data)) {
-          console.error('🚨 Invalid response format', jsonResponse)
-          return
-        }
-
-        const handleEmptyString = (value: any) => {
-          return value === '' || value === null || value === undefined
-            ? 'N/A'
-            : value
-        }
-
-        const handleArray = (arr: any[]) => {
-          if (!arr || !Array.isArray(arr) || arr.length === 0) return 'N/A'
-          const filteredArray = arr.filter(item => item.trim() !== '')
-          return filteredArray.length ? filteredArray.join(', ') : 'N/A'
-        }
-
-        const handleBoolean = (value: boolean | null | undefined) => {
-          return value === true ? 'True' : value === false ? 'False' : 'N/A'
-        }
-
-        const formattedData = jsonResponse.data.map(
-          (item: any, index: number) => ({
-            id: item.id,
-            key: item.id || index.toString(),
-            name: handleEmptyString(item.personalInfo?.name),
-            dob: handleEmptyString(item.personalInfo?.dateOfBirth),
-            gender: handleEmptyString(item.personalInfo?.gender),
-            race: handleEmptyString(item.personalInfo?.race),
-            ethnicity: handleEmptyString(item.personalInfo?.ethnicity),
-            phoneNumber: handleEmptyString(item.personalInfo?.phoneNumber),
-            address: handleEmptyString(item.personalInfo?.address),
-            email: handleEmptyString(item.personalInfo?.email),
-            caseNumber: handleEmptyString(item.caseInfo?.caseNumber),
-            jurisdiction: handleEmptyString(item.caseInfo?.jurisdiction),
-            exonerationNumber: item.caseInfo?.exonerationNumber
-              ? item.caseInfo.exonerationNumber.toString()
-              : 'N/A',
-            yearsInPrison: item.caseInfo?.yearsInPrison
-              ? item.caseInfo.yearsInPrison.toString()
-              : 'N/A',
-            arrestDate: handleEmptyString(item.caseInfo?.arrestDate),
-            convictionDate: handleEmptyString(item.caseInfo?.convictionDate),
-            freedomDate: handleEmptyString(item.caseInfo?.freedomDate),
-            exonerationDate: handleEmptyString(item.caseInfo?.exonerationDate),
-            crimeType: handleEmptyString(item.caseInfo?.crimeType),
-            sentence: handleEmptyString(item.caseInfo?.sentence),
-            originalCharges: handleArray(item.legalInfo?.originalCharges),
-            convictionMethod: handleArray(item.legalInfo?.convictionMethod),
-            exonerationMethod: handleEmptyString(
-              item.legalInfo?.exonerationMethod
-            ),
-            legalRepresentation: handleEmptyString(
-              item.legalInfo?.legalRepresentation
-            ),
-            prosecutor: handleEmptyString(item.legalInfo?.prosecutor),
-            judge: handleEmptyString(item.legalInfo?.judge),
-            officersInvolved: handleArray(item.legalInfo?.officersInvolved),
-            falseConfession: handleBoolean(
-              item.wrongfulConvictionInfo?.falseConfession
-            ),
-            eyewitnessMisidentification: handleBoolean(
-              item.wrongfulConvictionInfo?.eyewitnessMisidentification
-            ),
-            inadequateLegalDefense: handleBoolean(
-              item.wrongfulConvictionInfo?.inadequateLegalDefense
-            ),
-            policeMisconduct: handleBoolean(
-              item.wrongfulConvictionInfo?.policeMisconduct
-            ),
-            prosecutorialMisconduct: handleBoolean(
-              item.wrongfulConvictionInfo?.prosecutorialMisconduct
-            ),
-            forensicEvidence: handleBoolean(
-              item.wrongfulConvictionInfo?.forensicEvidence
-            ),
-            informantTestimony: handleBoolean(
-              item.wrongfulConvictionInfo?.informantTestimony
-            ),
-            otherInfo: handleEmptyString(
-              item.wrongfulConvictionInfo?.otherInfo
-            ),
-            compensation: item.postExonerationInfo?.compensationAmount
-              ? `$${item.postExonerationInfo.compensationAmount.toLocaleString()}`
-              : 'N/A',
-            reentrySupport: handleArray(
-              item.postExonerationInfo?.reentrySupport
-            ),
-            publicApology: handleBoolean(
-              item.postExonerationInfo?.publicApology
-            ),
-            currentStatus: handleEmptyString(
-              item.postExonerationInfo?.occupation
-            ),
-            mediaCoverage: handleEmptyString(item.metaData?.mediaCoverage),
-            advocacyInvolvement: handleEmptyString(
-              item.metaData?.advocacyInvolvement
-            ),
-            educationalBackground: handleEmptyString(
-              item.metaData?.educationalBackground
-            ),
-            healthInfo: handleEmptyString(item.metaData?.healthInfo),
-            dataSource: handleEmptyString(item.metaData?.dataSource),
-            lastUpdated: handleEmptyString(item.metaData?.lastUpdated),
-            createdAt: handleEmptyString(item.metaData?.createdAt)
-          })
-        )
-
-        console.log('✅ Formatted Exonerees Data:', formattedData)
-        setExonerees(formattedData)
-      } catch (error) {
-        console.error('🚨 Error fetching exonerees:', error)
+  // Helper function to refresh data from the API
+  const refreshExonerees = async () => {
+    try {
+      const response = await fetch('/api/exonerees/getAllExonerees')
+      if (!response.ok) {
+        throw new Error(`Failed to fetch exonerees: ${response.statusText}`)
       }
-    }
 
-    fetchExonerees()
+      const jsonResponse = await response.json()
+      console.log('✅ API Response Data:', jsonResponse)
+
+      if (!jsonResponse.data || !Array.isArray(jsonResponse.data)) {
+        console.error('🚨 Invalid response format', jsonResponse)
+        return
+      }
+
+      // Helper functions for formatting
+      const handleEmptyString = (value: any) =>
+        value === '' || value === null || value === undefined
+          ? 'N/A'
+          : value
+      const handleArray = (arr: any[]) => {
+        if (!arr || !Array.isArray(arr) || arr.length === 0) return 'N/A'
+        const filteredArray = arr.filter((item: string) => item.trim() !== '')
+        return filteredArray.length ? filteredArray.join(', ') : 'N/A'
+      }
+      const handleBoolean = (value: boolean | null | undefined) =>
+        value === true ? 'True' : value === false ? 'False' : 'N/A'
+
+      const formattedData = jsonResponse.data.map(
+        (item: any, index: number) => ({
+          id: item.id, // ensure we have the id
+          key: item.id || index.toString(),
+          name: handleEmptyString(item.personalInfo?.name),
+          dob: handleEmptyString(item.personalInfo?.dateOfBirth),
+          gender: handleEmptyString(item.personalInfo?.gender),
+          race: handleEmptyString(item.personalInfo?.race),
+          ethnicity: handleEmptyString(item.personalInfo?.ethnicity),
+          phoneNumber: handleEmptyString(item.personalInfo?.phoneNumber),
+          address: handleEmptyString(item.personalInfo?.address),
+          email: handleEmptyString(item.personalInfo?.email),
+          caseNumber: handleEmptyString(item.caseInfo?.caseNumber),
+          jurisdiction: handleEmptyString(item.caseInfo?.jurisdiction),
+          exonerationNumber: item.caseInfo?.exonerationNumber
+            ? item.caseInfo.exonerationNumber.toString()
+            : 'N/A',
+          yearsInPrison: item.caseInfo?.yearsInPrison
+            ? item.caseInfo.yearsInPrison.toString()
+            : 'N/A',
+          arrestDate: handleEmptyString(item.caseInfo?.arrestDate),
+          convictionDate: handleEmptyString(item.caseInfo?.convictionDate),
+          freedomDate: handleEmptyString(item.caseInfo?.freedomDate),
+          exonerationDate: handleEmptyString(item.caseInfo?.exonerationDate),
+          crimeType: handleEmptyString(item.caseInfo?.crimeType),
+          sentence: handleEmptyString(item.caseInfo?.sentence),
+          originalCharges: handleArray(item.legalInfo?.originalCharges),
+          convictionMethod: handleArray(item.legalInfo?.convictionMethod),
+          exonerationMethod: handleEmptyString(
+            item.legalInfo?.exonerationMethod
+          ),
+          legalRepresentation: handleEmptyString(
+            item.legalInfo?.legalRepresentation
+          ),
+          prosecutor: handleEmptyString(item.legalInfo?.prosecutor),
+          judge: handleEmptyString(item.legalInfo?.judge),
+          officersInvolved: handleArray(item.legalInfo?.officersInvolved),
+          falseConfession: handleBoolean(
+            item.wrongfulConvictionInfo?.falseConfession
+          ),
+          eyewitnessMisidentification: handleBoolean(
+            item.wrongfulConvictionInfo?.eyewitnessMisidentification
+          ),
+          inadequateLegalDefense: handleBoolean(
+            item.wrongfulConvictionInfo?.inadequateLegalDefense
+          ),
+          policeMisconduct: handleBoolean(
+            item.wrongfulConvictionInfo?.policeMisconduct
+          ),
+          prosecutorialMisconduct: handleBoolean(
+            item.wrongfulConvictionInfo?.prosecutorialMisconduct
+          ),
+          forensicEvidence: handleBoolean(
+            item.wrongfulConvictionInfo?.forensicEvidence
+          ),
+          informantTestimony: handleBoolean(
+            item.wrongfulConvictionInfo?.informantTestimony
+          ),
+          otherInfo: handleEmptyString(item.wrongfulConvictionInfo?.otherInfo),
+          compensation: item.postExonerationInfo?.compensationAmount
+            ? `$${item.postExonerationInfo.compensationAmount.toLocaleString()}`
+            : 'N/A',
+          reentrySupport: handleArray(item.postExonerationInfo?.reentrySupport),
+          publicApology: handleBoolean(
+            item.postExonerationInfo?.publicApology
+          ),
+          currentStatus: handleEmptyString(item.postExonerationInfo?.occupation),
+          mediaCoverage: handleEmptyString(item.metaData?.mediaCoverage),
+          advocacyInvolvement: handleEmptyString(
+            item.metaData?.advocacyInvolvement
+          ),
+          educationalBackground: handleEmptyString(
+            item.metaData?.educationalBackground
+          ),
+          healthInfo: handleEmptyString(item.metaData?.healthInfo),
+          dataSource: handleEmptyString(item.metaData?.dataSource),
+          lastUpdated: handleEmptyString(item.metaData?.lastUpdated),
+          createdAt: handleEmptyString(item.metaData?.createdAt)
+        })
+      )
+
+      console.log('✅ Formatted Exonerees Data:', formattedData)
+      setExonerees(formattedData)
+    } catch (error) {
+      console.error('🚨 Error fetching exonerees:', error)
+    }
+  }
+
+  useEffect(() => {
+    refreshExonerees()
   }, [])
 
   const handleOpenModal = () => setModalOpen(true)
@@ -352,16 +345,13 @@ const HomePage: React.FC = () => {
   }
 
   const [selectedFilters] = useState(['officer', 'Male', 'Test'])
-
   const [actionMenuVisible, setActionMenuVisible] = useState(false)
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 })
   const [selectedCell, setSelectedCell] = useState<{
     record: TableRowData
     columnKey: string
   } | null>(null)
-
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-
   const filteredColumns = columns
     .filter(column => selectedColumns.includes(column.key))
     .map(column => ({
@@ -496,7 +486,7 @@ const HomePage: React.FC = () => {
         </div>
       </div>
 
-      {/* Render the OpenFiterSideBar if it's visible*/}
+      {/* Render the OpenFilterSideBar if it's visible*/}
       {isSidebarOpen && <OpenFilterSidebar onClose={closeFilterSidebar} />}
 
       {/* Open Filter Sidebar Button - Top Right */}
@@ -516,7 +506,6 @@ const HomePage: React.FC = () => {
             border: 'none',
             cursor: 'pointer',
             marginLeft: '1279px',
-            // marginRight: '100px',
             display: 'flex',
             alignItems: 'center',
             fontSize: '11px'
@@ -529,7 +518,7 @@ const HomePage: React.FC = () => {
             style={{ marginLeft: '12px' }}
             height='5.21'
             width='10.42'
-          ></Image>
+          />
         </button>
       </div>
 
@@ -579,7 +568,7 @@ const HomePage: React.FC = () => {
                   alt='trash icon'
                   width='20'
                   height='20'
-                ></Image>
+                />
               }
               filled={false}
               text='Delete'
@@ -611,7 +600,7 @@ const HomePage: React.FC = () => {
                   alt='plus icon'
                   width='14'
                   height='14'
-                ></Image>
+                />
               }
               filled={true}
               text='Add new exoneree file'
@@ -643,10 +632,7 @@ const HomePage: React.FC = () => {
               marginBottom: '10px'
             }}
           >
-            {/* <Image src={PlusIcon} alt="funnel" style={{ width: '16px', height: '16px', marginTop: '10px' }} ></Image>  */}
-            <FaFilter
-              style={{ width: '16px', height: '16px', marginTop: '10px' }}
-            />
+            <FaFilter style={{ width: '16px', height: '16px', marginTop: '10px' }} />
             {selectedFilters.map((filter, index) => (
               <TableFilterIcons
                 key={index}
@@ -725,9 +711,8 @@ const HomePage: React.FC = () => {
 
         {/* Database Display */}
         <div style={{ height: '60vh', backgroundColor: 'white' }}>
-          {/* Database Display */}
           <Table
-            dataSource={exonerees} //so that search results update the table
+            dataSource={exonerees} // so that search results update the table
             columns={filteredColumns}
             scroll={{ x: 'max-content' }}
           />
@@ -745,15 +730,19 @@ const HomePage: React.FC = () => {
           >
             <ActionMenuComponent
               onClose={closeActionMenu}
-              // unsure how to pass exonereeID
               exonereeId={selectedExonereeId!}
+              onDeleteSuccess={refreshExonerees}
             />
           </div>
         )}
       </div>
 
       {/* Modals */}
-      <AddExonereeModal open={modalOpen} handleClose={handleCloseModal} />
+      <AddExonereeModal
+        open={modalOpen}
+        handleClose={handleCloseModal}
+        onSuccess={refreshExonerees}
+      />
       <SelectColumnsModal
         open={columnsModalOpen}
         handleClose={handleColumnsModalClose}
