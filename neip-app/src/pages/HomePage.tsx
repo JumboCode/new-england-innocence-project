@@ -210,73 +210,91 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     const fetchExonerees = async () => {
-      try {
-        const response = await fetch('/api/exonerees/getAllExonerees'); // API Call
-        if (!response.ok) {
-          throw new Error(`Failed to fetch exonerees: ${response.statusText}`);
+        try {
+            const response = await fetch('/api/exonerees/getAllExonerees');
+            if (!response.ok) {
+                throw new Error(`Failed to fetch exonerees: ${response.statusText}`);
+            }
+
+            const jsonResponse = await response.json();
+            console.log("✅ API Response Data:", jsonResponse);
+
+            if (!jsonResponse.data || !Array.isArray(jsonResponse.data)) {
+                console.error("🚨 Invalid response format", jsonResponse);
+                return;
+            }
+
+            const handleEmptyString = (value: any) => {
+                return value === "" || value === null || value === undefined ? "N/A" : value;
+            };
+
+            const handleArray = (arr: any[]) => {
+                if (!arr || !Array.isArray(arr) || arr.length === 0) return "N/A";
+                const filteredArray = arr.filter(item => item.trim() !== ""); 
+                return filteredArray.length ? filteredArray.join(", ") : "N/A";
+            };
+
+            const handleBoolean = (value: boolean | null | undefined) => {
+                return value === true ? "True" : value === false ? "False" : "N/A";
+            };
+
+            const formattedData = jsonResponse.data.map((item: any, index: number) => ({
+                key: item.id || index.toString(),
+                name: handleEmptyString(item.personalInfo?.name),
+                dob: handleEmptyString(item.personalInfo?.dateOfBirth),  
+                gender: handleEmptyString(item.personalInfo?.gender),
+                race: handleEmptyString(item.personalInfo?.race),
+                ethnicity: handleEmptyString(item.personalInfo?.ethnicity),
+                phoneNumber: handleEmptyString(item.personalInfo?.phoneNumber),
+                address: handleEmptyString(item.personalInfo?.address),
+                email: handleEmptyString(item.personalInfo?.email),
+                caseNumber: handleEmptyString(item.caseInfo?.caseNumber),
+                jurisdiction: handleEmptyString(item.caseInfo?.jurisdiction),
+                exonerationNumber: item.caseInfo?.exonerationNumber ? item.caseInfo.exonerationNumber.toString() : "N/A",
+                yearsInPrison: item.caseInfo?.yearsInPrison ? item.caseInfo.yearsInPrison.toString() : "N/A",
+                arrestDate: handleEmptyString(item.caseInfo?.arrestDate),
+                convictionDate: handleEmptyString(item.caseInfo?.convictionDate),
+                freedomDate: handleEmptyString(item.caseInfo?.freedomDate),
+                exonerationDate: handleEmptyString(item.caseInfo?.exonerationDate),
+                crimeType: handleEmptyString(item.caseInfo?.crimeType),
+                sentence: handleEmptyString(item.caseInfo?.sentence),
+                originalCharges: handleArray(item.legalInfo?.originalCharges),
+                convictionMethod: handleArray(item.legalInfo?.convictionMethod),
+                exonerationMethod: handleEmptyString(item.legalInfo?.exonerationMethod),
+                legalRepresentation: handleEmptyString(item.legalInfo?.legalRepresentation),
+                prosecutor: handleEmptyString(item.legalInfo?.prosecutor),
+                judge: handleEmptyString(item.legalInfo?.judge),
+                officersInvolved: handleArray(item.legalInfo?.officersInvolved),
+                falseConfession: handleBoolean(item.wrongfulConvictionInfo?.falseConfession),
+                eyewitnessMisidentification: handleBoolean(item.wrongfulConvictionInfo?.eyewitnessMisidentification),
+                inadequateLegalDefense: handleBoolean(item.wrongfulConvictionInfo?.inadequateLegalDefense),
+                policeMisconduct: handleBoolean(item.wrongfulConvictionInfo?.policeMisconduct),
+                prosecutorialMisconduct: handleBoolean(item.wrongfulConvictionInfo?.prosecutorialMisconduct),
+                forensicEvidence: handleBoolean(item.wrongfulConvictionInfo?.forensicEvidence),
+                informantTestimony: handleBoolean(item.wrongfulConvictionInfo?.informantTestimony),
+                otherInfo: handleEmptyString(item.wrongfulConvictionInfo?.otherInfo),
+                compensation: item.postExonerationInfo?.compensationAmount ? `$${item.postExonerationInfo.compensationAmount.toLocaleString()}` : "N/A",
+                reentrySupport: handleArray(item.postExonerationInfo?.reentrySupport),
+                publicApology: handleBoolean(item.postExonerationInfo?.publicApology),
+                currentStatus: handleEmptyString(item.postExonerationInfo?.occupation),
+                mediaCoverage: handleEmptyString(item.metaData?.mediaCoverage),
+                advocacyInvolvement: handleEmptyString(item.metaData?.advocacyInvolvement),
+                educationalBackground: handleEmptyString(item.metaData?.educationalBackground),
+                healthInfo: handleEmptyString(item.metaData?.healthInfo),
+                dataSource: handleEmptyString(item.metaData?.dataSource),
+                lastUpdated: handleEmptyString(item.metaData?.lastUpdated),
+                createdAt: handleEmptyString(item.metaData?.createdAt),
+            }));
+
+            console.log("✅ Formatted Exonerees Data:", formattedData);
+            setExonerees(formattedData);
+        } catch (error) {
+            console.error('🚨 Error fetching exonerees:', error);
         }
-  
-        const jsonResponse = await response.json();
-        console.log("✅ API Response Data:", jsonResponse);
-  
-        if (!jsonResponse.data || !Array.isArray(jsonResponse.data)) {
-          console.error("🚨 Invalid response format", jsonResponse);
-          return;
-        }
-  
-        // Convert API data to table format
-        const formattedData = jsonResponse.data.map((item: any, index: number) => {
-          let dobRaw = item.personalInfo?.dateOfBirth || ""; // Get raw date string
-      
-          // Normalize separators to ensure parsing works
-          dobRaw = dobRaw.replace(/[/.]/g, "-"); 
-      
-          // Attempt to parse into a valid date object
-          const dateParts = dobRaw.split("-");
-          let dob = "N/A";
-      
-          if (dateParts.length === 3) {
-              // Assume MM/DD/YYYY format even if incorrect
-              dob = `${dateParts[0].padStart(2, "0")}-${dateParts[1].padStart(2, "0")}-${dateParts[2]}`;
-          }
-      
-          return {          
-              key: item.id || index.toString(),
-              name: item.personalInfo?.name || "N/A",
-              dob, // ✅ Correctly formatted DOB
-              gender: item.personalInfo?.gender || "N/A",
-              race: item.personalInfo?.race || "N/A",
-              ethnicity: item.personalInfo?.ethnicity || "N/A",
-              phoneNumber: item.personalInfo?.phoneNumber || "N/A",
-              address: item.personalInfo?.address || "N/A",
-              email: item.personalInfo?.email || "N/A",
-              caseNumber: item.caseInfo?.caseNumber || "N/A",
-              jurisdiction: item.caseInfo?.jurisdiction || "N/A",
-              exonerationNumber: item.caseInfo?.exonerationNumber || "N/A",
-              yearsInPrison: item.caseInfo?.yearsInPrison || "N/A",
-              arrestDate: item.caseInfo?.arrestDate || "N/A",
-              convictionDate: item.caseInfo?.convictionDate || "N/A",
-              freedomDate: item.caseInfo?.freedomDate || "N/A",
-              exonerationDate: item.caseInfo?.exonerationDate || "N/A",
-              crimeType: item.caseInfo?.crimeType || "N/A",
-              sentence: item.caseInfo?.sentence || "N/A",
-              originalCharges: item.caseInfo?.originalCharges || "N/A",
-              convictionMethod: item.legalInfo?.convictionMethod || "N/A",
-              exonerationMethod: item.legalInfo?.exonerationMethod || "N/A",
-              compensation: item.postExonerationInfo?.compensation || "N/A",
-          };
-      });
-      
-  
-        console.log("✅ Formatted Exonerees Data:", formattedData);
-        setExonerees(formattedData);
-      } catch (error) {
-        console.error('🚨 Error fetching exonerees:', error);
-      }
     };
-  
+
     fetchExonerees();
-  }, []);
+}, []);
 
   const handleOpenModal = () => setModalOpen(true)
   const handleCloseModal = () => setModalOpen(false)
