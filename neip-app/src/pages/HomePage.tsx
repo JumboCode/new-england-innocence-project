@@ -207,7 +207,7 @@ const HomePage: React.FC = () => {
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
     columns.map(col => col.key)
   )
-
+  
   useEffect(() => {
     const fetchExonerees = async () => {
       try {
@@ -224,49 +224,66 @@ const HomePage: React.FC = () => {
           return;
         }
   
+        // Helper functions
+        const formatArray = (arr: string[] | undefined) => (arr && arr.length > 0 ? arr.join(", ") : "N/A");
+        const formatBoolean = (value: boolean | null | undefined) => (value ? "Yes" : "No");
+        const formatField = (field: any) => (field && field !== "" ? field : "N/A");
+  
         // Convert API data to table format
-        const formattedData = jsonResponse.data.map((item: any, index: number) => {
-          let dobRaw = item.personalInfo?.dateOfBirth || ""; // Get raw date string
-      
-          // Normalize separators to ensure parsing works
-          dobRaw = dobRaw.replace(/[/.]/g, "-"); 
-      
-          // Attempt to parse into a valid date object
-          const dateParts = dobRaw.split("-");
-          let dob = "N/A";
-      
-          if (dateParts.length === 3) {
-              // Assume MM/DD/YYYY format even if incorrect
-              dob = `${dateParts[0].padStart(2, "0")}-${dateParts[1].padStart(2, "0")}-${dateParts[2]}`;
-          }
-      
-          return {          
-              key: item.id || index.toString(),
-              name: item.personalInfo?.name || "N/A",
-              dob, // ✅ Correctly formatted DOB
-              gender: item.personalInfo?.gender || "N/A",
-              race: item.personalInfo?.race || "N/A",
-              ethnicity: item.personalInfo?.ethnicity || "N/A",
-              phoneNumber: item.personalInfo?.phoneNumber || "N/A",
-              address: item.personalInfo?.address || "N/A",
-              email: item.personalInfo?.email || "N/A",
-              caseNumber: item.caseInfo?.caseNumber || "N/A",
-              jurisdiction: item.caseInfo?.jurisdiction || "N/A",
-              exonerationNumber: item.caseInfo?.exonerationNumber || "N/A",
-              yearsInPrison: item.caseInfo?.yearsInPrison || "N/A",
-              arrestDate: item.caseInfo?.arrestDate || "N/A",
-              convictionDate: item.caseInfo?.convictionDate || "N/A",
-              freedomDate: item.caseInfo?.freedomDate || "N/A",
-              exonerationDate: item.caseInfo?.exonerationDate || "N/A",
-              crimeType: item.caseInfo?.crimeType || "N/A",
-              sentence: item.caseInfo?.sentence || "N/A",
-              originalCharges: item.caseInfo?.originalCharges || "N/A",
-              convictionMethod: item.legalInfo?.convictionMethod || "N/A",
-              exonerationMethod: item.legalInfo?.exonerationMethod || "N/A",
-              compensation: item.postExonerationInfo?.compensation || "N/A",
-          };
-      });
-      
+        const formattedData = jsonResponse.data.map((item: any, index: number) => ({
+          key: item.id || index.toString(),
+          name: formatField(item.personalInfo?.name),
+          dob: formatField(item.personalInfo?.dateOfBirth), // Doesn't change formatting, just ensures it's not empty
+          race: formatField(item.personalInfo?.race),
+          ethnicity: formatField(item.personalInfo?.ethnicity),
+          phoneNumber: formatField(item.personalInfo?.phoneNumber),
+          address: formatField(item.personalInfo?.address),
+          email: formatField(item.personalInfo?.email),
+  
+          caseNumber: formatField(item.caseInfo?.caseNumber),
+          crimeType: formatField(item.caseInfo?.crimeType),
+          gender: formatField(item.personalInfo?.gender),
+          jurisdiction: formatField(item.caseInfo?.jurisdiction),
+          exonerationNumber: formatField(item.caseInfo?.exonerationNumber?.toString()),
+          yearsInPrison: formatField(item.caseInfo?.yearsInPrison?.toString()),
+          arrestDate: formatField(item.caseInfo?.arrestDate),
+          convictionDate: formatField(item.caseInfo?.convictionDate),
+          freedomDate: formatField(item.caseInfo?.freedomDate),
+          exonerationDate: formatField(item.caseInfo?.exonerationDate),
+          sentence: formatField(item.caseInfo?.sentence),
+  
+          originalCharges: formatArray(item.legalInfo?.originalCharges),
+          convictionMethod: formatArray(item.legalInfo?.convictionMethod),
+          exonerationMethod: formatField(item.legalInfo?.exonerationMethod),
+          legalRepresentation: formatField(item.legalInfo?.legalRepresentation),
+          prosecutor: formatField(item.legalInfo?.prosecutor),
+          judge: formatField(item.legalInfo?.judge),
+          officersInvolved: formatArray(item.legalInfo?.officersInvolved),
+  
+          falseConfession: formatBoolean(item.legalInfo?.falseConfession),
+          eyewitnessMisidentification: formatBoolean(item.legalInfo?.eyewitnessMisidentification),
+          inadequateLegalDefense: formatBoolean(item.legalInfo?.inadequateLegalDefense),
+          policeMisconduct: formatBoolean(item.legalInfo?.policeMisconduct),
+          prosecutorialMisconduct: formatBoolean(item.legalInfo?.prosecutorialMisconduct),
+          forensicEvidence: formatField(item.legalInfo?.forensicEvidence),
+          informantTestimony: formatBoolean(item.legalInfo?.informantTestimony),
+  
+          otherInfo: formatField(item.legalInfo?.otherInfo),
+          compensation: item.postExonerationInfo?.compensationAmount
+            ? `${item.postExonerationInfo.compensationAmount.toLocaleString()}`
+            : "N/A",
+          reentrySupport: formatArray(item.postExonerationInfo?.reentrySupport),
+          publicApology: formatBoolean(item.postExonerationInfo?.publicApology),
+          currentStatus: formatField(item.postExonerationInfo?.occupation),
+          mediaCoverage: formatField(item.postExonerationInfo?.mediaCoverage),
+          advocacyInvolvement: formatField(item.postExonerationInfo?.advocacyInvolvement),
+          educationalBackground: formatField(item.postExonerationInfo?.educationalBackground),
+          healthInfo: formatField(item.postExonerationInfo?.healthInfo),
+  
+          dataSource: formatField(item.postExonerationInfo?.dataSource),
+          lastUpdated: formatField(item.postExonerationInfo?.lastUpdated),
+          createdAt: formatField(item.postExonerationInfo?.createdAt),
+        }));
   
         console.log("✅ Formatted Exonerees Data:", formattedData);
         setExonerees(formattedData);
@@ -276,7 +293,7 @@ const HomePage: React.FC = () => {
     };
   
     fetchExonerees();
-  }, []);
+  }, []);  
 
   const handleOpenModal = () => setModalOpen(true)
   const handleCloseModal = () => setModalOpen(false)
