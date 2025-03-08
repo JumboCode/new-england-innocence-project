@@ -11,64 +11,64 @@ import AddExonereeModal from '@/components/AddExonereeModal'
 import { FaFilter } from 'react-icons/fa'
 import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai'
 import { MdFilterList } from 'react-icons/md'
-import { CgLogOut } from "react-icons/cg";
+import { CgLogOut } from 'react-icons/cg'
 import ActionMenuComponent from '@/components/ActionMenuComponent'
 import SelectColumnsModal from '@/components/SelectColumnsModal'
 import TableFilterIcons from '@/components/TableFilterIcons'
 import OpenFilterSidebar from '../components/OpenFilterSidebar'
-import { saveAs } from 'file-saver';
+import { saveAs } from 'file-saver'
 
 // TODO: This is a bandaid solution for Vercel deployment.
 // In the future we will want to dynamically determine columns based off this
 // Define the data structure type with an index signature
 interface TableRowData {
-  [key: string]: string | number | undefined;
-  key: string;
-  name: string;
-  dob: string;
-  gender: string;
-  race: string;
-  ethnicity: string;
-  phoneNumber: string;
-  address: string;
-  email: string;
-  caseNumber: string;
-  jurisdiction: string;
-  exonerationNumber: string;
-  yearsInPrison: string;
-  arrestDate: string;
-  convictionDate: string;
-  freedomDate: string;
-  exonerationDate: string;
-  sentence: string;
-  originalCharges: string;
-  convictionMethod: string;
-  exonerationMethod: string;
-  legalRepresentation: string;
-  prosecutor: string;
-  judge: string;
-  officersInvolved: string;
-  falseConfession: string;
-  eyewitnessMisidentification: string;
-  inadequateLegalDefense: string;
-  policeMisconduct: string;
-  prosecutorialMisconduct: string;
-  forensicEvidence: string;
-  informantTestimony: string;
-  otherInfo: string;
-  compensation: string;
-  reentrySupport: string;
-  publicApology: string;
-  currentStatus: string;
-  mediaCoverage: string;
-  advocacyInvolvement: string;
-  educationalBackground: string;
-  healthInfo: string;
-  dataSource: string;
-  lastUpdated: string;
-  createdAt: string;
+  [key: string]: string | number | undefined
+  key: string
+  name: string
+  dob: string
+  gender: string
+  race: string
+  ethnicity: string
+  phoneNumber: string
+  address: string
+  email: string
+  caseNumber: string
+  jurisdiction: string
+  exonerationNumber: string
+  yearsInPrison: string
+  arrestDate: string
+  convictionDate: string
+  freedomDate: string
+  exonerationDate: string
+  sentence: string
+  originalCharges: string
+  convictionMethod: string
+  exonerationMethod: string
+  legalRepresentation: string
+  prosecutor: string
+  judge: string
+  officersInvolved: string
+  falseConfession: string
+  eyewitnessMisidentification: string
+  inadequateLegalDefense: string
+  policeMisconduct: string
+  prosecutorialMisconduct: string
+  forensicEvidence: string
+  informantTestimony: string
+  otherInfo: string
+  compensation: string
+  reentrySupport: string
+  publicApology: string
+  currentStatus: string
+  mediaCoverage: string
+  advocacyInvolvement: string
+  educationalBackground: string
+  healthInfo: string
+  dataSource: string
+  lastUpdated: string
+  createdAt: string
 }
-  
+
 // Dynamic import for the Ant Design Table component
 const Table = dynamic(() => import('antd').then(mod => mod.Table), {
   ssr: false
@@ -87,7 +87,11 @@ const columns = [
   { title: 'Crime Type', dataIndex: 'crimeType', key: 'crimeType' },
   { title: 'Gender', dataIndex: 'gender', key: 'gender' },
   { title: 'Jurisdiction', dataIndex: 'jurisdiction', key: 'jurisdiction' },
-  { title: 'Exoneration Number', dataIndex: "exonerationNumber", key: 'exonerationNumber' },
+  {
+    title: 'Exoneration Number',
+    dataIndex: 'exonerationNumber',
+    key: 'exonerationNumber'
+  },
   {
     title: 'Years In Prison',
     dataIndex: 'yearsInPrison',
@@ -201,7 +205,7 @@ const columns = [
 const HomePage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [columnsModalOpen, setColumnsModalOpen] = useState(false)
-  const [exonerees, setExonerees] = useState<any[]>([]) 
+  const [exonerees, setExonerees] = useState<any[]>([])
 
   // Initialize selectedColumns with all column keys
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
@@ -210,91 +214,132 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     const fetchExonerees = async () => {
-        try {
-            const response = await fetch('/api/exonerees/getAllExonerees');
-            if (!response.ok) {
-                throw new Error(`Failed to fetch exonerees: ${response.statusText}`);
-            }
-
-            const jsonResponse = await response.json();
-            console.log("✅ API Response Data:", jsonResponse);
-
-            if (!jsonResponse.data || !Array.isArray(jsonResponse.data)) {
-                console.error("🚨 Invalid response format", jsonResponse);
-                return;
-            }
-
-            const handleEmptyString = (value: any) => {
-                return value === "" || value === null || value === undefined ? "N/A" : value;
-            };
-
-            const handleArray = (arr: any[]) => {
-                if (!arr || !Array.isArray(arr) || arr.length === 0) return "N/A";
-                const filteredArray = arr.filter(item => item.trim() !== ""); 
-                return filteredArray.length ? filteredArray.join(", ") : "N/A";
-            };
-
-            const handleBoolean = (value: boolean | null | undefined) => {
-                return value === true ? "True" : value === false ? "False" : "N/A";
-            };
-
-            const formattedData = jsonResponse.data.map((item: any, index: number) => ({
-                key: item.id || index.toString(),
-                name: handleEmptyString(item.personalInfo?.name),
-                dob: handleEmptyString(item.personalInfo?.dateOfBirth),  
-                gender: handleEmptyString(item.personalInfo?.gender),
-                race: handleEmptyString(item.personalInfo?.race),
-                ethnicity: handleEmptyString(item.personalInfo?.ethnicity),
-                phoneNumber: handleEmptyString(item.personalInfo?.phoneNumber),
-                address: handleEmptyString(item.personalInfo?.address),
-                email: handleEmptyString(item.personalInfo?.email),
-                caseNumber: handleEmptyString(item.caseInfo?.caseNumber),
-                jurisdiction: handleEmptyString(item.caseInfo?.jurisdiction),
-                exonerationNumber: item.caseInfo?.exonerationNumber ? item.caseInfo.exonerationNumber.toString() : "N/A",
-                yearsInPrison: item.caseInfo?.yearsInPrison ? item.caseInfo.yearsInPrison.toString() : "N/A",
-                arrestDate: handleEmptyString(item.caseInfo?.arrestDate),
-                convictionDate: handleEmptyString(item.caseInfo?.convictionDate),
-                freedomDate: handleEmptyString(item.caseInfo?.freedomDate),
-                exonerationDate: handleEmptyString(item.caseInfo?.exonerationDate),
-                crimeType: handleEmptyString(item.caseInfo?.crimeType),
-                sentence: handleEmptyString(item.caseInfo?.sentence),
-                originalCharges: handleArray(item.legalInfo?.originalCharges),
-                convictionMethod: handleArray(item.legalInfo?.convictionMethod),
-                exonerationMethod: handleEmptyString(item.legalInfo?.exonerationMethod),
-                legalRepresentation: handleEmptyString(item.legalInfo?.legalRepresentation),
-                prosecutor: handleEmptyString(item.legalInfo?.prosecutor),
-                judge: handleEmptyString(item.legalInfo?.judge),
-                officersInvolved: handleArray(item.legalInfo?.officersInvolved),
-                falseConfession: handleBoolean(item.wrongfulConvictionInfo?.falseConfession),
-                eyewitnessMisidentification: handleBoolean(item.wrongfulConvictionInfo?.eyewitnessMisidentification),
-                inadequateLegalDefense: handleBoolean(item.wrongfulConvictionInfo?.inadequateLegalDefense),
-                policeMisconduct: handleBoolean(item.wrongfulConvictionInfo?.policeMisconduct),
-                prosecutorialMisconduct: handleBoolean(item.wrongfulConvictionInfo?.prosecutorialMisconduct),
-                forensicEvidence: handleBoolean(item.wrongfulConvictionInfo?.forensicEvidence),
-                informantTestimony: handleBoolean(item.wrongfulConvictionInfo?.informantTestimony),
-                otherInfo: handleEmptyString(item.wrongfulConvictionInfo?.otherInfo),
-                compensation: item.postExonerationInfo?.compensationAmount ? `$${item.postExonerationInfo.compensationAmount.toLocaleString()}` : "N/A",
-                reentrySupport: handleArray(item.postExonerationInfo?.reentrySupport),
-                publicApology: handleBoolean(item.postExonerationInfo?.publicApology),
-                currentStatus: handleEmptyString(item.postExonerationInfo?.occupation),
-                mediaCoverage: handleEmptyString(item.metaData?.mediaCoverage),
-                advocacyInvolvement: handleEmptyString(item.metaData?.advocacyInvolvement),
-                educationalBackground: handleEmptyString(item.metaData?.educationalBackground),
-                healthInfo: handleEmptyString(item.metaData?.healthInfo),
-                dataSource: handleEmptyString(item.metaData?.dataSource),
-                lastUpdated: handleEmptyString(item.metaData?.lastUpdated),
-                createdAt: handleEmptyString(item.metaData?.createdAt),
-            }));
-
-            console.log("✅ Formatted Exonerees Data:", formattedData);
-            setExonerees(formattedData);
-        } catch (error) {
-            console.error('🚨 Error fetching exonerees:', error);
+      try {
+        const response = await fetch('/api/exonerees/getAllExonerees')
+        if (!response.ok) {
+          throw new Error(`Failed to fetch exonerees: ${response.statusText}`)
         }
-    };
 
-    fetchExonerees();
-}, []);
+        const jsonResponse = await response.json()
+        console.log('✅ API Response Data:', jsonResponse)
+
+        if (!jsonResponse.data || !Array.isArray(jsonResponse.data)) {
+          console.error('🚨 Invalid response format', jsonResponse)
+          return
+        }
+
+        const handleEmptyString = (value: any) => {
+          return value === '' || value === null || value === undefined
+            ? 'N/A'
+            : value
+        }
+
+        const handleArray = (arr: any[]) => {
+          if (!arr || !Array.isArray(arr) || arr.length === 0) return 'N/A'
+          const filteredArray = arr.filter(item => item.trim() !== '')
+          return filteredArray.length ? filteredArray.join(', ') : 'N/A'
+        }
+
+        const handleBoolean = (value: boolean | null | undefined) => {
+          return value === true ? 'True' : value === false ? 'False' : 'N/A'
+        }
+
+        const formattedData = jsonResponse.data.map(
+          (item: any, index: number) => ({
+            id: item.id,
+            key: item.id || index.toString(),
+            name: handleEmptyString(item.personalInfo?.name),
+            dob: handleEmptyString(item.personalInfo?.dateOfBirth),
+            gender: handleEmptyString(item.personalInfo?.gender),
+            race: handleEmptyString(item.personalInfo?.race),
+            ethnicity: handleEmptyString(item.personalInfo?.ethnicity),
+            phoneNumber: handleEmptyString(item.personalInfo?.phoneNumber),
+            address: handleEmptyString(item.personalInfo?.address),
+            email: handleEmptyString(item.personalInfo?.email),
+            caseNumber: handleEmptyString(item.caseInfo?.caseNumber),
+            jurisdiction: handleEmptyString(item.caseInfo?.jurisdiction),
+            exonerationNumber: item.caseInfo?.exonerationNumber
+              ? item.caseInfo.exonerationNumber.toString()
+              : 'N/A',
+            yearsInPrison: item.caseInfo?.yearsInPrison
+              ? item.caseInfo.yearsInPrison.toString()
+              : 'N/A',
+            arrestDate: handleEmptyString(item.caseInfo?.arrestDate),
+            convictionDate: handleEmptyString(item.caseInfo?.convictionDate),
+            freedomDate: handleEmptyString(item.caseInfo?.freedomDate),
+            exonerationDate: handleEmptyString(item.caseInfo?.exonerationDate),
+            crimeType: handleEmptyString(item.caseInfo?.crimeType),
+            sentence: handleEmptyString(item.caseInfo?.sentence),
+            originalCharges: handleArray(item.legalInfo?.originalCharges),
+            convictionMethod: handleArray(item.legalInfo?.convictionMethod),
+            exonerationMethod: handleEmptyString(
+              item.legalInfo?.exonerationMethod
+            ),
+            legalRepresentation: handleEmptyString(
+              item.legalInfo?.legalRepresentation
+            ),
+            prosecutor: handleEmptyString(item.legalInfo?.prosecutor),
+            judge: handleEmptyString(item.legalInfo?.judge),
+            officersInvolved: handleArray(item.legalInfo?.officersInvolved),
+            falseConfession: handleBoolean(
+              item.wrongfulConvictionInfo?.falseConfession
+            ),
+            eyewitnessMisidentification: handleBoolean(
+              item.wrongfulConvictionInfo?.eyewitnessMisidentification
+            ),
+            inadequateLegalDefense: handleBoolean(
+              item.wrongfulConvictionInfo?.inadequateLegalDefense
+            ),
+            policeMisconduct: handleBoolean(
+              item.wrongfulConvictionInfo?.policeMisconduct
+            ),
+            prosecutorialMisconduct: handleBoolean(
+              item.wrongfulConvictionInfo?.prosecutorialMisconduct
+            ),
+            forensicEvidence: handleBoolean(
+              item.wrongfulConvictionInfo?.forensicEvidence
+            ),
+            informantTestimony: handleBoolean(
+              item.wrongfulConvictionInfo?.informantTestimony
+            ),
+            otherInfo: handleEmptyString(
+              item.wrongfulConvictionInfo?.otherInfo
+            ),
+            compensation: item.postExonerationInfo?.compensationAmount
+              ? `$${item.postExonerationInfo.compensationAmount.toLocaleString()}`
+              : 'N/A',
+            reentrySupport: handleArray(
+              item.postExonerationInfo?.reentrySupport
+            ),
+            publicApology: handleBoolean(
+              item.postExonerationInfo?.publicApology
+            ),
+            currentStatus: handleEmptyString(
+              item.postExonerationInfo?.occupation
+            ),
+            mediaCoverage: handleEmptyString(item.metaData?.mediaCoverage),
+            advocacyInvolvement: handleEmptyString(
+              item.metaData?.advocacyInvolvement
+            ),
+            educationalBackground: handleEmptyString(
+              item.metaData?.educationalBackground
+            ),
+            healthInfo: handleEmptyString(item.metaData?.healthInfo),
+            dataSource: handleEmptyString(item.metaData?.dataSource),
+            lastUpdated: handleEmptyString(item.metaData?.lastUpdated),
+            createdAt: handleEmptyString(item.metaData?.createdAt)
+          })
+        )
+
+        console.log('✅ Formatted Exonerees Data:', formattedData)
+        setExonerees(formattedData)
+      } catch (error) {
+        console.error('🚨 Error fetching exonerees:', error)
+      }
+    }
+
+    fetchExonerees()
+  }, [])
 
   const handleOpenModal = () => setModalOpen(true)
   const handleCloseModal = () => setModalOpen(false)
@@ -326,7 +371,9 @@ const HomePage: React.FC = () => {
       })
     }))
 
-  const [selectedExonereeId, setSelectedExonereeId] = useState<number | null>(null);
+  const [selectedExonereeId, setSelectedExonereeId] = useState<number | null>(
+    null
+  )
 
   const handleCellClick = (
     event: React.MouseEvent<HTMLTableCellElement>,
@@ -372,41 +419,41 @@ const HomePage: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("/api/auth/signout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await fetch('/api/auth/signout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      })
 
       if (!response.ok) {
-        throw new Error(`Logout failed: ${response.statusText}`);
+        throw new Error(`Logout failed: ${response.statusText}`)
       }
 
-      window.location.href = "/login"; // Redirect to login page after successful logout
+      window.location.href = '/login' // Redirect to login page after successful logout
     } catch (error) {
-      console.error("Logout error:", error);
+      console.error('Logout error:', error)
     }
-  };
+  }
 
   const handleExportToCSV = async () => {
     try {
       const response = await fetch('/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ selectedColumns, data: exonerees }),
-      });
-  
+        body: JSON.stringify({ selectedColumns, data: exonerees })
+      })
+
       if (response.ok) {
-        const blob = await response.blob();
-        saveAs(blob, 'exonerees.csv');  // Trigger file download
+        const blob = await response.blob()
+        saveAs(blob, 'exonerees.csv') // Trigger file download
       } else {
-        console.error('Export failed:', response.statusText);
+        console.error('Export failed:', response.statusText)
       }
     } catch (error) {
-      console.error('Error exporting data:', error);
+      console.error('Error exporting data:', error)
     }
-  };  
+  }
 
-  const noop: () => void = () => { };
+  const noop: () => void = () => {}
 
   return (
     <div
@@ -418,17 +465,33 @@ const HomePage: React.FC = () => {
       }}
     >
       {/* Top Banner */}
-      <div style={{ backgroundColor: '#033550', color: 'white', display: 'flex', alignItems: 'center', height: '56px' }}>
-        <img src="/caseview_logo2.png" alt="Logo" style={{ height: '35px', marginLeft: '17px', backgroundColor: 'white' }} />
-        <div style={{ marginLeft: "auto" }}>
+      <div
+        style={{
+          backgroundColor: '#033550',
+          color: 'white',
+          display: 'flex',
+          alignItems: 'center',
+          height: '56px'
+        }}
+      >
+        <img
+          src='/caseview_logo2.png'
+          alt='Logo'
+          style={{
+            height: '35px',
+            marginLeft: '17px',
+            backgroundColor: 'white'
+          }}
+        />
+        <div style={{ marginLeft: 'auto' }}>
           <IconTextButton
             icon={<CgLogOut size={20} />}
             filled={false}
-            text="Logout"
+            text='Logout'
             border={false}
             onClick={handleLogout}
-            height="40px"
-            width="100px"
+            height='40px'
+            width='100px'
           />
         </div>
       </div>
@@ -526,12 +589,12 @@ const HomePage: React.FC = () => {
             />
             <IconTextButton
               icon={
-                  <Image
+                <Image
                   src={UploadIcon}
                   alt='upload icon'
                   width='24'
                   height='24'
-                  />
+                />
               }
               filled={false}
               text='Export to CSV'
@@ -680,9 +743,8 @@ const HomePage: React.FC = () => {
               zIndex: 1000
             }}
           >
-            <ActionMenuComponent 
+            <ActionMenuComponent
               onClose={closeActionMenu}
-
               // unsure how to pass exonereeID
               exonereeId={selectedExonereeId!}
             />
