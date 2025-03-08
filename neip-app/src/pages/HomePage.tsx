@@ -326,6 +326,8 @@ const HomePage: React.FC = () => {
       })
     }))
 
+  const [selectedExonereeId, setSelectedExonereeId] = useState<number | null>(null);
+
   const handleCellClick = (
     event: React.MouseEvent<HTMLTableCellElement>,
     record: any,
@@ -345,11 +347,13 @@ const HomePage: React.FC = () => {
         setActionMenuPosition({ x: boundingRect.left, y: boundingRect.top })
         setSelectedCell({ record, columnKey })
         setActionMenuVisible(true)
+        setSelectedExonereeId(record.id)
       }, 50)
     } else {
       setActionMenuPosition({ x: boundingRect.left, y: boundingRect.top })
       setSelectedCell({ record, columnKey })
       setActionMenuVisible(true)
+      setSelectedExonereeId(record.id)
     }
   }
 
@@ -676,7 +680,12 @@ const HomePage: React.FC = () => {
               zIndex: 1000
             }}
           >
-            <ActionMenuComponent onClose={closeActionMenu} />
+            <ActionMenuComponent 
+              onClose={closeActionMenu}
+
+              // unsure how to pass exonereeID
+              exonereeId={selectedExonereeId!}
+            />
           </div>
         )}
       </div>
