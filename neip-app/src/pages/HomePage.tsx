@@ -84,7 +84,7 @@ const columns = [
     key: 'phoneNumber',
     width: 120
   },
-  { title: 'Address', dataIndex: 'address', key: 'address', width: 120 },
+  { title: 'Address', dataIndex: 'address', key: 'address', width: 220 },
   { title: 'Email', dataIndex: 'email', key: 'email', width: 120 },
   {
     title: 'Case Number',
@@ -220,7 +220,7 @@ const columns = [
     title: 'Other Info',
     dataIndex: 'otherInfo',
     key: 'otherInfo',
-    width: 120
+    width: 240
   },
   {
     title: 'Compensation',
@@ -382,7 +382,7 @@ const HomePage: React.FC = () => {
           ),
           otherInfo: handleEmptyString(item.wrongfulConvictionInfo?.otherInfo),
           compensation: item.postExonerationInfo?.compensationAmount
-            ? `$${item.postExonerationInfo.compensationAmount.toLocaleString()}`
+            ? `${item.postExonerationInfo.compensationAmount.toLocaleString()}`
             : 'N/A',
           reentrySupport: handleArray(item.postExonerationInfo?.reentrySupport),
           publicApology: handleBoolean(item.postExonerationInfo?.publicApology),
@@ -519,7 +519,7 @@ const HomePage: React.FC = () => {
       const response = await fetch('/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ selectedColumns, data: exonerees })
+        body: JSON.stringify({ selectedColumns, data: displayedExonerees })
       })
 
       if (response.ok) {
@@ -825,7 +825,7 @@ const HomePage: React.FC = () => {
       >
         <style jsx global>{`
           .ant-table-thead > tr > th {
-            padding: 1px 1px !important;
+            padding: 10px 10px !important;
             line-height: 1.4 !important;
             vertical-align: middle !important;
             white-space: normal !important;
