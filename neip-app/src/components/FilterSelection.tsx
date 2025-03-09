@@ -1,35 +1,39 @@
 import React, { useState } from "react";
 
 interface FilterSelectionProps {
-  title: string; // ✅ Added title prop
+  onRemove: (id: number) => void;
+  title: { id: number; label: string };
+  condition: string;
+  setCondition: (value: string) => void;
+  tags: string[];
+  setTags: (tags: string[]) => void;
 }
 
-const FilterSelection: React.FC<FilterSelectionProps> = ({ title }) => {
-  const [condition, setCondition] = useState("is");
-  const [tags, setTags] = useState<string[]>([]); // ✅ Stores multiple tags
+const FilterSelection: React.FC<FilterSelectionProps> = ({ title, condition, setCondition, tags, setTags }) => {
   const [inputValue, setInputValue] = useState("");
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && inputValue.trim() !== "") {
       if (!tags.includes(inputValue.trim())) {
-        setTags([...tags, inputValue.trim()]); // ✅ Add new tag
+        setTags([...tags, inputValue.trim()]);
       }
-      setInputValue(""); // ✅ Keep input field visible
+      setInputValue("");
     }
   };
 
   const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter(tag => tag !== tagToRemove)); // ✅ Remove selected tag
+    setTags(tags.filter(tag => tag !== tagToRemove));
   };
 
   return (
     <div className="flex items-center space-x-2 p-2 bg-gray-100 border border-gray-300 rounded-lg w-full">
       {/* Field Title */}
-      <span className="text-gray-700 font-medium min-w-[80px]">{title}</span> {/* ✅ Darker text and spacing */}
+      <span className="text-gray-700 font-medium min-w-[80px]">{title?.label || "Untitled"}</span>
+
 
       {/* Condition Dropdown */}
       <select
-        className="border border-gray-400 rounded-md px-2 py-1 text-gray-900 text-sm" // ✅ Darker text color
+        className="border border-gray-400 rounded-md px-2 py-1 text-gray-900 text-sm"
         value={condition}
         onChange={(e) => setCondition(e.target.value)}
       >
@@ -47,7 +51,7 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({ title }) => {
             {tag}
             <button
               className="ml-2 text-blue-600 hover:text-blue-800"
-              onClick={() => removeTag(tag)} // ✅ Remove individual tag
+              onClick={() => removeTag(tag)}
             >
               ✕
             </button>
@@ -58,7 +62,7 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({ title }) => {
       {/* Input Box (Always Visible) */}
       <input
         type="text"
-        className="border border-gray-500 rounded-md px-2 py-1 text-gray-900 text-sm" // ✅ Darker input text
+        className="border border-gray-500 rounded-md px-2 py-1 text-gray-900 text-sm"
         placeholder="Type & press Enter"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
@@ -68,7 +72,7 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({ title }) => {
       {/* Remove All Tags Button */}
       <button
         className="ml-auto text-gray-500 hover:text-red-500"
-        onClick={() => setTags([])} // ✅ Clear all tags
+        onClick={() => setTags([])}
       >
         ✕
       </button>
