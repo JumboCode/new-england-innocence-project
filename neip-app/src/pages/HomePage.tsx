@@ -75,130 +75,215 @@ const Table = dynamic(() => import('antd').then(mod => mod.Table), {
 
 // Table columns configuration
 const columns = [
-  { title: 'Name', dataIndex: 'name', key: 'name' },
-  { title: 'DOB', dataIndex: 'dob', key: 'dob' },
-  { title: 'Race', dataIndex: 'race', key: 'race' },
-  { title: 'Ethnicity', dataIndex: 'ethnicity', key: 'ethnicity' },
-  { title: 'Phone Number', dataIndex: 'phoneNumber', key: 'phoneNumber' },
-  { title: 'Address', dataIndex: 'address', key: 'address' },
-  { title: 'Email', dataIndex: 'email', key: 'email' },
-  { title: 'Case Number', dataIndex: 'caseNumber', key: 'caseNumber' },
-  { title: 'Crime Type', dataIndex: 'crimeType', key: 'crimeType' },
-  { title: 'Gender', dataIndex: 'gender', key: 'gender' },
-  { title: 'Jurisdiction', dataIndex: 'jurisdiction', key: 'jurisdiction' },
+  { title: 'Name', dataIndex: 'name', key: 'name', width: 120 },
+  { title: 'DOB', dataIndex: 'dob', key: 'dob', width: 120 },
+  { title: 'Race', dataIndex: 'race', key: 'race', width: 120 },
+  { title: 'Ethnicity', dataIndex: 'ethnicity', key: 'ethnicity', width: 120 },
+  {
+    title: 'Phone Number',
+    dataIndex: 'phoneNumber',
+    key: 'phoneNumber',
+    width: 120
+  },
+  { title: 'Address', dataIndex: 'address', key: 'address', width: 120 },
+  { title: 'Email', dataIndex: 'email', key: 'email', width: 120 },
+  {
+    title: 'Case Number',
+    dataIndex: 'caseNumber',
+    key: 'caseNumber',
+    width: 120
+  },
+  { title: 'Crime Type', dataIndex: 'crimeType', key: 'crimeType', width: 120 },
+  { title: 'Gender', dataIndex: 'gender', key: 'gender', width: 120 },
+  {
+    title: 'Jurisdiction',
+    dataIndex: 'jurisdiction',
+    key: 'jurisdiction',
+    width: 120
+  },
   {
     title: 'Exoneration Number',
     dataIndex: 'exonerationNumber',
-    key: 'exonerationNumber'
+    key: 'exonerationNumber',
+    width: 120
   },
   {
     title: 'Years In Prison',
     dataIndex: 'yearsInPrison',
-    key: 'yearsInPrison'
+    key: 'yearsInPrison',
+    width: 120
   },
-  { title: 'Arrest Date', dataIndex: 'arrestDate', key: 'arrestDate' },
+  {
+    title: 'Arrest Date',
+    dataIndex: 'arrestDate',
+    key: 'arrestDate',
+    width: 120
+  },
   {
     title: 'Conviction Date',
     dataIndex: 'convictionDate',
-    key: 'convictionDate'
+    key: 'convictionDate',
+    width: 120
   },
-  { title: 'Freedom Date', dataIndex: 'freedomDate', key: 'freedomDate' },
+  {
+    title: 'Freedom Date',
+    dataIndex: 'freedomDate',
+    key: 'freedomDate',
+    width: 120
+  },
   {
     title: 'Exoneration Date',
     dataIndex: 'exonerationDate',
-    key: 'exonerationDate'
+    key: 'exonerationDate',
+    width: 120
   },
-  { title: 'Sentence', dataIndex: 'sentence', key: 'sentence' },
+  { title: 'Sentence', dataIndex: 'sentence', key: 'sentence', width: 120 },
   {
     title: 'Original Charges',
     dataIndex: 'originalCharges',
-    key: 'originalCharges'
+    key: 'originalCharges',
+    width: 120
   },
   {
     title: 'Conviction Method',
     dataIndex: 'convictionMethod',
-    key: 'convictionMethod'
+    key: 'convictionMethod',
+    width: 120
   },
   {
     title: 'Exoneration Method',
     dataIndex: 'exonerationMethod',
-    key: 'exonerationMethod'
+    key: 'exonerationMethod',
+    width: 120
   },
   {
     title: 'Legal Representation',
     dataIndex: 'legalRepresentation',
-    key: 'legalRepresentation'
+    key: 'legalRepresentation',
+    width: 180
   },
-  { title: 'Prosecutor', dataIndex: 'prosecutor', key: 'prosecutor' },
-  { title: 'Judge', dataIndex: 'judge', key: 'judge' },
+  {
+    title: 'Prosecutor',
+    dataIndex: 'prosecutor',
+    key: 'prosecutor',
+    width: 120
+  },
+  { title: 'Judge', dataIndex: 'judge', key: 'judge', width: 120 },
   {
     title: 'Officers Involved',
     dataIndex: 'officersInvolved',
-    key: 'officersInvolved'
+    key: 'officersInvolved',
+    width: 120
   },
   {
     title: 'False Confession',
     dataIndex: 'falseConfession',
-    key: 'falseConfession'
+    key: 'falseConfession',
+    width: 120
   },
   {
     title: 'Eyewitness Misidentification',
     dataIndex: 'eyewitnessMisidentification',
-    key: 'eyewitnessMisidentification'
+    key: 'eyewitnessMisidentification',
+    width: 180
   },
   {
     title: 'Inadequate Legal Defense',
     dataIndex: 'inadequateLegalDefense',
-    key: 'inadequateLegalDefense'
+    key: 'inadequateLegalDefense',
+    width: 180
   },
   {
     title: 'Police Misconduct',
     dataIndex: 'policeMisconduct',
-    key: 'policeMisconduct'
+    key: 'policeMisconduct',
+    width: 120
   },
   {
     title: 'Prosecutorial Misconduct',
     dataIndex: 'prosecutorialMisconduct',
-    key: 'prosecutorialMisconduct'
+    key: 'prosecutorialMisconduct',
+    width: 120
   },
   {
     title: 'Forensic Evidence',
     dataIndex: 'forensicEvidence',
-    key: 'forensicEvidence'
+    key: 'forensicEvidence',
+    width: 120
   },
   {
     title: 'Informant Testimony',
     dataIndex: 'informantTestimony',
-    key: 'informantTestimony'
+    key: 'informantTestimony',
+    width: 120
   },
   {
     title: 'Other Info',
     dataIndex: 'otherInfo',
-    key: 'otherInfo'
+    key: 'otherInfo',
+    width: 120
   },
-  { title: 'Compensation', dataIndex: 'compensation', key: 'compensation' },
+  {
+    title: 'Compensation',
+    dataIndex: 'compensation',
+    key: 'compensation',
+    width: 150
+  },
   {
     title: 'Reentry Support',
     dataIndex: 'reentrySupport',
-    key: 'reentrySupport'
+    key: 'reentrySupport',
+    width: 120
   },
-  { title: 'Public Apology', dataIndex: 'publicApology', key: 'publicApology' },
-  { title: 'Current Status', dataIndex: 'currentStatus', key: 'currentStatus' },
-  { title: 'Media Coverage', dataIndex: 'mediaCoverage', key: 'mediaCoverage' },
+  {
+    title: 'Public Apology',
+    dataIndex: 'publicApology',
+    key: 'publicApology',
+    width: 120
+  },
+  {
+    title: 'Current Status',
+    dataIndex: 'currentStatus',
+    key: 'currentStatus',
+    width: 120
+  },
+  {
+    title: 'Media Coverage',
+    dataIndex: 'mediaCoverage',
+    key: 'mediaCoverage',
+    width: 120
+  },
   {
     title: 'Advocacy Involvement',
     dataIndex: 'advocacyInvolvement',
-    key: 'advocacyInvolvement'
+    key: 'advocacyInvolvement',
+    width: 120
   },
   {
     title: 'Educational Background',
     dataIndex: 'educationalBackground',
-    key: 'educationalBackground'
+    key: 'educationalBackground',
+    width: 120
   },
-  { title: 'Health Info', dataIndex: 'healthInfo', key: 'healthInfo' },
-  { title: 'Data Source', dataIndex: 'dataSource', key: 'dataSource' },
-  { title: 'Last Updated', dataIndex: 'lastUpdated', key: 'lastUpdated' },
-  { title: 'Created At', dataIndex: 'createdAt', key: 'createdAt' }
+  {
+    title: 'Health Info',
+    dataIndex: 'healthInfo',
+    key: 'healthInfo',
+    width: 120
+  },
+  {
+    title: 'Data Source',
+    dataIndex: 'dataSource',
+    key: 'dataSource',
+    width: 120
+  },
+  {
+    title: 'Last Updated',
+    dataIndex: 'lastUpdated',
+    key: 'lastUpdated',
+    width: 120
+  },
+  { title: 'Created At', dataIndex: 'createdAt', key: 'createdAt', width: 120 }
 ]
 
 const HomePage: React.FC = () => {
@@ -413,22 +498,22 @@ const HomePage: React.FC = () => {
           filteredExonereeIDs.includes(exoneree.id as number)
         )
 
-  const handleLogout = async () => {
-    try {
-      const response = await fetch('/api/auth/signout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
-      })
+  // const handleLogout = async () => {
+  //   try {
+  //     const response = await fetch('/api/auth/signout', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' }
+  //     })
 
-      if (!response.ok) {
-        throw new Error(`Logout failed: ${response.statusText}`)
-      }
+  //     if (!response.ok) {
+  //       throw new Error(`Logout failed: ${response.statusText}`)
+  //     }
 
-      window.location.href = '/login' // Redirect to login page after successful logout
-    } catch (error) {
-      console.error('Logout error:', error)
-    }
-  }
+  //     window.location.href = '/login' // Redirect to login page after successful logout
+  //   } catch (error) {
+  //     console.error('Logout error:', error)
+  //   }
+  // }
 
   const handleExportToCSV = async () => {
     try {
@@ -481,7 +566,7 @@ const HomePage: React.FC = () => {
             backgroundColor: 'white'
           }}
         />
-        <div style={{ marginLeft: 'auto' }}>
+        {/* <div style={{ marginLeft: 'auto' }}>
           <IconTextButton
             icon={<CgLogOut size={20} />}
             filled={false}
@@ -491,7 +576,7 @@ const HomePage: React.FC = () => {
             height='40px'
             width='100px'
           />
-        </div>
+        </div> */}
       </div>
 
       {/* Render the OpenFilterSideBar if it's visible*/}
@@ -511,6 +596,7 @@ const HomePage: React.FC = () => {
           textAlign: 'center',
           display: 'flex',
           justifyContent: 'flex-end'
+          // width: '500px'
         }}
       >
         <button
@@ -521,10 +607,11 @@ const HomePage: React.FC = () => {
             padding: '16px 24px',
             border: 'none',
             cursor: 'pointer',
-            marginLeft: '1279px',
             display: 'flex',
             alignItems: 'center',
-            fontSize: '11px'
+            fontSize: '11px',
+            font: 'Inter',
+            fontWeight: '500'
           }}
         >
           Open filter sidebar
@@ -539,7 +626,7 @@ const HomePage: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div style={{ padding: '20px' }}>
+      <div style={{ padding: '30px' }}>
         {/* "Home Database" Heading */}
         <h1
           style={{
@@ -724,17 +811,30 @@ const HomePage: React.FC = () => {
         </div>
 
         {/* Database Display */}
-        <div style={{ height: '60vh', backgroundColor: 'white' }}>
-          <Table
-            dataSource={displayedExonerees} // so that search results update the table
-            columns={filteredColumns}
-            scroll={{ x: 'max-content', y: 400 }}
-          />
-        </div>
+        <Table
+          dataSource={displayedExonerees}
+          columns={filteredColumns}
+          scroll={{ x: 'max-content', y: 390 }}
+        />
+      </div>
+      <div
+        style={{
+          height: '90vh',
+          backgroundColor: 'white',
+          marginBottom: '20px'
+        }}
+      >
         <style jsx global>{`
           .ant-table-thead > tr > th {
-            padding: 5px 5px 5px 18px !important;
-            line-height: 6px !important;
+            padding: 15px 15px !important;
+            line-height: 1.4 !important;
+            vertical-align: middle !important;
+            white-space: normal !important;
+            min-width: 120px !important;
+            word-break: break-word;
+          }
+          .ant-table-thead > tr > th > div {
+            min-width: 120px !important;
           }
         `}</style>
 

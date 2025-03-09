@@ -12,10 +12,10 @@ const AndOr: React.FC<AndOrProps> = ({ value, onChange }) => {
         <button
           key={option}
           onClick={() => onChange(option as 'AND' | 'OR')}
-          className={`w-16 px-4 py-1 font-semibold border rounded-lg transition-all ${
+          className={`w-[52px] h-[28px] flex items-center justify-center text-[14px] font-[700] border rounded-lg transition-all text-[#3063C9] ${
             value === option
-              ? 'bg-blue-500 text-white shadow-md'
-              : 'bg-white text-black border-gray-300'
+              ? 'bg-[#C6DEFF] shadow-md'
+              : 'bg-white border-gray-300'
           }`}
         >
           {option}
