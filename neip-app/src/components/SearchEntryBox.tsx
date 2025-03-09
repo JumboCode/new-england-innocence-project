@@ -97,7 +97,7 @@ const SearchEntryBox: React.FC<SearchEntryBoxProps> = ({ setExonerees }) => {
             ? 'Yes'
             : 'No',
           currentStatus: exoneree.postExonerationInfo?.occupation || 'N/A',
-          mediaCoverage: exoneree.metaData?.mediaCoverage ? 'Yes' : 'No',
+          mediaCoverage: exoneree.metaData?.mediaCoverage || 'N/A',
           advocacyInvolvement: exoneree.metaData?.advocacyInvolvement
             ? 'Yes'
             : 'No',
