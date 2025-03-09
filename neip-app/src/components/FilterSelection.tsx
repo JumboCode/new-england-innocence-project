@@ -2,12 +2,48 @@ import React, { useState } from "react";
 
 interface FilterSelectionProps {
   onRemove: (id: number) => void;
-  title: { id: number; label: string };
+  // title now includes the internal field key (e.g., "gender")
+  title: { id: number; label: string; field: string };
   condition: string;
   setCondition: (value: string) => void;
   tags: string[];
   setTags: (tags: string[]) => void;
 }
+
+const dropdownOptionsMap: { [key: string]: string[] } = {
+  gender: ["Male", "Female"],
+  race: [
+    "White",
+    "Black",
+    "Asian",
+    "Hispanic or Latino",
+    "American Indian or Alaska Native",
+    "Native Hawaiian or Pacific Islander"
+  ],
+  ethnicity: [
+    "American Indian/Alaska Native",
+    "Asian",
+    "Black",
+    "Hispanic or Latino",
+    "Middle Eastern or North African",
+    "White/European"
+  ],
+  crimeType: ["Felony", "Misdemeanor"],
+  falseConfession: ["Yes", "No"],
+  eyewitnessMisidentification: ["Yes", "No"],
+  inadequateLegalDefense: ["Yes", "No"],
+  policeMisconduct: ["Yes", "No"],
+  prosecutorialMisconduct: ["Yes", "No"],
+  forensicEvidence: ["Yes", "No"],
+  reentrySupport: ["Yes", "No"],
+  publicApology: ["Yes", "No"],
+  currentStatus: [
+    "Freed but still fighting",
+    "Plea deal",
+    "Exonerated",
+    "Return to custody"
+  ]
+};
 
 const FilterSelection: React.FC<FilterSelectionProps> = ({
   onRemove,
@@ -29,17 +65,17 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
   };
 
   const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove));
+    setTags(tags.filter(tag => tag !== tagToRemove));
   };
+
+  const isDropdownField = dropdownOptionsMap.hasOwnProperty(title.field);
 
   return (
     <div className="flex flex-col p-2 bg-gray-100 border border-gray-300 rounded-lg w-full">
-      {/* Header with Field Title and Close Button */}
       <div className="flex items-center justify-between">
         <span className="text-gray-700 font-medium min-w-[80px]">
           {title?.label || "Untitled"}
         </span>
-        {/* This close button will remove the entire filter component */}
         <button
           onClick={() => onRemove(title.id)}
           className="text-red-500 hover:text-red-700"
@@ -48,9 +84,7 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
         </button>
       </div>
 
-      {/* Rest of Filter Selection UI */}
       <div className="flex items-center space-x-2 mt-2">
-        {/* Condition Dropdown */}
         <select
           className="border border-gray-400 rounded-md px-2 py-1 text-gray-900 text-sm"
           value={condition}
@@ -63,7 +97,6 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
           ))}
         </select>
 
-        {/* Tags Display */}
         <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
             <div
@@ -81,15 +114,41 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
           ))}
         </div>
 
-        {/* Input Box */}
-        <input
-          type="text"
-          className="border border-gray-500 rounded-md px-2 py-1 text-gray-900 text-sm"
-          placeholder="Type & press Enter"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyPress={handleKeyPress}
-        />
+        {isDropdownField ? (
+          <select
+            className="border border-gray-500 rounded-md px-2 py-1 text-gray-900 text-sm"
+            value={inputValue}
+            onChange={(e) => {
+              setInputValue(e.target.value);
+              setTags([e.target.value]); // update only this filter's tags
+            }}
+          >
+            <option value="" disabled>
+              Select...
+            </option>
+            {dropdownOptionsMap[title.field].map((opt) => (
+              <option key={opt} value={opt}>
+                {opt}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <input
+            type="text"
+            className="border border-gray-500 rounded-md px-2 py-1 text-gray-900 text-sm"
+            placeholder="Type & press Enter"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyPress={handleKeyPress}
+          />
+        )}
+
+        <button
+          className="ml-auto text-gray-500 hover:text-red-500"
+          onClick={() => setTags([])}
+        >
+          ✕
+        </button>
       </div>
     </div>
   );
