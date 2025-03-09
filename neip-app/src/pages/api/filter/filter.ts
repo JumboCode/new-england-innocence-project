@@ -108,7 +108,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // Apply boolean operators:
   // First, process OR operators (union) since OR takes precedence.
   const ops = operators.map(op => op.toLowerCase());
-  let combinedList = [...finalList];
+  const combinedList = [...finalList];
   for (let i = 0; i < ops.length; i++) {
     if (ops[i] === "or") {
       combinedList[i] = Array.from(new Set([...combinedList[i], ...combinedList[i + 1]]));

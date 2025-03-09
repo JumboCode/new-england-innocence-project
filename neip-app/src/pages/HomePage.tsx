@@ -11,7 +11,6 @@ import AddExonereeModal from '@/components/AddExonereeModal'
 import { FaFilter } from 'react-icons/fa'
 import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai'
 import { MdFilterList } from 'react-icons/md'
-import { CgLogOut } from 'react-icons/cg'
 import ActionMenuComponent from '@/components/ActionMenuComponent'
 import SelectColumnsModal from '@/components/SelectColumnsModal'
 import TableFilterIcons from '@/components/TableFilterIcons'
@@ -826,7 +825,7 @@ const HomePage: React.FC = () => {
       >
         <style jsx global>{`
           .ant-table-thead > tr > th {
-            padding: 15px 15px !important;
+            padding: 1px 1px !important;
             line-height: 1.4 !important;
             vertical-align: middle !important;
             white-space: normal !important;

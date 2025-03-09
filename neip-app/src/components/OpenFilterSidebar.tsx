@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
-import { FormControl, Select, MenuItem } from '@mui/material'
+import { FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/material'
 import XlCoseIcon from '../img/close.png'
 import AndOr from './AndOr'
 import FilterSelection from './FilterSelection'
@@ -21,6 +21,14 @@ interface Filter {
   options?: string[]
 }
 
+interface DataField {
+  value: string
+  label: string
+  type: string
+  table: string
+  options?: string[]
+}
+
 const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
   onClose,
   onApplyFilters
@@ -30,7 +38,7 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
   const [selectedField, setSelectedField] = useState('')
   const [selectOpen, setSelectOpen] = useState(false)
 
-  const dataFields: Filter[] = [
+  const dataFields: DataField[]  = [
     // PersonalInfo fields
     { value: 'name', label: 'Name', type: 'string', table: 'PersonalInfo' },
     {
@@ -302,12 +310,12 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
     setLogic(newLogic)
   }
 
-  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const fieldValue = event.target.value as string
-    setSelectedField(fieldValue)
-    addFilter(fieldValue)
-    setSelectOpen(false)
-  }
+  const handleSelectChange = (event: SelectChangeEvent<string>) => {
+    const fieldValue = event.target.value;
+    setSelectedField(fieldValue);
+    addFilter(fieldValue);
+    setSelectOpen(false);
+  };
 
   const applyFilters = async () => {
     const transformedFilters = filters.map(filter => ({
