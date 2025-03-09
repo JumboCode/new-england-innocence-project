@@ -7,78 +7,99 @@ import FilterSelection from "./FilterSelection";
 
 interface OpenFilterSidebarProps {
   onClose: () => void;
+  onApplyFilters: (filteredIDs: number[]) => void;
 }
 
-const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({ onClose }) => {
-  const [filters, setFilters] = useState<
-    Array<{ id: number; label: string; field: string; condition: string; tags: string[] }>
-  >([]);
+interface Filter {
+  id: number;
+  label: string;
+  field: string;
+  condition: string;
+  tags: string[];
+  type: string;
+  table: string;
+}
+
+const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
+  onClose,
+  onApplyFilters,
+}) => {
+  const [filters, setFilters] = useState<Filter[]>([]);
   const [logic, setLogic] = useState<("AND" | "OR")[]>([]);
   const [selectedField, setSelectedField] = useState("");
   const [selectOpen, setSelectOpen] = useState(false);
 
+  // Define dataFields with explicit table fields based on your schema.
   const dataFields = [
-    { value: 'name', label: 'Name' },
-    { value: 'dob', label: 'Date of birth' },
-    { value: 'gender', label: 'Gender' },
-    { value: 'race', label: 'Race' },
-    { value: 'ethnicity', label: 'Ethnicity' },
-    { value: 'phoneNumber', label: 'Phone number' },
-    { value: 'address', label: 'Address' },
-    { value: 'email', label: 'Email' },
-    { value: 'caseNumber', label: 'Case number' },
-    { value: 'jurisdiction', label: 'Jurisdiction' },
-    { value: 'exonerationNumber', label: 'Exoneration number' },
-    { value: 'yearsInPrison', label: 'Years in prison' },
-    { value: 'arrestDate', label: 'Arrest date' },
-    { value: 'freedomDate', label: 'Freedom date' },
-    { value: 'exonerationDate', label: 'Exoneration date' },
-    { value: 'crimeType', label: 'Crime type' },
-    { value: 'sentence', label: 'Sentence' },
-    { value: 'originalCharges', label: 'Original charges' },
-    { value: 'convictionMethod', label: 'Conviction method' },
-    { value: 'exonerationMethod', label: 'Exoneration method' },
-    { value: 'legalRepresentation', label: 'Legal representation' },
-    { value: 'prosecutor', label: 'Prosecutor' },
-    { value: 'judge', label: 'Judge' },
-    { value: 'officersInvolved', label: 'Officers involved' },
-    { value: 'falseConfession', label: 'False confession' },
-    { value: 'eyewitnessMisidentification', label: 'Eyewitness misidentification' },
-    { value: 'inadequateLegalDefense', label: 'Inadequate legal defense' },
-    { value: 'policeMisconduct', label: 'Police misconduct' },
-    { value: 'prosecutorialMisconduct', label: 'Prosecutorial misconduct' },
-    { value: 'forensicEvidence', label: 'Forensic Evidence' },
-    { value: 'informantTestimony', label: 'Informant testimony' },
-    { value: 'otherInfo', label: 'Other info' },
-    { value: 'compensation', label: 'Compensation' },
-    { value: 'reentrySupport', label: 'Reentry support' },
-    { value: 'publicApology', label: 'Public apology' },
-    { value: 'currentStatus', label: 'Current status' },
-    { value: 'mediaCoverage', label: 'Media coverage' },
-    { value: 'advocacyInvolvement', label: 'Advocacy involvement' },
-    { value: 'educationalBackground', label: 'Educational background' },
-    { value: 'healthInfo', label: 'Health info' },
-    { value: 'dataSource', label: 'Data source' },
-    { value: 'lastUpdated', label: 'Last updated' },
-    { value: 'createdAt', label: 'Created at' }
-  ]
+    // PersonalInfo fields
+    { value: "name", label: "Name", type: "string", table: "PersonalInfo" },
+    { value: "dob", label: "Date of birth", type: "date", table: "PersonalInfo" },
+    { value: "gender", label: "Gender", type: "string", table: "PersonalInfo" },
+    { value: "race", label: "Race", type: "string", table: "PersonalInfo" },
+    { value: "ethnicity", label: "Ethnicity", type: "string", table: "PersonalInfo" },
+    { value: "phoneNumber", label: "Phone number", type: "string", table: "PersonalInfo" },
+    { value: "address", label: "Address", type: "string", table: "PersonalInfo" },
+    { value: "email", label: "Email", type: "string", table: "PersonalInfo" },
+    // CaseInfo fields
+    { value: "caseNumber", label: "Case number", type: "string", table: "CaseInfo" },
+    { value: "jurisdiction", label: "Jurisdiction", type: "string", table: "CaseInfo" },
+    { value: "exonerationNumber", label: "Exoneration number", type: "int", table: "CaseInfo" },
+    { value: "yearsInPrison", label: "Years in prison", type: "int", table: "CaseInfo" },
+    { value: "arrestDate", label: "Arrest date", type: "date", table: "CaseInfo" },
+    { value: "freedomDate", label: "Freedom date", type: "date", table: "CaseInfo" },
+    { value: "exonerationDate", label: "Exoneration date", type: "date", table: "CaseInfo" },
+    { value: "crimeType", label: "Crime type", type: "string", table: "CaseInfo" },
+    { value: "sentence", label: "Sentence", type: "string", table: "CaseInfo" },
+    // LegalInfo fields
+    { value: "originalCharges", label: "Original charges", type: "tag", table: "LegalInfo" },
+    { value: "convictionMethod", label: "Conviction method", type: "string", table: "LegalInfo" },
+    { value: "exonerationMethod", label: "Exoneration method", type: "string", table: "LegalInfo" },
+    { value: "legalRepresentation", label: "Legal representation", type: "string", table: "LegalInfo" },
+    { value: "prosecutor", label: "Prosecutor", type: "string", table: "LegalInfo" },
+    { value: "judge", label: "Judge", type: "string", table: "LegalInfo" },
+    { value: "officersInvolved", label: "Officers involved", type: "tag", table: "LegalInfo" },
+    // WrongfulConvictionInfo fields
+    { value: "falseConfession", label: "False confession", type: "bool", table: "WrongfulConvictionInfo" },
+    { value: "eyewitnessMisidentification", label: "Eyewitness misidentification", type: "bool", table: "WrongfulConvictionInfo" },
+    { value: "inadequateLegalDefense", label: "Inadequate legal defense", type: "bool", table: "WrongfulConvictionInfo" },
+    { value: "policeMisconduct", label: "Police misconduct", type: "bool", table: "WrongfulConvictionInfo" },
+    { value: "prosecutorialMisconduct", label: "Prosecutorial misconduct", type: "bool", table: "WrongfulConvictionInfo" },
+    { value: "forensicEvidence", label: "Forensic Evidence", type: "bool", table: "WrongfulConvictionInfo" },
+    { value: "informantTestimony", label: "Informant testimony", type: "bool", table: "WrongfulConvictionInfo" },
+    { value: "otherInfo", label: "Other info", type: "string", table: "WrongfulConvictionInfo" },
+    // PostExonerationInfo fields
+    { value: "compensation", label: "Compensation", type: "int", table: "PostExonerationInfo" },
+    { value: "reentrySupport", label: "Reentry support", type: "bool", table: "PostExonerationInfo" },
+    { value: "publicApology", label: "Public apology", type: "bool", table: "PostExonerationInfo" },
+    { value: "currentStatus", label: "Current status", type: "string", table: "PostExonerationInfo" },
+    // AdditionalInfo fields
+    { value: "mediaCoverage", label: "Media coverage", type: "string", table: "AdditionalInfo" },
+    { value: "advocacyInvolvement", label: "Advocacy involvement", type: "string", table: "AdditionalInfo" },
+    { value: "educationalBackground", label: "Educational background", type: "string", table: "AdditionalInfo" },
+    { value: "healthInfo", label: "Health info", type: "string", table: "AdditionalInfo" },
+    // MetaData fields
+    { value: "dataSource", label: "Data source", type: "string", table: "MetaData" },
+    { value: "lastUpdated", label: "Last updated", type: "date", table: "MetaData" },
+    { value: "createdAt", label: "Created at", type: "date", table: "MetaData" }
+  ];
 
-  // Add a new filter based on the selected field value
+  // Adds a new filter based on the selected field value.
   const addFilter = (fieldValue: string) => {
     const fieldObject = dataFields.find((field) => field.value === fieldValue);
     if (!fieldObject) return;
-    const newFilter = {
+    const newFilter: Filter = {
       id: Date.now(),
       field: fieldObject.value,
       label: fieldObject.label,
-      condition: "is", // default condition
-      tags: [] // initial tags array for this filter
+      condition: "is", // default condition; adjust as needed
+      tags: [], // initially no value(s) entered
+      type: fieldObject.type,
+      table: fieldObject.table
     };
     setFilters((prev) => [...prev, newFilter]);
     if (filters.length > 0) {
       setLogic((prev) => [...prev, "AND"]);
     }
-    // Reset the selected field so that the dropdown displays the placeholder
     setSelectedField("");
   };
 
@@ -94,11 +115,48 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({ onClose }) => {
     setLogic(newLogic);
   };
 
-  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleSelectChange = (
+    event: React.ChangeEvent<{ value: unknown }>
+  ) => {
     const fieldValue = event.target.value as string;
     setSelectedField(fieldValue);
     addFilter(fieldValue);
     setSelectOpen(false);
+  };
+
+  const applyFilters = async () => {
+    const transformedFilters = filters.map((filter) => ({
+      type: filter.type,
+      field: filter.field,
+      table: filter.table,
+      value: filter.tags.length > 0 ? filter.tags[0] : "",
+      constraint: filter.condition,
+    }));
+    try {
+      const response = await fetch("/api/filter/filter", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          operators: logic,
+          filters: transformedFilters,
+        }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error applying filters:", errorData);
+        return;
+      }
+      const data = await response.json();
+      console.log("Filter applied, result:", data);
+      const filteredIDs = Array.isArray(data.exonereeIDs)
+        ? data.exonereeIDs.flat()
+        : [];
+      onApplyFilters(filteredIDs);
+    } catch (error) {
+      console.error("Error applying filters:", error);
+    }
   };
 
   return (
@@ -127,7 +185,7 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({ onClose }) => {
             </MenuItem>
             {dataFields.map((field) => (
               <MenuItem key={field.value} value={field.value}>
-                {field.label}
+                {field.label} – <em>{field.table}</em>
               </MenuItem>
             ))}
           </Select>
@@ -138,7 +196,6 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({ onClose }) => {
       <div className="flex-grow p-4 overflow-y-auto bg-[#e6e6e6]">
         {filters.length === 0 ? (
           <div className="text-center text-gray-500">
-            <p>No Filter Selected</p>
             <p>Please choose a filter above to refine your search.</p>
           </div>
         ) : (
@@ -184,6 +241,16 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({ onClose }) => {
             className="bg-blue-500 text-white px-4 py-2 rounded-lg w-full"
           >
             + Filter
+          </button>
+        </div>
+
+        {/* "Apply filters" Button */}
+        <div className="mt-4">
+          <button
+            onClick={applyFilters}
+            className="bg-green-500 text-white px-4 py-2 rounded-lg w-full"
+          >
+            Apply filters
           </button>
         </div>
       </div>

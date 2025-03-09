@@ -18,8 +18,6 @@ import TableFilterIcons from '@/components/TableFilterIcons'
 import OpenFilterSidebar from '../components/OpenFilterSidebar'
 import { saveAs } from 'file-saver'
 
-// TODO: This is a bandaid solution for Vercel deployment.
-// In the future we will want to dynamically determine columns based off this
 // Define the data structure type with an index signature
 interface TableRowData {
   [key: string]: string | number | undefined
@@ -231,9 +229,7 @@ const HomePage: React.FC = () => {
 
       // Helper functions for formatting
       const handleEmptyString = (value: any) =>
-        value === '' || value === null || value === undefined
-          ? 'N/A'
-          : value
+        value === '' || value === null || value === undefined ? 'N/A' : value
       const handleArray = (arr: any[]) => {
         if (!arr || !Array.isArray(arr) || arr.length === 0) return 'N/A'
         const filteredArray = arr.filter((item: string) => item.trim() !== '')
@@ -305,10 +301,10 @@ const HomePage: React.FC = () => {
             ? `$${item.postExonerationInfo.compensationAmount.toLocaleString()}`
             : 'N/A',
           reentrySupport: handleArray(item.postExonerationInfo?.reentrySupport),
-          publicApology: handleBoolean(
-            item.postExonerationInfo?.publicApology
+          publicApology: handleBoolean(item.postExonerationInfo?.publicApology),
+          currentStatus: handleEmptyString(
+            item.postExonerationInfo?.occupation
           ),
-          currentStatus: handleEmptyString(item.postExonerationInfo?.occupation),
           mediaCoverage: handleEmptyString(item.metaData?.mediaCoverage),
           advocacyInvolvement: handleEmptyString(
             item.metaData?.advocacyInvolvement
@@ -347,6 +343,9 @@ const HomePage: React.FC = () => {
   const [selectedFilters] = useState(['officer', 'Male', 'Test'])
   const [actionMenuVisible, setActionMenuVisible] = useState(false)
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 })
+  const [filteredExonereeIDs, setFilteredExonereeIDs] = useState<
+    number[] | null
+  >(null)
   const [selectedCell, setSelectedCell] = useState<{
     record: TableRowData
     columnKey: string
@@ -407,6 +406,13 @@ const HomePage: React.FC = () => {
     setIsSidebarOpen(true)
   }
 
+  const displayedExonerees =
+    filteredExonereeIDs === null
+      ? exonerees
+      : exonerees.filter(exoneree =>
+          filteredExonereeIDs.includes(exoneree.id as number)
+        )
+
   const handleLogout = async () => {
     try {
       const response = await fetch('/api/auth/signout', {
@@ -451,7 +457,9 @@ const HomePage: React.FC = () => {
         height: '100vh',
         backgroundColor: 'white',
         width: '100vw',
-        paddingLeft: '60px'
+        overflow: 'hidden',
+        paddingLeft: '60px',
+        paddingBottom: '20px'
       }}
     >
       {/* Top Banner */}
@@ -487,7 +495,15 @@ const HomePage: React.FC = () => {
       </div>
 
       {/* Render the OpenFilterSideBar if it's visible*/}
-      {isSidebarOpen && <OpenFilterSidebar onClose={closeFilterSidebar} />}
+      {isSidebarOpen && (
+        <OpenFilterSidebar
+          onClose={closeFilterSidebar}
+          onApplyFilters={(ids: number[]) => {
+            setFilteredExonereeIDs(ids)
+            closeFilterSidebar()
+          }}
+        />
+      )}
 
       {/* Open Filter Sidebar Button - Top Right */}
       <div
@@ -530,8 +546,8 @@ const HomePage: React.FC = () => {
             color: '#101828',
             fontWeight: 'bold',
             fontSize: '30px',
-            marginTop: '-25px',
-            marginLeft: '15px'
+            marginTop: '-65px',
+            marginLeft: '10px'
           }}
         >
           Home Database
@@ -543,7 +559,8 @@ const HomePage: React.FC = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            marginTop: '17px'
+            marginTop: '17px',
+            marginLeft: '-5px'
           }}
         >
           {/* Search Bar */}
@@ -595,12 +612,7 @@ const HomePage: React.FC = () => {
             <IconTextButton
               onClick={handleOpenModal}
               icon={
-                <Image
-                  src={PlusIcon}
-                  alt='plus icon'
-                  width='14'
-                  height='14'
-                />
+                <Image src={PlusIcon} alt='plus icon' width='14' height='14' />
               }
               filled={true}
               text='Add new exoneree file'
@@ -632,7 +644,9 @@ const HomePage: React.FC = () => {
               marginBottom: '10px'
             }}
           >
-            <FaFilter style={{ width: '16px', height: '16px', marginTop: '10px' }} />
+            <FaFilter
+              style={{ width: '16px', height: '16px', marginTop: '10px' }}
+            />
             {selectedFilters.map((filter, index) => (
               <TableFilterIcons
                 key={index}
@@ -712,11 +726,17 @@ const HomePage: React.FC = () => {
         {/* Database Display */}
         <div style={{ height: '60vh', backgroundColor: 'white' }}>
           <Table
-            dataSource={exonerees} // so that search results update the table
+            dataSource={displayedExonerees} // so that search results update the table
             columns={filteredColumns}
-            scroll={{ x: 'max-content' }}
+            scroll={{ x: 'max-content', y: 400 }}
           />
         </div>
+        <style jsx global>{`
+          .ant-table-thead > tr > th {
+            padding: 5px 5px 5px 18px !important;
+            line-height: 6px !important;
+          }
+        `}</style>
 
         {/* Action Menu */}
         {actionMenuVisible && (

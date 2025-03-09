@@ -72,7 +72,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
         }));
 
-        console.log('✅ Formatted API Response:', JSON.stringify(formattedExonerees, null, 2));
+        // console.log('✅ Formatted API Response:', JSON.stringify(formattedExonerees, null, 2));
 
         return res.status(200).json({ 
             success: true,

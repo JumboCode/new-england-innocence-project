@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 
 interface FilterSelectionProps {
@@ -11,7 +12,7 @@ interface FilterSelectionProps {
 }
 
 const dropdownOptionsMap: { [key: string]: string[] } = {
-  gender: ["Male", "Female"],
+  gender: ["M", "F", "Other"],
   race: [
     "White",
     "Black",
@@ -57,6 +58,7 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && inputValue.trim() !== "") {
+      console.log("Adding tag:", inputValue.trim());
       if (!tags.includes(inputValue.trim())) {
         setTags([...tags, inputValue.trim()]);
       }
