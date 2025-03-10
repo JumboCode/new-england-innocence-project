@@ -94,6 +94,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         setConfirmPassword("*".repeat(e.target.value.length))
     }
 
+    const changePassword = () => {
+
+    }
+
     return (
         <div style={modalOverlay} onClick={onClose}>
             <div style={modalContent} onClick={(e) => e.stopPropagation()}>
@@ -105,7 +109,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                     <input type="text" name="new_password" value={displayNewPassword} style={textInputStyle} onChange={newPassToAsterisks} />
                     <label style={labelStyles}>Confirm Password: </label>
                     <input type="text" name="confirm_password" value={displayConfirmPassword} style={textInputStyle} onChange={confirmPassToAsterisks} />
-                    <button style={submitBtnStyle}>Submit</button>
+                    <button style={submitBtnStyle} onSubmit={ }>Submit</button>
                 </div>
             </div>
         </div>
