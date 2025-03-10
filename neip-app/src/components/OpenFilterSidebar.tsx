@@ -123,7 +123,7 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
       type: 'string',
       table: 'CaseInfo'
     },
-    { value: 'sentence', label: 'Sentence', type: 'string', table: 'CaseInfo' },
+    { value: 'sentence', label: 'Sentence', type: 'int', table: 'CaseInfo' },
     // LegalInfo fields
     {
       value: 'originalCharges',
