@@ -39,6 +39,17 @@ const closeBtn: React.CSSProperties = {
     justifyContent: "flex-end"
 }
 
+const submitBtnStyle: React.CSSProperties = {
+    font: 'Inter',
+    fontWeight: "500",
+    fontSize: "14px",
+    lineHeight: "20px",
+    color: "#535862",
+    padding: "5px",
+    borderRadius: "5px",
+    border: "1px solid #000000"
+}
+
 const labelStyles: React.CSSProperties = {
     font: 'Inter',
     fontWeight: "500",
@@ -94,7 +105,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                     <input type="text" name="new_password" value={displayNewPassword} style={textInputStyle} onChange={newPassToAsterisks} />
                     <label style={labelStyles}>Confirm Password: </label>
                     <input type="text" name="confirm_password" value={displayConfirmPassword} style={textInputStyle} onChange={confirmPassToAsterisks} />
-                    <button>Submit</button>
+                    <button style={submitBtnStyle}>Submit</button>
                 </div>
             </div>
         </div>

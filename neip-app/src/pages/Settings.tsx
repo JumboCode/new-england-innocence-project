@@ -7,6 +7,18 @@ import React, { useState } from "react";
 
 const AccountInfo = () => {
   const [isModalOpen, setModalOpen] = useState(false)
+
+  const changePassBtnStyle: React.CSSProperties = {
+    font: 'Inter',
+    fontWeight: "500",
+    fontSize: "14px",
+    lineHeight: "20px",
+    color: "#535862",
+    padding: "5px",
+    borderRadius: "5px",
+    border: "1px solid #000000",
+    marginTop: "5px"
+  }
   return (
     <div
       style={{
@@ -49,7 +61,7 @@ const AccountInfo = () => {
               ></Image>
           }
       /> */}
-      <button onClick={() => setModalOpen(true)}>Open Modal</button>
+      <button onClick={() => setModalOpen(true)} style={changePassBtnStyle}>Change Password</button>
       <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}></Modal>
       <NavBar />
     </div>
