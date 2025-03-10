@@ -1,22 +1,47 @@
-// components/IconTextButton.tsx
 import React from 'react';
 
 interface TableFilterIconsProps {
-    icon?: React.ReactNode; // Accepts any valid React node (e.g., <img>, <svg>, etc.)
+    icon?: React.ReactNode; 
     filled: boolean;
-    text: string;
+    text?: string;  
+    filterName?: string;  
+    filterOperator?: string;
+    filterValue?: string;
     border: boolean;
     borderRadius: boolean;
     height?: string;
     width?: string;
     onOpenFilter: () => void;
 }
-const TableFilterIcons: React.FC<TableFilterIconsProps> = ({ icon, filled, text, border, height, width, onOpenFilter }) => {
+
+const TableFilterIcons: React.FC<TableFilterIconsProps> = ({
+  icon,
+  filled,
+  text,
+  filterName,
+  filterOperator,
+  filterValue,
+  border,
+  height,
+  width,
+  onOpenFilter
+}) => {
+
+  // Construct display text with bold filterName
+  const displayText = text || (filterName ? (
+    <>
+      <span style={{ fontWeight: 'bold' }}>{filterName}:</span> {filterOperator} {filterValue}
+    </>
+  ) : "");
+
+  // have text or filter names:
+  //const displayText = text || (filterName ? `${filterName} ${filterOperator} ${filterValue}` : "");
+
   const IconButtonStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
     fontFamily: 'Inter, sans-serif',
-    color: filled ? 'black' : 'black',
+    color: 'black',
     borderRadius: border ? '12px' : '25px',
     gap: '8px',
     backgroundColor: filled ? '#BFDBFF' : 'white',
@@ -25,25 +50,25 @@ const TableFilterIcons: React.FC<TableFilterIconsProps> = ({ icon, filled, text,
     cursor: 'pointer',
     transition: 'background-color 0.3s ease',
     fontSize: '14px',
-    height: height, // Use the height prop
-    width: width, // Use the width prop
+    height: height,
+    width: width,
   };
+
   return (
-    <button style={IconButtonStyle}
-    onClick={onOpenFilter}
-    >
+    <button style={IconButtonStyle} onClick={onOpenFilter}>
       {filled ? (
         <>
-          <span>{text}</span>
+          <span>{displayText}</span>
           <span style={{ display: 'flex' }}>{icon}</span>
         </>
       ) : (
         <>
           <span style={{ display: 'flex' }}>{icon}</span>
-          <span>{text}</span>
+          <span>{displayText}</span>
         </>
       )}
     </button>
   );
 };
+
 export default TableFilterIcons;

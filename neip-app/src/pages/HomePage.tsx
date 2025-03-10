@@ -253,7 +253,8 @@ const columns = [
   { title: "Created At", dataIndex: "createdAt", key: "createdAt" }
 ];
 
-const HomePage: React.FC = () => {
+const HomePage: React.FC = () => {  
+
   const [modalOpen, setModalOpen] = useState(false);
   const [columnsModalOpen, setColumnsModalOpen] = useState(false);
 
@@ -272,7 +273,17 @@ const HomePage: React.FC = () => {
     setSelectedColumns(newSelectedColumns);
   };
 
-  const [selectedFilters] = useState(['Detective', 'Male', 'Test']);
+  //const [selectedFilters] = useState(['Detective', 'Male', 'Test']);
+    //default fitler tags
+    const [selectedFilters, setSelectedFilters] = useState([
+      { name: "Gender", operator: "", value: "Male" },
+      { name: "Years in Prison", operator: ">", value: "10" },
+      { name: "Arrest Date", operator: "before", value: "10/10/2023" }
+    ]);
+    
+    const handleRemoveFilter = (index: number) => {
+      setSelectedFilters((prevFilters) => prevFilters.filter((_, i) => i !== index));
+    };
 
   const [actionMenuVisible, setActionMenuVisible] = useState(false);
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 });
@@ -323,7 +334,7 @@ const openFilterSidebar = () => {
   setIsSidebarOpen(true);
 };
 
-const noop: () => void = () => {};
+//const noop: () => void = () => {};
 
   return (
     <div style={{ height: '100vh', backgroundColor: 'white', width: '100vw', paddingLeft: '60px'}}>
@@ -404,31 +415,43 @@ const noop: () => void = () => {};
             {/* Table Filter Info */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '20px', borderColor: '#E1E0E0', borderWidth: '1px', borderBottom: 'none' }}>
                 <div style={{ display: 'flex', gap: '12px', marginLeft: '20px', marginTop: '10px', marginBottom: '10px' }}>
-                    {/* <Image src={PlusIcon} alt="funnel" style={{ width: '16px', height: '16px', marginTop: '10px' }} ></Image>  */}
                     <FaFilter style={{ width: '16px', height: '16px', marginTop: '10px' }} />
+                        
+                    {/* Render default and selected filters */}
                     {selectedFilters.map((filter, index) => (
-                        <TableFilterIcons
-                            key={index}
-                            icon={<AiOutlineClose style={{ width: '16px', height: '16px', color: 'black' }} />}
-                            filled={true}
-                            text={filter}
-                            border={false}
-                            borderRadius={false}
-                            height="35px"
-                            onOpenFilter={noop}
-                            />
-                        ))}
-                    <TableFilterIcons
-                        icon={<AiOutlinePlus style={{ width: '16px', height: '16px', color: 'black' }} />}
-                        filled={false}
-                        text="Filter"
+                      <TableFilterIcons
+                        key={index}
+                        icon={
+                          <AiOutlineClose 
+                            style={{ width: '16px', height: '16px', color: 'black', cursor: 'pointer' }} 
+                            onClick={() => handleRemoveFilter(index)} 
+                          />
+                        }
+                        filled={true}
+                        filterName={filter.name}
+                        filterOperator={filter.operator}
+                        filterValue={filter.value}
                         border={false}
                         borderRadius={false}
                         height="35px"
-                        width="120px"
-                        onOpenFilter={openFilterSidebar}
+                        onOpenFilter={() => {}}
+                      />
+                    ))}
+            
+                    {/* Add Filter Button */}
+                    <TableFilterIcons
+                      icon={<AiOutlinePlus style={{ width: '16px', height: '16px', color: 'black' }} />}
+                      filled={false}
+                      text="Filter"
+                      border={false}
+                      borderRadius={false}
+                      height="35px"
+                      width="120px"
+                      onOpenFilter={openFilterSidebar}
                     />
                 </div>
+                      
+                {/* Manage Columns Button */}
                 <div style={{ marginLeft: 'auto', marginRight: '20px' }}>
                   <TableFilterIcons
                     icon={<MdFilterList style={{ width: '16px', height: '16px', color: 'black' }} />}
@@ -439,9 +462,10 @@ const noop: () => void = () => {};
                     height="35px"
                     width="185px"
                     onOpenFilter={handleColumnsModalOpen}
-                    />
+                  />
                 </div>
             </div>
+
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0px', borderColor: '#E1E0E0', borderWidth: '1px', borderTop: 'none' }}>
                 <div style={{ display: 'flex', gap: '4px', marginLeft: '20px', marginTop: '2px', marginBottom: '6px' }}>
                     <span style={{ color: '#ABACBE', fontSize: '12px' }}>Showing</span>
