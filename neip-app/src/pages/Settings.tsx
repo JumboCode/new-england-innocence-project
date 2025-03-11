@@ -5,6 +5,7 @@ import NavBar from '../components/NavBar'
 import Modal from "@/components/ChangePasswordModal";
 import React, { useState } from "react";
 
+
 const AccountInfo = () => {
   const [isModalOpen, setModalOpen] = useState(false)
 
@@ -18,6 +19,18 @@ const AccountInfo = () => {
     borderRadius: "5px",
     border: "1px solid #000000",
     marginTop: "5px"
+  }
+
+  let name = ""
+  let userEmail = ""
+
+  const storeFormData = (init_name: string, init_email: string) => {
+    name = init_name
+    userEmail = init_email
+  }
+
+  const changePassword = (password: string) => {
+
   }
   return (
     <div
@@ -44,7 +57,7 @@ const AccountInfo = () => {
               display: "block"
             }}
           ></Image>
-        }
+        } storeFormData={storeFormData}
       />
       {/* <AccountInfoComponent type="intern"
           userProfilePicture={
@@ -62,7 +75,7 @@ const AccountInfo = () => {
           }
       /> */}
       <button onClick={() => setModalOpen(true)} style={changePassBtnStyle}>Change Password</button>
-      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}></Modal>
+      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} changePassword={changePassword}></Modal>
       <NavBar />
     </div>
   );

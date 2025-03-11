@@ -4,6 +4,7 @@ import { useState } from "react";
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
+    changePassword: (password: string) => void;
 }
 
 const modalOverlay: React.CSSProperties = {
@@ -78,38 +79,52 @@ const innerModalContent: React.CSSProperties = {
 }
 
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, changePassword }) => {
     if (!isOpen) return null;
     const [displayCurrPassword, setCurrPassword] = useState("")
     const [displayNewPassword, setNewPassword] = useState("")
     const [displayConfirmPassword, setConfirmPassword] = useState("")
 
-    const currPassToAsterisks = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCurrPassword("*".repeat(e.target.value.length))
+    // const currPassToAsterisks = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     setCurrPassword("*".repeat(e.target.value.length))
+    // }
+    // const newPassToAsterisks = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     setNewPassword("*".repeat(e.target.value.length))
+    // }
+    // const confirmPassToAsterisks = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     setConfirmPassword("*".repeat(e.target.value.length))
+    // }
+
+    const storeCurrPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCurrPassword(e.target.value)
     }
-    const newPassToAsterisks = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewPassword("*".repeat(e.target.value.length))
+    const storeNewPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewPassword(e.target.value)
     }
-    const confirmPassToAsterisks = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setConfirmPassword("*".repeat(e.target.value.length))
+    const storeConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setConfirmPassword(e.target.value)
     }
 
-    const changePassword = () => {
-
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        changePassword(displayNewPassword); //returns the new password
     }
 
     return (
         <div style={modalOverlay} onClick={onClose}>
             <div style={modalContent} onClick={(e) => e.stopPropagation()}>
                 {/* <button style={closeBtn} onClick={onClose}>x</button> */}
-                <div style={innerModalContent}>
-                    <label style={labelStyles}>Current Password: </label>
-                    <input type="text" name="curr_password" value={displayCurrPassword} style={textInputStyle} onChange={currPassToAsterisks} />
-                    <label style={labelStyles}>New Password: </label>
-                    <input type="text" name="new_password" value={displayNewPassword} style={textInputStyle} onChange={newPassToAsterisks} />
-                    <label style={labelStyles}>Confirm Password: </label>
-                    <input type="text" name="confirm_password" value={displayConfirmPassword} style={textInputStyle} onChange={confirmPassToAsterisks} />
-                    <button style={submitBtnStyle} onSubmit={ }>Submit</button>
+                <div style={innerModalContent}>\
+                    <form onSubmit={handleSubmit}>
+                        <label style={labelStyles}>Current Password: </label>
+                        <input type="password" name="curr_password" value={displayCurrPassword} style={textInputStyle} onChange={storeCurrPassword} />
+                        <label style={labelStyles}>New Password: </label>
+                        <input type="password" name="new_password" value={displayNewPassword} style={textInputStyle} onChange={storeNewPassword} />
+                        <label style={labelStyles}>Confirm Password: </label>
+                        <input type="password" name="confirm_password" value={displayConfirmPassword} style={textInputStyle} onChange={storeConfirmPassword} />
+                        <button style={submitBtnStyle}>Submit</button>
+                    </form>
+
                 </div>
             </div>
         </div>

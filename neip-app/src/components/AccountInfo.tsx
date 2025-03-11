@@ -3,9 +3,10 @@ import { useState } from "react";
 interface AccountInfoProps {
     type: string; // Name will be passed as a string prop
     userProfilePicture: React.ReactNode; //accepts any react node, ideally <Image>
+    storeFormData: (name: string, email: string) => void;
 }
 
-const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePicture }) => {
+const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePicture, storeFormData }) => {
     //css styles for account info items
     const formStyle: React.CSSProperties = {
         width: "405px",
@@ -74,7 +75,7 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Form submitted:", formData);
+        storeFormData(formData.name, formData.email);
     };
 
     return (
