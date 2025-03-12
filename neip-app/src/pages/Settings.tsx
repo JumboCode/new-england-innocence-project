@@ -26,49 +26,13 @@ const AccountInfo = () => {
     marginTop: "5px"
   }
 
-  let name = ""
-  let userEmail = ""
+  // let name = ""
+  // let userEmail = ""
 
-  const storeFormData = (init_name: string, init_email: string) => {
-    name = init_name
-    userEmail = init_email
-  }
-
-  const changePassword = async (password: string) => {
-    try {
-      const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
-      const host = 'localhost:3002';
-      const baseUrl = `${protocol}://${host}`;
-
-      // Construct the full URL for the API endpoint
-      const fullUrl = `${baseUrl}${"/api/auth/changePassword"}`;
-
-      const response = await fetch(fullUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: userEmail,
-          newPassword: password
-        })
-      });
-
-      console.log(`Response status: ${response.status}`);
-
-      if (!response.ok) {
-        const errorData = await response.text();
-        console.error(`Error response: ${errorData}`);
-        throw new Error(`Error ${response.status}: ${errorData}`);
-      }
-      else {
-        console.log(response)
-      }
-    }
-    catch (error) {
-      console.error('Password error:', error);
-    }
-  }
+  // const storeFormData = (init_name: string, init_email: string) => {
+  //   name = init_name
+  //   userEmail = init_email
+  // }
 
   return (
     <div
@@ -95,7 +59,7 @@ const AccountInfo = () => {
               display: "block"
             }}
           ></Image>
-        } storeFormData={storeFormData}
+        }
       />
       {/* <AccountInfoComponent type="intern"
           userProfilePicture={
