@@ -17,6 +17,7 @@ import SelectColumnsModal from '@/components/SelectColumnsModal'
 // import { Button } from "@mui/material";
 import TableFilterIcons from '@/components/TableFilterIcons'
 import OpenFilterSidebar from '../components/OpenFilterSidebar'
+import OfficerInfo from '../components/OfficerInfoComponent'
 
 // TODO: This is a bandaid solution for Vercel deployment.
 // In the future we will want to dynamically determine columns based off this
@@ -699,6 +700,10 @@ const HomePage: React.FC = () => {
             <span style={{ color: '#ABACBE', fontSize: '12px' }}>from</span>
             <span style={{ color: '#000000', fontSize: '12px' }}>x</span>
             <span style={{ color: '#ABACBE', fontSize: '12px' }}>results</span>
+          </div>
+          <br></br>
+          <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+            <OfficerInfo></OfficerInfo>
           </div>
         </div>
 
