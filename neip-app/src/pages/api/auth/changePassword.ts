@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         const updatedUser = await clerk.users.updateUser(user.id, {
-            password: email,
+            password: email
         });
 
 

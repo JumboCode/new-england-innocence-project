@@ -1,10 +1,13 @@
-import React from "react";
-import { useState } from "react";
+'use client'
+import React, { useEffect, useState } from 'react'
+import { useAuth, useSignIn } from '@clerk/nextjs'
+import type { NextPage } from 'next'
+// import { useRouter } from 'next/navigation'
+
 
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
-    changePassword: (password: string) => void;
 }
 
 const modalOverlay: React.CSSProperties = {
@@ -79,57 +82,122 @@ const innerModalContent: React.CSSProperties = {
 }
 
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, changePassword }) => {
+const ForgotPasswordPage: NextPage<ModalProps> = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
-    const [displayCurrPassword, setCurrPassword] = useState("")
-    const [displayNewPassword, setNewPassword] = useState("")
-    const [displayConfirmPassword, setConfirmPassword] = useState("")
 
-    // const currPassToAsterisks = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     setCurrPassword("*".repeat(e.target.value.length))
-    // }
-    // const newPassToAsterisks = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     setNewPassword("*".repeat(e.target.value.length))
-    // }
-    // const confirmPassToAsterisks = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     setConfirmPassword("*".repeat(e.target.value.length))
-    // }
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [code, setCode] = useState('')
+    const [successfulCreation, setSuccessfulCreation] = useState(false)
+    const [secondFactor, setSecondFactor] = useState(false)
+    const [error, setError] = useState('')
 
-    const storeCurrPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCurrPassword(e.target.value)
-    }
-    const storeNewPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewPassword(e.target.value)
-    }
-    const storeConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setConfirmPassword(e.target.value)
+    // const router = useRouter()
+    // const { isSignedIn } = useAuth()
+    const { isLoaded, signIn, setActive } = useSignIn()
+
+    // useEffect(() => {
+    //     if (isSignedIn) {
+    //         router.push('/')
+    //     }
+    // }, [isSignedIn, router]) this is what caused the glitch of not being able to the modal right after resetting
+
+    if (!isLoaded) {
+        return null
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        changePassword(displayNewPassword); //returns the new password
+    // Send the password reset code to the user's email
+    async function create(e: React.FormEvent) {
+        e.preventDefault()
+        await signIn
+            ?.create({
+                strategy: 'reset_password_email_code',
+                identifier: email,
+            })
+            .then((_) => {
+                setSuccessfulCreation(true)
+                setError('')
+            })
+            .catch((err) => {
+                console.error('error', err.errors[0].longMessage)
+                setError(err.errors[0].longMessage)
+            })
+    }
+
+    // Reset the user's password.
+    // Upon successful reset, the user will be
+    // signed in and redirected to the home page
+    async function reset(e: React.FormEvent) {
+        e.preventDefault()
+        await signIn
+            ?.attemptFirstFactor({
+                strategy: 'reset_password_email_code',
+                code,
+                password,
+            })
+            .then((result) => {
+                // Check if 2FA is required
+                if (result.status === 'needs_second_factor') {
+                    setSecondFactor(true)
+                    setError('')
+                } else if (result.status === 'complete') {
+                    // Set the active session to
+                    // the newly created session (user is now signed in)
+                    setActive({ session: result.createdSessionId })
+                    setError('')
+                } else {
+                    console.log(result)
+                }
+                // onClose()
+            })
+            .catch((err) => {
+                console.error('error', err.errors[0].longMessage)
+                setError(err.errors[0].longMessage)
+            })
     }
 
     return (
         <div style={modalOverlay} onClick={onClose}>
             <div style={modalContent} onClick={(e) => e.stopPropagation()}>
                 {/* <button style={closeBtn} onClick={onClose}>x</button> */}
-                <div style={innerModalContent}>\
-                    <form onSubmit={handleSubmit}>
-                        <label style={labelStyles}>Current Password: </label>
-                        <input type="password" name="curr_password" value={displayCurrPassword} style={textInputStyle} onChange={storeCurrPassword} />
-                        <label style={labelStyles}>New Password: </label>
-                        <input type="password" name="new_password" value={displayNewPassword} style={textInputStyle} onChange={storeNewPassword} />
-                        <label style={labelStyles}>Confirm Password: </label>
-                        <input type="password" name="confirm_password" value={displayConfirmPassword} style={textInputStyle} onChange={storeConfirmPassword} />
-                        <button style={submitBtnStyle}>Submit</button>
-                    </form>
 
-                </div>
+                <form style={innerModalContent} onSubmit={!successfulCreation ? create : reset}>
+                    {!successfulCreation && (
+                        <>
+                            <label htmlFor="email" style={labelStyles}>Provide your email address:</label>
+                            <input
+                                type="email"
+                                style={textInputStyle}
+                                placeholder="e.g john@doe.com"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+
+                            <button style={submitBtnStyle}>Send password reset code</button>
+                            {error && <p>{error}</p>}
+                        </>
+                    )}
+
+                    {successfulCreation && (
+                        <>
+                            <label style={labelStyles} htmlFor="password">Enter your new password</label>
+                            <input style={textInputStyle} type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+
+                            <label style={labelStyles} htmlFor="password">
+                                Enter the password reset code that was sent to your email
+                            </label>
+                            <input style={textInputStyle} type="code" value={code} onChange={(e) => setCode(e.target.value)} />
+
+                            <button style={submitBtnStyle}>Reset</button>
+                            {error && <p>{error}</p>}
+                        </>
+                    )}
+
+                    {secondFactor && <p>2FA is required, but this UI does not handle that</p>}
+                </form>
             </div>
         </div>
+    )
+}
 
-    );
-};
-
-export default Modal
+export default ForgotPasswordPage;
