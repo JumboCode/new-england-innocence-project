@@ -289,6 +289,7 @@ const HomePage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [columnsModalOpen, setColumnsModalOpen] = useState(false)
   const [exonerees, setExonerees] = useState<any[]>([])
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
   // Initialize selectedColumns with all column keys
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
@@ -304,8 +305,7 @@ const HomePage: React.FC = () => {
       }
 
       const jsonResponse = await response.json()
-      console.log('✅ API Response Data:', jsonResponse)
-
+      console.log(jsonResponse.data)
       if (!jsonResponse.data || !Array.isArray(jsonResponse.data)) {
         console.error('🚨 Invalid response format', jsonResponse)
         return
@@ -403,7 +403,6 @@ const HomePage: React.FC = () => {
         })
       )
 
-      console.log('✅ Formatted Exonerees Data:', formattedData)
       setExonerees(formattedData)
     } catch (error) {
       console.error('🚨 Error fetching exonerees:', error)
@@ -516,22 +515,53 @@ const HomePage: React.FC = () => {
 
   const handleExportToCSV = async () => {
     try {
+      const rowsToExport = selectedRows.length ? displayedExonerees.filter((row) => selectedRows.includes(row.id!)) : displayedExonerees;
+  
       const response = await fetch('/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ selectedColumns, data: displayedExonerees })
-      })
-
+        body: JSON.stringify({ selectedColumns, data: rowsToExport }),
+      });
+  
       if (response.ok) {
-        const blob = await response.blob()
-        saveAs(blob, 'exonerees.csv') // Trigger file download
+        const blob = await response.blob();
+        saveAs(blob, 'exonerees.csv');
       } else {
-        console.error('Export failed:', response.statusText)
+        console.error('Export failed:', response.statusText);
       }
     } catch (error) {
-      console.error('Error exporting data:', error)
+      console.error('Error exporting data:', error);
     }
-  }
+  };
+
+  const handleDeleteSelectedRows = async () => {
+    try {
+      if (selectedRows.length === 0) {
+        alert('No rows selected.');
+        return;
+      }
+      
+      const response = await fetch('/api/exonerees/batch-delete', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ids: selectedRows }),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to delete rows');
+      }
+      
+      setSelectedRows([]);
+      refreshExonerees();
+      alert('Selected rows deleted successfully.');
+    } catch (error) {
+      console.error('Error deleting selected rows:', error);
+      alert(`Error deleting selected rows: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  };
 
   const noop: () => void = () => {}
 
@@ -674,10 +704,11 @@ const HomePage: React.FC = () => {
                 />
               }
               filled={false}
-              text='Delete'
+              text='Delete Selected'
               border={false}
               height='44px'
-              width='104px'
+              width='160px'
+              onClick={handleDeleteSelectedRows}
             />
             <IconTextButton
               icon={
@@ -812,8 +843,13 @@ const HomePage: React.FC = () => {
         {/* Database Display */}
         <Table
           dataSource={displayedExonerees}
-          columns={filteredColumns}
+          columns={filteredColumns} 
           scroll={{ x: 'max-content', y: 390 }}
+          rowSelection={{
+            onChange: (selectedRowKeys: React.Key[]) => {
+              setSelectedRows(selectedRowKeys.map((key) => Number(key)));
+            },
+          }}
         />
       </div>
       <div
