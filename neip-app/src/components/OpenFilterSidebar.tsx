@@ -397,7 +397,7 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
       <div className='flex-grow p-4 overflow-y-auto bg-[#e6e6e6]'>
         {filters.length === 0 ? (
           <div className='text-center text-gray-500'>
-            <p>Please choose a filter above to refine your search.</p>
+            <p>Please choose a filter to refine your search.</p>
           </div>
         ) : (
           <div>
