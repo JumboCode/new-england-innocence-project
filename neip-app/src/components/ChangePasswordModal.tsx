@@ -1,9 +1,5 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { useAuth, useSignIn } from '@clerk/nextjs'
-import type { NextPage } from 'next'
-// import { useRouter } from 'next/navigation'
-
 
 interface ModalProps {
     isOpen: boolean;
@@ -32,16 +28,17 @@ const modalContent: React.CSSProperties = {
     border: "1px solid #B6B5B5",
 }
 
-const closeBtn: React.CSSProperties = {
-    width: "100%",
-    top: "10px",
-    right: "10px",
-    background: "transparent",
-    fontSize: "20px",
-    cursor: "pointer",
-    display: "flex",
-    justifyContent: "flex-end"
-}
+// Commented out for build -Siara
+// const closeBtn: React.CSSProperties = {
+//     width: "100%",
+//     top: "10px",
+//     right: "10px",
+//     background: "transparent",
+//     fontSize: "20px",
+//     cursor: "pointer",
+//     display: "flex",
+//     justifyContent: "flex-end"
+// }
 
 const submitBtnStyle: React.CSSProperties = {
     font: 'Inter',
