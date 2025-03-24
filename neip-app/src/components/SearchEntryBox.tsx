@@ -97,7 +97,7 @@ const SearchEntryBox: React.FC<SearchEntryBoxProps> = ({ setExonerees }) => {
             ? 'Yes'
             : 'No',
           currentStatus: exoneree.postExonerationInfo?.occupation || 'N/A',
-          mediaCoverage: exoneree.metaData?.mediaCoverage ? 'Yes' : 'No',
+          mediaCoverage: exoneree.metaData?.mediaCoverage || 'N/A',
           advocacyInvolvement: exoneree.metaData?.advocacyInvolvement
             ? 'Yes'
             : 'No',
@@ -164,6 +164,7 @@ const containerStyle: React.CSSProperties = {
 
 const inputStyle: React.CSSProperties = {
   border: 'none',
+  color: '111928',
   outline: 'none',
   width: '100%',
   fontSize: '14px',

@@ -1,4 +1,4 @@
-//AddExonereeModal.tsx
+// AddExonereeModal.tsx
 import React, { useState } from 'react'
 import Image from 'next/image'
 import Modal from '@mui/material/Modal'
@@ -30,11 +30,13 @@ const style = {
 interface AddExonereeModalProps {
   open: boolean
   handleClose: () => void
+  onSuccess: () => void
 }
 
 const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
   open,
-  handleClose
+  handleClose,
+  onSuccess
 }) => {
   const [activeTab, setActiveTab] = useState(0)
 
@@ -168,8 +170,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         },
         legalInfo: {
           originalCharges: formData.originalCharges,
-
-          //   TODO: FIX TYPE FOR CONVICTIONMETHOD, EXONERATIONMETHOD, officersInvolved, INFORMANTTESTIMONY, EITHER STRING OR ARRAY BUT NOT BOTH
           convictionMethod: [formData.convictionMethod],
           exonerationMethod: formData.exonerationMethod,
           legalRepresentation: formData.legalRepresentation,
@@ -206,7 +206,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           id: 0 // This will be replaced by the actual ID if it exists
         },
         metaData: {
-          // TODO: Add something for this, currently just temporary empty strings.
           dataSource: '',
           lastUpdated: '',
           createdAt: ''
@@ -242,6 +241,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
 
       const result = await response.json()
       console.log('Successfully added exoneree:', result)
+
+      // Call onSuccess to refresh parent data before closing the modal.
+      onSuccess()
 
       // Close the modal and reset form
       handleClose()
@@ -783,7 +785,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         )
       case 3:
         const circumstancesLeftIcons = [
-          ,
           <React.Fragment key='false-confession'>
             <LabelAndDropdown
               label={'False confession'}
@@ -903,7 +904,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
 
       case 4:
         const postexonerationLeftIcons = [
-          ,
           <React.Fragment key='compensation-amount'>
             <LabelAndEntry
               label={'Compensation'}
@@ -1048,7 +1048,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
 
       case 5:
         const additionalLeftIcons = [
-          ,
           <React.Fragment key='media-coverage'>
             <LabelAndEntry
               label={'Media coverage'}

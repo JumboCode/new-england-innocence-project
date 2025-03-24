@@ -9,7 +9,9 @@ const Signup: React.FC = () => {
       style={{
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        height: '100vh',
+        backgroundColor: '#f4f4f4',
       }}
     >
       <AuthBox prop={<SignupContent />} />
@@ -18,11 +20,9 @@ const Signup: React.FC = () => {
 }
 
 const SignupContent = () => {
-  const [userId, setUserId] = useState('')
   const [email, setEmail] = useState('')
-  const [position, setPosition] = useState('')
+  const [name, setName] = useState('')
   const [password, setPassword] = useState('')
-  console.log(userId, position) // Temporary use to avoid linting error
 
   const handleSignup = async () => {
     try {
@@ -34,6 +34,7 @@ const SignupContent = () => {
         },
         body: JSON.stringify({
           email,
+          name,
           password
         })
       })
@@ -51,6 +52,7 @@ const SignupContent = () => {
   }
 
   return (
+    
     <div>
       <div>
         {/* Sign up text */}
@@ -83,24 +85,6 @@ const SignupContent = () => {
         </h2>
       </div>
 
-      {/* user ID input */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '20px',
-          width: '375px',
-          padding: '27px'
-        }}
-      >
-        <AuthEntryBox
-          placeholder='user ID'
-          type='text'
-          onChange={e => setUserId(e.target.value)}
-        />
-      </div>
-
       {/* email input */}
       <div
         style={{
@@ -113,7 +97,7 @@ const SignupContent = () => {
         }}
       >
         <AuthEntryBox
-          placeholder='email'
+          placeholder='Email'
           type='email'
           onChange={e => setEmail(e.target.value)}
         />
@@ -131,9 +115,9 @@ const SignupContent = () => {
         }}
       >
         <AuthEntryBox
-          placeholder='new user position'
+          placeholder='Name'
           type='text'
-          onChange={e => setPosition(e.target.value)}
+          onChange={e => setName(e.target.value)}
         />
       </div>
 
@@ -149,7 +133,7 @@ const SignupContent = () => {
         }}
       >
         <AuthEntryBox
-          placeholder='password'
+          placeholder='Password'
           type='password'
           onChange={e => setPassword(e.target.value)}
         />

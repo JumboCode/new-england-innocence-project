@@ -9,7 +9,7 @@ import { useSignIn } from "@clerk/nextjs";
 
 const LoginPage: React.FC = () => {
   const { signIn, isLoaded } = useSignIn();
-  const [userId, setUserId] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
@@ -20,7 +20,7 @@ const LoginPage: React.FC = () => {
       const response = await fetch("/api/auth/checkUser", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: userId }),
+        body: JSON.stringify({ email: email }),
       });
 
       const result = await response.json();
@@ -35,7 +35,7 @@ const LoginPage: React.FC = () => {
       }
 
       const signInResult = await signIn.create({
-        identifier: userId,
+        identifier: email,
         password: password,
         strategy: "password",
       });
@@ -71,11 +71,11 @@ const LoginPage: React.FC = () => {
           }}>Login</h2>
 
           <div style={{ width: "100%", marginBottom: "15px" }}>
-            <AuthEntryBox placeholder="user ID" onChange={(e) => setUserId(e.target.value)} />
+            <AuthEntryBox placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
           </div>
 
           <div style={{ width: "100%", marginBottom: "5px" }}>
-            <AuthEntryBox placeholder="password" type="password" onChange={(e) => setPassword(e.target.value)} />
+            <AuthEntryBox placeholder="Password" type="password" onChange={(e) => setPassword(e.target.value)} />
           </div>
 
           <div style={{
