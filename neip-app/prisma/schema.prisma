@@ -93,7 +93,7 @@ model PostExonerationInfo {
 }
 
 model AdditionalInfo {
-  id                    Int     @id @default(autoincrement())
+  id                    Int      @id @default(autoincrement())
   mediaCoverage         String
   advocacyInvolvement   String?
   educationalBackground String?

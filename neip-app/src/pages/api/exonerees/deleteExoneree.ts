@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const deletedExoneree = await prisma.exoneree.delete({
       where: {
-        id: parseInt(id, 10),
+        id: parseInt(id as string, 10),
       },
     });
 

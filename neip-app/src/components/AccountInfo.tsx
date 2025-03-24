@@ -13,7 +13,6 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
         top: "263px",
         left: "105px",
         border: "1px solid black",
-        margin: "1.5em",
         padding: "1em",
         display: "flex",
         flexDirection: "column",
@@ -75,7 +74,7 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Form submitted:", formData);
+        // storeFormData(formData.name, formData.email);
     };
 
     return (
