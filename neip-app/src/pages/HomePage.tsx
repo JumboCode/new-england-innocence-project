@@ -600,7 +600,6 @@ const HomePage: React.FC = () => {
           onClose={closeFilterSidebar}
           onApplyFilters={(ids: number[]) => {
             setFilteredExonereeIDs(ids)
-            setSelectedFilters
             closeFilterSidebar()
           }}
         />
