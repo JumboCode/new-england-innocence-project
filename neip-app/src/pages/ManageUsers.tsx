@@ -14,7 +14,7 @@ const ManageUsers = () => {
     const [users, setUsers] = useState<User[]>([]);
     // Get the host from the request headers to construct absolute URLs
     const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
-    const host = 'localhost:3002';
+    const host = req.headers.host || 'localhost:3000';
     const baseUrl = `${protocol}://${host}`;
 
     // Construct the full URL for the API endpoint
