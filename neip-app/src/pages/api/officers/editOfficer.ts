@@ -30,6 +30,7 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
     return res.status(200).json(updatedOfficer);
 
   } catch (error) {
+    console.error(error)
     return res.status(500).json({ error: 'Failed to update officer' });
   }
     

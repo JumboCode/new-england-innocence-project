@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../utils/database/connectToDb';
 
@@ -27,6 +26,7 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
     res.status(200).json(officer.name);
 
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: "Failed to retrieve officer" })
   }
 }
