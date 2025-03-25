@@ -337,7 +337,7 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({ open, handleClose
 
       // Log the data being sent for debugging
       console.log('Sending data:', {
-        id: selectedExoneree.caseNumber, // Ensure the id is being passed correctly
+        caseNumber: selectedExoneree.caseNumber, // Ensure the id is being passed correctly
         updatedData: formattedData, // Ensure the data is correctly structured
       });
 
