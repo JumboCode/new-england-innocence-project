@@ -1,5 +1,3 @@
-// -- look over
-
 import { prisma } from '../../../utils/database/connectToDb'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { z } from 'zod'
@@ -7,74 +5,72 @@ import { z } from 'zod'
 const Gender = z.enum(['M', 'F', 'OTHER'])
 
 const PersonalInfoSchema = z.object({
-  name: z.string(),
-  dateOfBirth: z.string(),
-  gender: Gender,
-  race: z.string(),
-  ethnicity: z.string(),
-  phoneNumber: z.string(),
-  address: z.string(),
-  email: z.string()
-})
+  name: z.union([z.string().length(0), z.string()]).optional(),
+  dateOfBirth: z.union([z.string().length(0), z.string()]).optional(),
+  gender: Gender.or(z.literal('')),
+  race: z.union([z.string().length(0), z.string()]).optional(),
+  ethnicity: z.union([z.string().length(0), z.string()]).optional(),
+  phoneNumber: z.union([z.string().length(0), z.string()]).optional(),
+  address: z.union([z.string().length(0), z.string()]).optional(),
+  email: z.union([z.string().length(0), z.string()]).optional(),
+});
 
 const CaseInfoSchema = z.object({
-  caseNumber: z.string(),
-  jurisdictionId: z.number(),
-  exonerationNumber: z.string(),
-  yearsInPrison: z.number(),
-  arrestDate: z.string(),
-  convictionDate: z.string(),
-  freedomDate: z.string(),
-  exonerationDate: z.string(),
-  crimeType: z.string(),
-  sentence: z.string(),
-  state: z.string(),
-  country: z.string()
-})
+  caseNumber: z.union([z.string().length(0), z.string()]).optional(),
+  jurisdiction: z.union([z.string().length(0), z.string()]).optional(),
+  yearsInPrison: z.number().or(z.literal('')),
+  arrestDate: z.union([z.string().length(0), z.string()]).optional(),
+  convictionDate: z.union([z.string().length(0), z.string()]).optional(),
+  freedomDate: z.union([z.string().length(0), z.string()]).optional(),
+  exonerationDate: z.union([z.string().length(0), z.string()]).optional(),
+  crimeType: z.union([z.string().length(0), z.string()]).optional(),
+  sentence: z.union([z.string().length(0), z.string()]).optional(),
+  state: z.union([z.string().length(0), z.string()]).optional(),
+  country: z.union([z.string().length(0), z.string()]).optional(),
+});
 
 const LegalInfoSchema = z.object({
-  originalCharges: z.string(),
-  convictionMethod: z.array(z.string()),
-  exonerationMethod: z.array(z.string()),
-  legalRepresentation: z.string(),
-  prosecutor: z.string(),
-  judge: z.string(),
-  officersInvolved: z.array(z.string())
-})
+  originalCharges: z.array(z.string()).or(z.literal('')).optional(),
+  convictionMethod: z.union([z.string().length(0), z.string()]).optional(),
+  exonerationMethod: z.union([z.string().length(0), z.string()]).optional(),
+  legalRepresentation: z.union([z.string().length(0), z.string()]).optional(),
+  prosecutor: z.union([z.string().length(0), z.string()]).optional(),
+  officersInvolved: z.array(z.string()).or(z.literal('')).optional(),
+});
 
 const WrongfulConvictionInfoSchema = z.object({
-  falseConfession: z.boolean(),
-  eyewitnessMisidentification: z.boolean(),
-  inadequateLegalDefense: z.boolean(),
-  policeMisconduct: z.boolean(),
-  prosecutorialMisconduct: z.boolean(),
-  forensicEvidence: z.boolean(),
-  informantTestimony: z.boolean(),
-  otherInfo: z.string()
-})
+  falseConfession: z.boolean().or(z.literal('')),
+  eyewitnessMisidentification: z.boolean().or(z.literal('')),
+  inadequateLegalDefense: z.boolean().or(z.literal('')),
+  policeMisconduct: z.boolean().or(z.literal('')),
+  prosecutorialMisconduct: z.boolean().or(z.literal('')),
+  forensicEvidence: z.boolean().or(z.literal('')),
+  informantTestimony: z.boolean().or(z.literal('')),
+});
 
 const PostExonerationInfoSchema = z.object({
-  reentrySupport: z.array(z.string()),
-  publicApology: z.boolean(),
-  compensationAmount: z.number(),
-  compensationDate: z.string(),
-  occupation: z.string(),
-  currentState: z.string(),
-  currentCountry: z.string()
-})
+  reentrySupport: z.union([z.string().length(0), z.string()]).optional(),
+  publicApology: z.boolean().or(z.literal('')),
+  compensationAmount: z.number().or(z.literal('')),
+  compensationDate: z.union([z.string().length(0), z.string()]).optional(),
+  occupation: z.union([z.string().length(0), z.string()]).optional(),
+  currentState: z.union([z.string().length(0), z.string()]).optional(),
+  currentCountry: z.union([z.string().length(0), z.string()]).optional(),
+});
 
 const AdditionalInfoSchema = z.object({
-  mediaCoverage: z.array(z.string()),
-  advocacyInvolvement: z.string(),
-  educationalBackground: z.string(),
-  healthInfo: z.string()
-})
+  mediaCoverage: z.union([z.string().length(0), z.string()]).optional(),
+  advocacyInvolvement: z.union([z.string().length(0), z.string()]).optional(),
+  educationalBackground: z.union([z.string().length(0), z.string()]).optional(),
+  // healthInfo: z.union([z.string().length(0), z.string()]).optional(),
+  healthInfo: z.union([z.string().length(0), z.string()]).optional()
+});
 
 const MetaDataSchema = z.object({
-  dataSource: z.string(),
-  lastUpdated: z.string(),
-  createdAt: z.string()
-})
+  dataSource: z.union([z.string().length(0), z.string()]).optional(),
+  lastUpdated: z.union([z.string().length(0), z.string()]).optional(),
+  createdAt: z.union([z.string().length(0), z.string()]).optional(),
+});
 
 const UpdatedExonereeDataSchema = z.object({
   personalInfo: PersonalInfoSchema.optional(),

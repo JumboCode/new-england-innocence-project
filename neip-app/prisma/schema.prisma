@@ -57,7 +57,7 @@ model CaseInfo {
 
 model LegalInfo {
   id                  Int       @id @default(autoincrement())
-  convictionMethod    String[]
+  convictionMethod    String?
   exonerationMethod   String
   legalRepresentation String?
   prosecutor          String?
@@ -82,19 +82,19 @@ model WrongfulConvictionInfo {
 
 model PostExonerationInfo {
   id                 Int       @id @default(autoincrement())
-  reentrySupport     String[]
+  reentrySupport     String?
   publicApology      Boolean?
   compensationAmount Int?
   currentCountry     String?
   currentState       String?
   occupation         String?
-  compensationDate   DateTime?
+  compensationDate   String?
   exoneree           Exoneree?
 }
 
 model AdditionalInfo {
   id                    Int      @id @default(autoincrement())
-  mediaCoverage         String
+  mediaCoverage         String?
   advocacyInvolvement   String?
   educationalBackground String?
   healthInfo            String?

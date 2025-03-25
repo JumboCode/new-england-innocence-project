@@ -423,8 +423,6 @@ const HomePage: React.FC = () => {
     setSelectedColumns(newSelectedColumns)
   }
 
-  //const [selectedFilters] = useState(['Detective', 'Male', 'Test']);
-  //default fitler tags
   const [selectedFilters, setSelectedFilters] = useState([
     { name: 'Gender', operator: '', value: 'Male' },
     { name: 'Years in Prison', operator: '>', value: '10' },
@@ -873,6 +871,7 @@ const HomePage: React.FC = () => {
             <ActionMenuComponent
               onClose={closeActionMenu}
               exonereeId={selectedExonereeId!}
+              selectedExoneree={selectedCell?.record}
               onDeleteSuccess={refreshExonerees}
             />
           </div>
