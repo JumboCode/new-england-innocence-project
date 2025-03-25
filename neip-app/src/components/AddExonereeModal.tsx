@@ -192,7 +192,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         postExonerationInfo: {
           compensationAmount: parseFloat(formData.compensationAmount) || 0,
           compensationDate: new Date(formData.compensationDate),
-          reentrySupport: [formData.reentrySupport],
+          reentrySupport: formData.reentrySupport,
           publicApology: formData.publicApology === 'Yes',
           currentCountry: formData.currentCountry,
           currentState: formData.currentState,
