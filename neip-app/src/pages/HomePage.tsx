@@ -296,6 +296,7 @@ const HomePage: React.FC = () => {
     columns.map(col => col.key)
   )
 
+  
   // Helper function to refresh data from the API
   const refreshExonerees = async () => {
     try {
@@ -408,7 +409,6 @@ const HomePage: React.FC = () => {
       console.error('🚨 Error fetching exonerees:', error)
     }
   }
-
   useEffect(() => {
     refreshExonerees()
   }, [])
@@ -872,7 +872,7 @@ const HomePage: React.FC = () => {
               onClose={closeActionMenu}
               exonereeId={selectedExonereeId!}
               selectedExoneree={selectedCell?.record}
-              onDeleteSuccess={refreshExonerees}
+              onSuccess={refreshExonerees}
             />
           </div>
         )}

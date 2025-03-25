@@ -1,4 +1,3 @@
-//EditExonereeModal.tsx
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Modal from '@mui/material/Modal'
@@ -13,6 +12,7 @@ import DropdownAndTags from '../components/DropdownAndTags'
 import PersonalInfoIcon from '../img/PersonalInfoIcon.png'
 import EditIcon from '../img/EditIcon.png'
 import IconTextButton from '../components/IconTextButton'
+import isEqual from 'lodash/isEqual'
 
 const style = {
   position: 'absolute',
@@ -30,9 +30,9 @@ const style = {
 interface EditExonereeModalProps {
   open: boolean
   handleClose: () => void
-
-  // figure out type
   selectedExoneree: any
+  onSuccess: (id: number) => void
+  closeMenu: () => void
 }
 
 // Define a type for the form data
@@ -88,7 +88,9 @@ interface ExonereeData {
 const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
   open,
   handleClose,
-  selectedExoneree
+  selectedExoneree,
+  onSuccess,
+  closeMenu
 }) => {
   const [activeTab, setActiveTab] = useState(0)
 
@@ -151,17 +153,11 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
   const [isSaveEnabled, setIsSaveEnabled] = useState(false)
 
   // Function to check if the form has unsaved changes
-  const hasUnsavedChanges = () => {
-    //return true;
-    return Object.keys(initialData).some(key => {
-      // Use keyof ExonereeData to safely index both initialData and formData
-      return (
-        initialData[key as keyof ExonereeData] !==
-        formData[key as keyof ExonereeData]
-      )
-    })
-  }
 
+  const hasUnsavedChanges = () => {
+    return !isEqual(initialData, formData)
+  }
+  
   // Enable the save button if there are unsaved changes
   useEffect(() => {
     setIsSaveEnabled(hasUnsavedChanges())
@@ -356,8 +352,6 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
         headers: {
           'Content-Type': 'application/json'
         },
-        //body: JSON.stringify({id, formattedData})
-        // body: JSON.stringify({ id: selectedExoneree.id, updatedData: formData }),
         body: JSON.stringify({
           id: selectedExoneree.id, // Use the exoneree's ID
           updatedData: formattedData // Send the formatted data
@@ -375,55 +369,10 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
       console.log('Successfully updated exoneree:', result)
 
       // Close the modal and reset form
-      handleCloseModal()
+      handleClose()
       setFormData(initial)
-      // setFormData({
-      //   firstName: "",
-      //   lastName: "",
-      //   phoneNumber: "",
-      //   email: "",
-      //   dob: "",
-      //   gender: "",
-      //   race: "",
-      //   ethnicity: "",
-      //   address: "",
-      //   caseNumber: "",
-      //   jurisdiction: "",
-      //   yearsInPrison: "",
-      //   arrestDate: "",
-      //   convictionDate: "",
-      //   freedomDate: "",
-      //   exonerationDate: "",
-      //   crimeType: "",
-      //   sentence: "",
-      //   country: "",
-      //   state: "",
-      //   originalCharges: [],
-      //   convictionMethod: "",
-      //   exonerationMethod: "",
-      //   legalRepresentation: "",
-      //   prosecutor: "",
-      //   detectivesInvolved: [],
-      //   falseConfession: "",
-      //   eyewitnessMisidentification: "",
-      //   inadequateLegalDefense: "",
-      //   policeProsecutorialMisconduct: "",
-      //   forensicEvidence: "",
-      //   informantTestimony: "",
-      //   compensationAmount: "",
-      //   compensationDate: "",
-      //   reentrySupport: "",
-      //   publicApology: "",
-      //   currentCountry: "",
-      //   currentState: "",
-      //   currentStatus: "",
-      //   currentOccupation: "",
-      //   placeOfResidence: "",
-      //   mediaCoverage: "",
-      //   advocacyInvolvement: "",
-      //   educationalBackground: "",
-      //   healthInfo: ""
-      // });
+      onSuccess(selectedExoneree)
+      closeMenu()
     } catch (error) {
       console.error('Error adding exoneree:', error)
       alert(
