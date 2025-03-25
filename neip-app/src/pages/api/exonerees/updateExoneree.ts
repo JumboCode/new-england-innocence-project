@@ -7,69 +7,69 @@ import { z } from 'zod';
 const Gender = z.enum(["M", "F", "OTHER"]);
 
 const PersonalInfoSchema = z.object({
-  name: z.string(),
-  dateOfBirth: z.string(),
-  gender: Gender,
-  race: z.string(),
-  ethnicity: z.string(),
-  phoneNumber: z.string(),
-  address: z.string(),
-  email: z.string(),
+  name: z.string().optional(),
+  dateOfBirth: z.string().optional(),
+  gender: Gender.optional(),
+  race: z.string().optional(),
+  ethnicity: z.string().optional(),
+  phoneNumber: z.string().optional(),
+  address: z.string().optional(),
+  email: z.string().optional(),
 });
 
 const CaseInfoSchema = z.object({
-  caseNumber: z.string(),
-  jurisdictionId: z.number(),
-  yearsInPrison: z.number(),
-  arrestDate: z.string(),
-  convictionDate: z.string(),
-  freedomDate: z.string(),
-  exonerationDate: z.string(),
-  crimeType: z.string(),
-  sentence: z.string(),
-  state: z.string(),
-  country: z.string(),
+  caseNumber: z.string().optional(),
+  jurisdictionId: z.number().optional(),
+  yearsInPrison: z.number().optional(),
+  arrestDate: z.string().optional(),
+  convictionDate: z.string().optional(),
+  freedomDate: z.string().optional(),
+  exonerationDate: z.string().optional(),
+  crimeType: z.string().optional(),
+  sentence: z.string().optional(),
+  state: z.string().optional(),
+  country: z.string().optional(),
 });
 
 const LegalInfoSchema = z.object({
-  originalCharges: z.string(),
-  convictionMethod: z.array(z.string()),
-  exonerationMethod: z.array(z.string()),
-  legalRepresentation: z.string(),
-  prosecutor: z.string(),
-  detectivesInvolved: z.array(z.string()),
+  originalCharges: z.array(z.string()).optional(),
+  convictionMethod: z.array(z.string()).optional(),
+  exonerationMethod: z.array(z.string()).optional(),
+  legalRepresentation: z.string().optional(),
+  prosecutor: z.string().optional(),
+  detectivesInvolved: z.array(z.string()).optional(),
 });
 
 const WrongfulConvictionInfoSchema = z.object({
-  falseConfession: z.boolean(),
-  eyewitnessMisidentification: z.boolean(),
-  inadequateLegalDefense: z.boolean(),
-  policeProsecutorialMisconduct: z.boolean(),
-  forensicEvidence: z.boolean(),
-  informantTestimony: z.boolean(),
+  falseConfession: z.boolean().optional(),
+  eyewitnessMisidentification: z.boolean().optional(),
+  inadequateLegalDefense: z.boolean().optional(),
+  policeProsecutorialMisconduct: z.boolean().optional(),
+  forensicEvidence: z.boolean().optional(),
+  informantTestimony: z.boolean().optional(),
 });
 
 const PostExonerationInfoSchema = z.object({
-  reentrySupport: z.array(z.string()),
-  publicApology: z.boolean(),
-  compensationAmount: z.number(),
-  compensationDate: z.string(),
-  occupation: z.string(),
-  currentState: z.string(),
-  currentCountry: z.string(),
+  reentrySupport: z.array(z.string()).optional(),
+  publicApology: z.boolean().optional(),
+  compensationAmount: z.number().optional(),
+  compensationDate: z.string().optional(),
+  occupation: z.string().optional(),
+  currentState: z.string().optional(),
+  currentCountry: z.string().optional(),
 });
 
 const AdditionalInfoSchema = z.object({
-  mediaCoverage: z.array(z.string()),
-  advocacyInvolvement: z.string(),
-  educationalBackground: z.string(),
-  healthInfo: z.string(),
+  mediaCoverage: z.array(z.string()).optional(),
+  advocacyInvolvement: z.string().optional(),
+  educationalBackground: z.string().optional(),
+  healthInfo: z.string().optional(),
 });
 
 const MetaDataSchema = z.object({
-  dataSource: z.string(),
-  lastUpdated: z.string(),
-  createdAt: z.string(),
+  dataSource: z.string().optional(),
+  lastUpdated: z.string().optional(),
+  createdAt: z.string().optional(),
 });
 
 const UpdatedExonereeDataSchema = z.object({
