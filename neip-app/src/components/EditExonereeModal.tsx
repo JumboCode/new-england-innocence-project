@@ -112,12 +112,12 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({ open, handleClose
     sentence: selectedExoneree.sentence || "",
     country: selectedExoneree.country || "",
     state: selectedExoneree.state || "",
-    originalCharges: selectedExoneree.originalCharges || [],
+    // originalCharges: selectedExoneree.originalCharges || [],
     convictionMethod: selectedExoneree.convictionMethod || "",
     exonerationMethod: selectedExoneree.exonerationMethod || "",
     legalRepresentation: selectedExoneree.legalRepresentation || "",
     prosecutor: selectedExoneree.prosecutor || "",
-    detectivesInvolved: selectedExoneree.detectivesInvolved || [],
+    // detectivesInvolved: selectedExoneree.detectivesInvolved || [],
     falseConfession: selectedExoneree.falseConfession || "",
     eyewitnessMisidentification: selectedExoneree.eyewitnessMisidentification || "",
     inadequateLegalDefense: selectedExoneree.inadequateLegalDefense || "",
@@ -137,6 +137,17 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({ open, handleClose
     advocacyInvolvement: selectedExoneree.advocacyInvolvement || "",
     educationalBackground: selectedExoneree.educationalBackground || "",
     healthInfo: selectedExoneree.healthInfo || "",
+    originalCharges: Array.isArray(selectedExoneree.originalCharges)
+    ? selectedExoneree.originalCharges
+    : selectedExoneree.originalCharges
+      ? [selectedExoneree.originalCharges]
+      : [],
+
+    detectivesInvolved: Array.isArray(selectedExoneree.detectivesInvolved)
+      ? selectedExoneree.detectivesInvolved
+      : selectedExoneree.detectivesInvolved
+        ? [selectedExoneree.detectivesInvolved]
+        : [],
   };
 
   //const [formData, setFormData] = useState( initialData );
