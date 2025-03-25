@@ -63,7 +63,7 @@ interface ExonereeData {
   exonerationMethod: string;
   legalRepresentation: string;
   prosecutor: string;
-  detectivesInvolved: string[];
+  officersInvolved: string[];
   falseConfession: string;
   eyewitnessMisidentification: string;
   inadequateLegalDefense: string;
@@ -72,7 +72,7 @@ interface ExonereeData {
   informantTestimony: string;
   compensationAmount: string;
   compensationDate: string;
-  reentrySupport: string[];
+  reentrySupport: string;
   publicApology: string;
   currentCountry: string;
   currentState: string;
@@ -143,10 +143,10 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({ open, handleClose
       ? [selectedExoneree.originalCharges]
       : [],
 
-    detectivesInvolved: Array.isArray(selectedExoneree.detectivesInvolved)
-      ? selectedExoneree.detectivesInvolved
-      : selectedExoneree.detectivesInvolved
-        ? [selectedExoneree.detectivesInvolved]
+    officersInvolved: Array.isArray(selectedExoneree.officersInvolved)
+      ? selectedExoneree.officersInvolved
+      : selectedExoneree.officersInvolved
+        ? [selectedExoneree.officersInvolved]
         : [],
   };
 
@@ -270,11 +270,11 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({ open, handleClose
         legalInfo: {
           originalCharges: formData.originalCharges,
         //   TODO: FIX TYPE FOR CONVICTIONMETHOD, EXONERATIONMETHOD, DETECTIVESINVOLVED, INFORMANTTESTIMONY, EITHER STRING OR ARRAY BUT NOT BOTH
-          convictionMethod: [formData.convictionMethod],
-          exonerationMethod: [formData.exonerationMethod],
+          convictionMethod: formData.convictionMethod,
+          exonerationMethod: formData.exonerationMethod,
           legalRepresentation: formData.legalRepresentation,
           prosecutor: formData.prosecutor,
-          detectivesInvolved: [formData.detectivesInvolved]
+          officersInvolved: [formData.officersInvolved]
         },
         wrongfulConvictionInfo: {
           falseConfession: formData.falseConfession === 'Yes',
@@ -287,7 +287,7 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({ open, handleClose
         postExonerationInfo: {
           compensationAmount: parseFloat(formData.compensationAmount) || 0,
           compensationDate: new Date(formData.compensationDate),
-          reentrySupport: [formData.reentrySupport],
+          reentrySupport: formData.reentrySupport,
           publicApology: formData.publicApology === 'Yes',
           currentCountry: formData.currentCountry,
           currentState: formData.currentState,
@@ -815,22 +815,22 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({ open, handleClose
               name="prosecutor"
             />
           </React.Fragment>,
-          <React.Fragment key="detectives-involved">
+          <React.Fragment key="officers-involved">
             <DropdownAndTags
-              label={"Detectives Involved"}
-              placeholder={"Detective"}
+              label={"Officers Involved"}
+              placeholder={"Officer"}
               options={[]}
               width="60%"
               height="36px"
-              value={formData.detectivesInvolved}
+              value={formData.officersInvolved}
               onChange={(name, value) => {
                 setFormData(prev => ({
                   ...prev,
                   [name]: value
                 }));
               }}
-              name="detectivesInvolved"
-              apiUrl="Detective"
+              name="officersInvolved"
+              apiUrl="Officer"
             />
             <IconTextButton
                 filled={isSaveEnabled}

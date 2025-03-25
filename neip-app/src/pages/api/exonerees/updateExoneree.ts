@@ -37,7 +37,7 @@ const LegalInfoSchema = z.object({
   exonerationMethod: z.array(z.string()).or(z.literal('')).optional(),
   legalRepresentation: z.union([z.string().length(0), z.string()]).optional(),
   prosecutor: z.union([z.string().length(0), z.string()]).optional(),
-  detectivesInvolved: z.array(z.string()).or(z.literal('')).optional(),
+  officersInvolved: z.array(z.string()).or(z.literal('')).optional(),
 });
 
 const WrongfulConvictionInfoSchema = z.object({

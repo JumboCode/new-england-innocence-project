@@ -170,7 +170,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         },
         legalInfo: {
           originalCharges: formData.originalCharges,
-          convictionMethod: [formData.convictionMethod],
+          convictionMethod: formData.convictionMethod,
           exonerationMethod: formData.exonerationMethod,
           legalRepresentation: formData.legalRepresentation,
           prosecutor: formData.prosecutor,
