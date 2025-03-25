@@ -44,7 +44,8 @@ const WrongfulConvictionInfoSchema = z.object({
   falseConfession: z.boolean().or(z.literal('')),
   eyewitnessMisidentification: z.boolean().or(z.literal('')),
   inadequateLegalDefense: z.boolean().or(z.literal('')),
-  policeProsecutorialMisconduct: z.boolean().or(z.literal('')),
+  policeMisconduct: z.boolean().or(z.literal('')),
+  prosecutorialMisconduct: z.boolean().or(z.literal('')),
   forensicEvidence: z.boolean().or(z.literal('')),
   informantTestimony: z.boolean().or(z.literal('')),
 });

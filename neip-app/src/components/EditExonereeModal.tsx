@@ -67,7 +67,8 @@ interface ExonereeData {
   falseConfession: string
   eyewitnessMisidentification: string
   inadequateLegalDefense: string
-  policeProsecutorialMisconduct: string
+  policeMisconduct: string
+  prosecutorialMisconduct: string
   forensicEvidence: string
   informantTestimony: string
   compensationAmount: string
@@ -126,8 +127,10 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
     eyewitnessMisidentification:
       selectedExoneree.eyewitnessMisidentification || '',
     inadequateLegalDefense: selectedExoneree.inadequateLegalDefense || '',
-    policeProsecutorialMisconduct:
-      selectedExoneree.policeProsecutorialMisconduct || '',
+    policeMisconduct:
+      selectedExoneree.policeMisconduct || '',
+    prosecutorialMisconduct:
+      selectedExoneree.prosecutorialMisconduct || '',
     forensicEvidence: selectedExoneree.forensicEvidence || '',
     informantTestimony: selectedExoneree.informantTestimony || '',
     compensationAmount: selectedExoneree.compensationAmount || '',
@@ -143,17 +146,8 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
     advocacyInvolvement: selectedExoneree.advocacyInvolvement || '',
     educationalBackground: selectedExoneree.educationalBackground || '',
     healthInfo: selectedExoneree.healthInfo || '',
-    originalCharges: Array.isArray(selectedExoneree.originalCharges)
-      ? selectedExoneree.originalCharges
-      : selectedExoneree.originalCharges
-      ? [selectedExoneree.originalCharges]
-      : "",
-
-    officersInvolved: Array.isArray(selectedExoneree.officersInvolved)
-      ? selectedExoneree.officersInvolved
-      : selectedExoneree.officersInvolved
-      ? [selectedExoneree.officersInvolved]
-      : "",
+    originalCharges: selectedExoneree.originalCharges || [],
+    officersInvolved: selectedExoneree.officersInvolved || []
   }
 
   //const [formData, setFormData] = useState( initialData );
@@ -284,7 +278,7 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
         state: formData.state
       },
       legalInfo: {
-        originalCharges: formData.originalCharges,
+        originalCharges: [formData.originalCharges],
         //   TODO: FIX TYPE FOR CONVICTIONMETHOD, EXONERATIONMETHOD, DETECTIVESINVOLVED, INFORMANTTESTIMONY, EITHER STRING OR ARRAY BUT NOT BOTH
         convictionMethod: formData.convictionMethod,
         exonerationMethod: formData.exonerationMethod,
@@ -297,8 +291,10 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
         eyewitnessMisidentification:
           formData.eyewitnessMisidentification === 'Yes',
         inadequateLegalDefense: formData.inadequateLegalDefense === 'Yes',
-        policeProsecutorialMisconduct:
-          formData.policeProsecutorialMisconduct === 'Yes',
+        policeMisconduct:
+          formData.policeMisconduct === 'Yes',
+        prosecutorialMisconduct:
+          formData.prosecutorialMisconduct === 'Yes',
         forensicEvidence: formData.forensicEvidence === 'Yes',
         informantTestimony: formData.informantTestimony === 'Yes' ? true : false
       },
@@ -348,14 +344,14 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
       return
     }
 
-    if (!selectedExoneree.caseNumber) {
+    if (!selectedExoneree.id) {
       alert('ID is missing. Unable to save.')
       return
     }
 
     // Log the data being sent for debugging
     console.log('Sending data:', {
-      caseNumber: selectedExoneree.caseNumber, // Ensure the id is being passed correctly
+      id: selectedExoneree.id, // Ensure the id is being passed correctly
       updatedData: formattedData // Ensure the data is correctly structured
     })
 
@@ -368,7 +364,7 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
         //body: JSON.stringify({id, formattedData})
         // body: JSON.stringify({ id: selectedExoneree.id, updatedData: formData }),
         body: JSON.stringify({
-          id: selectedExoneree.caseNumber, // Use the exoneree's ID
+          id: selectedExoneree.id, // Use the exoneree's ID
           updatedData: formattedData // Send the formatted data
         })
       })
@@ -955,17 +951,28 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
               name='inadequateLegalDefense'
             />
           </React.Fragment>,
-          <React.Fragment key='police-prosecutorial-misconduct'>
+          <React.Fragment key='police-misconduct'>
             <LabelAndDropdown
-              label={'Police/Prosecutorial misconduct'}
+              label={'Police misconduct'}
               placeholder={'[Yes/No]'}
               dropdownOptions={['Yes', 'No']}
               width='60%'
-              value={formData.policeProsecutorialMisconduct}
+              value={formData.policeMisconduct}
               onChange={handleChange}
-              name='policeProsecutorialMisconduct'
+              name='policeMisconduct'
             />
-          </React.Fragment>
+          </React.Fragment>,
+                    <React.Fragment key='prosecutorial-misconduct'>
+                    <LabelAndDropdown
+                      label={'Prosecutorial misconduct'}
+                      placeholder={'[Yes/No]'}
+                      dropdownOptions={['Yes', 'No']}
+                      width='60%'
+                      value={formData.prosecutorialMisconduct}
+                      onChange={handleChange}
+                      name='prosecutorialMisconduct'
+                    />
+                  </React.Fragment>
         ]
 
         const circumstancesRightIcons = [
