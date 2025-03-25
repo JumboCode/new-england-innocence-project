@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-const prisma = new PrismaClient();
+import { prisma } from '../../../utils/database/connectToDb'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
@@ -13,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const deletedExoneree = await prisma.exoneree.delete({
       where: {
-        id: parseInt(id, 10),
+        id: parseInt(id as string, 10),
       },
     });
 

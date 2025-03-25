@@ -36,7 +36,7 @@ const navItems: NavItem[] = [
     {
         name: "Settings", 
         icon: <img src="/icons/settings.svg" alt="Settings Icon"/>,
-        route: "/"
+        route: "/Settings"
     }
 ];
 

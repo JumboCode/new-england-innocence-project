@@ -16,15 +16,15 @@ CREATE TABLE "ChargesDropdownOption" (
 );
 
 -- CreateTable
-CREATE TABLE "DetectiveDropdownOption" (
+CREATE TABLE "officerDropdownOption" (
     "id" SERIAL NOT NULL,
     "value" TEXT NOT NULL,
 
-    CONSTRAINT "DetectiveDropdownOption_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "officerDropdownOption_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ChargesDropdownOption_value_key" ON "ChargesDropdownOption"("value");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "DetectiveDropdownOption_value_key" ON "DetectiveDropdownOption"("value");
+CREATE UNIQUE INDEX "officerDropdownOption_value_key" ON "officerDropdownOption"("value");

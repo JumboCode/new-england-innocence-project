@@ -1,100 +1,99 @@
-// pages/LoginPage.tsx
 "use client";
 
-import React, { useState } from 'react';
-import AuthBox from '../components/AuthBox';
-import AuthButton from '../components/AuthButton';
-import AuthEntryBox from '../components/AuthEntryBox';
-import { useRouter } from 'next/router';
-
-import { useSignIn, useAuth } from '@clerk/nextjs';
+import React, { useState } from "react";
+import AuthBox from "../components/AuthBox";
+import AuthButton from "../components/AuthButton";
+import AuthEntryBox from "../components/AuthEntryBox";
+import { useRouter } from "next/router";
+import { useSignIn } from "@clerk/nextjs";
 
 const LoginPage: React.FC = () => {
-
   const { signIn, isLoaded } = useSignIn();
-  const [userId, setUserId] = useState('');
-  const [password, setPassword] = useState('');
-  const { isSignedIn } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const router = useRouter();
 
   const handleLogin = async () => {
-    if (!isLoaded) return; // make sure Clerk is loaded
-
-    if (isSignedIn) {
-      alert("You are already logged in!");
-      return;
-    }
+    if (!isLoaded) return;
 
     try {
-      const result = await signIn.create({
-        identifier: userId,
-        password: password,
+      const response = await fetch("/api/auth/checkUser", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email }),
       });
 
-      if (result.status === "complete") {
-        router.push('/dashboard');
-      } 
-      else {
-        router.push('/login');
+      const result = await response.json();
+      if (!response.ok) {
+        alert(result.error || "Error checking user");
+        return;
       }
 
-      alert("Login successful!");
-      
+      if (!result.emailVerified) {
+        alert("Your email is not verified. Please verify your email.");
+        return;
+      }
+
+      const signInResult = await signIn.create({
+        identifier: email,
+        password: password,
+        strategy: "password",
+      });
+
+      if (signInResult.status === "complete") {
+        router.push("/");
+        alert("Login successful!");
+      } else {
+        alert("Login incomplete. Please try again.");
+      }
     } catch (err: any) {
       console.error("Login failed:", err);
       alert(`Login failed. ${err.errors ? err.errors[0].message : "Please check your credentials."}`);
-      router.push('/login');    // TODO: need to find a more efficient way to remain on login w/o re-rendering
     }
   };
 
-
   return (
     <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
-      backgroundColor: '#f4f4f4',
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh",
+      backgroundColor: "#f4f4f4",
     }}>
       <AuthBox prop={
-        <div style={{ textAlign: 'center', width: '100%' }}>
-          {/* Login Heading */}
+        <div style={{ textAlign: "center", width: "100%" }}>
           <h2 style={{
-            fontSize: '24px',
-            fontWeight: 'bold',
-            fontFamily: 'Arial, sans-serif',
-            margin: '20px 0',
-            color: '#333'
+            fontSize: "24px",
+            fontWeight: "bold",
+            fontFamily: "Arial, sans-serif",
+            margin: "20px 0",
+            color: "#333"
           }}>Login</h2>
 
-          {/* User ID Entry */}
-          <div style={{ width: '100%', marginBottom: '15px' }}>
-            <AuthEntryBox placeholder="user ID" onChange={(e) => setUserId(e.target.value)} />
+          <div style={{ width: "100%", marginBottom: "15px" }}>
+            <AuthEntryBox placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
           </div>
 
-          {/* Password Entry */}
-          <div style={{ width: '100%', marginBottom: '5px' }}>
-            <AuthEntryBox placeholder="password" type="password" onChange={(e) => setPassword(e.target.value)} />
+          <div style={{ width: "100%", marginBottom: "5px" }}>
+            <AuthEntryBox placeholder="Password" type="password" onChange={(e) => setPassword(e.target.value)} />
           </div>
 
-          {/* Reset Password Text */}
           <div style={{
-            textAlign: 'right',
-            width: '100%',
-            fontSize: '12px',
-            color: '#a3a3a3',
-            cursor: 'pointer',
-            marginBottom: '20px'
+            textAlign: "right",
+            width: "100%",
+            fontSize: "12px",
+            color: "#a3a3a3",
+            cursor: "pointer",
+            marginBottom: "20px"
           }}>
             Reset password
           </div>
 
-          {/* Login Button */}
           <AuthButton color="#3b82f6" filled={true} text="Login" onClick={handleLogin} />
         </div>
-      }/>
+      } />
     </div>
   );
-}
+};
 
 export default LoginPage;

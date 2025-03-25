@@ -1,10 +1,10 @@
 // -- look over
 
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../../../utils/database/connectToDb'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { z } from 'zod';
+import { z } from 'zod'
 
-const Gender = z.enum(["M", "F", "OTHER"]);
+const Gender = z.enum(['M', 'F', 'OTHER'])
 
 const PersonalInfoSchema = z.object({
   name: z.union([z.string().length(0), z.string()]).optional(),
@@ -80,18 +80,16 @@ const UpdatedExonereeDataSchema = z.object({
   wrongfulConvictionInfo: WrongfulConvictionInfoSchema.optional(),
   postExonerationInfo: PostExonerationInfoSchema.optional(),
   additionalInfo: AdditionalInfoSchema.optional(),
-  metaData: MetaDataSchema.optional(),
-});
+  metaData: MetaDataSchema.optional()
+})
 
-const prisma = new PrismaClient()
-
-function validateUpdatedData(data: unknown): boolean {
+function validateUpdatedData (data: unknown): boolean {
   try {
-    UpdatedExonereeDataSchema.parse(data);
-    return true;
+    UpdatedExonereeDataSchema.parse(data)
+    return true
   } catch (error) {
-    console.error('Validation error:', error);
-    return false;
+    console.error('Validation error:', error)
+    return false
   }
 }
 
@@ -110,7 +108,7 @@ export default async function handler (
   }
 
   if (!validateUpdatedData(updatedData)) {
-    return res.status(400).json({ error: 'Invalid data format' });
+    return res.status(400).json({ error: 'Invalid data format' })
   }
 
   try {
@@ -136,24 +134,35 @@ export default async function handler (
         personalInfo: updatedData.personalInfo
           ? { update: updatedData.personalInfo }
           : undefined,
-        caseInfo: updatedData.caseInfo ? { update: updatedData.caseInfo } : undefined,
-        legalInfo: updatedData.legalInfo ? { update: updatedData.legalInfo } : undefined,
+        caseInfo: updatedData.caseInfo
+          ? { update: updatedData.caseInfo }
+          : undefined,
+        legalInfo: updatedData.legalInfo
+          ? { update: updatedData.legalInfo }
+          : undefined,
         wrongfulConvictionInfo: updatedData.wrongfulConvictionInfo
           ? { update: updatedData.wrongfulConvictionInfo }
           : undefined,
         postExonerationInfo: updatedData.postExonerationInfo
           ? { update: updatedData.postExonerationInfo }
           : undefined,
-        metaData: updatedData.metaData ? { update: updatedData.metaData } : undefined,
-      },
-    });
+        metaData: updatedData.metaData
+          ? { update: updatedData.metaData }
+          : undefined
+      }
+    })
 
-    return res.status(200).json({ message: 'Exoneree updated successfully', data: updatedExoneree });
-  } catch (error: any) {
-    console.error('Error updating exoneree:', error);
-    if (error.code === 'P2025') {
-      return res.status(404).json({ error: 'Exoneree not found' });
+    return res
+      .status(200)
+      .json({ message: 'Exoneree updated successfully', data: updatedExoneree })
+    } catch (error) {
+      console.error('Error updating exoneree:', error);
+    
+      if ((error as { code?: string }).code === 'P2025') {
+        return res.status(404).json({ error: 'Exoneree not found' });
+      }
+    
+      return res.status(500).json({ error: 'Internal server error' });
     }
-    return res.status(500).json({ error: 'Internal server error' });
-  }
+    
 }
