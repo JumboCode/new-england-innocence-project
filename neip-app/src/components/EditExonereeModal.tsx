@@ -13,7 +13,6 @@ import DropdownAndTags from '../components/DropdownAndTags'
 import PersonalInfoIcon from '../img/PersonalInfoIcon.png'
 import EditIcon from '../img/EditIcon.png'
 import IconTextButton from '../components/IconTextButton'
-import HomePage from '@/pages/HomePage'
 
 const style = {
   position: 'absolute',
@@ -94,8 +93,8 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
   const [activeTab, setActiveTab] = useState(0)
 
   const [initial, setInitialData] = useState(selectedExoneree)
+  console.log(setInitialData)
 
-  // const [initialData, setInitialData] = useState ({
   const initialData: ExonereeData = {
     firstName: selectedExoneree.name.split(' ')[0] || '',
     lastName: selectedExoneree.name.split(' ')[1] || '',
@@ -117,12 +116,10 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
     sentence: selectedExoneree.sentence || '',
     country: selectedExoneree.country || '',
     state: selectedExoneree.state || '',
-    // originalCharges: selectedExoneree.originalCharges || [],
     convictionMethod: selectedExoneree.convictionMethod || '',
     exonerationMethod: selectedExoneree.exonerationMethod || '',
     legalRepresentation: selectedExoneree.legalRepresentation || '',
     prosecutor: selectedExoneree.prosecutor || '',
-    // detectivesInvolved: selectedExoneree.detectivesInvolved || [],
     falseConfession: selectedExoneree.falseConfession || '',
     eyewitnessMisidentification:
       selectedExoneree.eyewitnessMisidentification || '',
@@ -150,7 +147,6 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
     officersInvolved: selectedExoneree.officersInvolved || []
   }
 
-  //const [formData, setFormData] = useState( initialData );
   const [formData, setFormData] = useState<ExonereeData>(initialData)
   const [isSaveEnabled, setIsSaveEnabled] = useState(false)
 
@@ -279,7 +275,6 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
       },
       legalInfo: {
         originalCharges: [formData.originalCharges],
-        //   TODO: FIX TYPE FOR CONVICTIONMETHOD, EXONERATIONMETHOD, DETECTIVESINVOLVED, INFORMANTTESTIMONY, EITHER STRING OR ARRAY BUT NOT BOTH
         convictionMethod: formData.convictionMethod,
         exonerationMethod: formData.exonerationMethod,
         legalRepresentation: formData.legalRepresentation,

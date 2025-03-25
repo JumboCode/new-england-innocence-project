@@ -1,5 +1,3 @@
-// -- look over
-
 import { prisma } from '../../../utils/database/connectToDb'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { z } from 'zod'
