@@ -205,10 +205,11 @@ import EditExonereeModal from './EditExonereeModal';
 interface ActionMenuProps {
   onClose: () => void;
   exonereeId: number;
+  selectedExoneree: any,
   onDeleteSuccess: (id: number) => void;
 }
 
-const ActionMenuComponent: React.FC<ActionMenuProps> = ({ onClose, exonereeId, onDeleteSuccess }) => {
+const ActionMenuComponent: React.FC<ActionMenuProps> = ({ onClose, exonereeId, selectedExoneree, onDeleteSuccess }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [isClicked, setIsClicked] = useState<null | string>(null);
 
@@ -327,7 +328,7 @@ const ActionMenuComponent: React.FC<ActionMenuProps> = ({ onClose, exonereeId, o
       }}>
         Delete
       </div>
-      <EditExonereeModal open={modalOpen} handleClose={handleCloseModal} selectedExoneree={exonereeId}/>
+      <EditExonereeModal open={modalOpen} handleClose={handleCloseModal} selectedExoneree={selectedExoneree}/>
     </div>
   );
 }

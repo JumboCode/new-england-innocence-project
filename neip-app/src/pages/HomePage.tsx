@@ -871,6 +871,7 @@ const HomePage: React.FC = () => {
             <ActionMenuComponent
               onClose={closeActionMenu}
               exonereeId={selectedExonereeId!}
+              selectedExoneree={selectedCell?.record}
               onDeleteSuccess={refreshExonerees}
             />
           </div>

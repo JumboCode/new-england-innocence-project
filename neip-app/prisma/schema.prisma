@@ -88,7 +88,7 @@ model PostExonerationInfo {
   currentCountry     String?
   currentState       String?
   occupation         String?
-  compensationDate   DateTime?
+  compensationDate   String?
   exoneree           Exoneree?
 }
 

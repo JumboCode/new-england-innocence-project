@@ -19,7 +19,7 @@ const PersonalInfoSchema = z.object({
 
 const CaseInfoSchema = z.object({
   caseNumber: z.union([z.string().length(0), z.string()]).optional(),
-  jurisdictionId: z.number().or(z.literal('')),
+  jurisdiction: z.union([z.string().length(0), z.string()]).optional(),
   yearsInPrison: z.number().or(z.literal('')),
   arrestDate: z.union([z.string().length(0), z.string()]).optional(),
   convictionDate: z.union([z.string().length(0), z.string()]).optional(),
@@ -33,8 +33,8 @@ const CaseInfoSchema = z.object({
 
 const LegalInfoSchema = z.object({
   originalCharges: z.array(z.string()).or(z.literal('')).optional(),
-  convictionMethod: z.array(z.string()).or(z.literal('')).optional(),
-  exonerationMethod: z.array(z.string()).or(z.literal('')).optional(),
+  convictionMethod: z.union([z.string().length(0), z.string()]).optional(),
+  exonerationMethod: z.union([z.string().length(0), z.string()]).optional(),
   legalRepresentation: z.union([z.string().length(0), z.string()]).optional(),
   prosecutor: z.union([z.string().length(0), z.string()]).optional(),
   officersInvolved: z.array(z.string()).or(z.literal('')).optional(),
@@ -50,7 +50,7 @@ const WrongfulConvictionInfoSchema = z.object({
 });
 
 const PostExonerationInfoSchema = z.object({
-  reentrySupport: z.array(z.string()).or(z.literal('')).optional(),
+  reentrySupport: z.union([z.string().length(0), z.string()]).optional(),
   publicApology: z.boolean().or(z.literal('')),
   compensationAmount: z.number().or(z.literal('')),
   compensationDate: z.union([z.string().length(0), z.string()]).optional(),
