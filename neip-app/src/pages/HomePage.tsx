@@ -8,6 +8,7 @@ import UploadIcon from '../img/Upload.png'
 import PlusIcon from '../img/plus.png'
 import ArrowIcon from '../img/arrow_icon.png'
 import AddExonereeModal from '@/components/AddExonereeModal'
+import AddOfficerModal from '@/components/AddOfficerModal' 
 import { FaFilter } from 'react-icons/fa'
 import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai'
 import { MdFilterList } from 'react-icons/md'
@@ -287,6 +288,7 @@ const columns = [
 
 const HomePage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false)
+  const [officerModalOpen, setOfficerModalOpen] = useState(false) 
   const [columnsModalOpen, setColumnsModalOpen] = useState(false)
   const [exonerees, setExonerees] = useState<any[]>([])
   const [selectedRows, setSelectedRows] = useState<number[]>([])
@@ -722,6 +724,16 @@ const HomePage: React.FC = () => {
               onClick={handleExportToCSV}
             />
             <IconTextButton
+              onClick={() => setOfficerModalOpen(true)}
+              icon={<Image src={PlusIcon} alt='plus icon' width='14' height='14' />}
+              filled={true}
+              text='Add officer'
+              border={true}
+              height='44px'
+              width='150px'
+              color="#D5D7DA"
+            />
+            <IconTextButton
               onClick={handleOpenModal}
               icon={
                 <Image src={PlusIcon} alt='plus icon' width='14' height='14' />
@@ -884,6 +896,14 @@ const HomePage: React.FC = () => {
         handleClose={handleCloseModal}
         onSuccess={refreshExonerees}
       />
+      <AddOfficerModal
+        open={officerModalOpen}
+        handleClose={() => setOfficerModalOpen(false)}
+        onSuccess={() => {
+          setOfficerModalOpen(false)
+          alert('Officer added successfully!')
+        }}
+      /> 
       <SelectColumnsModal
         open={columnsModalOpen}
         handleClose={handleColumnsModalClose}

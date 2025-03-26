@@ -9,9 +9,10 @@ interface IconTextButtonProps {
     height?: string;
     width?: string;
     onClick?: () => void;
+    color?: string;
 }
 
-const IconTextButton: React.FC<IconTextButtonProps> = ({ icon, filled, text, border, height, width, onClick }) => {
+const IconTextButton: React.FC<IconTextButtonProps> = ({ icon, filled, text, border, height, width, onClick, color = '#2B9BD6' }) => {
   const IconButtonStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
@@ -26,8 +27,8 @@ const IconTextButton: React.FC<IconTextButtonProps> = ({ icon, filled, text, bor
     cursor: 'pointer',
     transition: 'background-color 0.3s ease',
     fontSize: '14px',
-    height: height, // Use the height prop
-    width: width, // Use the width prop
+    height: height,
+    width: width,
   };
 
   return (
