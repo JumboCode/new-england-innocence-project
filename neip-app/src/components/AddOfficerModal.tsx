@@ -96,7 +96,7 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
           <CloseIcon />
         </IconButton>
 
-        <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>
+        <h2 style={{ textAlign: 'center', marginBottom: '20px', color: '#0F6A9A' }}>
           Officer Information
         </h2>
 
@@ -104,7 +104,7 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
           style={{
             display: 'flex',
             justifyContent: 'space-around',
-            marginBottom: '20px'
+            marginBottom: '20px',
           }}
         >
           {/* Left Column */}
