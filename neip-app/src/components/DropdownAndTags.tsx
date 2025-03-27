@@ -33,7 +33,7 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const response = await fetch(`/api/${apiUrl.toLocaleLowerCase()}s/get${apiUrl}`);
+        const response = await fetch(`/api/tags/${apiUrl.toLocaleLowerCase()}/get${apiUrl}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -78,7 +78,7 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({
         setAvailableOptions([...availableOptions, newOption]);
 
         try {
-            const response = await fetch(`/api/${apiUrl.toLocaleLowerCase()}s/add${apiUrl}`, {
+            const response = await fetch(`/api/tags/${apiUrl.toLocaleLowerCase()}/add${apiUrl}`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ value: inputValue }),

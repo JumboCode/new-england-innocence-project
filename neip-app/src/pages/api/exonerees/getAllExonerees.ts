@@ -62,7 +62,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             },
             postExonerationInfo: {
                 ...exoneree.postExonerationInfo,
-                reentrySupport: exoneree.postExonerationInfo?.reentrySupport || [],
+                reentrySupport: formatField(exoneree.postExonerationInfo?.reentrySupport),
                 publicApology: exoneree.postExonerationInfo?.publicApology ? "Yes" : "No",
                 compensationAmount: exoneree.postExonerationInfo?.compensationAmount 
                     ? `$${exoneree.postExonerationInfo.compensationAmount.toLocaleString()}` 

@@ -289,13 +289,14 @@ const HomePage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [columnsModalOpen, setColumnsModalOpen] = useState(false)
   const [exonerees, setExonerees] = useState<any[]>([])
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const [selectedRows, setSelectedRows] = useState<number[]>([])
 
   // Initialize selectedColumns with all column keys
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
     columns.map(col => col.key)
   )
 
+  
   // Helper function to refresh data from the API
   const refreshExonerees = async () => {
     try {
@@ -408,7 +409,6 @@ const HomePage: React.FC = () => {
       console.error('🚨 Error fetching exonerees:', error)
     }
   }
-
   useEffect(() => {
     refreshExonerees()
   }, [])
@@ -423,7 +423,15 @@ const HomePage: React.FC = () => {
     setSelectedColumns(newSelectedColumns)
   }
 
-  const [selectedFilters] = useState(['officer', 'Male', 'Test'])
+  const [selectedFilters, setSelectedFilters] = useState([
+    { name: 'Gender', operator: '', value: 'Male' },
+    { name: 'Years in Prison', operator: '>', value: '10' },
+    { name: 'Arrest Date', operator: 'before', value: '10/10/2023' }
+  ])
+
+  const handleRemoveFilter = (index: number) => {
+    setSelectedFilters(prevFilters => prevFilters.filter((_, i) => i !== index))
+  }
   const [actionMenuVisible, setActionMenuVisible] = useState(false)
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 })
   const [filteredExonereeIDs, setFilteredExonereeIDs] = useState<
@@ -496,72 +504,61 @@ const HomePage: React.FC = () => {
           filteredExonereeIDs.includes(exoneree.id as number)
         )
 
-  // const handleLogout = async () => {
-  //   try {
-  //     const response = await fetch('/api/auth/signout', {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' }
-  //     })
-
-  //     if (!response.ok) {
-  //       throw new Error(`Logout failed: ${response.statusText}`)
-  //     }
-
-  //     window.location.href = '/login' // Redirect to login page after successful logout
-  //   } catch (error) {
-  //     console.error('Logout error:', error)
-  //   }
-  // }
-
   const handleExportToCSV = async () => {
     try {
-      const rowsToExport = selectedRows.length ? displayedExonerees.filter((row) => selectedRows.includes(row.id!)) : displayedExonerees;
-  
+      const rowsToExport = selectedRows.length
+        ? displayedExonerees.filter(row => selectedRows.includes(row.id!))
+        : displayedExonerees
+
       const response = await fetch('/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ selectedColumns, data: rowsToExport }),
-      });
-  
+        body: JSON.stringify({ selectedColumns, data: rowsToExport })
+      })
+
       if (response.ok) {
-        const blob = await response.blob();
-        saveAs(blob, 'exonerees.csv');
+        const blob = await response.blob()
+        saveAs(blob, 'exonerees.csv')
       } else {
-        console.error('Export failed:', response.statusText);
+        console.error('Export failed:', response.statusText)
       }
     } catch (error) {
-      console.error('Error exporting data:', error);
+      console.error('Error exporting data:', error)
     }
-  };
+  }
 
   const handleDeleteSelectedRows = async () => {
     try {
       if (selectedRows.length === 0) {
-        alert('No rows selected.');
-        return;
+        alert('No rows selected.')
+        return
       }
-      
+
       const response = await fetch('/api/exonerees/batch-delete', {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ ids: selectedRows }),
-      });
-      
+        body: JSON.stringify({ ids: selectedRows })
+      })
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to delete rows');
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to delete rows')
       }
-      
-      setSelectedRows([]);
-      refreshExonerees();
-      alert('Selected rows deleted successfully.');
+
+      setSelectedRows([])
+      refreshExonerees()
+      alert('Selected rows deleted successfully.')
     } catch (error) {
-      console.error('Error deleting selected rows:', error);
-      alert(`Error deleting selected rows: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      console.error('Error deleting selected rows:', error)
+      alert(
+        `Error deleting selected rows: ${
+          error instanceof Error ? error.message : 'Unknown error'
+        }`
+      )
     }
-  };
+  }
 
   const noop: () => void = () => {}
 
@@ -571,9 +568,7 @@ const HomePage: React.FC = () => {
         height: '100vh',
         backgroundColor: 'white',
         width: '100vw',
-        overflow: 'hidden',
-        paddingLeft: '60px',
-        paddingBottom: '20px'
+        paddingLeft: '60px'
       }}
     >
       {/* Top Banner */}
@@ -595,18 +590,18 @@ const HomePage: React.FC = () => {
             backgroundColor: 'white'
           }}
         />
-        {/* <div style={{ marginLeft: 'auto' }}>
-          <IconTextButton
-            icon={<CgLogOut size={20} />}
-            filled={false}
-            text='Logout'
-            border={false}
-            onClick={handleLogout}
-            height='40px'
-            width='100px'
-          />
-        </div> */}
       </div>
+
+      {/* Render the OpenFiterSideBar if it's visible*/}
+      {isSidebarOpen && (
+        <OpenFilterSidebar
+          onClose={closeFilterSidebar}
+          onApplyFilters={(ids: number[]) => {
+            setFilteredExonereeIDs(ids)
+            closeFilterSidebar()
+          }}
+        />
+      )}
 
       {/* Render the OpenFilterSideBar if it's visible*/}
       {isSidebarOpen && (
@@ -770,10 +765,11 @@ const HomePage: React.FC = () => {
                 icon={
                   <AiOutlineClose
                     style={{ width: '16px', height: '16px', color: 'black' }}
+                    onClick={() => handleRemoveFilter(index)}
                   />
                 }
                 filled={true}
-                text={filter}
+                text={`${filter.name}: ${filter.operator} ${filter.value}`}
                 border={false}
                 borderRadius={false}
                 height='35px'
@@ -843,25 +839,14 @@ const HomePage: React.FC = () => {
         {/* Database Display */}
         <Table
           dataSource={displayedExonerees}
-          columns={filteredColumns} 
+          columns={filteredColumns}
           scroll={{ x: 'max-content', y: 390 }}
-          rowSelection={{
-            onChange: (selectedRowKeys: React.Key[]) => {
-              setSelectedRows(selectedRowKeys.map((key) => Number(key)));
-            },
-          }}
         />
       </div>
-      <div
-        style={{
-          height: '90vh',
-          backgroundColor: 'white',
-          marginBottom: '20px'
-        }}
-      >
+      <div>
         <style jsx global>{`
           .ant-table-thead > tr > th {
-            padding: 10px 10px !important;
+            padding: 15px 15px !important;
             line-height: 1.4 !important;
             vertical-align: middle !important;
             white-space: normal !important;
@@ -886,7 +871,8 @@ const HomePage: React.FC = () => {
             <ActionMenuComponent
               onClose={closeActionMenu}
               exonereeId={selectedExonereeId!}
-              onDeleteSuccess={refreshExonerees}
+              selectedExoneree={selectedCell?.record}
+              onSuccess={refreshExonerees}
             />
           </div>
         )}

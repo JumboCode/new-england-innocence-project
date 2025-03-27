@@ -29,13 +29,11 @@ export default async function handler (
     // Raw SQL queries for matching array fields
     const rawConvictionMethodMatches = await prisma.$queryRaw<{ id: number }[]>(
       Prisma.sql`
-                SELECT id
-                FROM "LegalInfo"
-                WHERE ${keyword} = ANY("convictionMethod")
-            `
+        SELECT id
+        FROM "LegalInfo"
+        WHERE "convictionMethod"::text ILIKE '%' || ${keyword} || '%'
+      `
     )
-    // WHERE "convictionMethod"::text ILIKE '%' || ${keyword} || '%'
-
     const rawExonerationMethodMatches = await prisma.$queryRaw<
       { id: number }[]
     >(
@@ -176,12 +174,12 @@ export default async function handler (
         metaData: true
       }
     })
-    console.log('🔍 Final Query Results:', results) // debugging to check if Prisma found any results
+    console.log('Final Query Results:', results) // debugging to check if Prisma found any results
     return res.status(200).json(results.length > 0 ? results : [])
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : 'Unknown error occurred'
-    console.error('❌ Search error:', errorMessage)
+    console.error('Search error:', errorMessage)
     return res
       .status(500)
       .json({ error: `Internal Server Error: ${errorMessage}` })

@@ -52,11 +52,11 @@ const SearchEntryBox: React.FC<SearchEntryBoxProps> = ({ setExonerees }) => {
           freedomDate: exoneree.caseInfo?.freedomDate || 'N/A',
           exonerationDate: exoneree.caseInfo?.exonerationDate || 'N/A',
           sentence: exoneree.caseInfo?.sentence || 'N/A',
-          originalCharges: exoneree.legalInfo?.originalCharges || 'N/A',
+          originalCharges: exoneree.legalInfo?.originalCharges?.join(', ') || 'N/A',
           convictionMethod:
-            exoneree.legalInfo?.convictionMethod?.join(', ') || 'N/A',
+            exoneree.legalInfo?.convictionMethod || 'N/A',
           exonerationMethod:
-            exoneree.legalInfo?.exonerationMethod?.join(', ') || 'N/A',
+            exoneree.legalInfo?.exonerationMethod || 'N/A',
           legalRepresentation: exoneree.legalInfo?.legalRepresentation || 'N/A',
           prosecutor: exoneree.legalInfo?.prosecutor || 'N/A',
           judge: exoneree.legalInfo?.judge || 'N/A',
@@ -92,7 +92,7 @@ const SearchEntryBox: React.FC<SearchEntryBoxProps> = ({ setExonerees }) => {
           compensation: `$${exoneree.postExonerationInfo?.compensationAmount ||
             0}`,
           reentrySupport:
-            exoneree.postExonerationInfo?.reentrySupport?.join(', ') || 'N/A',
+            exoneree.postExonerationInfo?.reentrySupport || 'N/A',
           publicApology: exoneree.postExonerationInfo?.publicApology
             ? 'Yes'
             : 'No',
