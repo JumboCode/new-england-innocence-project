@@ -24,7 +24,7 @@ const AccountInfo = () => {
   }
 
   return (
-    <div
+    <div className='account-info-container'
       style={{
         height: '100vh',
         backgroundColor: 'white',
@@ -38,7 +38,8 @@ const AccountInfo = () => {
           fontSize: '24px',
           fontWeight: '700',
           marginTop: '20px',
-          marginBottom: '20px'
+          marginBottom: '20px',
+          color: 'black'
         }}
       >
         Account Information

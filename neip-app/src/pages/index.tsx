@@ -3,7 +3,7 @@ import HomePage from './HomePage';
 
 const Homepage = () => {
   return (
-    <div className="flex h-screen">
+    <div className="flex h-full">
       <div>
         <NavBar />
       </div>
