@@ -1,5 +1,4 @@
-// AddExonereeModal.tsx
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
@@ -13,6 +12,7 @@ import DropdownAndTags from '../components/DropdownAndTags'
 import PersonalInfoIcon from '../img/PersonalInfoIcon.png'
 import EditIcon from '../img/EditIcon.png'
 import IconTextButton from '../components/IconTextButton'
+import isEqual from 'lodash/isEqual'
 
 const style = {
   position: 'absolute',
@@ -27,70 +27,154 @@ const style = {
   zIndex: 1300
 }
 
-interface AddExonereeModalProps {
+interface EditExonereeModalProps {
   open: boolean
   handleClose: () => void
-  onSuccess: () => void
+  selectedExoneree: any
+  onSuccess: (id: number) => void
+  closeMenu: () => void
 }
 
-const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
+// Define a type for the form data
+interface ExonereeData {
+  firstName: string
+  lastName: string
+  phoneNumber: string
+  email: string
+  dob: string
+  gender: string
+  race: string
+  ethnicity: string
+  address: string
+  caseNumber: string
+  jurisdiction: string
+  yearsInPrison: string
+  arrestDate: string
+  convictionDate: string
+  freedomDate: string
+  exonerationDate: string
+  crimeType: string
+  sentence: string
+  country: string
+  state: string
+  originalCharges: string[]
+  convictionMethod: string
+  exonerationMethod: string
+  legalRepresentation: string
+  prosecutor: string
+  officersInvolved: string[]
+  falseConfession: string
+  eyewitnessMisidentification: string
+  inadequateLegalDefense: string
+  policeMisconduct: string
+  prosecutorialMisconduct: string
+  forensicEvidence: string
+  informantTestimony: string
+  compensationAmount: string
+  compensationDate: string
+  reentrySupport: string
+  publicApology: string
+  currentCountry: string
+  currentState: string
+  currentStatus: string
+  currentOccupation: string
+  placeOfResidence: string
+  mediaCoverage: string
+  advocacyInvolvement: string
+  educationalBackground: string
+  healthInfo: string
+}
+
+const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
   open,
   handleClose,
-  onSuccess
+  selectedExoneree,
+  onSuccess,
+  closeMenu
 }) => {
   const [activeTab, setActiveTab] = useState(0)
 
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
-    email: '',
-    dob: '',
-    gender: '',
-    race: '',
-    ethnicity: '',
-    address: '',
-    caseNumber: '',
-    jurisdiction: '',
-    exonerationNumber: '',
-    yearsInPrison: '',
-    arrestDate: '',
-    convictionDate: '',
-    freedomDate: '',
-    exonerationDate: '',
-    crimeType: '',
-    sentence: '',
-    country: '',
-    state: '',
-    originalCharges: [],
-    convictionMethod: '',
-    exonerationMethod: '',
-    legalRepresentation: '',
-    prosecutor: '',
-    judge: '',
-    officersInvolved: [],
-    falseConfession: '',
-    eyewitnessMisidentification: '',
-    inadequateLegalDefense: '',
-    policeMisconduct: '',
-    prosecutorialMisconduct: '',
-    forensicEvidence: '',
-    informantTestimony: '',
-    otherInfo: '',
-    compensationAmount: '',
-    compensationDate: '',
-    reentrySupport: '',
-    publicApology: '',
-    currentCountry: '',
-    currentState: '',
-    currentStatus: '',
-    currentOccupation: '',
-    placeOfResidence: '',
-    mediaCoverage: '',
-    advocacyInvolvement: '',
-    educationalBackground: '',
-    healthInfo: ''
-  })
+  const [initial, setInitialData] = useState(selectedExoneree)
+  console.log(setInitialData)
+
+  const initialData: ExonereeData = {
+    firstName: selectedExoneree.name.split(' ')[0] || '',
+    lastName: selectedExoneree.name.split(' ')[1] || '',
+    phoneNumber: selectedExoneree.phoneNumber || '',
+    email: selectedExoneree.email || '',
+    dob: selectedExoneree.dob || '',
+    gender: selectedExoneree.gender || '',
+    race: selectedExoneree.race || '',
+    ethnicity: selectedExoneree.ethnicity || '',
+    address: selectedExoneree.address || '',
+    caseNumber: selectedExoneree.caseNumber || '',
+    jurisdiction: selectedExoneree.jurisdiction || '',
+    yearsInPrison: selectedExoneree.yearsInPrison || '',
+    arrestDate: selectedExoneree.arrestDate || '',
+    convictionDate: selectedExoneree.convictionDate || '',
+    freedomDate: selectedExoneree.freedomDate || '',
+    exonerationDate: selectedExoneree.exonerationDate || '',
+    crimeType: selectedExoneree.crimeType || '',
+    sentence: selectedExoneree.sentence || '',
+    country: selectedExoneree.country || '',
+    state: selectedExoneree.state || '',
+    convictionMethod: selectedExoneree.convictionMethod || '',
+    exonerationMethod: selectedExoneree.exonerationMethod || '',
+    legalRepresentation: selectedExoneree.legalRepresentation || '',
+    prosecutor: selectedExoneree.prosecutor || '',
+    falseConfession: selectedExoneree.falseConfession || '',
+    eyewitnessMisidentification:
+      selectedExoneree.eyewitnessMisidentification || '',
+    inadequateLegalDefense: selectedExoneree.inadequateLegalDefense || '',
+    policeMisconduct:
+      selectedExoneree.policeMisconduct || '',
+    prosecutorialMisconduct:
+      selectedExoneree.prosecutorialMisconduct || '',
+    forensicEvidence: selectedExoneree.forensicEvidence || '',
+    informantTestimony: selectedExoneree.informantTestimony || '',
+    compensationAmount: selectedExoneree.compensationAmount || '',
+    compensationDate: selectedExoneree.compensationDate || '',
+    reentrySupport: selectedExoneree.reentrySupport || '',
+    publicApology: selectedExoneree.publicApology || '',
+    currentCountry: selectedExoneree.currentCountry || '',
+    currentState: selectedExoneree.currentState || '',
+    currentStatus: selectedExoneree.currentStatus || '',
+    currentOccupation: selectedExoneree.currentOccupation || '',
+    placeOfResidence: selectedExoneree.placeOfResidence || '',
+    mediaCoverage: selectedExoneree.mediaCoverage || '',
+    advocacyInvolvement: selectedExoneree.advocacyInvolvement || '',
+    educationalBackground: selectedExoneree.educationalBackground || '',
+    healthInfo: selectedExoneree.healthInfo || '',
+    originalCharges: selectedExoneree.originalCharges || [],
+    officersInvolved: selectedExoneree.officersInvolved || []
+  }
+
+  const [formData, setFormData] = useState<ExonereeData>(initialData)
+  const [isSaveEnabled, setIsSaveEnabled] = useState(false)
+
+  // Function to check if the form has unsaved changes
+
+  const hasUnsavedChanges = () => {
+    return !isEqual(initialData, formData)
+  }
+  
+  // Enable the save button if there are unsaved changes
+  useEffect(() => {
+    setIsSaveEnabled(hasUnsavedChanges())
+  }, [formData])
+
+  const handleSaveButton = () => {
+    if (hasUnsavedChanges()) {
+      setIsSaveEnabled(true) // Enable the button if there are changes
+    } else {
+      setIsSaveEnabled(false) // Disable the button if no changes
+    }
+  }
+
+  useEffect(() => {
+    // Whenever formData changes, run handleSaveButton to check for unsaved changes
+    handleSaveButton()
+  }, [formData])
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue)
@@ -135,101 +219,143 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
     }
   }
 
+  // Modified handleClose function to add the alert
+  const handleCloseModal = () => {
+    if (hasUnsavedChanges()) {
+      // Show alert if form has changed
+      const shouldClose = window.confirm(
+        'You have unsaved changes. Are you sure you want to close?'
+      )
+
+      if (shouldClose) {
+        // Proceed to close the modal if user confirms
+        handleClose()
+      }
+    } else {
+      // Close without confirmation if no changes were made
+      handleClose()
+    }
+  }
+
   const handleSubmit = async () => {
+    // Restructure the form data into the expected format
+    const formattedData = {
+      personalInfo: {
+        name: formData.firstName + ' ' + formData.lastName,
+        phoneNumber: formData.phoneNumber,
+        email: formData.email,
+        dateOfBirth: formData.dob,
+        //gender: formData.gender === "Male" ? "M" : formData.gender === "Female" ? "F" : "OTHER",
+        gender:
+          formData.gender === 'Male'
+            ? 'M'
+            : formData.gender === 'Female'
+            ? 'F'
+            : 'OTHER',
+        race: formData.race,
+        ethnicity: formData.ethnicity,
+        address: formData.address
+      },
+      caseInfo: {
+        caseNumber: formData.caseNumber,
+        jurisdiction: formData.jurisdiction,
+        yearsInPrison: parseInt(formData.yearsInPrison) || 0,
+        arrestDate: formData.arrestDate,
+        convictionDate: formData.convictionDate,
+        freedomDate: formData.freedomDate,
+        exonerationDate: formData.exonerationDate,
+        crimeType: formData.crimeType,
+        sentence: formData.sentence,
+        country: formData.country,
+        state: formData.state
+      },
+      legalInfo: {
+        originalCharges: [formData.originalCharges],
+        convictionMethod: formData.convictionMethod,
+        exonerationMethod: formData.exonerationMethod,
+        legalRepresentation: formData.legalRepresentation,
+        prosecutor: formData.prosecutor,
+        officersInvolved: [formData.officersInvolved]
+      },
+      wrongfulConvictionInfo: {
+        falseConfession: formData.falseConfession === 'Yes',
+        eyewitnessMisidentification:
+          formData.eyewitnessMisidentification === 'Yes',
+        inadequateLegalDefense: formData.inadequateLegalDefense === 'Yes',
+        policeMisconduct:
+          formData.policeMisconduct === 'Yes',
+        prosecutorialMisconduct:
+          formData.prosecutorialMisconduct === 'Yes',
+        forensicEvidence: formData.forensicEvidence === 'Yes',
+        informantTestimony: formData.informantTestimony === 'Yes' ? true : false
+      },
+      postExonerationInfo: {
+        compensationAmount: parseFloat(formData.compensationAmount) || 0,
+        compensationDate: formData.compensationDate,
+        reentrySupport: formData.reentrySupport,
+        publicApology: formData.publicApology === 'Yes',
+        currentCountry: formData.currentCountry,
+        currentState: formData.currentState,
+        occupation: formData.currentOccupation
+      },
+      additionalInfo: {
+        mediaCoverage: formData.mediaCoverage,
+        advocacyInvolvement: formData.advocacyInvolvement,
+        educationalBackground: formData.educationalBackground,
+        healthInformation: formData.healthInfo,
+        id: 0 // This will be replaced by the actual ID if it exists
+      },
+      metaData: {
+        // TODO: Add something for this, currently just temporary empty strings.
+        dataSource: '',
+        lastUpdated: '',
+        createdAt: ''
+      }
+    }
+
+    // Basic validation
+    if (!formattedData.personalInfo.name) {
+      alert('Missing required fields')
+      return
+    }
+    if (!formattedData.personalInfo.dateOfBirth) {
+      alert('Missing required fields')
+      return
+    }
+    if (!formattedData.personalInfo.gender) {
+      alert('Missing required fields')
+      return
+    }
+    if (!formattedData.personalInfo.race) {
+      alert('Missing required fields')
+      return
+    }
+    if (!formattedData.personalInfo.ethnicity) {
+      alert('Missing required fields')
+      return
+    }
+
+    if (!selectedExoneree.id) {
+      alert('ID is missing. Unable to save.')
+      return
+    }
+
+    // Log the data being sent for debugging
+    console.log('Sending data:', {
+      id: selectedExoneree.id, // Ensure the id is being passed correctly
+      updatedData: formattedData // Ensure the data is correctly structured
+    })
+
     try {
-      // Restructure the form data into the expected format
-      const formattedData = {
-        personalInfo: {
-          name: formData.firstName + ' ' + formData.lastName,
-          phoneNumber: formData.phoneNumber,
-          email: formData.email,
-          dateOfBirth: formData.dob,
-          gender:
-            formData.gender === 'Male'
-              ? 'M'
-              : formData.gender === 'Female'
-              ? 'F'
-              : 'OTHER',
-          race: formData.race,
-          ethnicity: formData.ethnicity,
-          address: formData.address
-        },
-        caseInfo: {
-          caseNumber: formData.caseNumber,
-          jurisdiction: formData.jurisdiction,
-          exonerationNumber: parseInt(formData.exonerationNumber) || 0,
-          yearsInPrison: parseInt(formData.yearsInPrison) || 0,
-          arrestDate: formData.arrestDate,
-          convictionDate: formData.convictionDate,
-          freedomDate: formData.freedomDate,
-          exonerationDate: formData.exonerationDate,
-          crimeType: formData.crimeType,
-          sentence: formData.sentence,
-          country: formData.country,
-          state: formData.state
-        },
-        legalInfo: {
-          originalCharges: formData.originalCharges,
-          convictionMethod: formData.convictionMethod,
-          exonerationMethod: formData.exonerationMethod,
-          legalRepresentation: formData.legalRepresentation,
-          prosecutor: formData.prosecutor,
-          judge: formData.judge,
-          officersInvolved: formData.officersInvolved
-        },
-        wrongfulConvictionInfo: {
-          falseConfession: formData.falseConfession === 'Yes',
-          eyewitnessMisidentification:
-            formData.eyewitnessMisidentification === 'Yes',
-          inadequateLegalDefense: formData.inadequateLegalDefense === 'Yes',
-          policeMisconduct: formData.policeMisconduct === 'Yes',
-          prosecutorialMisconduct: formData.prosecutorialMisconduct === 'Yes',
-          forensicEvidence: formData.forensicEvidence === 'Yes',
-          informantTestimony:
-            formData.informantTestimony === 'Yes' ? true : false,
-          otherInfo: formData.otherInfo
-        },
-        postExonerationInfo: {
-          compensationAmount: parseFloat(formData.compensationAmount) || 0,
-          compensationDate: formData.compensationDate,
-          reentrySupport: formData.reentrySupport,
-          publicApology: formData.publicApology === 'Yes',
-          currentCountry: formData.currentCountry,
-          currentState: formData.currentState,
-          occupation: formData.currentOccupation
-        },
-        additionalInfo: {
-          mediaCoverage: formData.mediaCoverage,
-          advocacyInvolvement: formData.advocacyInvolvement,
-          educationalBackground: formData.educationalBackground,
-          healthInformation: formData.healthInfo,
-          id: 0 // This will be replaced by the actual ID if it exists
-        },
-        metaData: {
-          dataSource: '',
-          lastUpdated: '',
-          createdAt: ''
-        }
-      }
-
-      // Basic validation
-      if (
-        !formattedData.personalInfo.name ||
-        !formattedData.personalInfo.dateOfBirth ||
-        !formattedData.personalInfo.gender ||
-        !formattedData.personalInfo.race ||
-        !formattedData.personalInfo.ethnicity
-      ) {
-        alert('Required fields are missing')
-        return
-      }
-
-      const response = await fetch('/api/exonerees/addExoneree', {
-        method: 'POST',
+      const response = await fetch('/api/exonerees/updateExoneree', {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formattedData)
+        body: JSON.stringify({
+          id: selectedExoneree.id, // Use the exoneree's ID
+          updatedData: formattedData // Send the formatted data
+        })
       })
 
       if (!response.ok) {
@@ -240,64 +366,13 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
       }
 
       const result = await response.json()
-      console.log('Successfully added exoneree:', result)
-
-      // Call onSuccess to refresh parent data before closing the modal.
-      onSuccess()
+      console.log('Successfully updated exoneree:', result)
 
       // Close the modal and reset form
       handleClose()
-      setFormData({
-        firstName: '',
-        lastName: '',
-        phoneNumber: '',
-        email: '',
-        dob: '',
-        gender: '',
-        race: '',
-        ethnicity: '',
-        address: '',
-        caseNumber: '',
-        jurisdiction: '',
-        exonerationNumber: '',
-        yearsInPrison: '',
-        arrestDate: '',
-        convictionDate: '',
-        freedomDate: '',
-        exonerationDate: '',
-        crimeType: '',
-        sentence: '',
-        country: '',
-        state: '',
-        originalCharges: [],
-        convictionMethod: '',
-        exonerationMethod: '',
-        legalRepresentation: '',
-        prosecutor: '',
-        judge: '',
-        officersInvolved: [],
-        falseConfession: '',
-        eyewitnessMisidentification: '',
-        inadequateLegalDefense: '',
-        policeMisconduct: '',
-        prosecutorialMisconduct: '',
-        forensicEvidence: '',
-        informantTestimony: '',
-        otherInfo: '',
-        compensationAmount: '',
-        compensationDate: '',
-        reentrySupport: '',
-        publicApology: '',
-        currentCountry: '',
-        currentState: '',
-        currentStatus: '',
-        currentOccupation: '',
-        placeOfResidence: '',
-        mediaCoverage: '',
-        advocacyInvolvement: '',
-        educationalBackground: '',
-        healthInfo: ''
-      })
+      setFormData(initial)
+      onSuccess(selectedExoneree)
+      closeMenu()
     } catch (error) {
       console.error('Error adding exoneree:', error)
       alert(
@@ -331,7 +406,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           </React.Fragment>,
           <React.Fragment key='first-name-entry'>
             <LabelAndEntry
-              label={'First Name*'}
+              label={'First Name'}
               placeholder={''}
               width='40%'
               height='35px'
@@ -343,7 +418,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           </React.Fragment>,
           <React.Fragment key='last-name-entry'>
             <LabelAndEntry
-              label={'Last Name*'}
+              label={'Last Name'}
               placeholder={''}
               width='40%'
               height='35px'
@@ -355,7 +430,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           </React.Fragment>,
           <React.Fragment key='phone-number-entry'>
             <LabelAndEntry
-              label={'Phone Number*'}
+              label={'Phone Number'}
               placeholder={''}
               width='40%'
               height='35px'
@@ -367,7 +442,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           </React.Fragment>,
           <React.Fragment key='email-entry'>
             <LabelAndEntry
-              label={'Email*'}
+              label={'Email'}
               placeholder={''}
               width='40%'
               height='35px'
@@ -382,7 +457,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         const personalRightIcons = [
           <React.Fragment key='dob-entry'>
             <LabelAndEntry
-              label={'Date of Birth*'}
+              label={'DOB'}
               placeholder={'xx/xx/xxxx'}
               width='48%'
               height='36px'
@@ -394,7 +469,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           </React.Fragment>,
           <React.Fragment key='gender-dropdown'>
             <LabelAndDropdown
-              label={'Gender*'}
+              label={'Gender'}
               dropdownOptions={['Male', 'Female']}
               placeholder={'Gender'}
               width='210px'
@@ -405,7 +480,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           </React.Fragment>,
           <React.Fragment key='race-dropdown'>
             <LabelAndDropdown
-              label={'Race*'}
+              label={'Race'}
               dropdownOptions={[
                 'White',
                 'Black',
@@ -423,7 +498,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           </React.Fragment>,
           <React.Fragment key='ethnicity-dropdown'>
             <LabelAndDropdown
-              label={'Ethnicity*'}
+              label={'Ethnicity'}
               dropdownOptions={[
                 'American Indian/Alaska Native',
                 'Asian',
@@ -441,13 +516,21 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           </React.Fragment>,
           <React.Fragment key='address-entry'>
             <LabelAndEntry
-              label={'Address*'}
+              label={'Address'}
               width='48%'
               height='72px'
               borderRadius='10px'
               value={formData.address}
               onChange={handleChange}
               name='address'
+            />
+            <IconTextButton
+              filled={isSaveEnabled}
+              border={true}
+              text='Save'
+              height='40px'
+              width='106px'
+              onClick={handleSubmit}
             />
           </React.Fragment>
         ]
@@ -485,7 +568,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         const caseLeftIcons = [
           <React.Fragment key='case-number'>
             <LabelAndEntry
-              label={'Case Number*'}
+              label={'Case Number'}
               placeholder={'XXXXXXXXXXXX'}
               width='60%'
               height='35px'
@@ -493,18 +576,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               value={formData.caseNumber}
               onChange={handleChange}
               name='caseNumber'
-            />
-          </React.Fragment>,
-          <React.Fragment key='exonerationNumber'>
-            <LabelAndEntry
-              label={'Exoneration Number'}
-              placeholder={'XXXXXXXXXXXX'}
-              width='60%'
-              height='35px'
-              borderRadius='10px'
-              value={formData.exonerationNumber}
-              onChange={handleChange}
-              name='exonerationNumber'
             />
           </React.Fragment>,
           <React.Fragment key='jurisdiction'>
@@ -624,6 +695,14 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               onChange={handleChange}
               name='state'
             />
+            <IconTextButton
+              filled={isSaveEnabled}
+              border={true}
+              text='Save'
+              height='40px'
+              width='106px'
+              onClick={handleSubmit}
+            />
           </React.Fragment>
         ]
 
@@ -723,17 +802,6 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               name='prosecutor'
             />
           </React.Fragment>,
-          <React.Fragment key='judge'>
-            <LabelAndEntry
-              label={'Judge'}
-              width='60%'
-              height='36px'
-              borderRadius='10px'
-              value={formData.prosecutor}
-              onChange={handleChange}
-              name='judge'
-            />
-          </React.Fragment>,
           <React.Fragment key='officers-involved'>
             <DropdownAndTags
               label={'Officers Involved'}
@@ -750,6 +818,14 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               }}
               name='officersInvolved'
               apiUrl='Officer'
+            />
+            <IconTextButton
+              filled={isSaveEnabled}
+              border={true}
+              text='Save'
+              height='40px'
+              width='106px'
+              onClick={handleSubmit}
             />
           </React.Fragment>
         ]
@@ -785,6 +861,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         )
       case 3:
         const circumstancesLeftIcons = [
+          ,
           <React.Fragment key='false-confession'>
             <LabelAndDropdown
               label={'False confession'}
@@ -829,17 +906,17 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               name='policeMisconduct'
             />
           </React.Fragment>,
-          <React.Fragment key='prosecutorial-misconduct'>
-            <LabelAndDropdown
-              label={'Prosecutorial misconduct'}
-              placeholder={'[Yes/No]'}
-              dropdownOptions={['Yes', 'No']}
-              width='60%'
-              value={formData.prosecutorialMisconduct}
-              onChange={handleChange}
-              name='prosecutorialMisconduct'
-            />
-          </React.Fragment>
+                    <React.Fragment key='prosecutorial-misconduct'>
+                    <LabelAndDropdown
+                      label={'Prosecutorial misconduct'}
+                      placeholder={'[Yes/No]'}
+                      dropdownOptions={['Yes', 'No']}
+                      width='60%'
+                      value={formData.prosecutorialMisconduct}
+                      onChange={handleChange}
+                      name='prosecutorialMisconduct'
+                    />
+                  </React.Fragment>
         ]
 
         const circumstancesRightIcons = [
@@ -862,14 +939,13 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               onChange={handleChange}
               name='informantTestimony'
             />
-          </React.Fragment>,
-          <React.Fragment key='other-info'>
-            <LabelAndEntry
-              label={'Other Info'}
-              width='60%'
-              value={formData.otherInfo}
-              onChange={handleChange}
-              name='otherInfo'
+            <IconTextButton
+              filled={isSaveEnabled}
+              border={true}
+              text='Save'
+              height='40px'
+              width='106px'
+              onClick={handleSubmit}
             />
           </React.Fragment>
         ]
@@ -904,6 +980,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
 
       case 4:
         const postexonerationLeftIcons = [
+          ,
           <React.Fragment key='compensation-amount'>
             <LabelAndEntry
               label={'Compensation'}
@@ -977,12 +1054,11 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           <React.Fragment key='current-status'>
             <LabelAndDropdown
               label={'Current status'}
-              placeholder={'Select status'}
+              placeholder={'status'}
               dropdownOptions={[
                 'Freed but still fighting',
                 'Plea deal',
-                'Exonerated',
-                'Return to custody'
+                'Exonerated'
               ]}
               width='60%'
               value={formData.currentStatus}
@@ -1014,6 +1090,14 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               value={formData.placeOfResidence}
               onChange={handleChange}
               name='placeOfResidence'
+            />
+            <IconTextButton
+              filled={isSaveEnabled}
+              border={true}
+              text='Save'
+              height='40px'
+              width='106px'
+              onClick={handleSubmit}
             />
           </React.Fragment>
         ]
@@ -1048,6 +1132,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
 
       case 5:
         const additionalLeftIcons = [
+          ,
           <React.Fragment key='media-coverage'>
             <LabelAndEntry
               label={'Media coverage'}
@@ -1104,9 +1189,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               }}
             >
               <IconTextButton
-                filled={true}
-                border={false}
-                text='Submit'
+                filled={isSaveEnabled}
+                border={true}
+                text='Save'
                 height='40px'
                 width='106px'
                 onClick={handleSubmit}
@@ -1151,13 +1236,13 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
   return (
     <Modal
       open={open}
-      onClose={handleClose}
+      onClose={handleCloseModal}
       aria-labelledby='add-exoneree-modal'
     >
       <Box sx={style}>
         <IconButton
           aria-label='close'
-          onClick={handleClose}
+          onClick={handleCloseModal}
           sx={{
             position: 'absolute',
             top: 8,
@@ -1190,4 +1275,4 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
   )
 }
 
-export default AddExonereeModal
+export default EditExonereeModal

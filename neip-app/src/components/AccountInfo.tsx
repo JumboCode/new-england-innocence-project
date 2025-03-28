@@ -80,7 +80,7 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Form submitted:", formData);
+        // storeFormData(formData.name, formData.email);
     };
 
 

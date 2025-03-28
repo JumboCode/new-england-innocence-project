@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
+import EditExonereeModal from './EditExonereeModal';
 
 interface ActionMenuProps {
   onClose: () => void;
   exonereeId: number;
-  onDeleteSuccess: (id: number) => void;
+  selectedExoneree: any,
+  onSuccess: (id: number) => void;
 }
 
-const ActionMenuComponent: React.FC<ActionMenuProps> = ({ onClose, exonereeId, onDeleteSuccess }) => {
+const ActionMenuComponent: React.FC<ActionMenuProps> = ({ onClose, exonereeId, selectedExoneree, onSuccess }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [isClicked, setIsClicked] = useState<null | string>(null);
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleOpenModal = () => setModalOpen(true);
+  const handleCloseModal = () => setModalOpen(false);
 
   const close = () => {
     setIsVisible(false);
@@ -19,6 +25,9 @@ const ActionMenuComponent: React.FC<ActionMenuProps> = ({ onClose, exonereeId, o
     setIsClicked(item);
     if (item === "Delete") {
       handleDelete();
+    }
+    if (item === "Edit" && exonereeId) {
+      handleOpenModal();
     }
   };
 
@@ -42,7 +51,7 @@ const ActionMenuComponent: React.FC<ActionMenuProps> = ({ onClose, exonereeId, o
       }
 
       // Call the parent's callback to refresh data after deletion.
-      onDeleteSuccess(exonereeId);
+      onSuccess(exonereeId);
       close();
     } catch (error) {
       console.error("Delete failed:", error);
@@ -118,6 +127,7 @@ const ActionMenuComponent: React.FC<ActionMenuProps> = ({ onClose, exonereeId, o
       }}>
         Delete
       </div>
+      <EditExonereeModal open={modalOpen} handleClose={handleCloseModal} selectedExoneree={selectedExoneree} onSuccess = {onSuccess} closeMenu = {close}/>
     </div>
   );
 }

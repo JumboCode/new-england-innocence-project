@@ -26,6 +26,7 @@
     "dotenv": "^16.4.7",
     "file-saver": "^2.0.5",
     "json-2-csv": "^5.5.8",
+    "lodash": "^4.17.21",
     "next": "^14.2.17",
     "react": "^18",
     "react-checkmark": "^2.1.1",
@@ -40,8 +41,10 @@
   "devDependencies": {
     "@types/file-saver": "^2.0.7",
     "@types/jest": "^29.5.14",
+    "@types/lodash": "^4.17.16",
     "@types/node": "^20",
     "@types/react": "^18",
+    "@types/react-collapsible": "^2.2.1",
     "@types/react-dom": "^18",
     "@types/react-router-dom": "^5.3.3",
     "@types/ws": "^8.5.13",
@@ -52,6 +55,6 @@
     "prisma": "^5.22.0",
     "tailwindcss": "^3.4.1",
     "ts-jest": "^29.2.5",
-    "typescript": "^5"
+    "typescript": "^5.7.3"
   }
 }
