@@ -16,6 +16,7 @@ import SelectColumnsModal from '@/components/SelectColumnsModal'
 import TableFilterIcons from '@/components/TableFilterIcons'
 import OpenFilterSidebar from '../components/OpenFilterSidebar'
 import { saveAs } from 'file-saver'
+import OfficerInfo from '@/components/OfficerInfoComponent'
 
 // Define the data structure type with an index signature
 interface TableRowData {
@@ -290,6 +291,7 @@ const HomePage: React.FC = () => {
   const [columnsModalOpen, setColumnsModalOpen] = useState(false)
   const [exonerees, setExonerees] = useState<any[]>([])
   const [selectedRows, setSelectedRows] = useState<number[]>([])
+  
 
   // Initialize selectedColumns with all column keys
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
@@ -306,7 +308,6 @@ const HomePage: React.FC = () => {
       }
 
       const jsonResponse = await response.json()
-      console.log(jsonResponse.data)
       if (!jsonResponse.data || !Array.isArray(jsonResponse.data)) {
         console.error('🚨 Invalid response format', jsonResponse)
         return
@@ -359,7 +360,7 @@ const HomePage: React.FC = () => {
           ),
           prosecutor: handleEmptyString(item.legalInfo?.prosecutor),
           judge: handleEmptyString(item.legalInfo?.judge),
-          officersInvolved: handleArray(item.legalInfo?.officersInvolved),
+          officersInvolved: item.legalInfo?.officersInvolved || [],
           falseConfession: handleBoolean(
             item.wrongfulConvictionInfo?.falseConfession
           ),
@@ -426,7 +427,8 @@ const HomePage: React.FC = () => {
   const [selectedFilters, setSelectedFilters] = useState([
     { name: 'Gender', operator: '', value: 'Male' },
     { name: 'Years in Prison', operator: '>', value: '10' },
-    { name: 'Arrest Date', operator: 'before', value: '10/10/2023' }
+    { name: 'Arrest Date', operator: 'before', value: '10/10/2023' },
+    { name: 'Officers Involved', operator: '', value: ['Alice Johnson', 'Jane Doe', 'Test Name'] }
   ])
 
   const handleRemoveFilter = (index: number) => {
@@ -593,17 +595,6 @@ const HomePage: React.FC = () => {
       </div>
 
       {/* Render the OpenFiterSideBar if it's visible*/}
-      {isSidebarOpen && (
-        <OpenFilterSidebar
-          onClose={closeFilterSidebar}
-          onApplyFilters={(ids: number[]) => {
-            setFilteredExonereeIDs(ids)
-            closeFilterSidebar()
-          }}
-        />
-      )}
-
-      {/* Render the OpenFilterSideBar if it's visible*/}
       {isSidebarOpen && (
         <OpenFilterSidebar
           onClose={closeFilterSidebar}
@@ -810,7 +801,7 @@ const HomePage: React.FC = () => {
         </div>
         <div
           style={{
-            display: 'flex',
+            display: 'block',
             alignItems: 'center',
             justifyContent: 'space-between',
             marginTop: '0px',
@@ -834,6 +825,21 @@ const HomePage: React.FC = () => {
             <span style={{ color: '#000000', fontSize: '12px' }}>x</span>
             <span style={{ color: '#ABACBE', fontSize: '12px' }}>results</span>
           </div>
+
+          <div>
+            {selectedFilters.map((filter, index) => {
+                if (filter.name === 'Officers Involved' && Array.isArray(filter.value)) {
+                return (
+                    <div key={index}>
+                    {filter.value.map((officer) => (
+                        <OfficerInfo key={officer} officerName={officer}/>
+                    ))}
+                    </div>
+                );
+                }
+            })}
+          </div>
+
         </div>
 
         {/* Database Display */}
