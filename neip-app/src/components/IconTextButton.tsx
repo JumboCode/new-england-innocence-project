@@ -12,7 +12,7 @@ interface IconTextButtonProps {
     color?: string;
 }
 
-const IconTextButton: React.FC<IconTextButtonProps> = ({ icon, filled, text, border, height, width, onClick, color = '#2B9BD6' }) => {
+const IconTextButton: React.FC<IconTextButtonProps> = ({ icon, filled, text, border, height, width, onClick}) => {
   const IconButtonStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',

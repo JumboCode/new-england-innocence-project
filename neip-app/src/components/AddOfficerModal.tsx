@@ -111,7 +111,7 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
           <div style={{ flex: 1, marginRight: '20px' }}>
             <LabelAndEntry
               label={'Officer Name'}
-              placeholder={'XXXXXXXXXXX'}
+              placeholder={'Name'}
               width='100%'
               height='35px'
               borderRadius='10px'
@@ -121,7 +121,7 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
             />
             <LabelAndEntry
               label={'Badge Number'}
-              placeholder={'Badge Number'}
+              placeholder={'XXXXXXXXXXX'}
               width='100%'
               height='35px'
               borderRadius='10px'
@@ -135,7 +135,7 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
           <div style={{ flex: 1 }}>
             <LabelAndEntry
               label={'Media links'}
-              placeholder={'Media link'}
+              placeholder={'Media links'}
               width='100%'
               height='72px'
               borderRadius='10px'
@@ -145,7 +145,7 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
             />
             <LabelAndEntry
               label={'Notes'}
-              placeholder={'notes'}
+              placeholder={'Notes'}
               width='100%'
               height='72px'
               borderRadius='10px'
