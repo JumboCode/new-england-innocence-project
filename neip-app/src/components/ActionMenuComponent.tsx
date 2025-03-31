@@ -66,7 +66,7 @@ const ActionMenuComponent: React.FC<ActionMenuProps> = ({ onClose, exonereeId, s
   return (
     <div style={{
       width: '140px',
-      height: '142px',
+      height: '90px',
       border: '1.5px solid',
       borderColor: 'rgba(102,112,133,255)',
       backgroundColor: 'white',
@@ -85,17 +85,6 @@ const ActionMenuComponent: React.FC<ActionMenuProps> = ({ onClose, exonereeId, s
       }}>
         <button onClick={close}>X</button>
       </div>
-      <div onClick={() => click("Open")} style={{
-        textAlign: 'left',
-        color: isClicked === "Open" ? 'white' : 'black',
-        paddingBottom: '5px',
-        paddingLeft: '13px',
-        paddingRight: '13px',
-        cursor: 'pointer',
-        backgroundColor: isClicked === "Open" ? 'rgb(4,116,252)' : 'white',
-      }}>
-        Open
-      </div>
       <div onClick={() => click("Edit")} style={{
         color: isClicked === "Edit" ? 'white' : 'black',
         paddingBottom: '5px',
@@ -105,16 +94,6 @@ const ActionMenuComponent: React.FC<ActionMenuProps> = ({ onClose, exonereeId, s
         backgroundColor: isClicked === "Edit" ? 'rgb(4,116,252)' : 'white',
       }}>
         Edit
-      </div>
-      <div onClick={() => click("Share")} style={{
-        color: isClicked === "Share" ? 'white' : 'black',
-        paddingBottom: '5px',
-        paddingLeft: '13px',
-        paddingRight: '13px',
-        cursor: 'pointer',
-        backgroundColor: isClicked === "Share" ? 'rgb(4,116,252)' : 'white',
-      }}>
-        Share
       </div>
       <div onClick={() => click("Delete")} style={{
         color: isClicked === "Delete" ? 'white' : 'black',
