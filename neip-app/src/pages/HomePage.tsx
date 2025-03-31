@@ -570,7 +570,10 @@ const HomePage: React.FC = () => {
         height: '100vh',
         backgroundColor: 'white',
         width: '100vw',
-        paddingLeft: '60px'
+        paddingLeft: '60px',
+        overflow: 'hidden',
+        paddingLeft: '60px',
+        paddingBottom: '20px'
       }}
     >
       {/* Top Banner */}
