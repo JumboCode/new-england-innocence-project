@@ -32,9 +32,10 @@ const SelectColumnsModal: React.FC<SelectColumnsModalProps> = ({
   selectedColumns,
   onColumnSelectionChange,
 }) => {
+  const filteredColumns = columns.filter((col) => col.key !== "name");
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      onColumnSelectionChange(columns.map((col) => col.key));
+      onColumnSelectionChange([...filteredColumns.map((col) => col.key)]);
     } else {
       onColumnSelectionChange([]);
     }
@@ -42,12 +43,12 @@ const SelectColumnsModal: React.FC<SelectColumnsModalProps> = ({
 
   const handleColumnToggle = (columnKey: string) => {
     const updatedSelection = selectedColumns.includes(columnKey)
-      ? selectedColumns.filter((key) => key !== columnKey)
+      ? selectedColumns.filter((key) => key !== columnKey && key != "name")
       : [...selectedColumns, columnKey];
     onColumnSelectionChange(updatedSelection);
   };
 
-  const allSelected = columns.length === selectedColumns.length;
+  const allSelected = columns.length === selectedColumns.length - 1;
 
   return (
     <Modal open={open} onClose={handleClose} aria-labelledby="manage-columns-modal">
@@ -101,7 +102,7 @@ const SelectColumnsModal: React.FC<SelectColumnsModalProps> = ({
           display: "flex", flexDirection: "column", gap: 1, maxHeight: "300px",
           overflowY: "auto",
         }}>
-          {columns.map((column) => (
+          {filteredColumns.map((column) => (
             <FormControlLabel
               key={column.key}
               control={
