@@ -570,7 +570,6 @@ const HomePage: React.FC = () => {
         width: '100vw',
         paddingLeft: '60px',
         overflow: 'hidden',
-        paddingLeft: '60px',
         paddingBottom: '20px'
       }}
     >
