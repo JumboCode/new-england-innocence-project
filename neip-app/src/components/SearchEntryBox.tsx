@@ -135,11 +135,24 @@ const SearchEntryBox: React.FC<SearchEntryBoxProps> = ({ setExonerees }) => {
     }
   }
 
+  const [isFocused, setIsFocused] = useState(false);
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+
   return (
     <div style={containerStyle}>
       <input
         type='text'
-        placeholder='Search exonerees...'
+        placeholder={!isFocused ? 'Search exonerees...' : ''}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         value={query}
         onChange={e => setQuery(e.target.value)}
         onKeyDown={handleKeyDown} // trigger search on Enter
