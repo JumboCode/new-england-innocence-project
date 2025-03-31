@@ -57,12 +57,12 @@ interface ExonereeData {
   sentence: string
   country: string
   state: string
-  originalCharges: string[]
+  originalCharges: []
   convictionMethod: string
   exonerationMethod: string
   legalRepresentation: string
   prosecutor: string
-  officersInvolved: string[]
+  officersInvolved: []
   falseConfession: string
   eyewitnessMisidentification: string
   inadequateLegalDefense: string
@@ -145,8 +145,12 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
     advocacyInvolvement: selectedExoneree.advocacyInvolvement || '',
     educationalBackground: selectedExoneree.educationalBackground || '',
     healthInfo: selectedExoneree.healthInfo || '',
-    originalCharges: selectedExoneree.originalCharges || [],
-    officersInvolved: selectedExoneree.officersInvolved || []
+    originalCharges: Array.isArray(selectedExoneree.originalCharges)
+      ? selectedExoneree.originalCharges
+      : selectedExoneree.originalCharges?.split(',').map(tag => tag.trim()) || [],
+      officersInvolved: Array.isArray(selectedExoneree.officersInvolved)
+      ? selectedExoneree.officersInvolved
+      : selectedExoneree.officersInvolved?.split(',').map(tag => tag.trim()) || []
   }
 
   const [formData, setFormData] = useState<ExonereeData>(initialData)
@@ -270,12 +274,12 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
         state: formData.state
       },
       legalInfo: {
-        originalCharges: [formData.originalCharges],
+        originalCharges: formData.originalCharges,
         convictionMethod: formData.convictionMethod,
         exonerationMethod: formData.exonerationMethod,
         legalRepresentation: formData.legalRepresentation,
         prosecutor: formData.prosecutor,
-        officersInvolved: [formData.officersInvolved]
+        officersInvolved: formData.officersInvolved
       },
       wrongfulConvictionInfo: {
         falseConfession: formData.falseConfession === 'Yes',

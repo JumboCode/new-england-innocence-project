@@ -58,12 +58,12 @@ model CaseInfo {
 model LegalInfo {
   id                  Int       @id @default(autoincrement())
   convictionMethod    String?
-  exonerationMethod   String
   legalRepresentation String?
   prosecutor          String?
-  officersInvolved    String[]
   originalCharges     String[]
+  exonerationMethod   String
   judge               String?
+  officersInvolved    String[]
   exoneree            Exoneree?
 }
 
@@ -93,7 +93,7 @@ model PostExonerationInfo {
 }
 
 model AdditionalInfo {
-  id                    Int      @id @default(autoincrement())
+  id                    Int     @id @default(autoincrement())
   mediaCoverage         String?
   advocacyInvolvement   String?
   educationalBackground String?
@@ -124,10 +124,10 @@ model JurisdictionDropdownOption {
 }
 
 model Officer {
-  id         Int     @id @default(autoincrement())
-  name       String  @unique
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
   notes      String?
-  MediaLinks String?
+  MediaLinks String[]
 }
 
 enum Gender {
