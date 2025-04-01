@@ -173,6 +173,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           convictionMethod: formData.convictionMethod,
           exonerationMethod: formData.exonerationMethod,
           legalRepresentation: formData.legalRepresentation,
+          policeDept: formData.policeDepartment,
           prosecutor: formData.prosecutor,
           judge: formData.judge,
           officersInvolved: formData.officersInvolved
@@ -272,6 +273,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         originalCharges: [],
         convictionMethod: '',
         exonerationMethod: '',
+        policeDept: '',
         legalRepresentation: '',
         prosecutor: '',
         judge: '',
@@ -696,6 +698,17 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               value={formData.exonerationMethod}
               onChange={handleChange}
               name='exonerationMethod'
+            />
+          </React.Fragment>,
+          <React.Fragment key = 'policeDept'>
+            <LabelAndEntry
+              label={'Police Department'}
+              width='60%'
+              height='35px'
+              borderRadius='10px'
+              value={formData.policeDepartment}
+              onChange={handleChange}
+              name='policeDept'
             />
           </React.Fragment>
         ]

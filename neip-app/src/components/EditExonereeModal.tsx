@@ -120,6 +120,7 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
     state: selectedExoneree.state || '',
     convictionMethod: selectedExoneree.convictionMethod || '',
     exonerationMethod: selectedExoneree.exonerationMethod || '',
+    policeDept: selectedExoneree.policeDepartment || '',
     legalRepresentation: selectedExoneree.legalRepresentation || '',
     prosecutor: selectedExoneree.prosecutor || '',
     falseConfession: selectedExoneree.falseConfession || '',
@@ -278,6 +279,7 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
         convictionMethod: formData.convictionMethod,
         exonerationMethod: formData.exonerationMethod,
         legalRepresentation: formData.legalRepresentation,
+        policeDept: formData.policeDepartment,
         prosecutor: formData.prosecutor,
         officersInvolved: formData.officersInvolved
       },
