@@ -60,6 +60,7 @@ interface ExonereeData {
   originalCharges: []
   convictionMethod: string
   exonerationMethod: string
+  policeDepartment: string
   legalRepresentation: string
   prosecutor: string
   officersInvolved: []
@@ -120,7 +121,7 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
     state: selectedExoneree.state || '',
     convictionMethod: selectedExoneree.convictionMethod || '',
     exonerationMethod: selectedExoneree.exonerationMethod || '',
-    policeDept: selectedExoneree.policeDepartment || '',
+    policeDepartment: selectedExoneree.policeDepartment || '',
     legalRepresentation: selectedExoneree.legalRepresentation || '',
     prosecutor: selectedExoneree.prosecutor || '',
     falseConfession: selectedExoneree.falseConfession || '',
@@ -278,8 +279,8 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
         originalCharges: formData.originalCharges,
         convictionMethod: formData.convictionMethod,
         exonerationMethod: formData.exonerationMethod,
+        policeDepartment: formData.policeDepartment,
         legalRepresentation: formData.legalRepresentation,
-        policeDept: formData.policeDepartment,
         prosecutor: formData.prosecutor,
         officersInvolved: formData.officersInvolved
       },
@@ -781,6 +782,17 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
               value={formData.exonerationMethod}
               onChange={handleChange}
               name='exonerationMethod'
+            />
+          </React.Fragment>,
+          <React.Fragment key='policeDepartment'>
+            <LabelAndEntry
+              label={'Police Departemnt'}
+              width='60%'
+              height='35px'
+              borderRadius='10px'
+              value={formData.policeDepartment}
+              onChange={handleChange}
+              name='policeDepartment'
             />
           </React.Fragment>
         ]
