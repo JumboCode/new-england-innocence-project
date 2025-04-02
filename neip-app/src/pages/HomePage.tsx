@@ -76,7 +76,8 @@ const Table = dynamic(() => import('antd').then(mod => mod.Table), {
 
 // Table columns configuration
 const columns = [
-  { title: 'Name', dataIndex: 'name', key: 'name', width: 120 },
+  { title: 'Name', dataIndex: 'name', key: 'name', width: 120, fixed: 'left' },
+  { title: 'Image', dataIndex: 'name', key: 'name', width: 120, fixed: 'left'}, //Image functionality hasn't been merged yet, so name is placeholder
   { title: 'DOB', dataIndex: 'dob', key: 'dob', width: 120 },
   { title: 'Race', dataIndex: 'race', key: 'race', width: 120 },
   { title: 'Ethnicity', dataIndex: 'ethnicity', key: 'ethnicity', width: 120 },
@@ -450,6 +451,7 @@ const HomePage: React.FC = () => {
     .filter(column => selectedColumns.includes(column.key))
     .map(column => ({
       ...column,
+      fixed: column.fixed as 'left' | 'right' | undefined,
       onCell: (record: any) => ({
         onClick: (event: any) => handleCellClick(event, record, column.key)
       })
