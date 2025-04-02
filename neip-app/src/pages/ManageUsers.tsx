@@ -10,7 +10,6 @@ interface User {
 }
 
 const ManageUsers = () => {
-    console.log("manage called");
     const [users, setUsers] = useState<User[]>([]);
     // Get the host from the request headers to construct absolute URLs
     const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
@@ -19,9 +18,7 @@ const ManageUsers = () => {
     const fullUrl = `${baseUrl}${"/api/auth/getUsers"}`;
 
     useEffect(() => {
-        console.log("useEffect called");
         const fetchUsers = async () => {
-            console.log("useEffect called");
             try {
                 const response = await fetch(fullUrl, {
                     method: "GET",
@@ -40,9 +37,8 @@ const ManageUsers = () => {
 
                 const data = await response.json();
                 const users = data.users
-                console.log("USERS", users)
+                console.log("USERS", data)
                 setUsers(users)
-                console.log(`Users:`, users);
                 return users
             } catch (error) {
                 console.error('Filter error:', error);
@@ -57,12 +53,11 @@ const ManageUsers = () => {
             {
                 users.map((user: User) => {
                     // Accessing firstName and lastName
-                    const firstNameUsers = user.firstName || "";
-                    const lastNameUsers = user.lastName || "";
+                    const firstNameUsers = user.firstName || "Kevin";
+                    const lastNameUsers = user.lastName || "Aka";
 
                     // Accessing emailAddresses - assuming the first email address is the primary one
-                    const emailUsers = user.emailAddresses.length > 0 ? user.emailAddresses[0].email : '';
-                    // const emailUsers = "kevinaka@email.com"
+                    const emailUsers = user.emailAddresses.length > 0 ? user.emailAddresses[0].email : 'kevin.aka@tufts.edu';
                     const timestamp = user.createdAt;
 
                     // Convert to Date object
