@@ -59,6 +59,7 @@ model LegalInfo {
   id                  Int       @id @default(autoincrement())
   convictionMethod    String?
   legalRepresentation String?
+  policeDepartment    String?
   prosecutor          String?
   originalCharges     String[]
   exonerationMethod   String

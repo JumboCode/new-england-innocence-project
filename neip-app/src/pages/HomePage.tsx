@@ -159,6 +159,12 @@ const columns = [
     width: 120
   },
   {
+    title: 'Police Department',
+    dataIndex: 'policeDepartment',
+    key: 'policeDepartment',
+    width: 120
+  },
+  {
     title: 'Legal Representation',
     dataIndex: 'legalRepresentation',
     key: 'legalRepresentation',
@@ -363,6 +369,7 @@ const HomePage: React.FC = () => {
           exonerationMethod: handleEmptyString(
             item.legalInfo?.exonerationMethod
           ),
+          policeDepartment: handleEmptyString(item.legalInfo?.policeDepartment),
           legalRepresentation: handleEmptyString(
             item.legalInfo?.legalRepresentation
           ),
