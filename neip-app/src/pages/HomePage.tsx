@@ -301,7 +301,12 @@ const HomePage: React.FC = () => {
     columns.map(col => col.key)
   )
 
-  
+  const handleSetExonerees = (data: any[]) => {
+    setExonerees(data)
+    setSelectedFilters([])
+    setSelectedColumns(columns.map(col => col.key))
+  }
+
   // Helper function to refresh data from the API
   const refreshExonerees = async () => {
     try {
@@ -673,7 +678,7 @@ const HomePage: React.FC = () => {
         >
           {/* Search Bar */}
           <div style={{ flex: 1, maxWidth: '300px', marginLeft: '15px' }}>
-            <SearchEntryBox setExonerees={setExonerees} />
+            <SearchEntryBox setExonerees={handleSetExonerees} />
           </div>
 
           {/* Action Buttons */}
@@ -861,7 +866,7 @@ const HomePage: React.FC = () => {
         {/* Database Display */}
         <Table
           dataSource={displayedExonerees}
-          columns={filteredColumns}
+          columns={exonerees.length === 0 ? [] : filteredColumns}
           scroll={{ x: 'max-content', y: 390 }}
         />
       </div>
