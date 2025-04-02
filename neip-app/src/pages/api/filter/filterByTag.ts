@@ -18,7 +18,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         let exonereeIds = [];
         
         // Handle each table separately based on schema
-        if (table === "legalInfo") {
+        if (field === 'officersInvolved') {
+            // Check if the filter relates to officersInvolved or other officer-related fields
+            if (constraint === "is") {
+                const exonerees = await prisma.exoneree.findMany({
+                    where: {
+                        legalInfo: {
+                            officersInvolved: {
+                                has: value // assuming 'value' here is an officer ID or identifier
+                            }
+                        }
+                    },
+                    select: { id: true }
+                });
+                exonereeIds = exonerees.map(e => e.id);
+            } else {
+                const exonerees = await prisma.exoneree.findMany({
+                    where: {
+                        legalInfo: {
+                            NOT: {
+                                officersInvolved: {
+                                    has: value // 'value' should represent officer ID or name
+                                }
+                            }
+                        }
+                    },
+                    select: { id: true }
+                });
+                exonereeIds = exonerees.map(e => e.id);
+            }
+        } else if (table === "legalInfo") {
             // Legal info has array fields: convictionMethod, officersInvolved, originalCharges
             if (constraint === "is") {
                 const exonerees = await prisma.exoneree.findMany({
