@@ -68,6 +68,19 @@ const styles = {
     backgroundColor: "#fff",
     color: "#000",
     overflow: "auto"
+  },
+
+  mediaLinks: {
+    width: "480px",
+    height: "92px",
+    resize: "none" as "none",
+    border: "none",
+    outline: "none",
+    padding: "10px",
+    fontSize: "14px",
+    backgroundColor: "#fff",
+    color: "#000",
+    overflow: "auto"
   }
 };
 
@@ -105,6 +118,17 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
     };
     fetchOfficerData();
   }, [officerName]);  
+
+  useEffect(() => {
+    if (message.text) {
+      const timer = setTimeout(() => {
+        setMessage({ text: "", type: "" });
+      }, 3000); // message disappears after 3 seconds
+  
+      return () => clearTimeout(timer); // Clear on unmount or before next run
+    }
+  }, [message]);
+  
 
   const handleSave = async () => {
     if (!officer) return;
@@ -151,7 +175,7 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
       <Collapsible trigger={collapsibleTrigger} open={isOpen} transitionTime={200}>
         <div style={styles.collapsibleContent}>
           {loading ? (
-            <div>Loading officer information...</div>
+            <div style={{ color: "#000" }}>Loading officer information...</div>
           ) : (
             <div style={styles.twoColumnRow}>
               <div style={styles.columnBox}>
@@ -173,13 +197,32 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
                     readOnly={!isEditing}
                   />
                 ) : (
-                  <ul>
-                    {editableMediaLinks.split("\n").map((link, index) => (
-                      <li key={index}>
-                        <a href={link} target="_blank" rel="noopener noreferrer" style={{ color: "#65A3E1" }}>{link}</a>
-                      </li>
+                  <div style={styles.mediaLinks}>
+                    {editableMediaLinks
+                    .split("\n")
+                    .filter(link => link.trim() !== "")
+                    .map((link, index, array) => (
+                      <span key={index}>
+                        <a
+                          href={link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ color: "#65A3E1"}}
+                        >
+                          {link}
+                        </a>
+                        {index < array.length - 1 && <span> , </span>}
+                      </span>
                     ))}
-                  </ul>
+                  </div>
+
+                  // <ul style={styles.mediaLinks}>
+                  //   {editableMediaLinks.split("\n").map((link, index) => (
+                  //     <li key={index}>
+                  //       <a href={link} target="_blank" rel="noopener noreferrer" style={{ color: "#65A3E1" }}>{link}</a>
+                  //     </li>
+                  //   ))}
+                  // </ul>
                 )}
               </div>
             </div>
