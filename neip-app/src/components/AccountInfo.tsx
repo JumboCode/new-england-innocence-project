@@ -55,16 +55,6 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
         fontWeight: "500"
     }
 
-    const accountCreatedStyle: React.CSSProperties = {
-        width: "229px",
-        height: "20px",
-        font: "Inter",
-        fontWeight: "400",
-        fontSize: "14px",
-        lineHeight: "20px",
-        color: "#B6B5B5"
-    }
-
     //basic form handling when user submits info
     const [formData, setFormData] = useState({ name: "", email: "" });
 
