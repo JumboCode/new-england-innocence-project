@@ -847,11 +847,6 @@ const HomePage: React.FC = () => {
               marginBottom: '6px'
             }}
           >
-            <span style={{ color: '#ABACBE', fontSize: '12px' }}>Showing</span>
-            <span style={{ color: '#000000', fontSize: '12px' }}>x</span>
-            <span style={{ color: '#ABACBE', fontSize: '12px' }}>from</span>
-            <span style={{ color: '#000000', fontSize: '12px' }}>x</span>
-            <span style={{ color: '#ABACBE', fontSize: '12px' }}>results</span>
           </div>
 
           <div>
