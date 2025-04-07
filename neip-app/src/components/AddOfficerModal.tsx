@@ -56,6 +56,14 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
         mediaLink: formData.mediaLink,
         notes: formData.notes
       }
+      // Basic validation
+      if (
+        !formData.name
+      ) {
+        alert('Required fields are missing')
+        return
+      }
+      
 
       const response = await fetch('/api/officers/addOfficer', {
         method: 'POST',
