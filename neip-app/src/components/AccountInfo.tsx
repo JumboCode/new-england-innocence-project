@@ -9,7 +9,7 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
     //css styles for account info items
     const formStyle: React.CSSProperties = {
         width: "405px",
-        height: "390px",
+        height: "370px",
         top: "263px",
         left: "105px",
         border: "1px solid black",
@@ -91,8 +91,6 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
 
             {type === "administration" && <div style={adminTypeStyle}>Administration</div>}
             {type === "intern" && <div style={internTypeStyle}>Intern</div>}
-
-            <span style={accountCreatedStyle}>Account Created: xx/xx/xxxx</span>
 
             {/* css styles for placeholder text in text input */}
             <style jsx>{`
