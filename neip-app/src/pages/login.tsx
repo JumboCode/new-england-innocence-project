@@ -13,6 +13,9 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
+  // Get redirect path from query string: ?redirect=/dashboard
+  const redirectTo = typeof router.query.redirect === "string" ? router.query.redirect : "/";
+
   const handleLogin = async () => {
     if (!isLoaded) return;
 
@@ -20,7 +23,7 @@ const LoginPage: React.FC = () => {
       const response = await fetch("/api/auth/checkUser", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email }),
+        body: JSON.stringify({ email }),
       });
 
       const result = await response.json();
@@ -36,13 +39,12 @@ const LoginPage: React.FC = () => {
 
       const signInResult = await signIn.create({
         identifier: email,
-        password: password,
+        password,
         strategy: "password",
       });
 
       if (signInResult.status === "complete") {
-        router.push("/");
-        alert("Login successful!");
+        router.push(redirectTo); // ✅ use dynamic redirect
       } else {
         alert("Login incomplete. Please try again.");
       }
