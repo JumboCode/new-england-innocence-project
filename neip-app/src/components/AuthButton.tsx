@@ -7,7 +7,7 @@ interface AuthButtonProps {
   filled: boolean;
   text: string;
   href?: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 const AuthButton: React.FC<AuthButtonProps> = ({ color, filled, text, href, onClick }) => {
@@ -15,11 +15,11 @@ const AuthButton: React.FC<AuthButtonProps> = ({ color, filled, text, href, onCl
     backgroundColor: filled ? color : 'white',
     color: filled ? 'white' : color,
     border: `2px solid ${color}`,
-    borderRadius: '50px',  
+    borderRadius: '50px',
     padding: '10px 20px',
     fontWeight: 'bold',
     fontSize: '14px',
-    fontFamily: 'Arial, sans-serif',  
+    fontFamily: 'Arial, sans-serif',
     cursor: 'pointer',
     textAlignt: 'center',
     transition: 'background-color 0.3s ease',
@@ -33,6 +33,7 @@ const AuthButton: React.FC<AuthButtonProps> = ({ color, filled, text, href, onCl
         {text}
       </button>
     </Link>
+
   );
 };
 
