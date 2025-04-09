@@ -32,6 +32,10 @@ const styles = {
   officerNameText: {
     color: "#000000"
   },
+  officerDepartmentText: {
+    marginLeft: "5px",
+    marginRight: "20px"
+  },
   iconContainer: {
     marginLeft: "auto", 
     display: "flex",
@@ -163,6 +167,7 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
     <div style={styles.headerBar} onClick={() => setIsOpen(!isOpen)}>
       <span style={styles.officerInfoText}>Officer Information</span>
       <span style={styles.officerNameText}>{officer?.name || officerName || "Unknown Officer"}</span>
+      <span style={styles.officerDepartmentText}>{officer?.department || "Unknown Department"}</span>
       <div style={styles.iconContainer}>
         <MdOutlineRemoveRedEye style={{ fontSize: "24px", color: !isEditing ? "gray" : "#65A3E1", cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); setIsEditing(false); }} />
         <LuPenLine style={{ fontSize: "24px", color: isEditing ? "gray" : "#65A3E1", cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); setIsOpen(true); setIsEditing(true); }} />
