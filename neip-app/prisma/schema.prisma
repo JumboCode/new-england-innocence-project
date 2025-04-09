@@ -59,12 +59,12 @@ model LegalInfo {
   id                  Int       @id @default(autoincrement())
   convictionMethod    String?
   legalRepresentation String?
-  policeDepartment    String?
   prosecutor          String?
   originalCharges     String[]
   exonerationMethod   String
   judge               String?
   officersInvolved    String[]
+  policeDepartment    String?
   exoneree            Exoneree?
 }
 
@@ -125,10 +125,20 @@ model JurisdictionDropdownOption {
 }
 
 model Officer {
-  id         Int      @id @default(autoincrement())
-  name       String   @unique
+  id         Int     @id @default(autoincrement())
+  name       String  @unique
   notes      String?
-  MediaLinks String[]
+  MediaLinks String?
+  department String?
+}
+
+model Log {
+  id     Int    @id @default(autoincrement())
+  name   String
+  role   String
+  action String
+  object String
+  date   String
 }
 
 enum Gender {

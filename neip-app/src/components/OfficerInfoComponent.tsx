@@ -103,10 +103,12 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
   }, [officerName]);
 
   const displayName = officer?.name || officerName || "Unknown Officer";
+  const displayDepartment = officer
 
   const collapsibleTrigger = (
     <div style={styles.headerBar}>
       <span style={styles.officerInfoText}>Officer Information</span>
+      <span style={styles.officerNameText}>{displayName}</span>
       <span style={styles.officerNameText}>{displayName}</span>
       <div style={styles.iconContainer}>
         {isOpen ? (
