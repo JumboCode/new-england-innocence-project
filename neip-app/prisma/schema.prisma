@@ -131,6 +131,15 @@ model Officer {
   MediaLinks String?
 }
 
+model Log {
+  id        Int   @id @default(autoincrement())
+  name      String
+  role      String
+  action    String
+  object    String
+  date      String
+}
+
 enum Gender {
   M
   F
