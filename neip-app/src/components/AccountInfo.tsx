@@ -9,7 +9,7 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
     //css styles for account info items
     const formStyle: React.CSSProperties = {
         width: "405px",
-        height: "390px",
+        height: "370px",
         top: "263px",
         left: "105px",
         border: "1px solid black",
@@ -55,16 +55,6 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
         fontWeight: "500"
     }
 
-    const accountCreatedStyle: React.CSSProperties = {
-        width: "229px",
-        height: "20px",
-        font: "Inter",
-        fontWeight: "400",
-        fontSize: "14px",
-        lineHeight: "20px",
-        color: "#B6B5B5"
-    }
-
     //basic form handling when user submits info
     const [formData, setFormData] = useState({ name: "", email: "" });
 
@@ -91,8 +81,6 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
 
             {type === "administration" && <div style={adminTypeStyle}>Administration</div>}
             {type === "intern" && <div style={internTypeStyle}>Intern</div>}
-
-            <span style={accountCreatedStyle}>Account Created: xx/xx/xxxx</span>
 
             {/* css styles for placeholder text in text input */}
             <style jsx>{`
