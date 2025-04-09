@@ -161,7 +161,6 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
       setMessage({ text: "Error saving changes, please try again.", type: "error" });
     }
   };
-  const displayDepartment = officer
 
   const collapsibleTrigger = (
     <div style={styles.headerBar} onClick={() => setIsOpen(!isOpen)}>
