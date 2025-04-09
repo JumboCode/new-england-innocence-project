@@ -12,11 +12,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Name is required' });
   }
 
-  // Ensure MediaLinks is an array
-  if (!Array.isArray(MediaLinks)) {
-    return res.status(400).json({ error: 'MediaLinks must be an array of strings' });
-  }
-
   try {
     const officer = await prisma.officer.create({
       data: { name, notes, MediaLinks, department },

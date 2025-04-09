@@ -133,12 +133,21 @@ model Officer {
 }
 
 model Log {
+<<<<<<< HEAD
   id     Int    @id @default(autoincrement())
   name   String
   role   String
   action String
   object String
   date   String
+=======
+  id        Int   @id @default(autoincrement())
+  name      String
+  role      String
+  action    String
+  object    String
+  date      String
+>>>>>>> 3d9123faa756d34048adc2aa3f547ad510cfebe7
 }
 
 enum Gender {

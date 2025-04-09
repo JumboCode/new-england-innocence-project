@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Officer" ALTER COLUMN "MediaLinks" DROP NOT NULL,
+ALTER COLUMN "MediaLinks" SET DATA TYPE TEXT;
