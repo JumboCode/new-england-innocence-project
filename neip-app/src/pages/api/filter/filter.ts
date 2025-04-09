@@ -127,6 +127,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       i--;
     }
   }
-
-  return res.status(200).json({ exonereeIDs: combinedList[0] });
+ 
+  return res.status(200).json({ exonereeIDs: combinedList[0]});
 }

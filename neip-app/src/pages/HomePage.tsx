@@ -440,15 +440,85 @@ const HomePage: React.FC = () => {
   }
 
   const [selectedFilters, setSelectedFilters] = useState([
-    { name: 'Gender', operator: '', value: 'Male' },
-    { name: 'Years in Prison', operator: '>', value: '10' },
-    { name: 'Arrest Date', operator: 'before', value: '10/10/2023' },
-    { name: 'Officers Involved', operator: '', value: ['Alice Johnson', 'Jane Doe', 'Test Name'] }
+    
+      // { name: 'Gender', operator: '', value: 'Male' },
+      // { name: 'Years in Prison', operator: '>', value: '10' },
+      // { name: 'Arrest Date', operator: 'before', value: '10/10/2023' },
+      // { name: 'Officers Involved', operator: '', value: ['Alice Johnson', 'Jane Doe', 'Test Name'] }
   ])
 
-  const handleRemoveFilter = (index: number) => {
-    setSelectedFilters(prevFilters => prevFilters.filter((_, i) => i !== index))
+  const [appliedFilters, setAppliedFilters] = useState<TransformedFilter[]>([])
+  
+  interface TransformedFilter {
+    type: string,
+    field: string,
+    table: string,
+    value: string,
+    constraint: string
   }
+  
+  const [logic, setLogic] = useState<('AND' | 'OR')[]>([])
+
+  useEffect(() => {
+    if (appliedFilters && appliedFilters.length > 0) {
+      fetchFilters()
+    }
+  }, [appliedFilters, logic])
+
+  const fetchFilters = async () => {
+    try {
+      const response = await fetch('/api/filter/filter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          operators: logic,
+          filters: appliedFilters
+        })
+      })
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Error applying filters:', errorData)
+        return
+      }
+      const data = await response.json()
+      console.log('Filter applied, result:', data)
+      const filteredIDs = Array.isArray(data.exonereeIDs)
+        ? data.exonereeIDs.flat()
+        : []
+      // onApplyFilters(filteredIDs, appliedFilters, logic)
+      setFilteredExonereeIDs(filteredIDs)
+    } catch (error) {
+      console.error('Error applying filters:', error)
+    }
+  }
+
+  const handleRemoveFilter = (index: number) => {
+    console.log(index)
+    console.log("selected filters:", selectedFilters)
+    console.log("applied filters:",appliedFilters)
+    console.log("logic:", logic)
+    setSelectedFilters(prevFilters => prevFilters.filter((_, i) => i !== index))
+    setAppliedFilters(prevFilters => prevFilters.filter((_, i) => i !== index))
+    setLogic(prevLogic => prevLogic.filter((_, i) => i !== index - 1))
+  }
+
+  useEffect(() => {
+    console.log("Updated selected filters:", selectedFilters)
+    console.log('Updated applied filters:', appliedFilters);
+    console.log('Updated logic:', logic);
+    console.log('Selected Filters', selectedFilters. length);
+    console.log('Applied Filters', appliedFilters.length);
+     if (selectedFilters.length == 0 && appliedFilters.length == 0) {
+       console.log('Refreshing exonerees');
+       refreshExonerees();
+     }
+     else {
+       fetchFilters();
+    }
+  })
+  
   const [actionMenuVisible, setActionMenuVisible] = useState(false)
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 })
   const [filteredExonereeIDs, setFilteredExonereeIDs] = useState<
@@ -612,12 +682,20 @@ const HomePage: React.FC = () => {
         />
       </div>
 
-      {/* Render the OpenFiterSideBar if it's visible*/}
+      {/* Render the OpenFilterSideBar if it's visible*/}
       {isSidebarOpen && (
         <OpenFilterSidebar
           onClose={closeFilterSidebar}
-          onApplyFilters={(ids: number[]) => {
+          onApplyFilters={(ids: number[], filters: TransformedFilter[], logic: ('AND' | 'OR')[]) => {
             setFilteredExonereeIDs(ids)
+            const fetchedFilters = filters.map((filter) => ({
+                 name: filter.field,
+                 operator: filter.constraint,
+                 value: filter.value
+            }))
+            setSelectedFilters(fetchedFilters)
+            setAppliedFilters(filters)
+            setLogic(logic)
             closeFilterSidebar()
           }}
         />
