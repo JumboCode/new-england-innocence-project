@@ -6,11 +6,24 @@ import Modal from '@/components/ChangePasswordModal'
 import React, { useState } from 'react'
 import IconTextButton from '../components/IconTextButton'
 import { CgLogOut } from 'react-icons/cg'
-
+import { handleLogout } from '@/utils/auth/handleLogout'
+import { useUser } from '@clerk/nextjs'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 const AccountInfo = () => {
-  const [isModalOpen, setModalOpen] = useState(false)
-  // const { signOut } = useClerk();
+  const [isModalOpen, setModalOpen] = useState(false);
+  const { isSignedIn, isLoaded } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      router.push(`/login?redirect=${encodeURIComponent('/Settings')}`);
+    }
+  }, [isSignedIn, isLoaded, router]);
+
+  if (!isLoaded) return null; 
+  if (!isSignedIn) return null; 
 
   const changePassBtnStyle: React.CSSProperties = {
     font: 'Inter',
@@ -23,24 +36,6 @@ const AccountInfo = () => {
     border: '1px solid #000000',
     marginTop: '5px'
   }
-
-  const handleLogout = async () => {
-    try {
-      const response = await fetch('/api/auth/signout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
-      })
-
-      if (!response.ok) {
-        throw new Error(`Logout failed: ${response.statusText}`)
-      }
-
-      window.location.href = '/login' // Redirect to login page after successful logout
-    } catch (error) {
-      console.error('Logout error:', error)
-    }
-  }
-
   return (
     <div
       style={{
@@ -74,28 +69,13 @@ const AccountInfo = () => {
               left: '121px',
               display: 'block'
             }}
-          ></Image>
+          />
         }
       />
-      {/* <AccountInfoComponent type="intern"
-          userProfilePicture={
-              <Image
-                  src={UserProfileSquare}
-                  alt='user profile icon'
-                  width='90'
-                  height='90'
-                  style={{
-                      top: "274px",
-                      left: "121px",
-                      display: "block"
-                  }}
-              ></Image>
-          }
-      /> */}
       <button onClick={() => setModalOpen(true)} style={changePassBtnStyle}>
         Change Password
       </button>
-      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}></Modal>
+      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
       <div style={{ marginTop: '20px', marginLeft: 'auto' }}>
         <IconTextButton
           icon={<CgLogOut size={20} />}
@@ -108,8 +88,6 @@ const AccountInfo = () => {
         />
       </div>
       <NavBar />
-      {/* <button style={changePassBtnStyle} onClick={() => signOut()}>Sign Out</button> simply for testing purposes clerk only
-      allows single sessions so after you try it, click this to signout and try again. */}
     </div>
   )
 }

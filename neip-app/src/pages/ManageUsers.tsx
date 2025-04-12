@@ -1,5 +1,6 @@
 import UsersComponent from "@/components/Users";
 import { useEffect, useState } from 'react';
+import NavBar from '../components/NavBar'
 
 interface User {
     id: number
@@ -48,7 +49,7 @@ const ManageUsers = () => {
     }, [fullUrl]);
 
     return (
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '65px' }}>
             {/* <h2>Account Information</h2> */}
             {
                 users.map((user: User) => {
@@ -70,6 +71,7 @@ const ManageUsers = () => {
                         <UsersComponent key={user.id} firstName={firstNameUsers} lastName={lastNameUsers} email={emailUsers} type="administration" dateCreated={dateOnly} />
                     )
                 })}
+            <NavBar />
         </div>
     );
 };
