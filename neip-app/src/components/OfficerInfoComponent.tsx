@@ -96,10 +96,12 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
     name: string;
     notes: string | null;
     MediaLinks: string | null;
+    department: string;
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const [editableNotes, setEditableNotes] = useState("");
   const [editableMediaLinks, setEditableMediaLinks] = useState("");
+  const [editableDepartment, setEditableDepartment] = useState("");
   const [message, setMessage] = useState<{ text: string, type: "success" | "error" | "" }>({ text: "", type: "" });
 
   useEffect(() => {
@@ -113,6 +115,7 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
           setOfficer(data);
           setEditableNotes(data.notes || "");
           setEditableMediaLinks(data.MediaLinks ? data.MediaLinks.join("\n") : ""); // Convert array to string
+          setEditableDepartment(data.department || "");
         }
       } catch (error) {
         console.error("Error fetching officer data:", error);
@@ -144,12 +147,13 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
             id: officer.id, 
             notes: editableNotes, 
             MediaLinks: editableMediaLinks.split("\n").filter(link => link.trim() !== ""),
+            department: editableDepartment
         })
       });
       const responseData = await response.json();
       if (response.ok) {
         setIsEditing(false);
-        const updatedOfficer = { ...officer, notes: editableNotes, MediaLinks: editableMediaLinks };
+        const updatedOfficer = { ...officer, notes: editableNotes, MediaLinks: editableMediaLinks, department: editableDepartment };
         setOfficer(updatedOfficer);
         setMessage({ text: "Changes saved successfully!", type: "success" });
       } else {
