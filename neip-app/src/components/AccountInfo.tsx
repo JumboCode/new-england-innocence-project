@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+
 
 interface AccountInfoProps {
     type: string; // Name will be passed as a string prop
@@ -9,7 +12,7 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
     //css styles for account info items
     const formStyle: React.CSSProperties = {
         width: "405px",
-        height: "370px",
+        height: "390px",
         top: "263px",
         left: "105px",
         border: "1px solid black",
@@ -24,7 +27,8 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
         height: "30px",
         border: "2px solid #CCDDF8",
         borderRadius: "16px",
-        textAlign: "center"
+        textAlign: "center",
+        color: 'black'
     }
 
     const adminTypeStyle: React.CSSProperties = {
@@ -55,6 +59,16 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
         fontWeight: "500"
     }
 
+    const accountCreatedStyle: React.CSSProperties = {
+        width: "229px",
+        height: "20px",
+        font: "Inter",
+        fontWeight: "400",
+        fontSize: "14px",
+        lineHeight: "20px",
+        color: "#B6B5B5"
+    }
+
     //basic form handling when user submits info
     const [formData, setFormData] = useState({ name: "", email: "" });
 
@@ -64,23 +78,62 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // storeFormData(formData.name, formData.email);
+        console.log("Form submitted:", formData);
     };
+
+
+    const router = useRouter();
+    // const { isLoaded, isSignedIn, userId, sessionId, getToken } = useAuth();
+
+    const { isSignedIn, user, isLoaded } = useUser();
+    
+    useEffect(() => {
+        console.log("isSignedIn:", isSignedIn);
+        
+        if (!isLoaded) {
+            console.log("NOT LOADED")
+        }
+
+        if (isLoaded) {
+            console.log("LOADED")
+        }
+        if (!isSignedIn) {
+            console.log("USER IS NOT SIGNED IN")
+        }
+        if (isSignedIn) {
+            console.log("USER IS SIGNED IN")
+        }
+
+        if (isLoaded && !isSignedIn) {
+            router.push('/login');
+        }
+
+    }, [isLoaded, isSignedIn, router]);
+
 
     return (
         <form onSubmit={handleSubmit} style={formStyle}>
             {userProfilePicture && <span>{userProfilePicture}</span>}
 
-            <label>Name:</label>
-            <input type="text" text-align="center" name="name" placeholder="First Name Last Name" value={formData.name} onChange={handleChange} style={inputTextStyle} />
+            <label style= {{ color: '#000000' }}>Name:</label>
+            <input type="text" name="name" placeholder="First name Last name" value={user?.fullName ?? ""} onChange={handleChange} style={inputTextStyle} />
 
-            <label>Email:</label>
-            <input type="text" name="email" placeholder="email@email.com" value={formData.email} onChange={handleChange} style={inputTextStyle} />
+            <label style= {{ color: '#000000' }}>Email:</label>
+            <input
+            type="text"
+            name="email"
+            placeholder="email@email.com"
+            value={user?.primaryEmailAddress?.emailAddress ?? ""}
+            onChange={handleChange}
+            style={inputTextStyle}
+            />
 
             <label style={{ color: '#535862' }}>Type:</label>
 
             {type === "administration" && <div style={adminTypeStyle}>Administration</div>}
             {type === "intern" && <div style={internTypeStyle}>Intern</div>}
+
+            <span style={accountCreatedStyle}>Account Created: xx/xx/xxxx</span>
 
             {/* css styles for placeholder text in text input */}
             <style jsx>{`
