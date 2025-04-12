@@ -8,7 +8,6 @@ import UploadIcon from '../img/Upload.png'
 import PlusIcon from '../img/plus.png'
 import ArrowIcon from '../img/arrow_icon.png'
 import AddExonereeModal from '@/components/AddExonereeModal'
-import AddOfficerModal from '@/components/AddOfficerModal' 
 import { FaFilter } from 'react-icons/fa'
 import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai'
 import { MdFilterList } from 'react-icons/md'
@@ -17,7 +16,6 @@ import SelectColumnsModal from '@/components/SelectColumnsModal'
 import TableFilterIcons from '@/components/TableFilterIcons'
 import OpenFilterSidebar from '../components/OpenFilterSidebar'
 import { saveAs } from 'file-saver'
-import OfficerInfo from '@/components/OfficerInfoComponent'
 
 // Define the data structure type with an index signature
 interface TableRowData {
@@ -76,8 +74,7 @@ const Table = dynamic(() => import('antd').then(mod => mod.Table), {
 
 // Table columns configuration
 const columns = [
-  { title: 'Name', dataIndex: 'name', key: 'name', width: 120, fixed: 'left' },
-  { title: 'Image', dataIndex: 'name', key: 'name', width: 120, fixed: 'left'}, //Image functionality hasn't been merged yet, so name is placeholder
+  { title: 'Name', dataIndex: 'name', key: 'name', width: 120 },
   { title: 'DOB', dataIndex: 'dob', key: 'dob', width: 120 },
   { title: 'Race', dataIndex: 'race', key: 'race', width: 120 },
   { title: 'Ethnicity', dataIndex: 'ethnicity', key: 'ethnicity', width: 120 },
@@ -156,12 +153,6 @@ const columns = [
     title: 'Exoneration Method',
     dataIndex: 'exonerationMethod',
     key: 'exonerationMethod',
-    width: 120
-  },
-  {
-    title: 'Police Department',
-    dataIndex: 'policeDepartment',
-    key: 'policeDepartment',
     width: 120
   },
   {
@@ -296,22 +287,14 @@ const columns = [
 
 const HomePage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false)
-  const [officerModalOpen, setOfficerModalOpen] = useState(false) 
   const [columnsModalOpen, setColumnsModalOpen] = useState(false)
   const [exonerees, setExonerees] = useState<any[]>([])
-  const [selectedRows, setSelectedRows] = useState<number[]>([])
-  
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
   // Initialize selectedColumns with all column keys
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
     columns.map(col => col.key)
   )
-
-  const handleSetExonerees = (data: any[]) => {
-    setExonerees(data)
-    setSelectedFilters([])
-    setSelectedColumns(columns.map(col => col.key))
-  }
 
   // Helper function to refresh data from the API
   const refreshExonerees = async () => {
@@ -322,6 +305,7 @@ const HomePage: React.FC = () => {
       }
 
       const jsonResponse = await response.json()
+      console.log(jsonResponse.data)
       if (!jsonResponse.data || !Array.isArray(jsonResponse.data)) {
         console.error('🚨 Invalid response format', jsonResponse)
         return
@@ -369,13 +353,12 @@ const HomePage: React.FC = () => {
           exonerationMethod: handleEmptyString(
             item.legalInfo?.exonerationMethod
           ),
-          policeDepartment: handleEmptyString(item.legalInfo?.policeDepartment),
           legalRepresentation: handleEmptyString(
             item.legalInfo?.legalRepresentation
           ),
           prosecutor: handleEmptyString(item.legalInfo?.prosecutor),
           judge: handleEmptyString(item.legalInfo?.judge),
-          officersInvolved: item.legalInfo?.officersInvolved || [],
+          officersInvolved: handleArray(item.legalInfo?.officersInvolved),
           falseConfession: handleBoolean(
             item.wrongfulConvictionInfo?.falseConfession
           ),
@@ -425,6 +408,7 @@ const HomePage: React.FC = () => {
       console.error('🚨 Error fetching exonerees:', error)
     }
   }
+
   useEffect(() => {
     refreshExonerees()
   }, [])
@@ -439,16 +423,7 @@ const HomePage: React.FC = () => {
     setSelectedColumns(newSelectedColumns)
   }
 
-  const [selectedFilters, setSelectedFilters] = useState([
-    { name: 'Gender', operator: '', value: 'Male' },
-    { name: 'Years in Prison', operator: '>', value: '10' },
-    { name: 'Arrest Date', operator: 'before', value: '10/10/2023' },
-    { name: 'Officers Involved', operator: '', value: ['Alice Johnson', 'Jane Doe', 'Test Name'] }
-  ])
-
-  const handleRemoveFilter = (index: number) => {
-    setSelectedFilters(prevFilters => prevFilters.filter((_, i) => i !== index))
-  }
+  const [selectedFilters] = useState(['officer', 'Male', 'Test'])
   const [actionMenuVisible, setActionMenuVisible] = useState(false)
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 })
   const [filteredExonereeIDs, setFilteredExonereeIDs] = useState<
@@ -463,7 +438,6 @@ const HomePage: React.FC = () => {
     .filter(column => selectedColumns.includes(column.key))
     .map(column => ({
       ...column,
-      fixed: column.fixed as 'left' | 'right' | undefined,
       onCell: (record: any) => ({
         onClick: (event: any) => handleCellClick(event, record, column.key)
       })
@@ -522,61 +496,72 @@ const HomePage: React.FC = () => {
           filteredExonereeIDs.includes(exoneree.id as number)
         )
 
+  // const handleLogout = async () => {
+  //   try {
+  //     const response = await fetch('/api/auth/signout', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' }
+  //     })
+
+  //     if (!response.ok) {
+  //       throw new Error(`Logout failed: ${response.statusText}`)
+  //     }
+
+  //     window.location.href = '/login' // Redirect to login page after successful logout
+  //   } catch (error) {
+  //     console.error('Logout error:', error)
+  //   }
+  // }
+
   const handleExportToCSV = async () => {
     try {
-      const rowsToExport = selectedRows.length
-        ? displayedExonerees.filter(row => selectedRows.includes(row.id!))
-        : displayedExonerees
-
+      const rowsToExport = selectedRows.length ? displayedExonerees.filter((row) => selectedRows.includes(row.id!)) : displayedExonerees;
+  
       const response = await fetch('/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ selectedColumns, data: rowsToExport })
-      })
-
+        body: JSON.stringify({ selectedColumns, data: rowsToExport }),
+      });
+  
       if (response.ok) {
-        const blob = await response.blob()
-        saveAs(blob, 'exonerees.csv')
+        const blob = await response.blob();
+        saveAs(blob, 'exonerees.csv');
       } else {
-        console.error('Export failed:', response.statusText)
+        console.error('Export failed:', response.statusText);
       }
     } catch (error) {
-      console.error('Error exporting data:', error)
+      console.error('Error exporting data:', error);
     }
-  }
+  };
 
   const handleDeleteSelectedRows = async () => {
     try {
       if (selectedRows.length === 0) {
-        alert('No rows selected.')
-        return
+        alert('No rows selected.');
+        return;
       }
-
+      
       const response = await fetch('/api/exonerees/batch-delete', {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ids: selectedRows })
-      })
-
+        body: JSON.stringify({ ids: selectedRows }),
+      });
+      
       if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to delete rows')
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to delete rows');
       }
-
-      setSelectedRows([])
-      refreshExonerees()
-      alert('Selected rows deleted successfully.')
+      
+      setSelectedRows([]);
+      refreshExonerees();
+      alert('Selected rows deleted successfully.');
     } catch (error) {
-      console.error('Error deleting selected rows:', error)
-      alert(
-        `Error deleting selected rows: ${
-          error instanceof Error ? error.message : 'Unknown error'
-        }`
-      )
+      console.error('Error deleting selected rows:', error);
+      alert(`Error deleting selected rows: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
-  }
+  };
 
   const noop: () => void = () => {}
 
@@ -586,8 +571,8 @@ const HomePage: React.FC = () => {
         height: '100vh',
         backgroundColor: 'white',
         width: '100vw',
-        paddingLeft: '60px',
         overflow: 'hidden',
+        paddingLeft: '60px',
         paddingBottom: '20px'
       }}
     >
@@ -610,9 +595,20 @@ const HomePage: React.FC = () => {
             backgroundColor: 'white'
           }}
         />
+        {/* <div style={{ marginLeft: 'auto' }}>
+          <IconTextButton
+            icon={<CgLogOut size={20} />}
+            filled={false}
+            text='Logout'
+            border={false}
+            onClick={handleLogout}
+            height='40px'
+            width='100px'
+          />
+        </div> */}
       </div>
 
-      {/* Render the OpenFiterSideBar if it's visible*/}
+      {/* Render the OpenFilterSideBar if it's visible*/}
       {isSidebarOpen && (
         <OpenFilterSidebar
           onClose={closeFilterSidebar}
@@ -685,7 +681,7 @@ const HomePage: React.FC = () => {
         >
           {/* Search Bar */}
           <div style={{ flex: 1, maxWidth: '300px', marginLeft: '15px' }}>
-            <SearchEntryBox setExonerees={handleSetExonerees} />
+            <SearchEntryBox setExonerees={setExonerees} />
           </div>
 
           {/* Action Buttons */}
@@ -731,16 +727,6 @@ const HomePage: React.FC = () => {
               onClick={handleExportToCSV}
             />
             <IconTextButton
-              onClick={() => setOfficerModalOpen(true)}
-              icon={<Image src={PlusIcon} alt='plus icon' width='14' height='14' />}
-              filled={true}
-              text='Add officer'
-              border={true}
-              height='44px'
-              width='150px'
-              color="#D5D7DA"
-            />
-            <IconTextButton
               onClick={handleOpenModal}
               icon={
                 <Image src={PlusIcon} alt='plus icon' width='14' height='14' />
@@ -784,11 +770,10 @@ const HomePage: React.FC = () => {
                 icon={
                   <AiOutlineClose
                     style={{ width: '16px', height: '16px', color: 'black' }}
-                    onClick={() => handleRemoveFilter(index)}
                   />
                 }
                 filled={true}
-                text={`${filter.name}: ${filter.operator} ${filter.value}`}
+                text={filter}
                 border={false}
                 borderRadius={false}
                 height='35px'
@@ -829,7 +814,7 @@ const HomePage: React.FC = () => {
         </div>
         <div
           style={{
-            display: 'block',
+            display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             marginTop: '0px',
@@ -847,35 +832,36 @@ const HomePage: React.FC = () => {
               marginBottom: '6px'
             }}
           >
+            <span style={{ color: '#ABACBE', fontSize: '12px' }}>Showing</span>
+            <span style={{ color: '#000000', fontSize: '12px' }}>x</span>
+            <span style={{ color: '#ABACBE', fontSize: '12px' }}>from</span>
+            <span style={{ color: '#000000', fontSize: '12px' }}>x</span>
+            <span style={{ color: '#ABACBE', fontSize: '12px' }}>results</span>
           </div>
-
-          <div>
-            {selectedFilters.map((filter, index) => {
-                if (filter.name === 'Officers Involved' && Array.isArray(filter.value)) {
-                return (
-                    <div key={index}>
-                    {filter.value.map((officer) => (
-                        <OfficerInfo key={officer} officerName={officer}/>
-                    ))}
-                    </div>
-                );
-                }
-            })}
-          </div>
-
         </div>
 
         {/* Database Display */}
         <Table
           dataSource={displayedExonerees}
-          columns={exonerees.length === 0 ? [] : filteredColumns}
+          columns={filteredColumns} 
           scroll={{ x: 'max-content', y: 390 }}
+          rowSelection={{
+            onChange: (selectedRowKeys: React.Key[]) => {
+              setSelectedRows(selectedRowKeys.map((key) => Number(key)));
+            },
+          }}
         />
       </div>
-      <div>
+      <div
+        style={{
+          height: '90vh',
+          backgroundColor: 'white',
+          marginBottom: '20px'
+        }}
+      >
         <style jsx global>{`
           .ant-table-thead > tr > th {
-            padding: 15px 15px !important;
+            padding: 10px 10px !important;
             line-height: 1.4 !important;
             vertical-align: middle !important;
             white-space: normal !important;
@@ -900,8 +886,7 @@ const HomePage: React.FC = () => {
             <ActionMenuComponent
               onClose={closeActionMenu}
               exonereeId={selectedExonereeId!}
-              selectedExoneree={selectedCell?.record}
-              onSuccess={refreshExonerees}
+              onDeleteSuccess={refreshExonerees}
             />
           </div>
         )}
@@ -913,14 +898,6 @@ const HomePage: React.FC = () => {
         handleClose={handleCloseModal}
         onSuccess={refreshExonerees}
       />
-      <AddOfficerModal
-        open={officerModalOpen}
-        handleClose={() => setOfficerModalOpen(false)}
-        onSuccess={() => {
-          setOfficerModalOpen(false)
-          alert('Officer added successfully!')
-        }}
-      /> 
       <SelectColumnsModal
         open={columnsModalOpen}
         handleClose={handleColumnsModalClose}
