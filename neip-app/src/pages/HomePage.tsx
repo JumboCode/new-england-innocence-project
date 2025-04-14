@@ -423,7 +423,7 @@ const HomePage: React.FC = () => {
     setSelectedColumns(newSelectedColumns)
   }
 
-  const [selectedFilters] = useState(['officer', 'Male', 'Test'])
+  const [selectedFilters] = useState<string[]>([])
   const [actionMenuVisible, setActionMenuVisible] = useState(false)
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 })
   const [filteredExonereeIDs, setFilteredExonereeIDs] = useState<
