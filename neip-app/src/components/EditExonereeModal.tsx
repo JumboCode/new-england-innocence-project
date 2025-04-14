@@ -148,11 +148,11 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
     educationalBackground: selectedExoneree.educationalBackground || '',
     healthInfo: selectedExoneree.healthInfo || '',
     originalCharges: Array.isArray(selectedExoneree.originalCharges)
-      ? selectedExoneree.originalCharges
-      : selectedExoneree.originalCharges?.split(',').map((tag: string) => tag.trim()) || [],
+      ? selectedExoneree.originalCharges.filter((tag: string) => tag !== 'N/A')
+      : selectedExoneree.originalCharges?.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag && tag !== 'N/A') || [],
       officersInvolved: Array.isArray(selectedExoneree.officersInvolved)
-      ? selectedExoneree.officersInvolved
-      : selectedExoneree.officersInvolved?.split(',').map((tag: string) => tag.trim()) || []
+      ? selectedExoneree.officersInvolved.filter((tag: string) => tag !== 'N/A')
+      : selectedExoneree.officersInvolved?.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag && tag !== 'N/A') || []
   }
 
   const [formData, setFormData] = useState<ExonereeData>(initialData)
