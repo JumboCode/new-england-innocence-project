@@ -39,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             ...(personalInfo.address && { address: personalInfo.address }),
             ...(personalInfo.email && { email: personalInfo.email }),
             ...(personalInfo.phoneNumber && { phoneNumber: personalInfo.phoneNumber }),
-
+            ...(personalInfo.imageURL && { imageURL: personalInfo.imageURL }),
           }
         },
         ...(caseInfo && { caseInfo: { create: caseInfo } }),
@@ -47,39 +47,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         ...(wrongfulConvictionInfo && { wrongfulConvictionInfo: { create: wrongfulConvictionInfo } }),
         ...(postExonerationInfo && { postExonerationInfo: { create: postExonerationInfo } }),
         ...(metaDataInput && { metaData: metaDataInput }),
-
-
-        // caseInfo: {
-        //   create: {
-        //     ...(caseInfo && { caseInfo: { create: caseInfo } }),
-        //   }
-        // },
-        // legalInfo: {
-        //   create: {
-        //     ...(legalInfo && { legalInfo: { create: legalInfo } }),
-        //   }
-        // },
-        // wrongfulConvictionInfo: {
-        //   create: {
-        //     ...(wrongfulConvictionInfo && { wrongfulConvictionInfo: { create: wrongfulConvictionInfo } }),
-        //   },
-        // },
-        // postExonerationInfo: {
-        //   create: {
-        //     ...(postExonerationInfo && { postExonerationInfo: { create: postExonerationInfo } }),
-        //   }
-        // },
-        // ...(metaDataInput && { metaData: metaDataInput }),
-
-
-        // include: {
-        // personalInfo: true,
-        // caseInfo: true,
-        // legalInfo: true,
-        // wrongfulConvictionInfo: true,
-        // postExonerationInfo: true,
-        // metaData: true,
-        // },
       }
     });
 

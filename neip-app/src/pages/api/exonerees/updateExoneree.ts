@@ -13,6 +13,7 @@ const PersonalInfoSchema = z.object({
   phoneNumber: z.union([z.string().length(0), z.string()]).optional(),
   address: z.union([z.string().length(0), z.string()]).optional(),
   email: z.union([z.string().length(0), z.string()]).optional(),
+  imageURL: z.union([z.string().length(0), z.string()]).optional(),
 });
 
 const CaseInfoSchema = z.object({
