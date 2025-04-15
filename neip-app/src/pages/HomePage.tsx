@@ -8,7 +8,7 @@ import UploadIcon from '../img/Upload.png'
 import PlusIcon from '../img/plus.png'
 import ArrowIcon from '../img/arrow_icon.png'
 import AddExonereeModal from '@/components/AddExonereeModal'
-import AddOfficerModal from '@/components/AddOfficerModal' 
+import AddOfficerModal from '@/components/AddOfficerModal'
 import { FaFilter } from 'react-icons/fa'
 import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai'
 import { MdFilterList } from 'react-icons/md'
@@ -69,6 +69,13 @@ interface TableRowData {
   createdAt: string
 }
 
+interface Filter {
+  name: string;
+  operator: string;
+  value: string | string[];
+}
+
+
 // Dynamic import for the Ant Design Table component
 const Table = dynamic(() => import('antd').then(mod => mod.Table), {
   ssr: false
@@ -77,7 +84,7 @@ const Table = dynamic(() => import('antd').then(mod => mod.Table), {
 // Table columns configuration
 const columns = [
   { title: 'Name', dataIndex: 'name', key: 'name', width: 120, fixed: 'left' },
-  { title: 'Image', dataIndex: 'name', key: 'name', width: 120, fixed: 'left'}, //Image functionality hasn't been merged yet, so name is placeholder
+  { title: 'Image', dataIndex: 'name', key: 'name', width: 120, fixed: 'left' }, //Image functionality hasn't been merged yet, so name is placeholder
   { title: 'DOB', dataIndex: 'dob', key: 'dob', width: 120 },
   { title: 'Race', dataIndex: 'race', key: 'race', width: 120 },
   { title: 'Ethnicity', dataIndex: 'ethnicity', key: 'ethnicity', width: 120 },
@@ -296,11 +303,10 @@ const columns = [
 
 const HomePage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false)
-  const [officerModalOpen, setOfficerModalOpen] = useState(false) 
+  const [officerModalOpen, setOfficerModalOpen] = useState(false)
   const [columnsModalOpen, setColumnsModalOpen] = useState(false)
   const [exonerees, setExonerees] = useState<any[]>([])
   const [selectedRows, setSelectedRows] = useState<number[]>([])
-  
 
   // Initialize selectedColumns with all column keys
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
@@ -439,16 +445,7 @@ const HomePage: React.FC = () => {
     setSelectedColumns(newSelectedColumns)
   }
 
-  const [selectedFilters, setSelectedFilters] = useState([
-    { name: 'Gender', operator: '', value: 'Male' },
-    { name: 'Years in Prison', operator: '>', value: '10' },
-    { name: 'Arrest Date', operator: 'before', value: '10/10/2023' },
-    { name: 'Officers Involved', operator: '', value: ['Alice Johnson', 'Jane Doe', 'Test Name'] }
-  ])
-
-  const handleRemoveFilter = (index: number) => {
-    setSelectedFilters(prevFilters => prevFilters.filter((_, i) => i !== index))
-  }
+  const [selectedFilters, setSelectedFilters] = useState<Filter[]>([])
   const [actionMenuVisible, setActionMenuVisible] = useState(false)
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 })
   const [filteredExonereeIDs, setFilteredExonereeIDs] = useState<
@@ -472,6 +469,10 @@ const HomePage: React.FC = () => {
   const [selectedExonereeId, setSelectedExonereeId] = useState<number | null>(
     null
   )
+
+  const handleRemoveFilter = (index: number) => {
+    setSelectedFilters(prevFilters => prevFilters.filter((_, i) => i !== index))
+  }
 
   const handleCellClick = (
     event: React.MouseEvent<HTMLTableCellElement>,
@@ -732,13 +733,15 @@ const HomePage: React.FC = () => {
             />
             <IconTextButton
               onClick={() => setOfficerModalOpen(true)}
-              icon={<Image src={PlusIcon} alt='plus icon' width='14' height='14' />}
+              icon={
+                <Image src={PlusIcon} alt='plus icon' width='14' height='14' />
+              }
               filled={true}
               text='Add officer'
               border={true}
               height='44px'
               width='150px'
-              color="#D5D7DA"
+              color='#D5D7DA'
             />
             <IconTextButton
               onClick={handleOpenModal}
@@ -846,23 +849,24 @@ const HomePage: React.FC = () => {
               marginTop: '2px',
               marginBottom: '6px'
             }}
-          >
-          </div>
+          ></div>
 
           <div>
             {selectedFilters.map((filter, index) => {
-                if (filter.name === 'Officers Involved' && Array.isArray(filter.value)) {
+              if (
+                filter.name === 'Officers Involved' &&
+                Array.isArray(filter.value)
+              ) {
                 return (
-                    <div key={index}>
-                    {filter.value.map((officer) => (
-                        <OfficerInfo key={officer} officerName={officer}/>
+                  <div key={index}>
+                    {filter.value.map(officer => (
+                      <OfficerInfo key={officer} officerName={officer} />
                     ))}
-                    </div>
-                );
-                }
+                  </div>
+                )
+              }
             })}
           </div>
-
         </div>
 
         {/* Database Display */}
@@ -920,7 +924,7 @@ const HomePage: React.FC = () => {
           setOfficerModalOpen(false)
           alert('Officer added successfully!')
         }}
-      /> 
+      />
       <SelectColumnsModal
         open={columnsModalOpen}
         handleClose={handleColumnsModalClose}
