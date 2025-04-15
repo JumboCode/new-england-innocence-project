@@ -32,6 +32,10 @@ const styles = {
   officerNameText: {
     color: "#000000"
   },
+  officerDepartmentText: {
+    marginLeft: "5px",
+    marginRight: "20px"
+  },
   iconContainer: {
     marginLeft: "auto", 
     display: "flex",
@@ -92,10 +96,12 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
     name: string;
     notes: string | null;
     MediaLinks: string | null;
+    department: string;
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const [editableNotes, setEditableNotes] = useState("");
   const [editableMediaLinks, setEditableMediaLinks] = useState("");
+  const [editableDepartment, setEditableDepartment] = useState("");
   const [message, setMessage] = useState<{ text: string, type: "success" | "error" | "" }>({ text: "", type: "" });
 
   useEffect(() => {
@@ -109,6 +115,7 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
           setOfficer(data);
           setEditableNotes(data.notes || "");
           setEditableMediaLinks(data.MediaLinks ? data.MediaLinks.join("\n") : ""); // Convert array to string
+          setEditableDepartment(data.department || "");
         }
       } catch (error) {
         console.error("Error fetching officer data:", error);
@@ -140,12 +147,13 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
             id: officer.id, 
             notes: editableNotes, 
             MediaLinks: editableMediaLinks.split("\n").filter(link => link.trim() !== ""),
+            department: editableDepartment
         })
       });
       const responseData = await response.json();
       if (response.ok) {
         setIsEditing(false);
-        const updatedOfficer = { ...officer, notes: editableNotes, MediaLinks: editableMediaLinks };
+        const updatedOfficer = { ...officer, notes: editableNotes, MediaLinks: editableMediaLinks, department: editableDepartment };
         setOfficer(updatedOfficer);
         setMessage({ text: "Changes saved successfully!", type: "success" });
       } else {
@@ -162,6 +170,7 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
     <div style={styles.headerBar} onClick={() => setIsOpen(!isOpen)}>
       <span style={styles.officerInfoText}>Officer Information</span>
       <span style={styles.officerNameText}>{officer?.name || officerName || "Unknown Officer"}</span>
+      <span style={styles.officerDepartmentText}>{officer?.department || "Unknown Department"}</span>
       <div style={styles.iconContainer}>
         <MdOutlineRemoveRedEye style={{ fontSize: "24px", color: !isEditing ? "gray" : "#65A3E1", cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); setIsEditing(false); }} />
         <LuPenLine style={{ fontSize: "24px", color: isEditing ? "gray" : "#65A3E1", cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); setIsOpen(true); setIsEditing(true); }} />

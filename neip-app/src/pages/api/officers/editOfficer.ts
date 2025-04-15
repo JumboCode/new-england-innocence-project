@@ -7,7 +7,7 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { id, name, notes, MediaLinks } = req.body;
+  const { id, name, notes, MediaLinks, department } = req.body;
 
   if (!id || isNaN(Number(id))) {
     return res.status(400).json({ error: 'Valid ID is required' });
@@ -24,7 +24,7 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
 
     const updatedOfficer = await prisma.officer.update({
       where: { id: Number(id) },
-      data: { name, notes, MediaLinks },
+      data: { name, notes, MediaLinks, department },
     })
 
     return res.status(200).json(updatedOfficer);
