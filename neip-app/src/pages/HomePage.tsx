@@ -18,6 +18,7 @@ import TableFilterIcons from '@/components/TableFilterIcons'
 import OpenFilterSidebar from '../components/OpenFilterSidebar'
 import { saveAs } from 'file-saver'
 import OfficerInfo from '@/components/OfficerInfoComponent'
+import { ColumnType } from 'antd/es/table'
 
 // Define the data structure type with an index signature
 interface TableRowData {
@@ -499,7 +500,7 @@ const HomePage: React.FC = () => {
         return String(valA).localeCompare(String(valB));
       },
       sortDirections: ['ascend', 'descend'],
-    }))
+    })) as ColumnType<any>[]
 
   const [selectedExonereeId, setSelectedExonereeId] = useState<number | null>(
     null
