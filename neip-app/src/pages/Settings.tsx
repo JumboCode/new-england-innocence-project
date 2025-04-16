@@ -22,8 +22,8 @@ const AccountInfo = () => {
     }
   }, [isSignedIn, isLoaded, router]);
 
-  if (!isLoaded) return null; 
-  if (!isSignedIn) return null; 
+  if (!isLoaded) return null;
+  if (!isSignedIn) return null;
 
   const changePassBtnStyle: React.CSSProperties = {
     font: 'Inter',
