@@ -26,7 +26,9 @@ const buttonStyle: React.CSSProperties = {
     font: "Inter",
     fontWeight: "500",
     fontSize: "14px",
-    lineHeight: "20px"
+    lineHeight: "20px",
+    marginLeft: "100px",
+    color: "white"
 }
 
 const ManageUsers = () => {
@@ -94,10 +96,10 @@ const ManageUsers = () => {
                         )
                     })}
                 <NavBar />
-                <button style={buttonStyle} onClick={() => { setInternAccountModalOpen(true) }}>
-                    + Add Intern User
-                </button>
             </div>
+            <button style={buttonStyle} onClick={() => { setInternAccountModalOpen(true) }}>
+                + Add Intern User
+            </button>
         </>
     );
 };

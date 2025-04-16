@@ -14,6 +14,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const generatedPassword = crypto.randomBytes(12).toString('base64');
 
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+
     const clerkClient = createClerkClient({
         secretKey: process.env.CLERK_SECRET_KEY
     })
@@ -40,12 +42,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const internEmailBody = `Hi ${internName}! Your account email is ${internEmail} and your password is ${generatedPassword}`
 
-        const sendInternEmail = await fetch("/api/auth/sendCustomEmail", {
+        const sendInternEmail = await fetch(`${baseUrl}/api/auth/sendCustomEmail`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ interEmail: internEmail, emailSubject: internEmailSubject, emailBody: internEmailBody })
+            body: JSON.stringify({ email: internEmail, emailSubject: internEmailSubject, emailBody: internEmailBody })
         });
 
         if (!sendInternEmail.ok) {
@@ -54,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return;
         }
 
-        console.log('User created successfully:', internUser)
+        console.log(`User created successfully: ${internUser}`)
         return res.status(200).json({ success: true, message: 'Intern Account created' })
     }
     catch (error) {
