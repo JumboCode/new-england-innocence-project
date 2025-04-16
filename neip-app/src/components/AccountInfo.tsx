@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+
 
 interface AccountInfoProps {
     type: string; // Name will be passed as a string prop
@@ -24,7 +27,8 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
         height: "30px",
         border: "2px solid #CCDDF8",
         borderRadius: "16px",
-        textAlign: "center"
+        textAlign: "center",
+        color: 'black'
     }
 
     const adminTypeStyle: React.CSSProperties = {
@@ -74,18 +78,55 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // storeFormData(formData.name, formData.email);
+        console.log("Form submitted:", formData);
     };
+
+
+    const router = useRouter();
+    // const { isLoaded, isSignedIn, userId, sessionId, getToken } = useAuth();
+
+    const { isSignedIn, user, isLoaded } = useUser();
+    
+    useEffect(() => {
+        console.log("isSignedIn:", isSignedIn);
+        
+        if (!isLoaded) {
+            console.log("NOT LOADED")
+        }
+
+        if (isLoaded) {
+            console.log("LOADED")
+        }
+        if (!isSignedIn) {
+            console.log("USER IS NOT SIGNED IN")
+        }
+        if (isSignedIn) {
+            console.log("USER IS SIGNED IN")
+        }
+
+        if (isLoaded && !isSignedIn) {
+            router.push('/login');
+        }
+
+    }, [isLoaded, isSignedIn, router]);
+
 
     return (
         <form onSubmit={handleSubmit} style={formStyle}>
             {userProfilePicture && <span>{userProfilePicture}</span>}
 
-            <label>Name:</label>
-            <input type="text" text-align="center" name="name" placeholder="First Name Last Name" value={formData.name} onChange={handleChange} style={inputTextStyle} />
+            <label style= {{ color: '#000000' }}>Name:</label>
+            <input type="text" name="name" placeholder="First name Last name" value={user?.fullName ?? ""} onChange={handleChange} style={inputTextStyle} />
 
-            <label>Email:</label>
-            <input type="text" name="email" placeholder="email@email.com" value={formData.email} onChange={handleChange} style={inputTextStyle} />
+            <label style= {{ color: '#000000' }}>Email:</label>
+            <input
+            type="text"
+            name="email"
+            placeholder="email@email.com"
+            value={user?.primaryEmailAddress?.emailAddress ?? ""}
+            onChange={handleChange}
+            style={inputTextStyle}
+            />
 
             <label style={{ color: '#535862' }}>Type:</label>
 

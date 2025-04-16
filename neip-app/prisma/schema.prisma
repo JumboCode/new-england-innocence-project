@@ -129,6 +129,7 @@ model Officer {
   name       String  @unique
   notes      String?
   MediaLinks String?
+  department String?
 }
 
 model Log {

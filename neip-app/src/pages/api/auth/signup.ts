@@ -2,9 +2,10 @@ import { createClerkClient } from '@clerk/clerk-sdk-node'
 import { NextApiRequest, NextApiResponse } from 'next'
 import dotenv from 'dotenv'
 
+
 dotenv.config()
 
-export default async function handler (
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
@@ -12,11 +13,12 @@ export default async function handler (
     secretKey: process.env.CLERK_SECRET_KEY
   })
 
-  const { email, name, password } = req.body
 
-  if (!email || !password) {
+  const { email, firstName, lastName, password } = req.body
+
+  if (!email || !password || !firstName || !lastName) {
     console.log('Missing email or password.')
-    return res.status(400).json({ error: 'Email and password are required' })
+    return res.status(400).json({ error: 'All fields including name, email and password are required' })
   }
 
   if (!email.endsWith('@newenglandinnocence.org')) {
@@ -25,10 +27,12 @@ export default async function handler (
   }
 
   try {
-    // added to ensure creation process is working
+
+    //added to ensure creation process is working
     const user = await clerkClient.users.createUser({
       emailAddress: [email],
-      firstName: name,
+      firstName: firstName,
+      lastName: lastName,
       password: password
     })
 
