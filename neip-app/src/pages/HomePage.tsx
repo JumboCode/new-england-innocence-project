@@ -83,93 +83,101 @@ const Table = dynamic(() => import('antd').then(mod => mod.Table), {
 
 // Table columns configuration
 const columns = [
-  { title: 'Name', dataIndex: 'name', key: 'name', width: 120, fixed: 'left' },
-  { title: 'Image', dataIndex: 'name', key: 'name', width: 120, fixed: 'left' }, //Image functionality hasn't been merged yet, so name is placeholder
-  { title: 'DOB', dataIndex: 'dob', key: 'dob', width: 120 },
-  { title: 'Race', dataIndex: 'race', key: 'race', width: 120 },
-  { title: 'Ethnicity', dataIndex: 'ethnicity', key: 'ethnicity', width: 120 },
-  {
-    title: 'Phone Number',
+  { title: 'Name', dataIndex: 'name', key: 'name', width: 150, fixed: 'left'},
+  { title: 'Image', dataIndex: 'name', key: 'image', width: 150, fixed: 'left'}, //Image functionality hasn't been merged yet, so name is placeholder
+  { title: 'DOB', dataIndex: 'dob', key: 'dob', width: 150, align: 'left'},
+  { title: 'Race', dataIndex: 'race', key: 'race', width: 150},
+  { title: 'Ethnicity', dataIndex: 'ethnicity', key: 'ethnicity', width: 150},
+  { title: 'Phone Number',
     dataIndex: 'phoneNumber',
     key: 'phoneNumber',
-    width: 120
+    width: 180,
   },
-  { title: 'Address', dataIndex: 'address', key: 'address', width: 220 },
-  { title: 'Email', dataIndex: 'email', key: 'email', width: 120 },
+  { title: 'Address', 
+    dataIndex: 'address', 
+    key: 'address', 
+    width: 220,
+  },
+  { 
+    title: 'Email', 
+    dataIndex: 'email', 
+    key: 'email', 
+    width: 150,
+  },
   {
     title: 'Case Number',
     dataIndex: 'caseNumber',
     key: 'caseNumber',
-    width: 120
+    width: 150
   },
-  { title: 'Crime Type', dataIndex: 'crimeType', key: 'crimeType', width: 120 },
-  { title: 'Gender', dataIndex: 'gender', key: 'gender', width: 120 },
+  { title: 'Crime Type', dataIndex: 'crimeType', key: 'crimeType', width: 150 },
+  { title: 'Gender', dataIndex: 'gender', key: 'gender', width: 150 },
   {
     title: 'Jurisdiction',
     dataIndex: 'jurisdiction',
     key: 'jurisdiction',
-    width: 120
+    width: 150
   },
   {
     title: 'Exoneration Number',
     dataIndex: 'exonerationNumber',
     key: 'exonerationNumber',
-    width: 120
+    width: 150
   },
   {
     title: 'Years In Prison',
     dataIndex: 'yearsInPrison',
     key: 'yearsInPrison',
-    width: 120
+    width: 150
   },
   {
     title: 'Arrest Date',
     dataIndex: 'arrestDate',
     key: 'arrestDate',
-    width: 120
+    width: 150
   },
   {
     title: 'Conviction Date',
     dataIndex: 'convictionDate',
     key: 'convictionDate',
-    width: 120
+    width: 150
   },
   {
     title: 'Freedom Date',
     dataIndex: 'freedomDate',
     key: 'freedomDate',
-    width: 120
+    width: 150
   },
   {
     title: 'Exoneration Date',
     dataIndex: 'exonerationDate',
     key: 'exonerationDate',
-    width: 120
+    width: 150
   },
-  { title: 'Sentence', dataIndex: 'sentence', key: 'sentence', width: 120 },
+  { title: 'Sentence', dataIndex: 'sentence', key: 'sentence', width: 150 },
   {
     title: 'Original Charges',
     dataIndex: 'originalCharges',
     key: 'originalCharges',
-    width: 120
+    width: 150
   },
   {
     title: 'Conviction Method',
     dataIndex: 'convictionMethod',
     key: 'convictionMethod',
-    width: 120
+    width: 150
   },
   {
     title: 'Exoneration Method',
     dataIndex: 'exonerationMethod',
     key: 'exonerationMethod',
-    width: 120
+    width: 150
   },
   {
     title: 'Police Department',
     dataIndex: 'policeDepartment',
     key: 'policeDepartment',
-    width: 120
+    width: 150
   },
   {
     title: 'Legal Representation',
@@ -181,20 +189,20 @@ const columns = [
     title: 'Prosecutor',
     dataIndex: 'prosecutor',
     key: 'prosecutor',
-    width: 120
+    width: 150
   },
-  { title: 'Judge', dataIndex: 'judge', key: 'judge', width: 120 },
+  { title: 'Judge', dataIndex: 'judge', key: 'judge', width: 150 },
   {
     title: 'Officers Involved',
     dataIndex: 'officersInvolved',
     key: 'officersInvolved',
-    width: 120
+    width: 150
   },
   {
     title: 'False Confession',
     dataIndex: 'falseConfession',
     key: 'falseConfession',
-    width: 120
+    width: 150
   },
   {
     title: 'Eyewitness Misidentification',
@@ -212,25 +220,25 @@ const columns = [
     title: 'Police Misconduct',
     dataIndex: 'policeMisconduct',
     key: 'policeMisconduct',
-    width: 120
+    width: 150
   },
   {
     title: 'Prosecutorial Misconduct',
     dataIndex: 'prosecutorialMisconduct',
     key: 'prosecutorialMisconduct',
-    width: 120
+    width: 150
   },
   {
     title: 'Forensic Evidence',
     dataIndex: 'forensicEvidence',
     key: 'forensicEvidence',
-    width: 120
+    width: 150
   },
   {
     title: 'Informant Testimony',
     dataIndex: 'informantTestimony',
     key: 'informantTestimony',
-    width: 120
+    width: 150
   },
   {
     title: 'Other Info',
@@ -248,57 +256,57 @@ const columns = [
     title: 'Reentry Support',
     dataIndex: 'reentrySupport',
     key: 'reentrySupport',
-    width: 120
+    width: 150
   },
   {
     title: 'Public Apology',
     dataIndex: 'publicApology',
     key: 'publicApology',
-    width: 120
+    width: 150
   },
   {
     title: 'Current Status',
     dataIndex: 'currentStatus',
     key: 'currentStatus',
-    width: 120
+    width: 150
   },
   {
     title: 'Media Coverage',
     dataIndex: 'mediaCoverage',
     key: 'mediaCoverage',
-    width: 120
+    width: 150
   },
   {
     title: 'Advocacy Involvement',
     dataIndex: 'advocacyInvolvement',
     key: 'advocacyInvolvement',
-    width: 120
+    width: 150
   },
   {
     title: 'Educational Background',
     dataIndex: 'educationalBackground',
     key: 'educationalBackground',
-    width: 120
+    width: 150
   },
   {
     title: 'Health Info',
     dataIndex: 'healthInfo',
     key: 'healthInfo',
-    width: 120
+    width: 150
   },
   {
     title: 'Data Source',
     dataIndex: 'dataSource',
     key: 'dataSource',
-    width: 120
+    width: 150
   },
   {
     title: 'Last Updated',
     dataIndex: 'lastUpdated',
     key: 'lastUpdated',
-    width: 120
+    width: 150
   },
-  { title: 'Created At', dataIndex: 'createdAt', key: 'createdAt', width: 120 }
+  { title: 'Created At', dataIndex: 'createdAt', key: 'createdAt', width: 150 }
 ]
 
 const HomePage: React.FC = () => {
@@ -463,7 +471,34 @@ const HomePage: React.FC = () => {
       fixed: column.fixed as 'left' | 'right' | undefined,
       onCell: (record: any) => ({
         onClick: (event: any) => handleCellClick(event, record, column.key)
-      })
+      }),
+      sorter: (a: any, b: any) => {
+        // get values
+        const valA = a[column.dataIndex];
+        const valB = b[column.dataIndex];
+  
+        if (valA == null) return -1;
+        if (valB == null) return 1;
+  
+        // detect and compare dates
+        if (
+          typeof valA === 'string' &&
+          typeof valB === 'string' &&
+          !isNaN(Date.parse(valA)) &&
+          !isNaN(Date.parse(valB))
+        ) {
+          return new Date(valA).getTime() - new Date(valB).getTime();
+        }
+  
+        // compare numbers
+        if (typeof valA === 'number' && typeof valB === 'number') {
+          return valA - valB;
+        }
+  
+        // compare strings
+        return String(valA).localeCompare(String(valB));
+      },
+      sortDirections: ['ascend', 'descend'],
     }))
 
   const [selectedExonereeId, setSelectedExonereeId] = useState<number | null>(
