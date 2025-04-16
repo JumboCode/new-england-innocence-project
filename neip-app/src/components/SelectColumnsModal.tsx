@@ -35,9 +35,12 @@ const SelectColumnsModal: React.FC<SelectColumnsModalProps> = ({
   const filteredColumns = columns.filter((col) => col.key !== "name");
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      onColumnSelectionChange([...filteredColumns.map((col) => col.key)]);
+      onColumnSelectionChange([
+        "name",
+        ...filteredColumns.map((col) => col.key),
+      ]);
     } else {
-      onColumnSelectionChange([]);
+      onColumnSelectionChange(["name"]);
     }
   };
 
@@ -48,7 +51,7 @@ const SelectColumnsModal: React.FC<SelectColumnsModalProps> = ({
     onColumnSelectionChange(updatedSelection);
   };
 
-  const allSelected = columns.length === selectedColumns.length - 1;
+  const allSelected = filteredColumns.every((col) => selectedColumns.includes(col.key));
 
   return (
     <Modal open={open} onClose={handleClose} aria-labelledby="manage-columns-modal">
