@@ -18,6 +18,7 @@ import TableFilterIcons from '@/components/TableFilterIcons'
 import OpenFilterSidebar from '../components/OpenFilterSidebar'
 import { saveAs } from 'file-saver'
 import OfficerInfo from '@/components/OfficerInfoComponent'
+import PersonalInfoIcon from '../img/PersonalInfoIcon.png'
 
 // Define the data structure type with an index signature
 interface TableRowData {
@@ -31,6 +32,7 @@ interface TableRowData {
   ethnicity: string
   phoneNumber: string
   address: string
+  imageUrl: string
   email: string
   caseNumber: string
   jurisdiction: string
@@ -84,7 +86,39 @@ const Table = dynamic(() => import('antd').then(mod => mod.Table), {
 // Table columns configuration
 const columns = [
   { title: 'Name', dataIndex: 'name', key: 'name', width: 120, fixed: 'left' },
-  { title: 'Image', dataIndex: 'name', key: 'name', width: 120, fixed: 'left' }, //Image functionality hasn't been merged yet, so name is placeholder
+  // { title: 'Image', dataIndex: 'name', key: 'name', width: 120, fixed: 'left' }, //Image functionality hasn't been merged yet, so name is placeholder
+  {
+    title: 'Image',
+    dataIndex: 'imageUrl',
+    key: 'imageUrl',
+    width: 120,
+    fixed: 'left',
+    render: (imageUrl: string) => {
+      return imageUrl ? (
+        <img
+          src={`/api/exonerees/imageProxy?key=${encodeURIComponent(imageUrl.split('/').pop() || '')}`}
+          alt="Profile Picture"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            borderRadius: '50%'
+          }}
+        />
+      ) : (
+        <img
+          src={PersonalInfoIcon.src} //personal info icon from add exoneree modal file
+          alt="Default Profile"
+          style={{
+            width: '100%',
+            height: '50%',
+            objectFit: 'cover',
+            borderRadius: '50%',
+          }}
+        />
+      );
+    } 
+  },
   { title: 'DOB', dataIndex: 'dob', key: 'dob', width: 120 },
   { title: 'Race', dataIndex: 'race', key: 'race', width: 120 },
   { title: 'Ethnicity', dataIndex: 'ethnicity', key: 'ethnicity', width: 120 },
