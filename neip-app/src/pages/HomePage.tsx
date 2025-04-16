@@ -874,6 +874,12 @@ const HomePage: React.FC = () => {
           dataSource={displayedExonerees}
           columns={exonerees.length === 0 ? [] : filteredColumns}
           scroll={{ x: 'max-content', y: 390 }}
+          rowSelection={{
+            selectedRowKeys: selectedRows,
+            onChange: (selectedRowKeys: React.Key[]) => {
+              setSelectedRows(selectedRowKeys.map((key) => Number(key)))
+            }
+          }}
         />
       </div>
       <div>
@@ -888,6 +894,10 @@ const HomePage: React.FC = () => {
           }
           .ant-table-thead > tr > th > div {
             min-width: 120px !important;
+          }
+
+          .ant-table-row-selected td {
+            background-color: #E6F7FF !important;
           }
         `}</style>
 
