@@ -46,12 +46,15 @@ const TableFilterIcons: React.FC<TableFilterIconsProps> = ({
     gap: '8px',
     backgroundColor: filled ? '#BFDBFF' : 'white',
     border: border ? '1px solid #D0D5DD' : 'none',
-    padding: '10px 16px',
+    padding: '25px 16px',
     cursor: 'pointer',
     transition: 'background-color 0.3s ease',
     fontSize: '14px',
     height: height,
     width: width,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap'
   };
 
   return (
