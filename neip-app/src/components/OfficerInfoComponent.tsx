@@ -96,6 +96,7 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
     name: string;
     notes: string | null;
     MediaLinks: string | null;
+    department: string | null;
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const [editableNotes, setEditableNotes] = useState("");
