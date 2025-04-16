@@ -51,7 +51,8 @@ const AccountInfo = () => {
           fontSize: '24px',
           fontWeight: '700',
           marginTop: '20px',
-          marginBottom: '20px'
+          marginBottom: '20px',
+          color: '#000000'
         }}
       >
         Account Information

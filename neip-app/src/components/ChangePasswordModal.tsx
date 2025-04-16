@@ -53,7 +53,8 @@ const textInputStyle: React.CSSProperties = {
   width: '252px',
   height: '30px',
   borderRadius: '16px',
-  border: '1px solid #CCDDF8'
+  border: '1px solid #CCDDF8',
+  color: '#000000'
 }
 const innerModalContent: React.CSSProperties = {
   width: '252px',
