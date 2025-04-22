@@ -18,6 +18,7 @@ import TableFilterIcons from '@/components/TableFilterIcons'
 import OpenFilterSidebar from '../components/OpenFilterSidebar'
 import { saveAs } from 'file-saver'
 import OfficerInfo from '@/components/OfficerInfoComponent'
+import PersonalInfoIcon from '../img/PersonalInfoIcon.png'
 import { ColumnType } from 'antd/es/table'
 
 // Define the data structure type with an index signature
@@ -32,6 +33,7 @@ interface TableRowData {
   ethnicity: string
   phoneNumber: string
   address: string
+  imageURL: string
   email: string
   caseNumber: string
   jurisdiction: string
@@ -83,17 +85,45 @@ const Table = dynamic(() => import('antd').then(mod => mod.Table), {
 
 // Table columns configuration
 const columns = [
-  { title: 'Name', dataIndex: 'name', key: 'name', width: 150, fixed: 'left' },
+  { title: 'Name', dataIndex: 'name', key: 'name', width: 120, fixed: 'left' },
+  // { title: 'Image', dataIndex: 'name', key: 'name', width: 120, fixed: 'left' }, //Image functionality hasn't been merged yet, so name is placeholder
   {
     title: 'Image',
-    dataIndex: 'name',
-    key: 'image',
-    width: 150,
-    fixed: 'left'
-  }, //Image functionality hasn't been merged yet, so name is placeholder
-  { title: 'DOB', dataIndex: 'dob', key: 'dob', width: 150, align: 'left' },
-  { title: 'Race', dataIndex: 'race', key: 'race', width: 150 },
-  { title: 'Ethnicity', dataIndex: 'ethnicity', key: 'ethnicity', width: 150 },
+    dataIndex: 'imageURL',
+    key: 'imageURL',
+    width: 120,
+    fixed: 'left',
+    render: (imageURL: string) => {
+      return imageURL != 'N/A' ? (
+        <img
+          src={`/api/exonerees/imageProxy?key=${encodeURIComponent(
+            imageURL.split('/').pop() || ''
+          )}`}
+          alt='Profile Picture'
+          style={{
+            width: '70px',
+            height: '70px',
+            objectFit: 'cover',
+            borderRadius: '50%'
+          }}
+        />
+      ) : (
+        <img
+          src={PersonalInfoIcon.src} //personal info icon from add exoneree modal file
+          alt='Default Profile'
+          style={{
+            width: '70px',
+            height: '70px',
+            objectFit: 'cover',
+            borderRadius: '50%'
+          }}
+        />
+      )
+    }
+  },
+  { title: 'DOB', dataIndex: 'dob', key: 'dob', width: 120 },
+  { title: 'Race', dataIndex: 'race', key: 'race', width: 120 },
+  { title: 'Ethnicity', dataIndex: 'ethnicity', key: 'ethnicity', width: 120 },
   {
     title: 'Phone Number',
     dataIndex: 'phoneNumber',
@@ -360,6 +390,7 @@ const HomePage: React.FC = () => {
           id: item.id, // ensure we have the id
           key: item.id || index.toString(),
           name: handleEmptyString(item.personalInfo?.name),
+          imageURL: handleEmptyString(item.personalInfo?.imageURL),
           dob: handleEmptyString(item.personalInfo?.dateOfBirth),
           gender: handleEmptyString(item.personalInfo?.gender),
           race: handleEmptyString(item.personalInfo?.race),
@@ -436,7 +467,6 @@ const HomePage: React.FC = () => {
           createdAt: handleEmptyString(item.metaData?.createdAt)
         })
       )
-
       setExonerees(formattedData)
     } catch (error) {
       console.error('🚨 Error fetching exonerees:', error)
@@ -559,34 +589,33 @@ const HomePage: React.FC = () => {
       const updatedFilters = prevFilters.filter((_, i) => i !== index)
       return updatedFilters
     })
-  
+
     setAppliedFilters(prevFilters => {
       const updatedAppliedFilters = prevFilters.filter((_, i) => i !== index)
-  
+
       if (updatedAppliedFilters.length === 0) {
         refreshExonerees()
         setFilteredExonereeIDs(null)
       }
-  
+
       return updatedAppliedFilters
     })
-  
+
     setLogic(prevLogic => prevLogic.filter((_, i) => i !== index - 1))
   }
-  
 
   // useEffect(() => {
   //   console.log('Updated selected filters:', selectedFilters)
   //   console.log('Updated applied filters:', appliedFilters)
   //   console.log('Updated logic:', logic)
-  
+
   //   if (selectedFilters.length === 0 && appliedFilters.length === 0) {
   //     console.log('Refreshing exonerees')
   //     refreshExonerees()
   //   } else {
   //     fetchFilters()
   //   }
-  // }, [selectedFilters, appliedFilters, logic]) 
+  // }, [selectedFilters, appliedFilters, logic])
   useEffect(() => {
     if (selectedFilters.length === 0 && appliedFilters.length === 0) {
       refreshExonerees()
@@ -594,8 +623,6 @@ const HomePage: React.FC = () => {
       fetchFilters()
     }
   }, [selectedFilters, appliedFilters, logic])
-  
-  
 
   const handleCellClick = (
     event: React.MouseEvent<HTMLTableCellElement>,
@@ -740,7 +767,11 @@ const HomePage: React.FC = () => {
       {isSidebarOpen && (
         <OpenFilterSidebar
           onClose={closeFilterSidebar}
-          onApplyFilters={(ids: number[], filters: TransformedFilter[], logic: ('AND' | 'OR')[]) => {
+          onApplyFilters={(
+            ids: number[],
+            filters: TransformedFilter[],
+            logic: ('AND' | 'OR')[]
+          ) => {
             setFilteredExonereeIDs(ids)
             const fetchedFilters = filters.map(filter => ({
               name: filter.field,
