@@ -7,7 +7,15 @@ import FilterSelection from './FilterSelection'
 
 interface OpenFilterSidebarProps {
   onClose: () => void
-  onApplyFilters: (filteredIDs: number[]) => void
+  onApplyFilters: (filteredIDs: number[], filters: TransformedFilter[], logic: ('AND' | 'OR')[] ) => void
+}
+
+interface TransformedFilter {
+  type: string,
+  field: string,
+  table: string,
+  value: string,
+  constraint: string
 }
 
 interface Filter {
@@ -346,7 +354,7 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
       const filteredIDs = Array.isArray(data.exonereeIDs)
         ? data.exonereeIDs.flat()
         : []
-      onApplyFilters(filteredIDs)
+      onApplyFilters(filteredIDs, transformedFilters, logic)
     } catch (error) {
       console.error('Error applying filters:', error)
     }

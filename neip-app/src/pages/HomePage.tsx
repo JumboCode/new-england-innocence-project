@@ -71,11 +71,10 @@ interface TableRowData {
 }
 
 interface Filter {
-  name: string;
-  operator: string;
-  value: string | string[];
+  name: string
+  operator: string
+  value: string | string[]
 }
-
 
 // Dynamic import for the Ant Design Table component
 const Table = dynamic(() => import('antd').then(mod => mod.Table), {
@@ -84,26 +83,29 @@ const Table = dynamic(() => import('antd').then(mod => mod.Table), {
 
 // Table columns configuration
 const columns = [
-  { title: 'Name', dataIndex: 'name', key: 'name', width: 150, fixed: 'left'},
-  { title: 'Image', dataIndex: 'name', key: 'image', width: 150, fixed: 'left'}, //Image functionality hasn't been merged yet, so name is placeholder
-  { title: 'DOB', dataIndex: 'dob', key: 'dob', width: 150, align: 'left'},
-  { title: 'Race', dataIndex: 'race', key: 'race', width: 150},
-  { title: 'Ethnicity', dataIndex: 'ethnicity', key: 'ethnicity', width: 150},
-  { title: 'Phone Number',
+  { title: 'Name', dataIndex: 'name', key: 'name', width: 150, fixed: 'left' },
+  {
+    title: 'Image',
+    dataIndex: 'name',
+    key: 'image',
+    width: 150,
+    fixed: 'left'
+  }, //Image functionality hasn't been merged yet, so name is placeholder
+  { title: 'DOB', dataIndex: 'dob', key: 'dob', width: 150, align: 'left' },
+  { title: 'Race', dataIndex: 'race', key: 'race', width: 150 },
+  { title: 'Ethnicity', dataIndex: 'ethnicity', key: 'ethnicity', width: 150 },
+  {
+    title: 'Phone Number',
     dataIndex: 'phoneNumber',
     key: 'phoneNumber',
-    width: 180,
+    width: 180
   },
-  { title: 'Address', 
-    dataIndex: 'address', 
-    key: 'address', 
-    width: 220,
-  },
-  { 
-    title: 'Email', 
-    dataIndex: 'email', 
-    key: 'email', 
-    width: 150,
+  { title: 'Address', dataIndex: 'address', key: 'address', width: 220 },
+  {
+    title: 'Email',
+    dataIndex: 'email',
+    key: 'email',
+    width: 150
   },
   {
     title: 'Case Number',
@@ -454,6 +456,52 @@ const HomePage: React.FC = () => {
     setSelectedColumns(newSelectedColumns)
   }
 
+  const [appliedFilters, setAppliedFilters] = useState<TransformedFilter[]>([])
+  interface TransformedFilter {
+    type: string
+    field: string
+    table: string
+    value: string
+    constraint: string
+  }
+
+  const [logic, setLogic] = useState<('AND' | 'OR')[]>([])
+
+  useEffect(() => {
+    if (appliedFilters && appliedFilters.length > 0) {
+      fetchFilters()
+    }
+  }, [appliedFilters, logic])
+
+  const fetchFilters = async () => {
+    try {
+      const response = await fetch('/api/filter/filter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          operators: logic,
+          filters: appliedFilters
+        })
+      })
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Error applying filters:', errorData)
+        return
+      }
+      const data = await response.json()
+      console.log('Filter applied, result:', data)
+      const filteredIDs = Array.isArray(data.exonereeIDs)
+        ? data.exonereeIDs.flat()
+        : []
+      // onApplyFilters(filteredIDs, appliedFilters, logic)
+      setFilteredExonereeIDs(filteredIDs)
+    } catch (error) {
+      console.error('Error applying filters:', error)
+    }
+  }
+
   const [selectedFilters, setSelectedFilters] = useState<Filter[]>([])
   const [actionMenuVisible, setActionMenuVisible] = useState(false)
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 })
@@ -475,12 +523,12 @@ const HomePage: React.FC = () => {
       }),
       sorter: (a: any, b: any) => {
         // get values
-        const valA = a[column.dataIndex];
-        const valB = b[column.dataIndex];
-  
-        if (valA == null) return -1;
-        if (valB == null) return 1;
-  
+        const valA = a[column.dataIndex]
+        const valB = b[column.dataIndex]
+
+        if (valA == null) return -1
+        if (valB == null) return 1
+
         // detect and compare dates
         if (
           typeof valA === 'string' &&
@@ -488,18 +536,18 @@ const HomePage: React.FC = () => {
           !isNaN(Date.parse(valA)) &&
           !isNaN(Date.parse(valB))
         ) {
-          return new Date(valA).getTime() - new Date(valB).getTime();
+          return new Date(valA).getTime() - new Date(valB).getTime()
         }
-  
+
         // compare numbers
         if (typeof valA === 'number' && typeof valB === 'number') {
-          return valA - valB;
+          return valA - valB
         }
-  
+
         // compare strings
-        return String(valA).localeCompare(String(valB));
+        return String(valA).localeCompare(String(valB))
       },
-      sortDirections: ['ascend', 'descend'],
+      sortDirections: ['ascend', 'descend']
     })) as ColumnType<any>[]
 
   const [selectedExonereeId, setSelectedExonereeId] = useState<number | null>(
@@ -508,7 +556,23 @@ const HomePage: React.FC = () => {
 
   const handleRemoveFilter = (index: number) => {
     setSelectedFilters(prevFilters => prevFilters.filter((_, i) => i !== index))
+    setAppliedFilters(prevFilters => prevFilters.filter((_, i) => i !== index))
+    setLogic(prevLogic => prevLogic.filter((_, i) => i !== index - 1))
   }
+
+  useEffect(() => {
+    console.log('Updated selected filters:', selectedFilters)
+    console.log('Updated applied filters:', appliedFilters)
+    console.log('Updated logic:', logic)
+    console.log('Selected Filters', selectedFilters.length)
+    console.log('Applied Filters', appliedFilters.length)
+    if (selectedFilters.length == 0 && appliedFilters.length == 0) {
+      console.log('Refreshing exonerees')
+      refreshExonerees()
+    } else {
+      fetchFilters()
+    }
+  })
 
   const handleCellClick = (
     event: React.MouseEvent<HTMLTableCellElement>,
@@ -653,8 +717,16 @@ const HomePage: React.FC = () => {
       {isSidebarOpen && (
         <OpenFilterSidebar
           onClose={closeFilterSidebar}
-          onApplyFilters={(ids: number[]) => {
+          onApplyFilters={(ids: number[], filters: TransformedFilter[], logic: ('AND' | 'OR')[]) => {
             setFilteredExonereeIDs(ids)
+            const fetchedFilters = filters.map(filter => ({
+              name: filter.field,
+              operator: filter.constraint,
+              value: filter.value
+            }))
+            setSelectedFilters(fetchedFilters)
+            setAppliedFilters(filters)
+            setLogic(logic)
             closeFilterSidebar()
           }}
         />
@@ -913,7 +985,7 @@ const HomePage: React.FC = () => {
           rowSelection={{
             selectedRowKeys: selectedRows,
             onChange: (selectedRowKeys: React.Key[]) => {
-              setSelectedRows(selectedRowKeys.map((key) => Number(key)))
+              setSelectedRows(selectedRowKeys.map(key => Number(key)))
             }
           }}
         />
@@ -933,7 +1005,7 @@ const HomePage: React.FC = () => {
           }
 
           .ant-table-row-selected td {
-            background-color: #E6F7FF !important;
+            background-color: #e6f7ff !important;
           }
         `}</style>
 
