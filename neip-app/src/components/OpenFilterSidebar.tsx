@@ -458,17 +458,20 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
             + Filter
           </button>
         </div>
-
         {/* "Apply filters" Button */}
         <div className='mt-4'>
           <button
             onClick={applyFilters}
-            className='bg-green-500 text-white px-4 py-2 rounded-lg w-full'
-            style={{ backgroundColor: '#44B4EF' }}
+            className={`text-white px-4 py-2 rounded-lg w-full ${
+              filters.length === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500'
+            }`}
+            disabled={filters.length === 0}
+            style={{ backgroundColor: filters.length === 0 ? '#CCCCCC' : '#44B4EF' }}
           >
             Apply filters
           </button>
         </div>
+
       </div>
     </div>
   )

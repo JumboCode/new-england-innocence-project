@@ -555,24 +555,47 @@ const HomePage: React.FC = () => {
   )
 
   const handleRemoveFilter = (index: number) => {
-    setSelectedFilters(prevFilters => prevFilters.filter((_, i) => i !== index))
-    setAppliedFilters(prevFilters => prevFilters.filter((_, i) => i !== index))
+    setSelectedFilters(prevFilters => {
+      const updatedFilters = prevFilters.filter((_, i) => i !== index)
+      return updatedFilters
+    })
+  
+    setAppliedFilters(prevFilters => {
+      const updatedAppliedFilters = prevFilters.filter((_, i) => i !== index)
+  
+      if (updatedAppliedFilters.length === 0) {
+        refreshExonerees()
+        setFilteredExonereeIDs(null)
+      }
+  
+      return updatedAppliedFilters
+    })
+  
     setLogic(prevLogic => prevLogic.filter((_, i) => i !== index - 1))
   }
+  
 
+  // useEffect(() => {
+  //   console.log('Updated selected filters:', selectedFilters)
+  //   console.log('Updated applied filters:', appliedFilters)
+  //   console.log('Updated logic:', logic)
+  
+  //   if (selectedFilters.length === 0 && appliedFilters.length === 0) {
+  //     console.log('Refreshing exonerees')
+  //     refreshExonerees()
+  //   } else {
+  //     fetchFilters()
+  //   }
+  // }, [selectedFilters, appliedFilters, logic]) 
   useEffect(() => {
-    console.log('Updated selected filters:', selectedFilters)
-    console.log('Updated applied filters:', appliedFilters)
-    console.log('Updated logic:', logic)
-    console.log('Selected Filters', selectedFilters.length)
-    console.log('Applied Filters', appliedFilters.length)
-    if (selectedFilters.length == 0 && appliedFilters.length == 0) {
-      console.log('Refreshing exonerees')
+    if (selectedFilters.length === 0 && appliedFilters.length === 0) {
       refreshExonerees()
     } else {
       fetchFilters()
     }
-  })
+  }, [selectedFilters, appliedFilters, logic])
+  
+  
 
   const handleCellClick = (
     event: React.MouseEvent<HTMLTableCellElement>,
