@@ -99,8 +99,8 @@ const columns = [
           src={`/api/exonerees/imageProxy?key=${encodeURIComponent(imageURL.split('/').pop() || '')}`}
           alt="Profile Picture"
           style={{
-            width: '100px',
-            height: '100px',
+            width: '70px',
+            height: '70px',
             objectFit: 'cover',
             borderRadius: '50%'
           }}
@@ -110,8 +110,8 @@ const columns = [
           src={PersonalInfoIcon.src} //personal info icon from add exoneree modal file
           alt="Default Profile"
           style={{
-            width: '100%',
-            height: '50%',
+            width: '70px',
+            height: '70px',
             objectFit: 'cover',
             borderRadius: '50%',
           }}
