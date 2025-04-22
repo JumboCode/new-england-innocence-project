@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import AuthBox from "../components/AuthBox";
 import AuthButton from "../components/AuthButton";
 import AuthEntryBox from "../components/AuthEntryBox";
+import Modal from '@/components/ChangePasswordModal'
 import { useRouter } from "next/router";
 import { useSignIn } from "@clerk/nextjs";
 
@@ -11,6 +12,7 @@ const LoginPage: React.FC = () => {
   const { signIn, isLoaded } = useSignIn();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isModalOpen, setModalOpen] = useState(false);
   const router = useRouter();
 
   // Get redirect path from query string: ?redirect=/dashboard
@@ -88,7 +90,10 @@ const LoginPage: React.FC = () => {
             cursor: "pointer",
             marginBottom: "20px"
           }}>
-            Reset password
+            <button onClick={() => setModalOpen(true)}>
+              Reset Password
+            </button>
+            <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
           </div>
 
           <AuthButton color="#3b82f6" filled={true} text="Login" onClick={handleLogin} />
