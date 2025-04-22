@@ -7,7 +7,15 @@ import FilterSelection from './FilterSelection'
 
 interface OpenFilterSidebarProps {
   onClose: () => void
-  onApplyFilters: (filteredIDs: number[]) => void
+  onApplyFilters: (filteredIDs: number[], filters: TransformedFilter[], logic: ('AND' | 'OR')[] ) => void
+}
+
+interface TransformedFilter {
+  type: string,
+  field: string,
+  table: string,
+  value: string,
+  constraint: string
 }
 
 interface Filter {
@@ -346,7 +354,7 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
       const filteredIDs = Array.isArray(data.exonereeIDs)
         ? data.exonereeIDs.flat()
         : []
-      onApplyFilters(filteredIDs)
+      onApplyFilters(filteredIDs, transformedFilters, logic)
     } catch (error) {
       console.error('Error applying filters:', error)
     }
@@ -450,17 +458,20 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
             + Filter
           </button>
         </div>
-
         {/* "Apply filters" Button */}
         <div className='mt-4'>
           <button
             onClick={applyFilters}
-            className='bg-green-500 text-white px-4 py-2 rounded-lg w-full'
-            style={{ backgroundColor: '#44B4EF' }}
+            className={`text-white px-4 py-2 rounded-lg w-full ${
+              filters.length === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500'
+            }`}
+            disabled={filters.length === 0}
+            style={{ backgroundColor: filters.length === 0 ? '#CCCCCC' : '#44B4EF' }}
           >
             Apply filters
           </button>
         </div>
+
       </div>
     </div>
   )

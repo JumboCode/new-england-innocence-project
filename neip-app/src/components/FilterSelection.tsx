@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 interface FilterSelectionProps {
   onRemove: (id: number) => void
@@ -53,9 +53,42 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
   value,
   setValue
 }) => {
-  // If options are provided for this field, use the dropdown options.
-  const isDropdownField = dropdownOptionsMap.hasOwnProperty(title.field)
+    const [dynamicOptions, setDynamicOptions] = useState<string[]>([])
 
+    const isStaticDropdown = dropdownOptionsMap.hasOwnProperty(title.field)
+    const isDynamicDropdown = title.field === 'originalCharges' || title.field === 'officersInvolved'
+    
+    // Fetch options dynamically
+    useEffect(() => {
+      const fetchOptions = async () => {
+        let endpoint = ''
+    
+        if (title.field === 'originalCharges') {
+          endpoint = '/api/tags/charge/getCharge'
+        } else if (title.field === 'officersInvolved') {
+          endpoint = '/api/tags/officer/getOfficer'
+        } else {
+          return
+        }
+    
+        try {
+          const response = await fetch(endpoint)
+          const data = await response.json()
+          if (Array.isArray(data)) {
+            setDynamicOptions(data)
+          } else if (Array.isArray(data.tags)) {
+            setDynamicOptions(data.tags)
+          }
+        } catch (err) {
+          console.error('Failed to fetch dynamic dropdown options:', err)
+        }
+      }
+    
+      if (title.field === 'originalCharges' || title.field === 'officersInvolved') {
+        fetchOptions()
+      }
+    }, [title.field])      
+    
   return (
     <div className='flex flex-col p-2 bg-gray-100 border border-gray-300 rounded-lg w-full max-w-[350px] truncate'>
       <div className='flex items-center justify-between'>
@@ -83,7 +116,7 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
           ))}
         </select>
 
-        {isDropdownField ? (
+        {isStaticDropdown || isDynamicDropdown ? (
           <select
             className='border border-gray-500 rounded-md px-2 py-1 text-gray-900 text-sm max-w-[232px] truncate'
             value={value}
@@ -92,7 +125,7 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
             <option value='' disabled>
               Select...
             </option>
-            {dropdownOptionsMap[title.field].map(opt => (
+            {(isStaticDropdown ? dropdownOptionsMap[title.field] : dynamicOptions).map(opt => (
               <option key={opt} value={opt}>
                 {opt}
               </option>

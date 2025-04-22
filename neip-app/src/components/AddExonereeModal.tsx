@@ -258,6 +258,10 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         return
       }
 
+      console.log("Submitting officersInvolved:", formData.officersInvolved);
+        console.log("Type of officersInvolved:", typeof formData.officersInvolved);
+
+
       const response = await fetch('/api/exonerees/addExoneree', {
         method: 'POST',
         headers: {

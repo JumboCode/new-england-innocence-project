@@ -19,6 +19,7 @@ import OpenFilterSidebar from '../components/OpenFilterSidebar'
 import { saveAs } from 'file-saver'
 import OfficerInfo from '@/components/OfficerInfoComponent'
 import PersonalInfoIcon from '../img/PersonalInfoIcon.png'
+import { ColumnType } from 'antd/es/table'
 
 // Define the data structure type with an index signature
 interface TableRowData {
@@ -72,11 +73,10 @@ interface TableRowData {
 }
 
 interface Filter {
-  name: string;
-  operator: string;
-  value: string | string[];
+  name: string
+  operator: string
+  value: string | string[]
 }
-
 
 // Dynamic import for the Ant Design Table component
 const Table = dynamic(() => import('antd').then(mod => mod.Table), {
@@ -94,10 +94,12 @@ const columns = [
     width: 120,
     fixed: 'left',
     render: (imageURL: string) => {
-      return imageURL != "N/A" ? (
+      return imageURL != 'N/A' ? (
         <img
-          src={`/api/exonerees/imageProxy?key=${encodeURIComponent(imageURL.split('/').pop() || '')}`}
-          alt="Profile Picture"
+          src={`/api/exonerees/imageProxy?key=${encodeURIComponent(
+            imageURL.split('/').pop() || ''
+          )}`}
+          alt='Profile Picture'
           style={{
             width: '70px',
             height: '70px',
@@ -108,16 +110,16 @@ const columns = [
       ) : (
         <img
           src={PersonalInfoIcon.src} //personal info icon from add exoneree modal file
-          alt="Default Profile"
+          alt='Default Profile'
           style={{
             width: '70px',
             height: '70px',
             objectFit: 'cover',
-            borderRadius: '50%',
+            borderRadius: '50%'
           }}
         />
-      );
-    } 
+      )
+    }
   },
   { title: 'DOB', dataIndex: 'dob', key: 'dob', width: 120 },
   { title: 'Race', dataIndex: 'race', key: 'race', width: 120 },
@@ -126,84 +128,89 @@ const columns = [
     title: 'Phone Number',
     dataIndex: 'phoneNumber',
     key: 'phoneNumber',
-    width: 120
+    width: 180
   },
   { title: 'Address', dataIndex: 'address', key: 'address', width: 220 },
-  { title: 'Email', dataIndex: 'email', key: 'email', width: 120 },
+  {
+    title: 'Email',
+    dataIndex: 'email',
+    key: 'email',
+    width: 150
+  },
   {
     title: 'Case Number',
     dataIndex: 'caseNumber',
     key: 'caseNumber',
-    width: 120
+    width: 150
   },
-  { title: 'Crime Type', dataIndex: 'crimeType', key: 'crimeType', width: 120 },
-  { title: 'Gender', dataIndex: 'gender', key: 'gender', width: 120 },
+  { title: 'Crime Type', dataIndex: 'crimeType', key: 'crimeType', width: 150 },
+  { title: 'Gender', dataIndex: 'gender', key: 'gender', width: 150 },
   {
     title: 'Jurisdiction',
     dataIndex: 'jurisdiction',
     key: 'jurisdiction',
-    width: 120
+    width: 150
   },
   {
     title: 'Exoneration Number',
     dataIndex: 'exonerationNumber',
     key: 'exonerationNumber',
-    width: 120
+    width: 150
   },
   {
     title: 'Years In Prison',
     dataIndex: 'yearsInPrison',
     key: 'yearsInPrison',
-    width: 120
+    width: 150
   },
   {
     title: 'Arrest Date',
     dataIndex: 'arrestDate',
     key: 'arrestDate',
-    width: 120
+    width: 150
   },
   {
     title: 'Conviction Date',
     dataIndex: 'convictionDate',
     key: 'convictionDate',
-    width: 120
+    width: 150
   },
   {
     title: 'Freedom Date',
     dataIndex: 'freedomDate',
     key: 'freedomDate',
-    width: 120
+    width: 150
   },
   {
     title: 'Exoneration Date',
     dataIndex: 'exonerationDate',
     key: 'exonerationDate',
-    width: 120
+    width: 150
   },
-  { title: 'Sentence', dataIndex: 'sentence', key: 'sentence', width: 120 },
+  { title: 'Sentence', dataIndex: 'sentence', key: 'sentence', width: 150 },
   {
     title: 'Original Charges',
     dataIndex: 'originalCharges',
     key: 'originalCharges',
-    width: 120
+    width: 150
   },
   {
     title: 'Conviction Method',
     dataIndex: 'convictionMethod',
     key: 'convictionMethod',
-    width: 120
+    width: 150
   },
   {
     title: 'Exoneration Method',
     dataIndex: 'exonerationMethod',
     key: 'exonerationMethod',
-    width: 120
+    width: 150
   },
   {
     title: 'Police Department',
     dataIndex: 'policeDepartment',
     key: 'policeDepartment',
-    width: 120
+    width: 150
   },
   {
     title: 'Legal Representation',
@@ -215,20 +222,20 @@ const columns = [
     title: 'Prosecutor',
     dataIndex: 'prosecutor',
     key: 'prosecutor',
-    width: 120
+    width: 150
   },
-  { title: 'Judge', dataIndex: 'judge', key: 'judge', width: 120 },
+  { title: 'Judge', dataIndex: 'judge', key: 'judge', width: 150 },
   {
     title: 'Officers Involved',
     dataIndex: 'officersInvolved',
     key: 'officersInvolved',
-    width: 120
+    width: 150
   },
   {
     title: 'False Confession',
     dataIndex: 'falseConfession',
     key: 'falseConfession',
-    width: 120
+    width: 150
   },
   {
     title: 'Eyewitness Misidentification',
@@ -246,25 +253,25 @@ const columns = [
     title: 'Police Misconduct',
     dataIndex: 'policeMisconduct',
     key: 'policeMisconduct',
-    width: 120
+    width: 150
   },
   {
     title: 'Prosecutorial Misconduct',
     dataIndex: 'prosecutorialMisconduct',
     key: 'prosecutorialMisconduct',
-    width: 120
+    width: 150
   },
   {
     title: 'Forensic Evidence',
     dataIndex: 'forensicEvidence',
     key: 'forensicEvidence',
-    width: 120
+    width: 150
   },
   {
     title: 'Informant Testimony',
     dataIndex: 'informantTestimony',
     key: 'informantTestimony',
-    width: 120
+    width: 150
   },
   {
     title: 'Other Info',
@@ -282,57 +289,57 @@ const columns = [
     title: 'Reentry Support',
     dataIndex: 'reentrySupport',
     key: 'reentrySupport',
-    width: 120
+    width: 150
   },
   {
     title: 'Public Apology',
     dataIndex: 'publicApology',
     key: 'publicApology',
-    width: 120
+    width: 150
   },
   {
     title: 'Current Status',
     dataIndex: 'currentStatus',
     key: 'currentStatus',
-    width: 120
+    width: 150
   },
   {
     title: 'Media Coverage',
     dataIndex: 'mediaCoverage',
     key: 'mediaCoverage',
-    width: 120
+    width: 150
   },
   {
     title: 'Advocacy Involvement',
     dataIndex: 'advocacyInvolvement',
     key: 'advocacyInvolvement',
-    width: 120
+    width: 150
   },
   {
     title: 'Educational Background',
     dataIndex: 'educationalBackground',
     key: 'educationalBackground',
-    width: 120
+    width: 150
   },
   {
     title: 'Health Info',
     dataIndex: 'healthInfo',
     key: 'healthInfo',
-    width: 120
+    width: 150
   },
   {
     title: 'Data Source',
     dataIndex: 'dataSource',
     key: 'dataSource',
-    width: 120
+    width: 150
   },
   {
     title: 'Last Updated',
     dataIndex: 'lastUpdated',
     key: 'lastUpdated',
-    width: 120
+    width: 150
   },
-  { title: 'Created At', dataIndex: 'createdAt', key: 'createdAt', width: 120 }
+  { title: 'Created At', dataIndex: 'createdAt', key: 'createdAt', width: 150 }
 ]
 
 const HomePage: React.FC = () => {
@@ -479,6 +486,52 @@ const HomePage: React.FC = () => {
     setSelectedColumns(newSelectedColumns)
   }
 
+  const [appliedFilters, setAppliedFilters] = useState<TransformedFilter[]>([])
+  interface TransformedFilter {
+    type: string
+    field: string
+    table: string
+    value: string
+    constraint: string
+  }
+
+  const [logic, setLogic] = useState<('AND' | 'OR')[]>([])
+
+  useEffect(() => {
+    if (appliedFilters && appliedFilters.length > 0) {
+      fetchFilters()
+    }
+  }, [appliedFilters, logic])
+
+  const fetchFilters = async () => {
+    try {
+      const response = await fetch('/api/filter/filter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          operators: logic,
+          filters: appliedFilters
+        })
+      })
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Error applying filters:', errorData)
+        return
+      }
+      const data = await response.json()
+      console.log('Filter applied, result:', data)
+      const filteredIDs = Array.isArray(data.exonereeIDs)
+        ? data.exonereeIDs.flat()
+        : []
+      // onApplyFilters(filteredIDs, appliedFilters, logic)
+      setFilteredExonereeIDs(filteredIDs)
+    } catch (error) {
+      console.error('Error applying filters:', error)
+    }
+  }
+
   const [selectedFilters, setSelectedFilters] = useState<Filter[]>([])
   const [actionMenuVisible, setActionMenuVisible] = useState(false)
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 })
@@ -497,16 +550,79 @@ const HomePage: React.FC = () => {
       fixed: column.fixed as 'left' | 'right' | undefined,
       onCell: (record: any) => ({
         onClick: (event: any) => handleCellClick(event, record, column.key)
-      })
-    }))
+      }),
+      sorter: (a: any, b: any) => {
+        // get values
+        const valA = a[column.dataIndex]
+        const valB = b[column.dataIndex]
+
+        if (valA == null) return -1
+        if (valB == null) return 1
+
+        // detect and compare dates
+        if (
+          typeof valA === 'string' &&
+          typeof valB === 'string' &&
+          !isNaN(Date.parse(valA)) &&
+          !isNaN(Date.parse(valB))
+        ) {
+          return new Date(valA).getTime() - new Date(valB).getTime()
+        }
+
+        // compare numbers
+        if (typeof valA === 'number' && typeof valB === 'number') {
+          return valA - valB
+        }
+
+        // compare strings
+        return String(valA).localeCompare(String(valB))
+      },
+      sortDirections: ['ascend', 'descend']
+    })) as ColumnType<any>[]
 
   const [selectedExonereeId, setSelectedExonereeId] = useState<number | null>(
     null
   )
 
   const handleRemoveFilter = (index: number) => {
-    setSelectedFilters(prevFilters => prevFilters.filter((_, i) => i !== index))
+    setSelectedFilters(prevFilters => {
+      const updatedFilters = prevFilters.filter((_, i) => i !== index)
+      return updatedFilters
+    })
+
+    setAppliedFilters(prevFilters => {
+      const updatedAppliedFilters = prevFilters.filter((_, i) => i !== index)
+
+      if (updatedAppliedFilters.length === 0) {
+        refreshExonerees()
+        setFilteredExonereeIDs(null)
+      }
+
+      return updatedAppliedFilters
+    })
+
+    setLogic(prevLogic => prevLogic.filter((_, i) => i !== index - 1))
   }
+
+  // useEffect(() => {
+  //   console.log('Updated selected filters:', selectedFilters)
+  //   console.log('Updated applied filters:', appliedFilters)
+  //   console.log('Updated logic:', logic)
+
+  //   if (selectedFilters.length === 0 && appliedFilters.length === 0) {
+  //     console.log('Refreshing exonerees')
+  //     refreshExonerees()
+  //   } else {
+  //     fetchFilters()
+  //   }
+  // }, [selectedFilters, appliedFilters, logic])
+  useEffect(() => {
+    if (selectedFilters.length === 0 && appliedFilters.length === 0) {
+      refreshExonerees()
+    } else {
+      fetchFilters()
+    }
+  }, [selectedFilters, appliedFilters, logic])
 
   const handleCellClick = (
     event: React.MouseEvent<HTMLTableCellElement>,
@@ -651,8 +767,20 @@ const HomePage: React.FC = () => {
       {isSidebarOpen && (
         <OpenFilterSidebar
           onClose={closeFilterSidebar}
-          onApplyFilters={(ids: number[]) => {
+          onApplyFilters={(
+            ids: number[],
+            filters: TransformedFilter[],
+            logic: ('AND' | 'OR')[]
+          ) => {
             setFilteredExonereeIDs(ids)
+            const fetchedFilters = filters.map(filter => ({
+              name: filter.field,
+              operator: filter.constraint,
+              value: filter.value
+            }))
+            setSelectedFilters(fetchedFilters)
+            setAppliedFilters(filters)
+            setLogic(logic)
             closeFilterSidebar()
           }}
         />
@@ -908,6 +1036,12 @@ const HomePage: React.FC = () => {
           dataSource={displayedExonerees}
           columns={exonerees.length === 0 ? [] : filteredColumns}
           scroll={{ x: 'max-content', y: 390 }}
+          rowSelection={{
+            selectedRowKeys: selectedRows,
+            onChange: (selectedRowKeys: React.Key[]) => {
+              setSelectedRows(selectedRowKeys.map(key => Number(key)))
+            }
+          }}
         />
       </div>
       <div>
@@ -922,6 +1056,10 @@ const HomePage: React.FC = () => {
           }
           .ant-table-thead > tr > th > div {
             min-width: 120px !important;
+          }
+
+          .ant-table-row-selected td {
+            background-color: #e6f7ff !important;
           }
         `}</style>
 

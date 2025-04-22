@@ -43,7 +43,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           }
         },
         ...(caseInfo && { caseInfo: { create: caseInfo } }),
-        ...(legalInfo && { legalInfo: { create: legalInfo } }),
+        ...(legalInfo && {
+            legalInfo: {
+              create: {
+                originalCharges: legalInfo.originalCharges,
+                convictionMethod: legalInfo.convictionMethod,
+                exonerationMethod: legalInfo.exonerationMethod,
+                legalRepresentation: legalInfo.legalRepresentation,
+                policeDepartment: legalInfo.policeDepartment,
+                prosecutor: legalInfo.prosecutor,
+                judge: legalInfo.judge,
+                officersInvolved: legalInfo.officersInvolved
+              }
+            }
+          }),          
         ...(wrongfulConvictionInfo && { wrongfulConvictionInfo: { create: wrongfulConvictionInfo } }),
         ...(postExonerationInfo && { postExonerationInfo: { create: postExonerationInfo } }),
         ...(metaDataInput && { metaData: metaDataInput }),

@@ -28,7 +28,7 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
         border: "2px solid #CCDDF8",
         borderRadius: "16px",
         textAlign: "center",
-        color: 'black'
+        color: '#000000'
     }
 
     const adminTypeStyle: React.CSSProperties = {
