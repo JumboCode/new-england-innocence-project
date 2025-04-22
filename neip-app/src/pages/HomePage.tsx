@@ -32,7 +32,7 @@ interface TableRowData {
   ethnicity: string
   phoneNumber: string
   address: string
-  imageUrl: string
+  imageURL: string
   email: string
   caseNumber: string
   jurisdiction: string
@@ -89,18 +89,18 @@ const columns = [
   // { title: 'Image', dataIndex: 'name', key: 'name', width: 120, fixed: 'left' }, //Image functionality hasn't been merged yet, so name is placeholder
   {
     title: 'Image',
-    dataIndex: 'imageUrl',
-    key: 'imageUrl',
+    dataIndex: 'imageURL',
+    key: 'imageURL',
     width: 120,
     fixed: 'left',
-    render: (imageUrl: string) => {
-      return imageUrl ? (
+    render: (imageURL: string) => {
+      return imageURL != "N/A" ? (
         <img
-          src={`/api/exonerees/imageProxy?key=${encodeURIComponent(imageUrl.split('/').pop() || '')}`}
+          src={`/api/exonerees/imageProxy?key=${encodeURIComponent(imageURL.split('/').pop() || '')}`}
           alt="Profile Picture"
           style={{
-            width: '100%',
-            height: '100%',
+            width: '100px',
+            height: '100px',
             objectFit: 'cover',
             borderRadius: '50%'
           }}
@@ -383,6 +383,7 @@ const HomePage: React.FC = () => {
           id: item.id, // ensure we have the id
           key: item.id || index.toString(),
           name: handleEmptyString(item.personalInfo?.name),
+          imageURL: handleEmptyString(item.personalInfo?.imageURL),
           dob: handleEmptyString(item.personalInfo?.dateOfBirth),
           gender: handleEmptyString(item.personalInfo?.gender),
           race: handleEmptyString(item.personalInfo?.race),
@@ -459,7 +460,6 @@ const HomePage: React.FC = () => {
           createdAt: handleEmptyString(item.metaData?.createdAt)
         })
       )
-
       setExonerees(formattedData)
     } catch (error) {
       console.error('🚨 Error fetching exonerees:', error)
