@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react'
 interface FilterSelectionProps {
   onRemove: (id: number) => void
   // title now includes the internal field key (e.g., "gender")
-  title: { id: number; label: string; field: string; options?: string[] }
+  title: { id: number; label: string; field: string; type: string; options?: string[] }
   condition: string
   setCondition: (value: string) => void
   value: string
   setValue: (newValue: string) => void
-}
+} 
 
 const dropdownOptionsMap: { [key: string]: string[] } = {
   gender: ['M', 'F', 'Other'],
@@ -54,9 +54,10 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
   setValue
 }) => {
     const [dynamicOptions, setDynamicOptions] = useState<string[]>([])
-
     const isStaticDropdown = dropdownOptionsMap.hasOwnProperty(title.field)
     const isDynamicDropdown = title.field === 'originalCharges' || title.field === 'officersInvolved'
+    const invalidConstraint = ['<', '<=', '>', '>='].includes(condition) && (title.type === 'string' || title.type === 'tag' || title.type === 'bool')
+
     
     // Fetch options dynamically
     useEffect(() => {
@@ -120,7 +121,14 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
           <select
             className='border border-gray-500 rounded-md px-2 py-1 text-gray-900 text-sm max-w-[232px] truncate'
             value={value}
-            onChange={e => setValue(e.target.value)}
+            onChange={e => {
+                const val = e.target.value
+                if (title.field === 'gender') {
+                  setValue(val.toUpperCase())
+                } else {
+                  setValue(val)
+                }
+              }}
           >
             <option value='' disabled>
               Select...
@@ -150,6 +158,12 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
           </button>
         )}
       </div>
+
+      {invalidConstraint && (
+          <div className='text-red-600 text-sm mt-1'>
+            This constraint is not valid for text-based fields.
+          </div>
+      )}
     </div>
   )
 }

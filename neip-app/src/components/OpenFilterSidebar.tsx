@@ -45,12 +45,17 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
   const [logic, setLogic] = useState<('AND' | 'OR')[]>([])
   const [selectedField, setSelectedField] = useState('')
   const [selectOpen, setSelectOpen] = useState(false)
+  const hasInvalidConstraint = filters.some(
+    f =>
+      ['<', '<=', '>', '>='].includes(f.condition) &&
+      ['string', 'tag', 'bool'].includes(f.type)
+  )  
 
   const dataFields: DataField[]  = [
     // PersonalInfo fields
     { value: 'name', label: 'Name', type: 'string', table: 'PersonalInfo' },
     {
-      value: 'dob',
+      value: 'dateOfBirth',
       label: 'Date of birth',
       type: 'date',
       table: 'PersonalInfo'
@@ -465,8 +470,8 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
             className={`text-white px-4 py-2 rounded-lg w-full ${
               filters.length === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500'
             }`}
-            disabled={filters.length === 0}
-            style={{ backgroundColor: filters.length === 0 ? '#CCCCCC' : '#44B4EF' }}
+            disabled={filters.length === 0 || hasInvalidConstraint}
+            style={{ backgroundColor: filters.length === 0 || hasInvalidConstraint ? '#CCCCCC' : '#44B4EF' }}
           >
             Apply filters
           </button>
