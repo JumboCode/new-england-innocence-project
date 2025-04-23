@@ -822,20 +822,8 @@ const HomePage: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div style={{ padding: '30px' }}>
-        {/* "Home Database" Heading */}
-        <h1
-          style={{
-            color: '#101828',
-            fontWeight: 'bold',
-            fontSize: '30px',
-            marginTop: '-65px',
-            marginLeft: '10px'
-          }}
-        >
-          Home Database
-        </h1>
-
+      <div style={{ padding: '30px', paddingTop: '0px' }}>
+        
         {/* Search Bar and Action Buttons Container */}
         <div
           style={{
