@@ -72,6 +72,7 @@ const ManageUsers = () => {
 
     return (
         <>
+        <div style={{ backgroundColor: 'white', minHeight: '100vh' }}>
             {isInternAccountModalOpen && <InternAccountModal onClose={() => { setInternAccountModalOpen(false) }} />}
             <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '65px' }}>
                 {/* <h2>Account Information</h2> */}
@@ -100,6 +101,7 @@ const ManageUsers = () => {
             <button style={buttonStyle} onClick={() => { setInternAccountModalOpen(true) }}>
                 + Add Intern User
             </button>
+        </div>
         </>
     );
 };

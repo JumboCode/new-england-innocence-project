@@ -847,7 +847,7 @@ const HomePage: React.FC = () => {
           }}
         >
           {/* Search Bar */}
-          <div style={{ flex: 1, maxWidth: '300px', marginLeft: '15px' }}>
+          <div style={{ flex: 1, maxWidth: '300px', marginLeft: '15px', color: 'black' }}>
             <SearchEntryBox setExonerees={handleSetExonerees} />
           </div>
 
@@ -941,7 +941,7 @@ const HomePage: React.FC = () => {
             }}
           >
             <FaFilter
-              style={{ width: '16px', height: '16px', marginTop: '10px' }}
+              style={{ width: '16px', height: '16px', marginTop: '10px', color: 'black' }}
             />
             {selectedFilters.map((filter, index) => (
               <TableFilterIcons
