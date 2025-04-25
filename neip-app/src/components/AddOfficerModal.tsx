@@ -59,6 +59,15 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
         notes: formData.notes
       }
 
+      const officerName = `${formData.name}:${formData.badgeNumber}`
+      const officerResponse = await fetch(`/api/officers/getOfficerByName?name=${encodeURIComponent(officerName)}`)
+      const officerData = await officerResponse.json();
+      
+      if (officerData.error != 'Officer not found') {
+        alert('This officer already exists. Either a badge number (if you have not) to differentiate, or filter by the pre-existing officer to add information.');
+        return; 
+      }
+
       const response = await fetch('/api/officers/addOfficer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
