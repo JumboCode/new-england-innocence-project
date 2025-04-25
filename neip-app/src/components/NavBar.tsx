@@ -24,7 +24,7 @@ interface NavItem {
 // Sample nav items array
 const navItems: NavItem[] = [
     {
-        name: "Dashboard", 
+        name: "Database", 
         icon: <img src="/icons/dashboard.svg" alt="Dashboard Icon"/>,
         route: "/"
     },

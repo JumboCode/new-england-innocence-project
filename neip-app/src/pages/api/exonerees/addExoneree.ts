@@ -39,47 +39,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             ...(personalInfo.address && { address: personalInfo.address }),
             ...(personalInfo.email && { email: personalInfo.email }),
             ...(personalInfo.phoneNumber && { phoneNumber: personalInfo.phoneNumber }),
-
+            ...(personalInfo.imageURL && { imageURL: personalInfo.imageURL }),
           }
         },
         ...(caseInfo && { caseInfo: { create: caseInfo } }),
-        ...(legalInfo && { legalInfo: { create: legalInfo } }),
+        ...(legalInfo && {
+            legalInfo: {
+              create: {
+                originalCharges: legalInfo.originalCharges,
+                convictionMethod: legalInfo.convictionMethod,
+                exonerationMethod: legalInfo.exonerationMethod,
+                legalRepresentation: legalInfo.legalRepresentation,
+                policeDepartment: legalInfo.policeDepartment,
+                prosecutor: legalInfo.prosecutor,
+                judge: legalInfo.judge,
+                officersInvolved: legalInfo.officersInvolved
+              }
+            }
+          }),          
         ...(wrongfulConvictionInfo && { wrongfulConvictionInfo: { create: wrongfulConvictionInfo } }),
         ...(postExonerationInfo && { postExonerationInfo: { create: postExonerationInfo } }),
         ...(metaDataInput && { metaData: metaDataInput }),
-
-
-        // caseInfo: {
-        //   create: {
-        //     ...(caseInfo && { caseInfo: { create: caseInfo } }),
-        //   }
-        // },
-        // legalInfo: {
-        //   create: {
-        //     ...(legalInfo && { legalInfo: { create: legalInfo } }),
-        //   }
-        // },
-        // wrongfulConvictionInfo: {
-        //   create: {
-        //     ...(wrongfulConvictionInfo && { wrongfulConvictionInfo: { create: wrongfulConvictionInfo } }),
-        //   },
-        // },
-        // postExonerationInfo: {
-        //   create: {
-        //     ...(postExonerationInfo && { postExonerationInfo: { create: postExonerationInfo } }),
-        //   }
-        // },
-        // ...(metaDataInput && { metaData: metaDataInput }),
-
-
-        // include: {
-        // personalInfo: true,
-        // caseInfo: true,
-        // legalInfo: true,
-        // wrongfulConvictionInfo: true,
-        // postExonerationInfo: true,
-        // metaData: true,
-        // },
       }
     });
 

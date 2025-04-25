@@ -40,6 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 phoneNumber: formatField(exoneree.personalInfo?.phoneNumber),
                 address: formatField(exoneree.personalInfo?.address),
                 email: formatField(exoneree.personalInfo?.email),
+                imageURL: formatField(exoneree.personalInfo?.imageURL),
             },
             caseInfo: {
                 ...exoneree.caseInfo,

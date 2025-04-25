@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Image from 'next/image'
 import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
 import Tabs from '@mui/material/Tabs'
@@ -10,7 +9,6 @@ import LabelAndEntry from './LabelAndEntry'
 import LabelAndDropdown from './LabelAndDropdown'
 import DropdownAndTags from '../components/DropdownAndTags'
 import PersonalInfoIcon from '../img/PersonalInfoIcon.png'
-import EditIcon from '../img/EditIcon.png'
 import IconTextButton from '../components/IconTextButton'
 import isEqual from 'lodash/isEqual'
 
@@ -46,6 +44,7 @@ interface ExonereeData {
   race: string
   ethnicity: string
   address: string
+  imageUrl: string
   caseNumber: string
   jurisdiction: string
   yearsInPrison: string
@@ -108,6 +107,7 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
     race: selectedExoneree.race || '',
     ethnicity: selectedExoneree.ethnicity || '',
     address: selectedExoneree.address || '',
+    imageUrl: selectedExoneree.imageURL || '',
     caseNumber: selectedExoneree.caseNumber || '',
     jurisdiction: selectedExoneree.jurisdiction || '',
     yearsInPrison: selectedExoneree.yearsInPrison || '',
@@ -148,11 +148,11 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
     educationalBackground: selectedExoneree.educationalBackground || '',
     healthInfo: selectedExoneree.healthInfo || '',
     originalCharges: Array.isArray(selectedExoneree.originalCharges)
-      ? selectedExoneree.originalCharges
-      : selectedExoneree.originalCharges?.split(',').map((tag: string) => tag.trim()) || [],
+      ? selectedExoneree.originalCharges.filter((tag: string) => tag !== 'N/A')
+      : selectedExoneree.originalCharges?.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag && tag !== 'N/A') || [],
       officersInvolved: Array.isArray(selectedExoneree.officersInvolved)
-      ? selectedExoneree.officersInvolved
-      : selectedExoneree.officersInvolved?.split(',').map((tag: string) => tag.trim()) || []
+      ? selectedExoneree.officersInvolved.filter((tag: string) => tag !== 'N/A')
+      : selectedExoneree.officersInvolved?.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag && tag !== 'N/A') || []
   }
 
   const [formData, setFormData] = useState<ExonereeData>(initialData)
@@ -243,6 +243,35 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
     }
   }
 
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+  
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('image', file);
+  
+    try {
+      const res = await fetch('/api/exonerees/uploadImage', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      if (res.ok && data.imageUrl) {
+        setFormData(prev => ({ ...prev, imageUrl: data.imageUrl }));
+      } else {
+        throw new Error(data.error || 'Upload failed');
+      }
+    } catch (err) {
+      console.error('Upload error:', err);
+      alert('Failed to upload image');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   const handleSubmit = async () => {
     // Restructure the form data into the expected format
     const formattedData = {
@@ -260,7 +289,8 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
             : 'OTHER',
         race: formData.race,
         ethnicity: formData.ethnicity,
-        address: formData.address
+        address: formData.address,
+        imageURL: formData.imageUrl,
       },
       caseInfo: {
         caseNumber: formData.caseNumber,
@@ -394,21 +424,53 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
     switch (activeTab) {
       case 0:
         const personalLeftIcons = [
-          <React.Fragment key='personal-info-icon'>
-            <Image
-              src={PersonalInfoIcon}
-              alt='personal info icon'
-              height='5.21'
-              width='10.42'
-            />
-          </React.Fragment>,
-          <React.Fragment key='edit-icon'>
-            <Image
-              src={EditIcon}
-              alt='edit icon'
-              style={{ marginLeft: '200px' }}
-              height='5.21'
-              width='10.42'
+          <React.Fragment key="upload-image-section">
+            <div style={{ marginBottom: '12px' }}>
+              {isUploading ? (
+                <p>Uploading...</p>
+              ) : (
+                <div style={{
+                  padding: '5px',
+                  position: 'relative',
+                  width: '220px',
+                  height: '220px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <img
+                    // src={formData.imageUrl ? `/api/exonerees/imageProxy?key=${encodeURIComponent(formData.imageUrl.split('/').pop() || '')}` : PersonalInfoIcon.src}
+                    src={
+                      formData.imageUrl
+                        ? `/api/exonerees/imageProxy?key=${encodeURIComponent(formData.imageUrl.split('/').pop() || '')}`
+                        : PersonalInfoIcon.src
+                    }
+                    alt="Profile Picture"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      borderRadius: '50%'
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+            <label
+              style={{
+                fontSize: '13px',
+                fontFamily: 'Inter, sans-serif',
+                display: 'block',
+                color: 'rgb(102, 112, 133)'
+              }}
+            >
+              Image Upload
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              style={{ marginTop: '5px', marginBottom: '10px' }}
             />
           </React.Fragment>,
           <React.Fragment key='first-name-entry'>

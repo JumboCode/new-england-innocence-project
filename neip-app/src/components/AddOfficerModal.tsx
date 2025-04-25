@@ -35,7 +35,8 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
     name: '',
     badgeNumber: '',
     mediaLink: '',
-    notes: ''
+    notes: '',
+    department: ''
   })
 
   const handleChange = (
@@ -77,7 +78,8 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
         name: '',
         badgeNumber: '',
         mediaLink: '',
-        notes: ''
+        notes: '',
+        department: ''
       })
     } catch (error) {
       console.error('Error adding officer:', error)
@@ -126,6 +128,16 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
               height='35px'
               borderRadius='10px'
               value={formData.badgeNumber}
+              onChange={handleChange}
+              name='badgeNumber'
+            />
+            <LabelAndEntry
+              label={'Department'}
+              placeholder={'Department'}
+              width='100%'
+              height='35px'
+              borderRadius='10px'
+              value={formData.department}
               onChange={handleChange}
               name='badgeNumber'
             />
