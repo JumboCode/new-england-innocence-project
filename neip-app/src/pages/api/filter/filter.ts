@@ -116,6 +116,8 @@ export default async function handler (
 
   // If only one filter was provided, return its result directly.
   if (finalList.length === 1) {
+    console.log('Final combined IDs:', finalList[0])
+
     return res.status(200).json({ exonereeIDs: finalList[0] })
   }
 
@@ -145,6 +147,7 @@ export default async function handler (
       i--
     }
   }
+  console.log('Final combined IDs:', combinedList[0])
 
   return res.status(200).json({ exonereeIDs: combinedList[0] })
 }

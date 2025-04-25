@@ -21,7 +21,7 @@ interface TransformedFilter {
   type: string
   field: string
   table: string
-  value: string
+  value: string | string[]
   constraint: string
 }
 
@@ -30,7 +30,7 @@ interface Filter {
   label: string
   field: string
   condition: string
-  value: string
+  value: string | string[]
   type: string
   table: string
   options?: string[]
@@ -410,7 +410,7 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
           </div>
         ) : (
           <div>
-            <h3 className="font-bold mb-2 text-gray-800 dark:text-gray-200">Filters</h3>
+            <h3 className='font-bold mb-2 text-grey-800'>Filters</h3>
             {filters.map((filter, index) => (
               <div
                 key={filter.id}

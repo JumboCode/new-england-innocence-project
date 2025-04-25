@@ -1,11 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '../../../utils/database/connectToDb'
 
+type ExonereeResult = { id: number }
+
 export default async function handler (
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { value, field, constraint, model } = req.body
+  const { value, field, constraint, table } = req.body
 
   try {
     const int_val = parseInt(value)
@@ -14,19 +16,48 @@ export default async function handler (
       return res.status(400).json({ error: 'Invalid integer value' })
     }
 
+    const operatorMap: Record<string, string> = {
+      is: '=',
+      'is not': '!=',
+      '=': '=',
+      '!=': '!=',
+      '<': '<',
+      '<=': '<=',
+      '>': '>',
+      '>=': '>='
+    }
+
+    const sqlOperator = operatorMap[constraint]
+
+    if (!sqlOperator) {
+      return res.status(400).json({ error: `Invalid operator: ${constraint}` })
+    }
+
+    const lowercaseFirstLetter = (str: string) => {
+      return str.charAt(0).toLowerCase() + str.slice(1)
+    }
+
+    const tableField = `${lowercaseFirstLetter(table)}Id`
+
     const query = `
-      SELECT id
-      FROM "${model}"
-      WHERE "${field}" ${constraint} ${int_val}
+      SELECT "Exoneree".id
+      FROM "Exoneree"
+      JOIN "${table}" ON "Exoneree"."${tableField}" = "${table}".id
+      WHERE "${table}"."${field}"::int != 0
+        AND "${table}"."${field}"::int ${sqlOperator} ${int_val}
     `
+    
 
-    const exonerees = await prisma.$queryRawUnsafe<{ id: number }[]>(query)
+    console.log(`Running query: ${query}`)
 
-    const ids = exonerees.map(result => result.id)
+    const exonerees = await prisma.$queryRawUnsafe<ExonereeResult[]>(query)
+    console.log('Exonerees:', exonerees)
 
-    return res.status(200).json({ exonerees: ids })
+    const exonereeIds = exonerees.map((result: ExonereeResult) => result.id)
+    console.log(exonereeIds)
+    return res.status(200).json(exonereeIds)
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return res.status(400).json({ error: 'Failed to get IDs' })
   }
 }
