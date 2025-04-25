@@ -1,6 +1,7 @@
 import UsersComponent from "@/components/Users";
 import { useEffect, useState } from 'react';
 import NavBar from '../components/NavBar'
+import InternAccountModal from "@/components/InternAccountModal";
 
 interface User {
     id: string
@@ -48,6 +49,7 @@ const ManageUsers = () => {
 
     // Construct the full URL for the API endpoint
     const fullUrl = `${baseUrl}${"/api/auth/getUsers"}`;
+    const [isInternAccountModalOpen, setInternAccountModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -81,15 +83,25 @@ const ManageUsers = () => {
 
     return (
         <>
+        <div style={{ 
+            display: "flex", 
+            justifyContent: "space-between", 
+            alignItems: "center", 
+            paddingTop: "20px", 
+            paddingBottom: "20px", 
+            paddingLeft: "65px", 
+            paddingRight: "65px" 
+        }}>
             <div style={headingStyle}>Manage Users</div>
-            <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-                <div></div>
-                <div></div>
-                <button style={buttonStyle}>
-                    + Add new intern account
-                </button>
-            </div>
+            <button style={buttonStyle} onClick={() => setInternAccountModalOpen(true)}>
+                + Add new intern account
+            </button>
+        </div>
+        <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '65px' }}>
+        <div style={{ backgroundColor: 'white', minHeight: '100vh' }}>
+            {isInternAccountModalOpen && <InternAccountModal onClose={() => { setInternAccountModalOpen(false) }} />}
             <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '65px' }}>
+                {/* <h2>Account Information</h2> */}
                 {
                     users.map((user: User) => {
                         // Accessing firstName and lastName
@@ -112,8 +124,9 @@ const ManageUsers = () => {
                     })}
             </div>
             <NavBar />
+            </div>
+        </div>
         </>
-
     );
 };
 
