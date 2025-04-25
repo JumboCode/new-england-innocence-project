@@ -1022,8 +1022,9 @@ const HomePage: React.FC = () => {
         {/* Database Display */}
         <Table
           dataSource={displayedExonerees}
-          columns={exonerees.length === 0 ? [] : filteredColumns}
-          scroll={{ x: 'max-content', y: 390 }}
+          columns={filteredColumns}
+          tableLayout="fixed"
+          scroll={{ x: filteredColumns.length * 170, y: 390 }}
           rowSelection={{
             selectedRowKeys: selectedRows,
             onChange: (selectedRowKeys: React.Key[]) => {
@@ -1044,6 +1045,7 @@ const HomePage: React.FC = () => {
           }
           .ant-table-thead > tr > th > div {
             min-width: 120px !important;
+            box-sizing: border-box;
           }
 
           .ant-table-row-selected td {
