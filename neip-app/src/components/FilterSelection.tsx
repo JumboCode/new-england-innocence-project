@@ -6,7 +6,7 @@ interface FilterSelectionProps {
   title: { id: number; label: string; field: string; options?: string[] }
   condition: string
   setCondition: (value: string) => void
-  value: string
+  value: string | string[]
   setValue: (newValue: string) => void
 }
 
