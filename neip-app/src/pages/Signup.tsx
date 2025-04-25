@@ -6,6 +6,7 @@ import AuthBox from '../components/AuthBox'
 // import { useSignUp } from "@clerk/nextjs"
 import { v4 as uuidv4 } from "uuid"
 import dotenv from "dotenv";
+import { useRouter} from 'next/router'
 
 
 
@@ -64,8 +65,8 @@ const Signup: React.FC = () => {
 }
 
 const SignupContent = () => {
-  dotenv.config();
-  // const router = useRouter()
+    dotenv.config();
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -78,7 +79,9 @@ const SignupContent = () => {
   //if(!isLoaded) {return null}; //Clerk
 
   const VerificationCodeModal: React.FC = () => {
+    console.log("opening modal")
     console.log(openVerificationModal)
+    console.log(generatedVerificationCode); //testing purposes
     return (
       <div style={modalOverlay}>
         <div style={modalContent}>
@@ -119,12 +122,13 @@ const SignupContent = () => {
   const generateCode = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault()
     if (!firstName || !lastName || !email || !password) {
-      alert("Please enter you name, email, and password")
+      alert("Please enter your name, email, and password")
       return;
     }
     console.log("generating code")
     const code = uuidv4().slice(0, 6);
     setGeneratedVerificationCode(code)
+    console.log(code)
     setOpenVerificationModal(true)
     const responseEmail = await fetch('/api/auth/sendEmail', {
       method: 'POST',
@@ -160,9 +164,10 @@ const SignupContent = () => {
   }
 
   const handleSignup = async () => {
+    console.log("handling signup")
     try {
       if (!firstName || !lastName || !email || !password) {
-        alert("Please enter you name, email, and password")
+        alert("Please enter your name, email, and password")
         return;
       }
       else {
@@ -201,7 +206,7 @@ const SignupContent = () => {
         }
 
         alert('Signup successful!')
-        // router.push('/signupConfirmation'); // Navigate only after success
+        router.push('/signupConfirmation'); // Navigate only after success
       }
 
     } catch (error: any) {

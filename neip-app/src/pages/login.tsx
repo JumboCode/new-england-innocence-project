@@ -43,7 +43,9 @@ const LoginPage: React.FC = () => {
         strategy: "password",
       });
 
+      console.log("sign in result:", signInResult.status)
       if (signInResult.status === "complete") {
+        console.log("redirecting")
         router.push(redirectTo); // ✅ use dynamic redirect
       } else {
         alert("Login incomplete. Please try again.");
