@@ -20,6 +20,7 @@ import { saveAs } from 'file-saver'
 import OfficerInfo from '@/components/OfficerInfoComponent'
 import PersonalInfoIcon from '../img/PersonalInfoIcon.png'
 import { ColumnType } from 'antd/es/table'
+import { dataFields } from '../utils/database/dataFields'
 
 // Define the data structure type with an index signature
 interface TableRowData {
@@ -731,6 +732,24 @@ const HomePage: React.FC = () => {
 
   const noop: () => void = () => {}
 
+  const convertedFilters = selectedFilters
+    .map(selectedFilter => {
+      const fieldObject = dataFields.find(f => f.value === selectedFilter.name)
+      if (!fieldObject) return null
+
+      return {
+        id: Date.now() + Math.random(), // Generate unique ID
+        label: fieldObject.label,
+        field: fieldObject.value,
+        condition: selectedFilter.operator,
+        value: selectedFilter.value,
+        type: fieldObject.type,
+        table: fieldObject.table,
+        options: fieldObject.options
+      }
+    })
+    .filter((f): f is NonNullable<typeof f> => f !== null)
+
   return (
     <div
       style={{
@@ -783,6 +802,8 @@ const HomePage: React.FC = () => {
             setLogic(logic)
             closeFilterSidebar()
           }}
+          existingFilters={convertedFilters}
+          existingLogic={logic}
         />
       )}
 
@@ -823,7 +844,6 @@ const HomePage: React.FC = () => {
 
       {/* Main Content */}
       <div style={{ padding: '30px', paddingTop: '0px' }}>
-        
         {/* Search Bar and Action Buttons Container */}
         <div
           style={{
@@ -835,7 +855,14 @@ const HomePage: React.FC = () => {
           }}
         >
           {/* Search Bar */}
-          <div style={{ flex: 1, maxWidth: '300px', marginLeft: '15px', color: 'black' }}>
+          <div
+            style={{
+              flex: 1,
+              maxWidth: '300px',
+              marginLeft: '15px',
+              color: 'black'
+            }}
+          >
             <SearchEntryBox setExonerees={handleSetExonerees} />
           </div>
 
@@ -929,7 +956,12 @@ const HomePage: React.FC = () => {
             }}
           >
             <FaFilter
-              style={{ width: '16px', height: '16px', marginTop: '10px', color: 'black' }}
+              style={{
+                width: '16px',
+                height: '16px',
+                marginTop: '10px',
+                color: 'black'
+              }}
             />
             {selectedFilters.map((filter, index) => (
               <TableFilterIcons
@@ -941,7 +973,7 @@ const HomePage: React.FC = () => {
                   />
                 }
                 filled={true}
-                text={`${filter.name}: ${filter.operator} ${filter.value}`}
+                text={`${filter.name} ${filter.operator}: ${filter.value}`}
                 border={false}
                 borderRadius={false}
                 height='35px'
