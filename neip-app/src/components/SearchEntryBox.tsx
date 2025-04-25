@@ -177,7 +177,7 @@ const containerStyle: React.CSSProperties = {
 
 const inputStyle: React.CSSProperties = {
   border: 'none',
-  color: '111928',
+  color: 'black',
   outline: 'none',
   width: '100%',
   fontSize: '14px',
