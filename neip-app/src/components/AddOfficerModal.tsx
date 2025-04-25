@@ -54,8 +54,18 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
       const payload = {
         name: formData.name,
         badgeNumber: formData.badgeNumber,
-        mediaLink: formData.mediaLink,
+        department: formData.department,
+        MediaLinks: formData.mediaLink,
         notes: formData.notes
+      }
+
+      const officerName = `${formData.name}:${formData.badgeNumber}`
+      const officerResponse = await fetch(`/api/officers/getOfficerByName?name=${encodeURIComponent(officerName)}`)
+      const officerData = await officerResponse.json();
+      
+      if (officerData.error != 'Officer not found') {
+        alert('This officer already exists. Either a badge number (if you have not) to differentiate, or filter by the pre-existing officer to add information.');
+        return; 
       }
 
       const response = await fetch('/api/officers/addOfficer', {
@@ -112,7 +122,7 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
           {/* Left Column */}
           <div style={{ flex: 1, marginRight: '20px' }}>
             <LabelAndEntry
-              label={'Officer Name'}
+              label={'Officer Name *'}
               placeholder={'Name'}
               width='100%'
               height='35px'

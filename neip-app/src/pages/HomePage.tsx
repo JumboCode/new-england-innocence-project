@@ -1023,6 +1023,7 @@ const HomePage: React.FC = () => {
         <Table
           dataSource={displayedExonerees}
           columns={exonerees.length === 0 ? [] : filteredColumns}
+          pagination={false}
           scroll={{ x: 'max-content', y: 390 }}
           rowSelection={{
             selectedRowKeys: selectedRows,
