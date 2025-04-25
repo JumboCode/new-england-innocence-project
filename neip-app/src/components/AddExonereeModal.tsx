@@ -360,8 +360,8 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
                 <div style={{
                   padding: '5px',
                   position: 'relative',
-                  width: '220px',
-                  height: '220px',
+                  width: '50%',
+                  height: '50%',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -431,7 +431,10 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               onChange={handleChange}
               name='phoneNumber'
             />
-          </React.Fragment>,
+          </React.Fragment>
+        ]
+
+        const personalRightIcons = [
           <React.Fragment key='email-entry'>
             <LabelAndEntry
               label={'Email*'}
@@ -443,10 +446,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               onChange={handleChange}
               name='email'
             />
-          </React.Fragment>
-        ]
-
-        const personalRightIcons = [
+          </React.Fragment>,
           <React.Fragment key='dob-entry'>
             <LabelAndEntry
               label={'Date of Birth*'}
