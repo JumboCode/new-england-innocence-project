@@ -409,7 +409,7 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
           </div>
         ) : (
           <div>
-            <h3 className='font-bold mb-2 text-black-100'>Filters</h3>
+            <h3 className='font-bold mb-2 text-grey-800'>Filters</h3>
             {filters.map((filter, index) => (
               <div
                 key={filter.id}
