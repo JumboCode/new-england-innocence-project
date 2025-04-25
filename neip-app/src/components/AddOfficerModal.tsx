@@ -54,7 +54,8 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
       const payload = {
         name: formData.name,
         badgeNumber: formData.badgeNumber,
-        mediaLink: formData.mediaLink,
+        department: formData.department,
+        MediaLinks: formData.mediaLink,
         notes: formData.notes
       }
 
@@ -112,7 +113,7 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
           {/* Left Column */}
           <div style={{ flex: 1, marginRight: '20px' }}>
             <LabelAndEntry
-              label={'Officer Name'}
+              label={'Officer Name *'}
               placeholder={'Name'}
               width='100%'
               height='35px'

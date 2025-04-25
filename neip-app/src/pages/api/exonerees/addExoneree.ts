@@ -63,6 +63,46 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     });
 
+    // Check for any new officers 
+    legalInfo.officersInvolved.forEach(async (officer) => {
+      console.log(`Officer: ${officer}`);
+
+      // Build URL for sub-endpoint calls.
+      const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
+      const host = req.headers.host || 'localhost:3000'
+      const baseUrl = `${protocol}://${host}`
+
+      try { 
+        const officerResponse = await fetch(`${baseUrl}/api/officers/getOfficerByName?name=${encodeURIComponent(officer)}`)
+        // const officerResponse = await fetch(`http://localhost:3000/api/officers/getOfficerByName?name=${encodeURIComponent(officer)}`); // TODO change this URL to not be localhost
+        const officerData = await officerResponse.json();
+        console.log(`Officer response: ${officerData}`);
+        
+        if (officerData.error == 'Officer not found') {
+          // Add new officer 
+          console.log("Adding new officer");
+          const [officerName, badgeNumber] = officer.split(':'); // <name>:[badgeNumber]
+
+          const createOfficerResponse = await fetch(`${baseUrl}/api/officers/addOfficer`, {
+          // const createOfficerResponse = await fetch('http://localhost:3000/api/officers/addOfficer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: officerName, 
+              badgeNumber: badgeNumber,
+              notes: '',
+              MediaLinks: '',
+              department: ''
+            })
+          });
+          const createOfficerData = await createOfficerResponse.json();
+          console.log('Officer created:', createOfficerData);
+        }
+      } catch (err) {
+        console.error('Error fetching officer:', err);
+      }
+    });
+
     return res.status(201).json(newExoneree);
   } catch (error) {
     const errorMessage =
