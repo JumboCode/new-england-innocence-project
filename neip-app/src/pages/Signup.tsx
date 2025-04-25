@@ -212,8 +212,8 @@ const SignupContent = () => {
   return (
 
     <div>
-      {openVerificationModal &&
-        (<VerificationCodeModal />)}
+      {/* {openVerificationModal &&
+        (<VerificationCodeModal />)} */}
       <div>
         {/* Sign up text */}
         <h1
