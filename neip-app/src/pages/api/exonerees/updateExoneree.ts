@@ -153,7 +153,7 @@ export default async function handler (
     })
 
     // Check for any new officers 
-    updatedData.legalInfo.officersInvolved.forEach(async (officer) => {
+    updatedData.legalInfo.officersInvolved.forEach(async (officer: string) => {
       console.log(`Officer: ${officer}`);
 
       // Build URL for sub-endpoint calls.

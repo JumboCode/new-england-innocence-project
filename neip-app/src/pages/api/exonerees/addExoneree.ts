@@ -64,7 +64,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     // Check for any new officers 
-    legalInfo.officersInvolved.forEach(async (officer) => {
+    legalInfo.officersInvolved.forEach(async (officer: string) => {
       console.log(`Officer: ${officer}`);
 
       // Build URL for sub-endpoint calls.
