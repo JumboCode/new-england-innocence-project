@@ -74,7 +74,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       try { 
         const officerResponse = await fetch(`${baseUrl}/api/officers/getOfficerByName?name=${encodeURIComponent(officer)}`)
-        // const officerResponse = await fetch(`http://localhost:3000/api/officers/getOfficerByName?name=${encodeURIComponent(officer)}`); // TODO change this URL to not be localhost
         const officerData = await officerResponse.json();
         console.log(`Officer response: ${officerData}`);
         
@@ -84,7 +83,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           const [officerName, badgeNumber] = officer.split(':'); // <name>:[badgeNumber]
 
           const createOfficerResponse = await fetch(`${baseUrl}/api/officers/addOfficer`, {
-          // const createOfficerResponse = await fetch('http://localhost:3000/api/officers/addOfficer', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
