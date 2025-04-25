@@ -20,6 +20,8 @@ import { saveAs } from 'file-saver'
 import OfficerInfo from '@/components/OfficerInfoComponent'
 import PersonalInfoIcon from '../img/PersonalInfoIcon.png'
 import { ColumnType } from 'antd/es/table'
+import { useRouter } from 'next/router';
+import { useUser } from '@clerk/nextjs';
 
 // Define the data structure type with an index signature
 interface TableRowData {
@@ -349,10 +351,28 @@ const HomePage: React.FC = () => {
   const [exonerees, setExonerees] = useState<any[]>([])
   const [selectedRows, setSelectedRows] = useState<number[]>([])
 
+
+
+  const { isSignedIn, isLoaded } = useUser();
+  const router = useRouter();
+
+
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    console.log(`At home page ${isSignedIn}`)
+    if (!isSignedIn) {
+      router.push(`/login?redirect=${encodeURIComponent(router.asPath)}`);
+    }
+  }, [isLoaded, isSignedIn, router]);
+
+
+
   // Initialize selectedColumns with all column keys
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
     columns.map(col => col.key)
   )
+
 
   const handleSetExonerees = (data: any[]) => {
     setExonerees(data)
@@ -670,8 +690,8 @@ const HomePage: React.FC = () => {
     filteredExonereeIDs === null
       ? exonerees
       : exonerees.filter(exoneree =>
-          filteredExonereeIDs.includes(exoneree.id as number)
-        )
+        filteredExonereeIDs.includes(exoneree.id as number)
+      )
 
   const handleExportToCSV = async () => {
     try {
@@ -722,14 +742,17 @@ const HomePage: React.FC = () => {
     } catch (error) {
       console.error('Error deleting selected rows:', error)
       alert(
-        `Error deleting selected rows: ${
-          error instanceof Error ? error.message : 'Unknown error'
+        `Error deleting selected rows: ${error instanceof Error ? error.message : 'Unknown error'
         }`
       )
     }
   }
 
-  const noop: () => void = () => {}
+  const noop: () => void = () => { }
+
+  if (!isLoaded || !isSignedIn) {
+    return null;
+  }
 
   return (
     <div
@@ -823,7 +846,7 @@ const HomePage: React.FC = () => {
 
       {/* Main Content */}
       <div style={{ padding: '30px', paddingTop: '0px' }}>
-        
+
         {/* Search Bar and Action Buttons Container */}
         <div
           style={{

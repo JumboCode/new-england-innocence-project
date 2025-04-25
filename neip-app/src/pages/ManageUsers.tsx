@@ -2,6 +2,8 @@ import UsersComponent from "@/components/Users";
 import { useEffect, useState } from 'react';
 import NavBar from '../components/NavBar'
 import InternAccountModal from "@/components/InternAccountModal";
+import { useRouter } from 'next/router';
+import { useUser } from '@clerk/nextjs';
 
 interface User {
     id: number
@@ -40,6 +42,14 @@ const ManageUsers = () => {
     const fullUrl = `${baseUrl}${"/api/auth/getUsers"}`;
     const [isInternAccountModalOpen, setInternAccountModalOpen] = useState(false);
 
+    const { isSignedIn, isLoaded } = useUser();
+    const router = useRouter();
+    useEffect(() => {
+        if (isLoaded && !isSignedIn) {
+            router.push(`/login?redirect=${encodeURIComponent(router.asPath)}`);
+        }
+    }, [isLoaded, isSignedIn, router]);
+
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -70,38 +80,42 @@ const ManageUsers = () => {
         fetchUsers();  // Fetch users when the component mounts
     }, [fullUrl]);
 
+    if (!isLoaded || !isSignedIn) {
+        return null;
+    }
+
     return (
         <>
-        <div style={{ backgroundColor: 'white', minHeight: '100vh' }}>
-            {isInternAccountModalOpen && <InternAccountModal onClose={() => { setInternAccountModalOpen(false) }} />}
-            <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '65px' }}>
-                {/* <h2>Account Information</h2> */}
-                {
-                    users.map((user: User) => {
-                        // Accessing firstName and lastName
-                        const firstNameUsers = user.firstName || "Kevin";
-                        const lastNameUsers = user.lastName || "Aka";
+            <div style={{ backgroundColor: 'white', minHeight: '100vh' }}>
+                {isInternAccountModalOpen && <InternAccountModal onClose={() => { setInternAccountModalOpen(false) }} />}
+                <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '65px' }}>
+                    {/* <h2>Account Information</h2> */}
+                    {
+                        users.map((user: User) => {
+                            // Accessing firstName and lastName
+                            const firstNameUsers = user.firstName || "Kevin";
+                            const lastNameUsers = user.lastName || "Aka";
 
-                        // Accessing emailAddresses - assuming the first email address is the primary one
-                        const emailUsers = user.emailAddresses.length > 0 ? user.emailAddresses[0].email : 'kevin.aka@tufts.edu';
-                        const timestamp = user.createdAt;
+                            // Accessing emailAddresses - assuming the first email address is the primary one
+                            const emailUsers = user.emailAddresses.length > 0 ? user.emailAddresses[0].email : 'kevin.aka@tufts.edu';
+                            const timestamp = user.createdAt;
 
-                        // Convert to Date object
-                        const date = new Date(timestamp);
+                            // Convert to Date object
+                            const date = new Date(timestamp);
 
-                        // Get the ISO string and slice to only include the date (YYYY-MM-DD)
-                        const dateOnly = date.toISOString().split('T')[0];
-                        console.log(`User: ${firstNameUsers} ${lastNameUsers}, Email: ${emailUsers}`);
-                        return (
-                            <UsersComponent key={user.id} firstName={firstNameUsers} lastName={lastNameUsers} email={emailUsers} type="administration" dateCreated={dateOnly} />
-                        )
-                    })}
-                <NavBar />
+                            // Get the ISO string and slice to only include the date (YYYY-MM-DD)
+                            const dateOnly = date.toISOString().split('T')[0];
+                            console.log(`User: ${firstNameUsers} ${lastNameUsers}, Email: ${emailUsers}`);
+                            return (
+                                <UsersComponent key={user.id} firstName={firstNameUsers} lastName={lastNameUsers} email={emailUsers} type="administration" dateCreated={dateOnly} />
+                            )
+                        })}
+                    <NavBar />
+                </div>
+                <button style={buttonStyle} onClick={() => { setInternAccountModalOpen(true) }}>
+                    + Add Intern User
+                </button>
             </div>
-            <button style={buttonStyle} onClick={() => { setInternAccountModalOpen(true) }}>
-                + Add Intern User
-            </button>
-        </div>
         </>
     );
 };

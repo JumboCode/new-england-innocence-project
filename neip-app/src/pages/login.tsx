@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AuthBox from "../components/AuthBox";
 import AuthButton from "../components/AuthButton";
 import AuthEntryBox from "../components/AuthEntryBox";
 import Modal from '@/components/ChangePasswordModal'
 import { useRouter } from "next/router";
 import { useSignIn } from "@clerk/nextjs";
+import { useUser } from '@clerk/nextjs';
 
 const LoginPage: React.FC = () => {
   const { signIn, isLoaded } = useSignIn();
@@ -14,12 +15,30 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
   const router = useRouter();
+  const { isSignedIn } = useUser();
+
+
+  const redirectTo = typeof router.query.redirect === "string" ? router.query.redirect : "/";
+
+  // useEffect(() => {
+  //   if (!isLoaded) return;
+
+  //   if (isSignedIn) {
+  //     console.log(`At login page ${isSignedIn}`)
+  //     router.push(redirectTo); // ✅ use dynamic redirect
+  //   }
+
+  // }, [isSignedIn, isLoaded, router])
+
+
 
   // Get redirect path from query string: ?redirect=/dashboard
-  const redirectTo = typeof router.query.redirect === "string" ? router.query.redirect : "/";
+
 
   const handleLogin = async () => {
     if (!isLoaded) return;
+
+    console.log(`handling login ${isSignedIn}`)
 
     try {
       const response = await fetch("/api/auth/checkUser", {
@@ -46,6 +65,7 @@ const LoginPage: React.FC = () => {
       });
 
       if (signInResult.status === "complete") {
+        console.log(`entered here ${router.query.redirect}`)
         router.push(redirectTo); // ✅ use dynamic redirect
       } else {
         alert("Login incomplete. Please try again.");
