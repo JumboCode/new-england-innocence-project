@@ -325,6 +325,15 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
     setSelectOpen(false);
   };
 
+  const clearFilters = () => {
+    setFilters([]);
+    setLogic([]);
+    
+    onApplyFilters([], [], []);
+    
+    window.location.reload();
+  };
+
   const applyFilters = async () => {
     const transformedFilters = filters.map(filter => ({
       type: filter.type,
@@ -448,16 +457,28 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
           </div>
         )}
 
+
         {/* "+ Filter" Button at the bottom opens the dropdown */}
-        <div className='mt-4'>
+        <div className='mt-4 flex gap-2'>
+          <button
+            onClick={clearFilters}
+            className={`text-white px-4 py-2 rounded-lg flex-grow ${
+              filters.length === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-500'
+            }`}
+            disabled={filters.length === 0}
+            style={{ backgroundColor: filters.length === 0 ? '#CCCCCC' : '#EF4444' }}
+          >
+            Clear Filters
+          </button>
           <button
             onClick={() => setSelectOpen(true)}
-            className='bg-blue-500 text-black px-4 py-2 rounded-lg w-full'
+            className='bg-blue-500 text-black px-4 py-2 rounded-lg flex-grow'
             style={{ backgroundColor: '#C6DEFF', color: '#3063C9' }}
           >
             + Filter
           </button>
         </div>
+          
         {/* "Apply filters" Button */}
         <div className='mt-4'>
           <button
