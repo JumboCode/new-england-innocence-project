@@ -89,7 +89,7 @@ const ManageUsers = () => {
             alignItems: "center", 
             paddingTop: "20px", 
             paddingBottom: "20px", 
-            paddingLeft: "65px", 
+            paddingLeft: "60px", 
             paddingRight: "65px" 
         }}>
             <div style={headingStyle}>Manage Users</div>
@@ -97,7 +97,7 @@ const ManageUsers = () => {
                 + Add new intern account
             </button>
         </div>
-        <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '65px' }}>
+        <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '60px' }}>
         <div style={{ backgroundColor: 'white', minHeight: '100vh' }}>
             {isInternAccountModalOpen && <InternAccountModal onClose={() => { setInternAccountModalOpen(false) }} />}
             <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '65px' }}>
