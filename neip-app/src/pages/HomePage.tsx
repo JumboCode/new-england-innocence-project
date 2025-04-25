@@ -535,9 +535,8 @@ const HomePage: React.FC = () => {
   const [selectedFilters, setSelectedFilters] = useState<Filter[]>([])
   const [actionMenuVisible, setActionMenuVisible] = useState(false)
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 })
-  const [filteredExonereeIDs, setFilteredExonereeIDs] = useState<
-    number[] | null
-  >(null)
+  const [filteredExonereeIDs, setFilteredExonereeIDs] = useState<number[]>([])
+
   const [selectedCell, setSelectedCell] = useState<{
     record: TableRowData
     columnKey: string
@@ -595,7 +594,7 @@ const HomePage: React.FC = () => {
 
       if (updatedAppliedFilters.length === 0) {
         refreshExonerees()
-        setFilteredExonereeIDs(null)
+        setFilteredExonereeIDs([])
       }
 
       return updatedAppliedFilters
@@ -667,11 +666,12 @@ const HomePage: React.FC = () => {
   }
 
   const displayedExonerees =
-    filteredExonereeIDs === null
-      ? exonerees
-      : exonerees.filter(exoneree =>
-          filteredExonereeIDs.includes(exoneree.id as number)
-        )
+  filteredExonereeIDs.length === 0
+    ? exonerees
+    : exonerees.filter(exoneree =>
+        filteredExonereeIDs.includes(exoneree.id as number)
+      )
+
 
   const handleExportToCSV = async () => {
     try {

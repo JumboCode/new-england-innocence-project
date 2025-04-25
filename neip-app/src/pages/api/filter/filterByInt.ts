@@ -33,13 +33,20 @@ export default async function handler (
       return res.status(400).json({ error: `Invalid operator: ${constraint}` })
     }
 
+    const lowercaseFirstLetter = (str: string) => {
+      return str.charAt(0).toLowerCase() + str.slice(1)
+    }
+
+    const tableField = `${lowercaseFirstLetter(table)}Id`
+
     const query = `
-    SELECT id
-    FROM "${table}"
-    WHERE "${field}"::int != 0 AND "${field}"::int ${sqlOperator} ${int_val}
-  `
-  
-  
+      SELECT "Exoneree".id
+      FROM "Exoneree"
+      JOIN "${table}" ON "Exoneree"."${tableField}" = "${table}".id
+      WHERE "${table}"."${field}"::int != 0
+        AND "${table}"."${field}"::int ${sqlOperator} ${int_val}
+    `
+    
 
     console.log(`Running query: ${query}`)
 
