@@ -48,6 +48,9 @@ const ManageUsers = () => {
         if (isLoaded && !isSignedIn) {
             router.push(`/login?redirect=${encodeURIComponent(router.asPath)}`);
         }
+        console.log(`At manage users page`)
+        console.log(`isLoaded: ${isLoaded}`)
+        console.log(`isSignedIn: ${isSignedIn}`)
     }, [isLoaded, isSignedIn, router]);
 
     useEffect(() => {

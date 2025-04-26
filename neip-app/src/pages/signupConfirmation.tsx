@@ -17,6 +17,9 @@ const SignupConfirmation: React.FC = () => {
         if (isLoaded && !isSignedIn) {
             router.push(`/login?redirect=${encodeURIComponent('/signupConfirmation')}`);
         }
+        console.log(`At signup conf. page`)
+        console.log(`isLoaded: ${isLoaded}`)
+        console.log(`isSignedIn: ${isSignedIn}`)
     }, [isLoaded, isSignedIn, router]);
 
     if (!isLoaded || !isSignedIn) {

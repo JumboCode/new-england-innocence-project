@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AuthEntryBox from '../components/AuthEntryBox'
 import AuthButton from '../components/AuthButton'
 import AuthBox from '../components/AuthBox'
-// import { useRouter } from 'next/router'
-// import { useSignUp } from "@clerk/nextjs"
+import { useRouter } from 'next/router'
 import { v4 as uuidv4 } from "uuid"
 import dotenv from "dotenv";
+import { useUser } from '@clerk/nextjs'
 
 
 
@@ -72,10 +72,20 @@ const SignupContent = () => {
   const [password, setPassword] = useState('')
   const [openVerificationModal, setOpenVerificationModal] = useState(false)
   const [userVerificationCode, setUserVerificationCode] = useState('')
-  // const { isLoaded, signUp } = useSignUp() // Clerk
+  const { isLoaded, isSignedIn } = useUser() // Clerk
   const [generatedVerificationCode, setGeneratedVerificationCode] = useState<string | null>(null);
+  const router = useRouter();
 
-  //if(!isLoaded) {return null}; //Clerk
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    console.log(`At signup page`)
+    console.log(`isLoaded: ${isLoaded}`)
+    console.log(`isSignedIn: ${isSignedIn}`)
+    if (isSignedIn) {
+      router.push(`/`);
+    }
+  }, [isLoaded, isSignedIn, router]);
 
   const VerificationCodeModal: React.FC = () => {
     console.log(openVerificationModal)

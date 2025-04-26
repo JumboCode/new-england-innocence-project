@@ -16,29 +16,30 @@ const LoginPage: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const router = useRouter();
   const { isSignedIn } = useUser();
+  const [redirectTo, setRedirectTo] = useState("/");
+  useEffect(() => {
+    if (!isLoaded) return;
+    console.log(`At login page`)
+    console.log(`isLoaded: ${isLoaded}`)
+    console.log(`isSignedIn: ${isSignedIn}`)
+    if (isSignedIn) {
+      router.push(`/`);
+    }
+  }, [isLoaded, isSignedIn, router]);
+
+  useEffect(() => {
+    if (typeof router.query.redirect === "string") {
+      setRedirectTo(router.query.redirect)
+    }
 
 
-  const redirectTo = typeof router.query.redirect === "string" ? router.query.redirect : "/";
-
-  // useEffect(() => {
-  //   if (!isLoaded) return;
-
-  //   if (isSignedIn) {
-  //     console.log(`At login page ${isSignedIn}`)
-  //     router.push(redirectTo); // ✅ use dynamic redirect
-  //   }
-
-  // }, [isSignedIn, isLoaded, router])
-
-
-
-  // Get redirect path from query string: ?redirect=/dashboard
+  }, [router.query.redirect]);
 
 
   const handleLogin = async () => {
     if (!isLoaded) return;
-
-    console.log(`handling login ${isSignedIn}`)
+    console.log(`handling login`)
+    console.log(`isSignedInNow before login: ${isSignedIn}`)
 
     try {
       const response = await fetch("/api/auth/checkUser", {
@@ -65,8 +66,9 @@ const LoginPage: React.FC = () => {
       });
 
       if (signInResult.status === "complete") {
-        console.log(`entered here ${router.query.redirect}`)
-        router.push(redirectTo); // ✅ use dynamic redirect
+        console.log(`Successfully signed in ${router.query.redirect}`)
+
+        window.location.href = redirectTo
       } else {
         alert("Login incomplete. Please try again.");
       }

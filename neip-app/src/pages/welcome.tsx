@@ -12,6 +12,9 @@ const WelcomePage: React.FC = () => {
     if (isLoaded && !isSignedIn) {
       router.push(`/login?redirect=${encodeURIComponent('/welcome')}`);
     }
+    console.log(`At welcome page`)
+    console.log(`isLoaded: ${isLoaded}`)
+    console.log(`isSignedIn: ${isSignedIn}`)
   }, [isLoaded, isSignedIn, router]);
 
   const textStyle = {
