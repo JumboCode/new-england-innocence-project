@@ -1034,15 +1034,16 @@ const HomePage: React.FC = () => {
           ></div>
 
           <div>
-            {selectedFilters.map((filter, index) => {
+            {selectedFilters.map((filter) => {
               if (
                 filter.name === 'officersInvolved'
               ) {
+                const keyValue = Array.isArray(filter.value) ? filter.value.join(',') : filter.value; // weird typescript fix
                 return (
-                  <div key={index}>
-                    <OfficerInfo key={filter.value} officerName={filter.value} />
+                  <div key={keyValue}>
+                    <OfficerInfo key={keyValue} officerName={keyValue} />
                   </div>
-                )
+                );
               }
             })}
           </div>
