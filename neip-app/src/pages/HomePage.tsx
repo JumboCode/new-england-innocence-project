@@ -1036,14 +1036,11 @@ const HomePage: React.FC = () => {
           <div>
             {selectedFilters.map((filter, index) => {
               if (
-                filter.name === 'Officers Involved' &&
-                Array.isArray(filter.value)
+                filter.name === 'officersInvolved'
               ) {
                 return (
                   <div key={index}>
-                    {filter.value.map(officer => (
-                      <OfficerInfo key={officer} officerName={officer} />
-                    ))}
+                    <OfficerInfo key={filter.value} officerName={filter.value} />
                   </div>
                 )
               }
