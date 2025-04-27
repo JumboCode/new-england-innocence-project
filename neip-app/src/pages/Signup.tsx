@@ -542,6 +542,7 @@ const SignupContent = () => {
       }
 
       alert('Signup successful!')
+      router.push('/login')
       // router.push('/signupConfirmation')
     } catch (error: any) {
       console.error(error.error)

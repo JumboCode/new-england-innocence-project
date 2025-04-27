@@ -67,17 +67,22 @@ const LoginPage: React.FC = () => {
 
       console.log("sign in result:", signInResult.status)
       if (signInResult.status === "complete") {
-        console.log("redirecting")
-        router.push(reidrectTo)
+        alert("Successfully logged in!");
+        console.log("redirecting");
+        router.push('/');
+        // router.push(reidrectTo)
         // console.log(`Successfully signed in ${router.query.redirect}`
 
         // window.location.href = redirectTo
       } else {
+
         alert("Login incomplete. Please try again.");
+        router.push('/login');
       }
     } catch (err: any) {
       console.error("Login failed:", err);
       alert(`Login failed. ${err.errors ? err.errors[0].message : "Please check your credentials."}`);
+      router.push('/login');
     }
   };
 
