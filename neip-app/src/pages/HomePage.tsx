@@ -363,7 +363,7 @@ const HomePage: React.FC = () => {
     console.log(`isLoaded: ${isLoaded}`)
     console.log(`isSignedIn: ${isSignedIn}`)
     if (!isSignedIn) {
-      router.push(`/Signup`);
+      router.push(`/login?redirect=${encodeURIComponent(router.asPath)}`);
     }
   }, [isLoaded, isSignedIn, router]);
 

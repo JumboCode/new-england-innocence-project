@@ -16,6 +16,8 @@ export default async function handler(
 
   const { email, firstName, lastName, password } = req.body
 
+  console.log('Email received:', email);
+
   if (!email || !password || !firstName || !lastName) {
     console.log('Missing email or password.')
     return res.status(400).json({ error: 'All fields including name, email and password are required' })
