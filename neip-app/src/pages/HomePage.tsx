@@ -351,13 +351,10 @@ const HomePage: React.FC = () => {
   const [columnsModalOpen, setColumnsModalOpen] = useState(false)
   const [exonerees, setExonerees] = useState<any[]>([])
   const [selectedRows, setSelectedRows] = useState<number[]>([])
-
-
+  const [filtersActive, setFiltersActive] = useState(false)
 
   const { isSignedIn, isLoaded } = useUser();
   const router = useRouter();
-
-
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -550,6 +547,9 @@ const HomePage: React.FC = () => {
         : []
       // onApplyFilters(filteredIDs, appliedFilters, logic)
       setFilteredExonereeIDs(filteredIDs)
+      setFilteredExonereeIDs(filteredIDs)
+      setFiltersActive(appliedFilters.length > 0)
+
     } catch (error) {
       console.error('Error applying filters:', error)
     }
@@ -689,11 +689,12 @@ const HomePage: React.FC = () => {
   }
 
   const displayedExonerees =
-  filteredExonereeIDs.length === 0
+  !filtersActive
     ? exonerees
     : exonerees.filter(exoneree =>
         filteredExonereeIDs.includes(exoneree.id as number)
       )
+
 
 
   const handleExportToCSV = async () => {
@@ -1077,10 +1078,12 @@ const HomePage: React.FC = () => {
 
         {/* Database Display */}
         <Table
+          locale={{ emptyText: filtersActive ? 'No matching results found.' : 'No data.' }}
           dataSource={displayedExonerees}
-          columns={exonerees.length === 0 ? [] : filteredColumns}
+          columns={filteredColumns}
+          tableLayout="fixed"
+          scroll={{ x: filteredColumns.length * 170, y: 390 }}
           pagination={false}
-          scroll={{ x: 'max-content', y: 390 }}
           rowSelection={{
             selectedRowKeys: selectedRows,
             onChange: (selectedRowKeys: React.Key[]) => {
