@@ -2,6 +2,8 @@ import UsersComponent from "@/components/Users";
 import { useEffect, useState } from 'react';
 import NavBar from '../components/NavBar'
 import InternAccountModal from "@/components/InternAccountModal";
+import { useRouter } from 'next/router';
+import { useUser } from '@clerk/nextjs';
 
 interface User {
     id: string
@@ -51,6 +53,17 @@ const ManageUsers = () => {
     const fullUrl = `${baseUrl}${"/api/auth/getUsers"}`;
     const [isInternAccountModalOpen, setInternAccountModalOpen] = useState(false);
 
+    const { isSignedIn, isLoaded } = useUser();
+    const router = useRouter();
+    useEffect(() => {
+        if (isLoaded && !isSignedIn) {
+            router.push(`/login?redirect=${encodeURIComponent(router.asPath)}`);
+        }
+        console.log(`At manage users page`)
+        console.log(`isLoaded: ${isLoaded}`)
+        console.log(`isSignedIn: ${isSignedIn}`)
+    }, [isLoaded, isSignedIn, router]);
+
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -81,6 +94,10 @@ const ManageUsers = () => {
         fetchUsers();  // Fetch users when the component mounts
     }, [fullUrl, reloadFlag]);
 
+    if (!isLoaded || !isSignedIn) {
+        return null;
+    }
+
     return (
         <>
         <div style={{ 
@@ -108,12 +125,12 @@ const ManageUsers = () => {
                         const firstNameUsers = user.firstName || "Kevin";
                         const lastNameUsers = user.lastName || "Aka";
 
-                        // Accessing emailAddresses - assuming the first email address is the primary one
-                        const emailUsers = user.emailAddresses.length > 0 ? user.emailAddresses[0].email : 'kevin.aka@tufts.edu';
-                        const timestamp = user.createdAt;
+                            // Accessing emailAddresses - assuming the first email address is the primary one
+                            const emailUsers = user.emailAddresses.length > 0 ? user.emailAddresses[0].email : 'kevin.aka@tufts.edu';
+                            const timestamp = user.createdAt;
 
-                        // Convert to Date object
-                        const date = new Date(timestamp);
+                            // Convert to Date object
+                            const date = new Date(timestamp);
 
                         // Get the ISO string and slice to only include the date (YYYY-MM-DD)
                         const dateOnly = date.toISOString().split('T')[0];

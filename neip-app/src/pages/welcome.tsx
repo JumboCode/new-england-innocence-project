@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AuthBox from '../components/AuthBox';
 import AuthButton from "../components/AuthButton";
+import { useRouter } from 'next/router';
+import { useUser } from '@clerk/nextjs';
 
 const WelcomePage: React.FC = () => {
+
+  const { isSignedIn, isLoaded } = useUser();
+  const router = useRouter();
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      router.push(`/login?redirect=${encodeURIComponent('/welcome')}`);
+    }
+    console.log(`At welcome page`)
+    console.log(`isLoaded: ${isLoaded}`)
+    console.log(`isSignedIn: ${isSignedIn}`)
+  }, [isLoaded, isSignedIn, router]);
+
   const textStyle = {
     fontSize: "24px",
     fontWeight: "bold",
