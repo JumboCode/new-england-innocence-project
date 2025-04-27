@@ -618,6 +618,7 @@ const HomePage: React.FC = () => {
       if (updatedAppliedFilters.length === 0) {
         refreshExonerees()
         setFilteredExonereeIDs([])
+        setFiltersActive(false)
       }
 
       return updatedAppliedFilters

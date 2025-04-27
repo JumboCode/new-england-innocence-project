@@ -45,24 +45,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             exonerees = await prisma.exoneree.findMany({
                 where: {
                     [model_name]: {
-                        [field]: value
-                    }
-                },
-                select: { id: true },
-            });
-
-        } else if (constraint === "is not") {
-            exonerees = await prisma.exoneree.findMany({
-                where: {
-                    NOT: {
-                        [model_name]: {
-                            [field]: value
+                        [field]: value,
+                        NOT: {
+                            [field]: "N/A"
                         }
                     }
                 },
                 select: { id: true },
             });
+        } else if (constraint === "is not") {
+            exonerees = await prisma.exoneree.findMany({
+                where: {
+                    [model_name]: {
+                        NOT: [
+                            { [field]: value },
+                            { [field]: "N/A" }
+                        ]
+                    }
+                },
+                select: { id: true },
+            });
         }
+        
 
         // Extract IDs from the results
         const exonereeIds = exonerees ? exonerees.map((exoneree) => exoneree.id) : [];

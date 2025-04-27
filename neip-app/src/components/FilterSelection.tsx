@@ -8,6 +8,7 @@ interface FilterSelectionProps {
   setCondition: (value: string) => void
   value: string | string[]
   setValue: (newValue: string) => void
+  allowedConditions?: string[]
 }
 
 const dropdownOptionsMap: { [key: string]: string[] } = {
@@ -51,44 +52,49 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
   condition,
   setCondition,
   value,
-  setValue
+  setValue,
+  allowedConditions
 }) => {
-    const [dynamicOptions, setDynamicOptions] = useState<string[]>([])
+  const [dynamicOptions, setDynamicOptions] = useState<string[]>([])
 
-    const isStaticDropdown = dropdownOptionsMap.hasOwnProperty(title.field)
-    const isDynamicDropdown = title.field === 'originalCharges' || title.field === 'officersInvolved'
-    
-    // Fetch options dynamically
-    useEffect(() => {
-      const fetchOptions = async () => {
-        let endpoint = ''
-    
-        if (title.field === 'originalCharges') {
-          endpoint = '/api/tags/charge/getCharge'
-        } else if (title.field === 'officersInvolved') {
-          endpoint = '/api/tags/officer/getOfficer'
-        } else {
-          return
-        }
-    
-        try {
-          const response = await fetch(endpoint)
-          const data = await response.json()
-          if (Array.isArray(data)) {
-            setDynamicOptions(data)
-          } else if (Array.isArray(data.tags)) {
-            setDynamicOptions(data.tags)
-          }
-        } catch (err) {
-          console.error('Failed to fetch dynamic dropdown options:', err)
-        }
+  const isStaticDropdown = dropdownOptionsMap.hasOwnProperty(title.field)
+  const isDynamicDropdown =
+    title.field === 'originalCharges' || title.field === 'officersInvolved'
+
+  // Fetch options dynamically
+  useEffect(() => {
+    const fetchOptions = async () => {
+      let endpoint = ''
+
+      if (title.field === 'originalCharges') {
+        endpoint = '/api/tags/charge/getCharge'
+      } else if (title.field === 'officersInvolved') {
+        endpoint = '/api/tags/officer/getOfficer'
+      } else {
+        return
       }
-    
-      if (title.field === 'originalCharges' || title.field === 'officersInvolved') {
-        fetchOptions()
+
+      try {
+        const response = await fetch(endpoint)
+        const data = await response.json()
+        if (Array.isArray(data)) {
+          setDynamicOptions(data)
+        } else if (Array.isArray(data.tags)) {
+          setDynamicOptions(data.tags)
+        }
+      } catch (err) {
+        console.error('Failed to fetch dynamic dropdown options:', err)
       }
-    }, [title.field])      
-    
+    }
+
+    if (
+      title.field === 'originalCharges' ||
+      title.field === 'officersInvolved'
+    ) {
+      fetchOptions()
+    }
+  }, [title.field])
+
   return (
     <div className='flex flex-col p-2 bg-gray-100 border border-gray-300 rounded-lg w-full max-w-[350px] truncate'>
       <div className='flex items-center justify-between'>
@@ -109,11 +115,13 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
           value={condition}
           onChange={e => setCondition(e.target.value)}
         >
-          {['is', 'is not', '<', '<=', '>', '>='].map(opt => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
+          {(allowedConditions || ['is', 'is not', '<', '<=', '>', '>=']).map(
+            opt => (
+              <option key={opt} value={opt}>
+                {opt}
+              </option>
+            )
+          )}
         </select>
 
         {isStaticDropdown || isDynamicDropdown ? (
@@ -125,20 +133,24 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
             <option value='' disabled>
               Select...
             </option>
-            {(isStaticDropdown ? dropdownOptionsMap[title.field] : dynamicOptions).map(opt => (
+            {(isStaticDropdown
+              ? dropdownOptionsMap[title.field]
+              : dynamicOptions
+            ).map(opt => (
               <option key={opt} value={opt}>
                 {opt}
               </option>
             ))}
           </select>
         ) : (
-          <input
-            type='text'
-            className='border border-gray-500 rounded-md px-2 py-1 text-gray-900 text-sm w-[232px] truncate'
-            placeholder='Enter value'
-            value={value}
-            onChange={e => setValue(e.target.value)}
-          />
+      <input
+        type={title.field.toLowerCase().includes('date') ? 'date' : 'text'}
+        className='border border-gray-500 rounded-md px-2 py-1 text-gray-900 text-sm w-[232px] truncate'
+        placeholder={title.field.toLowerCase().includes('date') ? 'Select a date' : 'Enter value'}
+        value={value}
+        onChange={e => setValue(e.target.value)}
+      />
+
         )}
 
         {value && (
