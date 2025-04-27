@@ -437,6 +437,12 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
                     onChange={value => updateLogic(index - 1, value)}
                   />
                 )}
+                {filter.type === 'date' && (
+                <div className="text-sm text-gray-600 italic mb-1">
+                  * Enter dates in format DD/MM/YYYY
+                </div>
+              )}
+
                 <FilterSelection
                   title={filter}
                   condition={filter.condition}
