@@ -15,6 +15,7 @@ import { MdFilterList } from 'react-icons/md'
 import ActionMenuComponent from '@/components/ActionMenuComponent'
 import SelectColumnsModal from '@/components/SelectColumnsModal'
 import TableFilterIcons from '@/components/TableFilterIcons'
+import TableIcons from '@/components/TableIcons'
 import OpenFilterSidebar from '../components/OpenFilterSidebar'
 import { saveAs } from 'file-saver'
 import OfficerInfo from '@/components/OfficerInfoComponent'
@@ -1007,7 +1008,7 @@ const HomePage: React.FC = () => {
                 onOpenFilter={noop}
               />
             ))}
-            <TableFilterIcons
+            <TableIcons
               icon={
                 <AiOutlinePlus
                   style={{ width: '16px', height: '16px', color: 'black' }}
@@ -1023,7 +1024,7 @@ const HomePage: React.FC = () => {
             />
           </div>
           <div style={{ marginLeft: 'auto', marginRight: '20px' }}>
-            <TableFilterIcons
+            <TableIcons
               icon={
                 <MdFilterList
                   style={{ width: '16px', height: '16px', color: 'black' }}
