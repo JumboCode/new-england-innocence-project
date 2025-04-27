@@ -22,6 +22,7 @@ import PersonalInfoIcon from '../img/PersonalInfoIcon.png'
 import { ColumnType } from 'antd/es/table'
 import { useRouter } from 'next/router';
 import { useUser } from '@clerk/nextjs';
+import { dataFields } from '../utils/database/dataFields'
 
 // Define the data structure type with an index signature
 interface TableRowData {
@@ -513,7 +514,7 @@ const HomePage: React.FC = () => {
     type: string
     field: string
     table: string
-    value: string
+    value: string | string[]
     constraint: string
   }
 
@@ -557,9 +558,8 @@ const HomePage: React.FC = () => {
   const [selectedFilters, setSelectedFilters] = useState<Filter[]>([])
   const [actionMenuVisible, setActionMenuVisible] = useState(false)
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 })
-  const [filteredExonereeIDs, setFilteredExonereeIDs] = useState<
-    number[] | null
-  >(null)
+  const [filteredExonereeIDs, setFilteredExonereeIDs] = useState<number[]>([])
+
   const [selectedCell, setSelectedCell] = useState<{
     record: TableRowData
     columnKey: string
@@ -617,7 +617,7 @@ const HomePage: React.FC = () => {
 
       if (updatedAppliedFilters.length === 0) {
         refreshExonerees()
-        setFilteredExonereeIDs(null)
+        setFilteredExonereeIDs([])
       }
 
       return updatedAppliedFilters
@@ -689,11 +689,12 @@ const HomePage: React.FC = () => {
   }
 
   const displayedExonerees =
-    filteredExonereeIDs === null
-      ? exonerees
-      : exonerees.filter(exoneree =>
+  filteredExonereeIDs.length === 0
+    ? exonerees
+    : exonerees.filter(exoneree =>
         filteredExonereeIDs.includes(exoneree.id as number)
       )
+
 
   const handleExportToCSV = async () => {
     try {
@@ -756,6 +757,24 @@ const HomePage: React.FC = () => {
     return null;
   }
 
+  const convertedFilters = selectedFilters
+    .map(selectedFilter => {
+      const fieldObject = dataFields.find(f => f.value === selectedFilter.name)
+      if (!fieldObject) return null
+
+      return {
+        id: Date.now() + Math.random(), // Generate unique ID
+        label: fieldObject.label,
+        field: fieldObject.value,
+        condition: selectedFilter.operator,
+        value: selectedFilter.value,
+        type: fieldObject.type,
+        table: fieldObject.table,
+        options: fieldObject.options
+      }
+    })
+    .filter((f): f is NonNullable<typeof f> => f !== null)
+
   return (
     <div
       style={{
@@ -808,6 +827,8 @@ const HomePage: React.FC = () => {
             setLogic(logic)
             closeFilterSidebar()
           }}
+          existingFilters={convertedFilters}
+          existingLogic={logic}
         />
       )}
 
@@ -860,7 +881,14 @@ const HomePage: React.FC = () => {
           }}
         >
           {/* Search Bar */}
-          <div style={{ flex: 1, maxWidth: '300px', marginLeft: '15px', color: 'black' }}>
+          <div
+            style={{
+              flex: 1,
+              maxWidth: '300px',
+              marginLeft: '15px',
+              color: 'black'
+            }}
+          >
             <SearchEntryBox setExonerees={handleSetExonerees} />
           </div>
 
@@ -954,7 +982,12 @@ const HomePage: React.FC = () => {
             }}
           >
             <FaFilter
-              style={{ width: '16px', height: '16px', marginTop: '10px', color: 'black' }}
+              style={{
+                width: '16px',
+                height: '16px',
+                marginTop: '10px',
+                color: 'black'
+              }}
             />
             {selectedFilters.map((filter, index) => (
               <TableFilterIcons
@@ -966,7 +999,7 @@ const HomePage: React.FC = () => {
                   />
                 }
                 filled={true}
-                text={`${filter.name}: ${filter.operator} ${filter.value}`}
+                text={`${filter.name} ${filter.operator}: ${filter.value}`}
                 border={false}
                 borderRadius={false}
                 height='35px'
@@ -1027,18 +1060,16 @@ const HomePage: React.FC = () => {
           ></div>
 
           <div>
-            {selectedFilters.map((filter, index) => {
+            {selectedFilters.map((filter) => {
               if (
-                filter.name === 'Officers Involved' &&
-                Array.isArray(filter.value)
+                filter.name === 'officersInvolved'
               ) {
+                const keyValue = Array.isArray(filter.value) ? filter.value.join(',') : filter.value; // weird typescript fix
                 return (
-                  <div key={index}>
-                    {filter.value.map(officer => (
-                      <OfficerInfo key={officer} officerName={officer} />
-                    ))}
+                  <div key={keyValue}>
+                    <OfficerInfo key={keyValue} officerName={keyValue} />
                   </div>
-                )
+                );
               }
             })}
           </div>
@@ -1048,6 +1079,7 @@ const HomePage: React.FC = () => {
         <Table
           dataSource={displayedExonerees}
           columns={exonerees.length === 0 ? [] : filteredColumns}
+          pagination={false}
           scroll={{ x: 'max-content', y: 390 }}
           rowSelection={{
             selectedRowKeys: selectedRows,

@@ -6,15 +6,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
-  const { name, notes, MediaLinks, department } = req.body;
+  const { name, badgeNumber, notes, MediaLinks, department } = req.body;
 
   if (!name) {
     return res.status(400).json({ error: 'Name is required' });
   }
 
+  let newName = name + ':'
+  if (badgeNumber) {
+    newName += String(badgeNumber)
+  }
+
   try {
     const officer = await prisma.officer.create({
-      data: { name, notes, MediaLinks, department },
+      data: { name: newName, notes, MediaLinks, department },
     });
 
     res.status(201).json(officer);

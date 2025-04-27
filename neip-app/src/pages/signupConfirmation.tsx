@@ -102,7 +102,7 @@ const SignupConfirmationContent: React.FC = () => {
             </div>
 
             {/* Informational Text */}
-            <div
+            {/* <div
                 style={{
                     width: '375px',
                     textAlign: 'left',
@@ -112,9 +112,9 @@ const SignupConfirmationContent: React.FC = () => {
                     lineHeight: '3',
                 }}
             >
-                <p>You will get an email confirmation...</p>
-                <p style={{
-                    fontStyle: 'italic',
+                <p>You will receive an email confirmation.</p>
+                <p style={{ 
+                    fontStyle: 'italic', 
                 }}>
                     *Please note that you can manage users
                 </p>
@@ -123,7 +123,7 @@ const SignupConfirmationContent: React.FC = () => {
                 }}>
                     in the users section of the profile page
                 </p>
-            </div>
+            </div> */}
 
             {/* Next Button */}
             <div style={{
