@@ -7,8 +7,6 @@
 // import { v4 as uuidv4 } from "uuid"
 // import dotenv from "dotenv";
 
-
-
 // const modalOverlay: React.CSSProperties = {
 //   position: "fixed",
 //   width: '375px',
@@ -44,8 +42,6 @@
 //   height: '25px',
 //   width: '115px',
 // };
-
-
 
 // const Signup: React.FC = () => {
 //   return (
@@ -141,21 +137,17 @@
 //       return;
 //     }
 
-
 //     // const result = await signUp.create({
 //     //   strategy: "password",
 //     //   emailAddress: email,
 //     //   password: password,
 //     // }) //Clerk
 
-
-
 //     // if (result.status && result.status == "needs_verification" as SignUpStatus) {
 //     //   console.log("entered hereee")
 //     //   await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
 //     //   setOpenVerificationModal(true)
 //     // } //Clerk
-
 
 //   }
 
@@ -340,7 +332,6 @@
 
 // export default Signup;
 
-
 import React, { useState } from 'react'
 import AuthEntryBox from '../components/AuthEntryBox'
 import AuthButton from '../components/AuthButton'
@@ -348,10 +339,8 @@ import AuthBox from '../components/AuthBox'
 // import { useRouter } from 'next/router'
 // import { useSignUp } from "@clerk/nextjs"
 // import { v4 as uuidv4 } from "uuid"
-import dotenv from "dotenv";
-import { useRouter} from 'next/router'
-
-
+import dotenv from 'dotenv'
+import { useRouter } from 'next/router'
 
 // const modalOverlay: React.CSSProperties = {
 //   position: "fixed",
@@ -389,8 +378,6 @@ import { useRouter} from 'next/router'
 //   width: '115px',
 // };
 
-
-
 const Signup: React.FC = () => {
   return (
     <div
@@ -399,7 +386,7 @@ const Signup: React.FC = () => {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-        backgroundColor: '#f4f4f4',
+        backgroundColor: '#f4f4f4'
       }}
     >
       <AuthBox prop={<SignupContent />} />
@@ -408,7 +395,7 @@ const Signup: React.FC = () => {
 }
 
 const SignupContent = () => {
-    dotenv.config();
+  dotenv.config()
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [firstName, setFirstName] = useState('')
@@ -488,14 +475,11 @@ const SignupContent = () => {
   //     return;
   //   }
 
-
   //   // const result = await signUp.create({
   //   //   strategy: "password",
   //   //   emailAddress: email,
   //   //   password: password,
   //   // }) //Clerk
-
-
 
   //   // if (result.status && result.status == "needs_verification" as SignUpStatus) {
   //   //   console.log("entered hereee")
@@ -503,17 +487,14 @@ const SignupContent = () => {
   //   //   setOpenVerificationModal(true)
   //   // } //Clerk
 
-
   // }
 
   const handleSignup = async () => {
-    console.log("handling signup")
+    console.log('handling signup')
     try {
       if (!firstName || !lastName || !email || !password) {
-        alert("Please enter your name, email, and password")
+        alert('Please enter your name, email, and password')
         return
-        alert("Please enter your name, email, and password")
-        return;
       }
 
       const responseSignup = await fetch('/api/auth/signup', {
@@ -531,9 +512,12 @@ const SignupContent = () => {
 
       if (!responseSignup.ok) {
         const errorDataSignup = await responseSignup.json()
-        if (typeof errorDataSignup.error !== "string") {
+        if (typeof errorDataSignup.error !== 'string') {
           alert(errorDataSignup.error.errors[0].longMessage)
-          console.error('Signup error', errorDataSignup.error.errors[0].longMessage)
+          console.error(
+            'Signup error',
+            errorDataSignup.error.errors[0].longMessage
+          )
         } else {
           alert(errorDataSignup.error)
           console.error('Signup error', errorDataSignup.error)
@@ -544,8 +528,8 @@ const SignupContent = () => {
       alert('Signup successful!')
       router.push('/login')
       // router.push('/signupConfirmation')
-    } catch (error: any) {
-      console.error(error.error)
+    } catch (error) {
+      console.error(error)
     }
   }
 
@@ -665,8 +649,8 @@ const SignupContent = () => {
           color='#43b4ef'
           filled={true}
           text='Sign Up'
-          href="/signupConfirmation"
-          onClick={(e) => {
+          href='/signupConfirmation'
+          onClick={e => {
             e.preventDefault()
             handleSignup()
           }}

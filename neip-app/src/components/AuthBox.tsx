@@ -15,7 +15,7 @@ const AuthBox: FC<AuthBoxProps> = ({ prop, height, width }) => {
         <div style={{
             // Create the rectangular shape for the AuthBox
             width: width?.width || '400px', 
-            height: height?.height || '475px', // Adjuted height or given height
+            height: height?.height || '525px', // Adjuted height or given height
             border: '2.5px solid', // Gray edge on the border
             borderColor: 'rgba(200,200,200,255)', // Border color
             borderRadius: '20px', // Curved edge on the border
