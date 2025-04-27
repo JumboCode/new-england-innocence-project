@@ -21,8 +21,8 @@ import { saveAs } from 'file-saver'
 import OfficerInfo from '@/components/OfficerInfoComponent'
 import PersonalInfoIcon from '../img/PersonalInfoIcon.png'
 import { ColumnType } from 'antd/es/table'
-import { useRouter } from 'next/router';
-import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/router'
+import { useUser } from '@clerk/nextjs'
 import { dataFields } from '../utils/database/dataFields'
 
 // Define the data structure type with an index signature
@@ -98,11 +98,26 @@ const columns = [
     width: 120,
     fixed: 'left',
     render: (imageURL: string) => {
-      return imageURL != 'N/A' ? (
+      if (!imageURL || imageURL === 'N/A') {
+        return (
+          <img
+            src={PersonalInfoIcon.src}
+            alt='Default Profile'
+            style={{
+              width: '70px',
+              height: '70px',
+              objectFit: 'cover',
+              borderRadius: '50%'
+            }}
+          />
+        );
+      }
+    
+      const fileName = imageURL.split('/').pop() || '';
+    
+      return (
         <img
-          src={`/api/exonerees/imageProxy?key=${encodeURIComponent(
-            imageURL.split('/').pop() || ''
-          )}`}
+          src={`/api/exonerees/imageProxy?key=${encodeURIComponent(fileName)}`}
           alt='Profile Picture'
           style={{
             width: '70px',
@@ -111,19 +126,9 @@ const columns = [
             borderRadius: '50%'
           }}
         />
-      ) : (
-        <img
-          src={PersonalInfoIcon.src} //personal info icon from add exoneree modal file
-          alt='Default Profile'
-          style={{
-            width: '70px',
-            height: '70px',
-            objectFit: 'cover',
-            borderRadius: '50%'
-          }}
-        />
-      )
+      );
     }
+    
   },
   { title: 'DOB', dataIndex: 'dob', key: 'dob', width: 120 },
   { title: 'Race', dataIndex: 'race', key: 'race', width: 120 },
@@ -353,30 +358,30 @@ const HomePage: React.FC = () => {
   const [exonerees, setExonerees] = useState<any[]>([])
   const [selectedRows, setSelectedRows] = useState<number[]>([])
   const [filtersActive, setFiltersActive] = useState(false)
+  const [isSearching, setIsSearching] = useState(false);
 
-  const { isSignedIn, isLoaded } = useUser();
-  const router = useRouter();
+  const { isSignedIn, isLoaded } = useUser()
+  const router = useRouter()
 
   useEffect(() => {
-    if (!isLoaded) return;
+    if (!isLoaded) return
     console.log(`At home page`)
     console.log(`isLoaded: ${isLoaded}`)
     console.log(`isSignedIn: ${isSignedIn}`)
     if (!isSignedIn) {
-      router.push(`/login?redirect=${encodeURIComponent(router.asPath)}`);
+      router.push(`/login?redirect=${encodeURIComponent(router.asPath)}`)
     }
-  }, [isLoaded, isSignedIn, router]);
-
-
+  }, [isLoaded, isSignedIn, router])
 
   // Initialize selectedColumns with all column keys
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
     columns.map(col => col.key)
   )
 
-
   const handleSetExonerees = (data: any[]) => {
+    setIsSearching(true)
     setExonerees(data)
+    setFilteredExonereeIDs([])
     setSelectedFilters([])
     setSelectedColumns(columns.map(col => col.key))
   }
@@ -494,8 +499,10 @@ const HomePage: React.FC = () => {
     }
   }
   useEffect(() => {
-    refreshExonerees()
-  }, [])
+    if (!isSearching) {
+      refreshExonerees();
+    }
+  }, [isSearching]);
 
   const handleOpenModal = () => setModalOpen(true)
   const handleCloseModal = () => setModalOpen(false)
@@ -548,9 +555,7 @@ const HomePage: React.FC = () => {
         : []
       // onApplyFilters(filteredIDs, appliedFilters, logic)
       setFilteredExonereeIDs(filteredIDs)
-      setFilteredExonereeIDs(filteredIDs)
       setFiltersActive(appliedFilters.length > 0)
-
     } catch (error) {
       console.error('Error applying filters:', error)
     }
@@ -560,6 +565,7 @@ const HomePage: React.FC = () => {
   const [actionMenuVisible, setActionMenuVisible] = useState(false)
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 })
   const [filteredExonereeIDs, setFilteredExonereeIDs] = useState<number[]>([])
+
 
   const [selectedCell, setSelectedCell] = useState<{
     record: TableRowData
@@ -641,7 +647,7 @@ const HomePage: React.FC = () => {
   //   }
   // }, [selectedFilters, appliedFilters, logic])
   useEffect(() => {
-    if (selectedFilters.length === 0 && appliedFilters.length === 0) {
+    if (selectedFilters.length === 0 && appliedFilters.length === 0 && !isSearching) {
       refreshExonerees()
     } else {
       fetchFilters()
@@ -690,14 +696,11 @@ const HomePage: React.FC = () => {
     setIsSidebarOpen(true)
   }
 
-  const displayedExonerees =
-  !filtersActive
+  const displayedExonerees = !filtersActive
     ? exonerees
     : exonerees.filter(exoneree =>
         filteredExonereeIDs.includes(exoneree.id as number)
       )
-
-
 
   const handleExportToCSV = async () => {
     try {
@@ -748,16 +751,17 @@ const HomePage: React.FC = () => {
     } catch (error) {
       console.error('Error deleting selected rows:', error)
       alert(
-        `Error deleting selected rows: ${error instanceof Error ? error.message : 'Unknown error'
+        `Error deleting selected rows: ${
+          error instanceof Error ? error.message : 'Unknown error'
         }`
       )
     }
   }
 
-  const noop: () => void = () => { }
+  const noop: () => void = () => {}
 
   if (!isLoaded || !isSignedIn) {
-    return null;
+    return null
   }
 
   const convertedFilters = selectedFilters
@@ -872,7 +876,6 @@ const HomePage: React.FC = () => {
 
       {/* Main Content */}
       <div style={{ padding: '30px', paddingTop: '0px' }}>
-
         {/* Search Bar and Action Buttons Container */}
         <div
           style={{
@@ -1063,16 +1066,16 @@ const HomePage: React.FC = () => {
           ></div>
 
           <div>
-            {selectedFilters.map((filter) => {
-              if (
-                filter.name === 'officersInvolved'
-              ) {
-                const keyValue = Array.isArray(filter.value) ? filter.value.join(',') : filter.value; // weird typescript fix
+            {selectedFilters.map(filter => {
+              if (filter.name === 'officersInvolved') {
+                const keyValue = Array.isArray(filter.value)
+                  ? filter.value.join(',')
+                  : filter.value // weird typescript fix
                 return (
                   <div key={keyValue}>
                     <OfficerInfo key={keyValue} officerName={keyValue} />
                   </div>
-                );
+                )
               }
             })}
           </div>
@@ -1080,10 +1083,12 @@ const HomePage: React.FC = () => {
 
         {/* Database Display */}
         <Table
-          locale={{ emptyText: filtersActive ? 'No matching results found.' : 'No data.' }}
+          locale={{
+            emptyText: filtersActive ? 'No matching results found.' : 'No data.'
+          }}
           dataSource={displayedExonerees}
           columns={filteredColumns}
-          tableLayout="fixed"
+          tableLayout='fixed'
           scroll={{ x: filteredColumns.length * 170, y: 390 }}
           pagination={false}
           rowSelection={{
