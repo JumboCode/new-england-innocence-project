@@ -1,23 +1,45 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AuthBox from "../components/AuthBox";
 import AuthButton from "../components/AuthButton";
 import AuthEntryBox from "../components/AuthEntryBox";
+import Modal from '@/components/ChangePasswordModal'
 import { useRouter } from "next/router";
 import { useSignIn } from "@clerk/nextjs";
+import { useUser } from '@clerk/nextjs';
 
 const LoginPage: React.FC = () => {
   const { signIn, isLoaded } = useSignIn();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isModalOpen, setModalOpen] = useState(false);
   const router = useRouter();
+  const { isSignedIn } = useUser();
+  const [redirectTo, setRedirectTo] = useState("/");
+  useEffect(() => {
+    if (!isLoaded) return;
+    console.log(`At login page`)
+    console.log(`isLoaded: ${isLoaded}`)
+    console.log(`isSignedIn: ${isSignedIn}`)
+    if (isSignedIn) {
+      router.push(`/`);
+    }
+  }, [isLoaded, isSignedIn, router]);
 
-  // Get redirect path from query string: ?redirect=/dashboard
-  const redirectTo = typeof router.query.redirect === "string" ? router.query.redirect : "/";
+  useEffect(() => {
+    if (typeof router.query.redirect === "string") {
+      setRedirectTo(router.query.redirect)
+    }
+
+
+  }, [router.query.redirect]);
+
 
   const handleLogin = async () => {
     if (!isLoaded) return;
+    console.log(`handling login`)
+    console.log(`isSignedInNow before login: ${isSignedIn}`)
 
     try {
       const response = await fetch("/api/auth/checkUser", {
@@ -46,7 +68,10 @@ const LoginPage: React.FC = () => {
       console.log("sign in result:", signInResult.status)
       if (signInResult.status === "complete") {
         console.log("redirecting")
-        router.push(redirectTo); // ✅ use dynamic redirect
+        router.push(reidrectTo)
+        // console.log(`Successfully signed in ${router.query.redirect}`
+
+        // window.location.href = redirectTo
       } else {
         alert("Login incomplete. Please try again.");
       }
@@ -90,7 +115,10 @@ const LoginPage: React.FC = () => {
             cursor: "pointer",
             marginBottom: "20px"
           }}>
-            Reset password
+            <button onClick={() => setModalOpen(true)}>
+              Reset Password
+            </button>
+            <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
           </div>
 
           <AuthButton color="#3b82f6" filled={true} text="Login" onClick={handleLogin} />

@@ -2,17 +2,29 @@ import UsersComponent from "@/components/Users";
 import { useEffect, useState } from 'react';
 import NavBar from '../components/NavBar'
 import InternAccountModal from "@/components/InternAccountModal";
+import { useRouter } from 'next/router';
+import { useUser } from '@clerk/nextjs';
 
 interface User {
-    id: number
+    id: string
     firstName: string;
     lastName: string;
     emailAddresses: { email: string }[]
     createdAt: Date
 }
 
+const headingStyle: React.CSSProperties = {
+    top: "102px",
+    left: "105px",
+    font: "Inter",
+    fontWeight: "700",
+    fontSize: "24px",
+    lineHeight: "28px",
+    paddingLeft: "100px",
+}
+
 const buttonStyle: React.CSSProperties = {
-    width: "166px",
+    width: "220px",
     height: "40px",
     gap: "8px",
     borderRadius: "8px",
@@ -33,12 +45,24 @@ const buttonStyle: React.CSSProperties = {
 
 const ManageUsers = () => {
     const [users, setUsers] = useState<User[]>([]);
+    const [reloadFlag, setReloadFlag] = useState(false)
     // Get the host from the request headers to construct absolute URLs
     const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
 
     // Construct the full URL for the API endpoint
     const fullUrl = `${baseUrl}${"/api/auth/getUsers"}`;
     const [isInternAccountModalOpen, setInternAccountModalOpen] = useState(false);
+
+    const { isSignedIn, isLoaded } = useUser();
+    const router = useRouter();
+    useEffect(() => {
+        if (isLoaded && !isSignedIn) {
+            router.push(`/login?redirect=${encodeURIComponent(router.asPath)}`);
+        }
+        console.log(`At manage users page`)
+        console.log(`isLoaded: ${isLoaded}`)
+        console.log(`isSignedIn: ${isSignedIn}`)
+    }, [isLoaded, isSignedIn, router]);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -68,10 +92,30 @@ const ManageUsers = () => {
             }
         }
         fetchUsers();  // Fetch users when the component mounts
-    }, [fullUrl]);
+    }, [fullUrl, reloadFlag]);
+
+    if (!isLoaded || !isSignedIn) {
+        return null;
+    }
 
     return (
         <>
+        <div style={{ 
+            display: "flex", 
+            justifyContent: "space-between", 
+            alignItems: "center", 
+            paddingTop: "20px", 
+            paddingBottom: "20px", 
+            paddingLeft: "60px", 
+            paddingRight: "65px" 
+        }}>
+            <div style={headingStyle}>Manage Users</div>
+            <button style={buttonStyle} onClick={() => setInternAccountModalOpen(true)}>
+                + Add new intern account
+            </button>
+        </div>
+        <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '60px' }}>
+        <div style={{ backgroundColor: 'white', minHeight: '100vh' }}>
             {isInternAccountModalOpen && <InternAccountModal onClose={() => { setInternAccountModalOpen(false) }} />}
             <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '65px' }}>
                 {/* <h2>Account Information</h2> */}
@@ -81,25 +125,24 @@ const ManageUsers = () => {
                         const firstNameUsers = user.firstName || "Kevin";
                         const lastNameUsers = user.lastName || "Aka";
 
-                        // Accessing emailAddresses - assuming the first email address is the primary one
-                        const emailUsers = user.emailAddresses.length > 0 ? user.emailAddresses[0].email : 'kevin.aka@tufts.edu';
-                        const timestamp = user.createdAt;
+                            // Accessing emailAddresses - assuming the first email address is the primary one
+                            const emailUsers = user.emailAddresses.length > 0 ? user.emailAddresses[0].email : 'kevin.aka@tufts.edu';
+                            const timestamp = user.createdAt;
 
-                        // Convert to Date object
-                        const date = new Date(timestamp);
+                            // Convert to Date object
+                            const date = new Date(timestamp);
 
                         // Get the ISO string and slice to only include the date (YYYY-MM-DD)
                         const dateOnly = date.toISOString().split('T')[0];
                         console.log(`User: ${firstNameUsers} ${lastNameUsers}, Email: ${emailUsers}`);
                         return (
-                            <UsersComponent key={user.id} firstName={firstNameUsers} lastName={lastNameUsers} email={emailUsers} type="administration" dateCreated={dateOnly} />
+                            <UsersComponent key={user.id} userId={user.id} firstName={firstNameUsers} lastName={lastNameUsers} email={emailUsers} type="intern" dateCreated={dateOnly} reload={() => { setReloadFlag(prev => !prev) }} />
                         )
                     })}
-                <NavBar />
             </div>
-            <button style={buttonStyle} onClick={() => { setInternAccountModalOpen(true) }}>
-                + Add Intern User
-            </button>
+            <NavBar />
+            </div>
+        </div>
         </>
     );
 };

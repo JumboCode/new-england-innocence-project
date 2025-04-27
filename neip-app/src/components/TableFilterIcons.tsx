@@ -27,8 +27,13 @@ const TableFilterIcons: React.FC<TableFilterIconsProps> = ({
   onOpenFilter
 }) => {
 
+  function formatCamelCase(text: string) {
+    return text.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
+  }
+
   // Construct display text with bold filterName
-  const displayText = text || (filterName ? (
+  const newText = text && formatCamelCase(text);
+  const displayText = newText || (filterName ? (
     <>
       <span style={{ fontWeight: 'bold' }}>{filterName}:</span> {filterOperator} {filterValue}
     </>

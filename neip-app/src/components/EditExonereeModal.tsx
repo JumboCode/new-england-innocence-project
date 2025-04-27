@@ -440,7 +440,11 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
                 }}>
                   <img
                     // src={formData.imageUrl ? `/api/exonerees/imageProxy?key=${encodeURIComponent(formData.imageUrl.split('/').pop() || '')}` : PersonalInfoIcon.src}
-                    src={formData.imageUrl || PersonalInfoIcon.src}
+                    src={
+                      formData.imageUrl
+                        ? `/api/exonerees/imageProxy?key=${encodeURIComponent(formData.imageUrl.split('/').pop() || '')}`
+                        : PersonalInfoIcon.src
+                    }
                     alt="Profile Picture"
                     style={{
                       width: '100%',

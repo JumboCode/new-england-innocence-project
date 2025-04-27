@@ -20,6 +20,9 @@ import { saveAs } from 'file-saver'
 import OfficerInfo from '@/components/OfficerInfoComponent'
 import PersonalInfoIcon from '../img/PersonalInfoIcon.png'
 import { ColumnType } from 'antd/es/table'
+import { useRouter } from 'next/router';
+import { useUser } from '@clerk/nextjs';
+import { dataFields } from '../utils/database/dataFields'
 
 // Define the data structure type with an index signature
 interface TableRowData {
@@ -348,11 +351,28 @@ const HomePage: React.FC = () => {
   const [columnsModalOpen, setColumnsModalOpen] = useState(false)
   const [exonerees, setExonerees] = useState<any[]>([])
   const [selectedRows, setSelectedRows] = useState<number[]>([])
+  const [filtersActive, setFiltersActive] = useState(false)
+
+  const { isSignedIn, isLoaded } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    console.log(`At home page`)
+    console.log(`isLoaded: ${isLoaded}`)
+    console.log(`isSignedIn: ${isSignedIn}`)
+    if (!isSignedIn) {
+      router.push(`/Signup`);
+    }
+  }, [isLoaded, isSignedIn, router]);
+
+
 
   // Initialize selectedColumns with all column keys
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
     columns.map(col => col.key)
   )
+
 
   const handleSetExonerees = (data: any[]) => {
     setExonerees(data)
@@ -491,7 +511,7 @@ const HomePage: React.FC = () => {
     type: string
     field: string
     table: string
-    value: string
+    value: string | string[]
     constraint: string
   }
 
@@ -527,6 +547,9 @@ const HomePage: React.FC = () => {
         : []
       // onApplyFilters(filteredIDs, appliedFilters, logic)
       setFilteredExonereeIDs(filteredIDs)
+      setFilteredExonereeIDs(filteredIDs)
+      setFiltersActive(appliedFilters.length > 0)
+
     } catch (error) {
       console.error('Error applying filters:', error)
     }
@@ -535,9 +558,8 @@ const HomePage: React.FC = () => {
   const [selectedFilters, setSelectedFilters] = useState<Filter[]>([])
   const [actionMenuVisible, setActionMenuVisible] = useState(false)
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 })
-  const [filteredExonereeIDs, setFilteredExonereeIDs] = useState<
-    number[] | null
-  >(null)
+  const [filteredExonereeIDs, setFilteredExonereeIDs] = useState<number[]>([])
+
   const [selectedCell, setSelectedCell] = useState<{
     record: TableRowData
     columnKey: string
@@ -595,7 +617,7 @@ const HomePage: React.FC = () => {
 
       if (updatedAppliedFilters.length === 0) {
         refreshExonerees()
-        setFilteredExonereeIDs(null)
+        setFilteredExonereeIDs([])
       }
 
       return updatedAppliedFilters
@@ -667,11 +689,13 @@ const HomePage: React.FC = () => {
   }
 
   const displayedExonerees =
-    filteredExonereeIDs === null
-      ? exonerees
-      : exonerees.filter(exoneree =>
-          filteredExonereeIDs.includes(exoneree.id as number)
-        )
+  !filtersActive
+    ? exonerees
+    : exonerees.filter(exoneree =>
+        filteredExonereeIDs.includes(exoneree.id as number)
+      )
+
+
 
   const handleExportToCSV = async () => {
     try {
@@ -722,14 +746,35 @@ const HomePage: React.FC = () => {
     } catch (error) {
       console.error('Error deleting selected rows:', error)
       alert(
-        `Error deleting selected rows: ${
-          error instanceof Error ? error.message : 'Unknown error'
+        `Error deleting selected rows: ${error instanceof Error ? error.message : 'Unknown error'
         }`
       )
     }
   }
 
-  const noop: () => void = () => {}
+  const noop: () => void = () => { }
+
+  if (!isLoaded || !isSignedIn) {
+    return null;
+  }
+
+  const convertedFilters = selectedFilters
+    .map(selectedFilter => {
+      const fieldObject = dataFields.find(f => f.value === selectedFilter.name)
+      if (!fieldObject) return null
+
+      return {
+        id: Date.now() + Math.random(), // Generate unique ID
+        label: fieldObject.label,
+        field: fieldObject.value,
+        condition: selectedFilter.operator,
+        value: selectedFilter.value,
+        type: fieldObject.type,
+        table: fieldObject.table,
+        options: fieldObject.options
+      }
+    })
+    .filter((f): f is NonNullable<typeof f> => f !== null)
 
   return (
     <div
@@ -783,6 +828,8 @@ const HomePage: React.FC = () => {
             setLogic(logic)
             closeFilterSidebar()
           }}
+          existingFilters={convertedFilters}
+          existingLogic={logic}
         />
       )}
 
@@ -822,19 +869,7 @@ const HomePage: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div style={{ padding: '30px' }}>
-        {/* "Home Database" Heading */}
-        <h1
-          style={{
-            color: '#101828',
-            fontWeight: 'bold',
-            fontSize: '30px',
-            marginTop: '-65px',
-            marginLeft: '10px'
-          }}
-        >
-          Home Database
-        </h1>
+      <div style={{ padding: '30px', paddingTop: '0px' }}>
 
         {/* Search Bar and Action Buttons Container */}
         <div
@@ -847,7 +882,14 @@ const HomePage: React.FC = () => {
           }}
         >
           {/* Search Bar */}
-          <div style={{ flex: 1, maxWidth: '300px', marginLeft: '15px' }}>
+          <div
+            style={{
+              flex: 1,
+              maxWidth: '300px',
+              marginLeft: '15px',
+              color: 'black'
+            }}
+          >
             <SearchEntryBox setExonerees={handleSetExonerees} />
           </div>
 
@@ -941,7 +983,12 @@ const HomePage: React.FC = () => {
             }}
           >
             <FaFilter
-              style={{ width: '16px', height: '16px', marginTop: '10px' }}
+              style={{
+                width: '16px',
+                height: '16px',
+                marginTop: '10px',
+                color: 'black'
+              }}
             />
             {selectedFilters.map((filter, index) => (
               <TableFilterIcons
@@ -953,7 +1000,7 @@ const HomePage: React.FC = () => {
                   />
                 }
                 filled={true}
-                text={`${filter.name}: ${filter.operator} ${filter.value}`}
+                text={`${filter.name} ${filter.operator}: ${filter.value}`}
                 border={false}
                 borderRadius={false}
                 height='35px'
@@ -1014,18 +1061,16 @@ const HomePage: React.FC = () => {
           ></div>
 
           <div>
-            {selectedFilters.map((filter, index) => {
+            {selectedFilters.map((filter) => {
               if (
-                filter.name === 'Officers Involved' &&
-                Array.isArray(filter.value)
+                filter.name === 'officersInvolved'
               ) {
+                const keyValue = Array.isArray(filter.value) ? filter.value.join(',') : filter.value; // weird typescript fix
                 return (
-                  <div key={index}>
-                    {filter.value.map(officer => (
-                      <OfficerInfo key={officer} officerName={officer} />
-                    ))}
+                  <div key={keyValue}>
+                    <OfficerInfo key={keyValue} officerName={keyValue} />
                   </div>
-                )
+                );
               }
             })}
           </div>
@@ -1033,9 +1078,12 @@ const HomePage: React.FC = () => {
 
         {/* Database Display */}
         <Table
+          locale={{ emptyText: filtersActive ? 'No matching results found.' : 'No data.' }}
           dataSource={displayedExonerees}
-          columns={exonerees.length === 0 ? [] : filteredColumns}
-          scroll={{ x: 'max-content', y: 390 }}
+          columns={filteredColumns}
+          tableLayout="fixed"
+          scroll={{ x: filteredColumns.length * 170, y: 390 }}
+          pagination={false}
           rowSelection={{
             selectedRowKeys: selectedRows,
             onChange: (selectedRowKeys: React.Key[]) => {
@@ -1056,6 +1104,7 @@ const HomePage: React.FC = () => {
           }
           .ant-table-thead > tr > th > div {
             min-width: 120px !important;
+            box-sizing: border-box;
           }
 
           .ant-table-row-selected td {

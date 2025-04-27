@@ -4,17 +4,24 @@ import { FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/material'
 import XlCoseIcon from '../img/close.png'
 import AndOr from './AndOr'
 import FilterSelection from './FilterSelection'
+import { DataField } from '../utils/database/dataFields'
 
 interface OpenFilterSidebarProps {
   onClose: () => void
-  onApplyFilters: (filteredIDs: number[], filters: TransformedFilter[], logic: ('AND' | 'OR')[] ) => void
+  onApplyFilters: (
+    filteredIDs: number[],
+    filters: TransformedFilter[],
+    logic: ('AND' | 'OR')[]
+  ) => void
+  existingFilters: Filter[]
+  existingLogic: ('AND' | 'OR')[]
 }
 
 interface TransformedFilter {
-  type: string,
-  field: string,
-  table: string,
-  value: string,
+  type: string
+  field: string
+  table: string
+  value: string | string[]
   constraint: string
 }
 
@@ -23,15 +30,7 @@ interface Filter {
   label: string
   field: string
   condition: string
-  value: string
-  type: string
-  table: string
-  options?: string[]
-}
-
-interface DataField {
-  value: string
-  label: string
+  value: string | string[]
   type: string
   table: string
   options?: string[]
@@ -39,14 +38,16 @@ interface DataField {
 
 const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
   onClose,
-  onApplyFilters
+  onApplyFilters,
+  existingFilters,
+  existingLogic
 }) => {
-  const [filters, setFilters] = useState<Filter[]>([])
-  const [logic, setLogic] = useState<('AND' | 'OR')[]>([])
+  const [filters, setFilters] = useState<Filter[]>(existingFilters)
+  const [logic, setLogic] = useState<('AND' | 'OR')[]>(existingLogic)
   const [selectedField, setSelectedField] = useState('')
   const [selectOpen, setSelectOpen] = useState(false)
 
-  const dataFields: DataField[]  = [
+  const dataFields: DataField[] = [
     // PersonalInfo fields
     { value: 'name', label: 'Name', type: 'string', table: 'PersonalInfo' },
     {
@@ -319,10 +320,19 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
   }
 
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
-    const fieldValue = event.target.value;
-    setSelectedField(fieldValue);
-    addFilter(fieldValue);
-    setSelectOpen(false);
+    const fieldValue = event.target.value
+    setSelectedField(fieldValue)
+    addFilter(fieldValue)
+    setSelectOpen(false)
+  }
+
+  const clearFilters = () => {
+    setFilters([]);
+    setLogic([]);
+    
+    onApplyFilters([], [], []);
+    
+    window.location.reload();
   };
 
   const applyFilters = async () => {
@@ -331,8 +341,8 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
       field: filter.field,
       table: filter.table,
       value: filter.value,
-      constraint: filter.condition
-    }))
+      constraint: filter.condition || 'is' 
+    }))    
     try {
       const response = await fetch('/api/filter/filter', {
         method: 'POST',
@@ -409,7 +419,7 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
           </div>
         ) : (
           <div>
-            <h3 className='font-bold mb-2 text-black-100'>Filters</h3>
+            <h3 className='font-bold mb-2 text-grey-800'>Filters</h3>
             {filters.map((filter, index) => (
               <div
                 key={filter.id}
@@ -448,30 +458,45 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
           </div>
         )}
 
+
         {/* "+ Filter" Button at the bottom opens the dropdown */}
-        <div className='mt-4'>
+        <div className='mt-4 flex gap-2'>
+          <button
+            onClick={clearFilters}
+            className={`text-white px-4 py-2 rounded-lg flex-grow ${
+              filters.length === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-500'
+            }`}
+            disabled={filters.length === 0}
+            style={{ backgroundColor: filters.length === 0 ? '#CCCCCC' : '#EF4444' }}
+          >
+            Clear Filters
+          </button>
           <button
             onClick={() => setSelectOpen(true)}
-            className='bg-blue-500 text-black px-4 py-2 rounded-lg w-full'
+            className='bg-blue-500 text-black px-4 py-2 rounded-lg flex-grow'
             style={{ backgroundColor: '#C6DEFF', color: '#3063C9' }}
           >
             + Filter
           </button>
         </div>
+          
         {/* "Apply filters" Button */}
         <div className='mt-4'>
           <button
             onClick={applyFilters}
             className={`text-white px-4 py-2 rounded-lg w-full ${
-              filters.length === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500'
+              filters.length === 0
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-green-500'
             }`}
             disabled={filters.length === 0}
-            style={{ backgroundColor: filters.length === 0 ? '#CCCCCC' : '#44B4EF' }}
+            style={{
+              backgroundColor: filters.length === 0 ? '#CCCCCC' : '#44B4EF'
+            }}
           >
             Apply filters
           </button>
         </div>
-
       </div>
     </div>
   )

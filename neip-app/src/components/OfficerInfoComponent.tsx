@@ -114,7 +114,7 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
           const data = await response.json();
           setOfficer(data);
           setEditableNotes(data.notes || "");
-          setEditableMediaLinks(data.MediaLinks ? data.MediaLinks.join("\n") : ""); // Convert array to string
+          setEditableMediaLinks(data.MediaLinks || "");
           setEditableDepartment(data.department || "");
         }
       } catch (error) {
@@ -146,7 +146,7 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
         body: JSON.stringify({ 
             id: officer.id, 
             notes: editableNotes, 
-            MediaLinks: editableMediaLinks.split("\n").filter(link => link.trim() !== ""),
+            MediaLinks: editableMediaLinks, 
             department: editableDepartment
         })
       });
@@ -198,41 +198,12 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
               </div>
               <div style={styles.columnBox}>
                 <div style={styles.columnHeader}>Media Links</div>
-                {isEditing ? (
-                  <textarea
-                    style={styles.columnTextArea}
-                    value={editableMediaLinks}
-                    onChange={(e) => setEditableMediaLinks(e.target.value)}
-                    readOnly={!isEditing}
-                  />
-                ) : (
-                  <div style={styles.mediaLinks}>
-                    {editableMediaLinks
-                    .split("\n")
-                    .filter(link => link.trim() !== "")
-                    .map((link, index, array) => (
-                      <span key={index}>
-                        <a
-                          href={link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{ color: "#65A3E1"}}
-                        >
-                          {link}
-                        </a>
-                        {index < array.length - 1 && <span> , </span>}
-                      </span>
-                    ))}
-                  </div>
-
-                  // <ul style={styles.mediaLinks}>
-                  //   {editableMediaLinks.split("\n").map((link, index) => (
-                  //     <li key={index}>
-                  //       <a href={link} target="_blank" rel="noopener noreferrer" style={{ color: "#65A3E1" }}>{link}</a>
-                  //     </li>
-                  //   ))}
-                  // </ul>
-                )}
+                <textarea
+                  style={styles.columnTextArea}
+                  value={editableMediaLinks}
+                  onChange={(e) => setEditableMediaLinks(e.target.value)}
+                  readOnly={!isEditing}
+                />
               </div>
             </div>
           )}
