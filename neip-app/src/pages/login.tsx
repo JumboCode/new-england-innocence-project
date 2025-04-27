@@ -26,7 +26,8 @@ const LoginPage: React.FC = () => {
     if (isSignedIn) {
       router.push(`/`);
     }
-  }, [isLoaded, isSignedIn, router]);
+    console.log(redirectTo)
+  }, [isLoaded, isSignedIn, router, redirectTo]);
 
   useEffect(() => {
     console.log("HI")
