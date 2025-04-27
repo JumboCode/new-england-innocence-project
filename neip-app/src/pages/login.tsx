@@ -18,6 +18,7 @@ const LoginPage: React.FC = () => {
   const { isSignedIn } = useUser();
   const [redirectTo, setRedirectTo] = useState("/");
   useEffect(() => {
+    console.log('IN THIS USE EFFECT');
     if (!isLoaded) return;
     console.log(`At login page`)
     console.log(`isLoaded: ${isLoaded}`)
@@ -28,13 +29,17 @@ const LoginPage: React.FC = () => {
   }, [isLoaded, isSignedIn, router]);
 
   useEffect(() => {
+    console.log("HI")
+    console.log(`isSignedIn: ${isSignedIn}`)
+  }, [isSignedIn]);
+
+  useEffect(() => {
     if (typeof router.query.redirect === "string") {
       setRedirectTo(router.query.redirect)
     }
 
 
   }, [router.query.redirect]);
-
 
   const handleLogin = async () => {
     if (!isLoaded) return;
@@ -68,12 +73,8 @@ const LoginPage: React.FC = () => {
       console.log("sign in result:", signInResult.status)
       if (signInResult.status === "complete") {
         alert("Successfully logged in!");
-        console.log("redirecting");
-        router.push('/');
-        // router.push(reidrectTo)
-        // console.log(`Successfully signed in ${router.query.redirect}`
 
-        // window.location.href = redirectTo
+        window.location.reload();
       } else {
 
         alert("Login incomplete. Please try again.");
