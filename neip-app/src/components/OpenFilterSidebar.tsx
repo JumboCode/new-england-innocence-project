@@ -43,15 +43,21 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
   existingLogic
 }) => {
   const [filters, setFilters] = useState<Filter[]>(existingFilters)
-  const [logic, setLogic] = useState<('AND' | 'OR')[]>(existingLogic)
+   const [logic, setLogic] = useState<('AND' | 'OR')[]>(existingLogic)
   const [selectedField, setSelectedField] = useState('')
   const [selectOpen, setSelectOpen] = useState(false)
+  
+  const hasInvalidConstraint = filters.some(
+    f =>
+      ['<', '<=', '>', '>='].includes(f.condition) &&
+      ['string', 'tag', 'bool'].includes(f.type)
+  )
 
   const dataFields: DataField[] = [
     // PersonalInfo fields
     { value: 'name', label: 'Name', type: 'string', table: 'PersonalInfo' },
     {
-      value: 'dob',
+      value: 'dateOfBirth',
       label: 'Date of birth',
       type: 'date',
       table: 'PersonalInfo'
@@ -307,6 +313,15 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
     setSelectedField('')
   }
 
+  const clearFilters = () => {
+    setFilters([])
+    setLogic([])
+
+    onApplyFilters([], [], [])
+
+    window.location.reload()
+  }
+
   const removeFilter = (id: number) => {
     const index = filters.findIndex(f => f.id === id)
     setFilters(filters.filter(f => f.id !== id))
@@ -326,15 +341,6 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
     setSelectOpen(false)
   }
 
-  const clearFilters = () => {
-    setFilters([]);
-    setLogic([]);
-    
-    onApplyFilters([], [], []);
-    
-    window.location.reload();
-  };
-
   const applyFilters = async () => {
     const transformedFilters = filters.map(filter => ({
       type: filter.type,
@@ -342,7 +348,7 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
       table: filter.table,
       value: filter.value,
       constraint: filter.condition || 'is' 
-    }))    
+    }))
     try {
       const response = await fetch('/api/filter/filter', {
         method: 'POST',
@@ -419,7 +425,7 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
           </div>
         ) : (
           <div>
-            <h3 className='font-bold mb-2 text-grey-800'>Filters</h3>
+            <h3 className='font-bold mb-2 text-black-100'>Filters</h3>
             {filters.map((filter, index) => (
               <div
                 key={filter.id}
@@ -431,16 +437,9 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
                     onChange={value => updateLogic(index - 1, value)}
                   />
                 )}
-                {filter.type === 'date' && (
-                  <div className="text-sm text-gray-600 italic mb-1">
-                    * Enter dates in format YYYY-MM-DD
-                  </div>
-                )}
-
                 <FilterSelection
                   title={filter}
                   condition={filter.condition}
-                  allowedConditions={filter.type === 'date' ? ['before', 'after'] : undefined}
                   setCondition={newCondition =>
                     setFilters(
                       filters.map(f =>
@@ -465,16 +464,19 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
           </div>
         )}
 
-
         {/* "+ Filter" Button at the bottom opens the dropdown */}
         <div className='mt-4 flex gap-2'>
           <button
             onClick={clearFilters}
             className={`text-white px-4 py-2 rounded-lg flex-grow ${
-              filters.length === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-500'
+              filters.length === 0
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-red-500'
             }`}
             disabled={filters.length === 0}
-            style={{ backgroundColor: filters.length === 0 ? '#CCCCCC' : '#EF4444' }}
+            style={{
+              backgroundColor: filters.length === 0 ? '#CCCCCC' : '#EF4444'
+            }}
           >
             Clear Filters
           </button>
@@ -486,7 +488,6 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
             + Filter
           </button>
         </div>
-          
         {/* "Apply filters" Button */}
         <div className='mt-4'>
           <button
@@ -496,9 +497,12 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
                 ? 'bg-gray-400 cursor-not-allowed'
                 : 'bg-green-500'
             }`}
-            disabled={filters.length === 0}
+            disabled={filters.length === 0 || hasInvalidConstraint}
             style={{
-              backgroundColor: filters.length === 0 ? '#CCCCCC' : '#44B4EF'
+              backgroundColor:
+                filters.length === 0 || hasInvalidConstraint
+                  ? '#CCCCCC'
+                  : '#44B4EF'
             }}
           >
             Apply filters
