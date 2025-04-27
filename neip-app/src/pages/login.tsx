@@ -18,6 +18,7 @@ const LoginPage: React.FC = () => {
   const { isSignedIn } = useUser();
   const [redirectTo, setRedirectTo] = useState("/");
   useEffect(() => {
+    console.log('IN THIS USE EFFECT');
     if (!isLoaded) return;
     console.log(`At login page`)
     console.log(`isLoaded: ${isLoaded}`)
@@ -25,7 +26,13 @@ const LoginPage: React.FC = () => {
     if (isSignedIn) {
       router.push(`/`);
     }
-  }, [isLoaded, isSignedIn, router]);
+    console.log(redirectTo)
+  }, [isLoaded, isSignedIn, router, redirectTo]);
+
+  useEffect(() => {
+    console.log("HI")
+    console.log(`isSignedIn: ${isSignedIn}`)
+  }, [isSignedIn]);
 
   useEffect(() => {
     if (typeof router.query.redirect === "string") {
@@ -34,7 +41,6 @@ const LoginPage: React.FC = () => {
 
 
   }, [router.query.redirect]);
-
 
   const handleLogin = async () => {
     if (!isLoaded) return;
@@ -65,16 +71,20 @@ const LoginPage: React.FC = () => {
         strategy: "password",
       });
 
+      console.log("sign in result:", signInResult.status)
       if (signInResult.status === "complete") {
-        console.log(`Successfully signed in ${router.query.redirect}`)
+        alert("Successfully logged in!");
 
-        window.location.href = redirectTo
+        window.location.reload();
       } else {
+
         alert("Login incomplete. Please try again.");
+        router.push('/login');
       }
     } catch (err: any) {
       console.error("Login failed:", err);
       alert(`Login failed. ${err.errors ? err.errors[0].message : "Please check your credentials."}`);
+      router.push('/login');
     }
   };
 
