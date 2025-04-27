@@ -20,6 +20,9 @@ const AccountInfo = () => {
     if (isLoaded && !isSignedIn) {
       router.push(`/login?redirect=${encodeURIComponent('/Settings')}`);
     }
+    console.log(`At settings page`)
+    console.log(`isLoaded: ${isLoaded}`)
+    console.log(`isSignedIn: ${isSignedIn}`)
   }, [isSignedIn, isLoaded, router]);
 
   if (!isLoaded) return null;

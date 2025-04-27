@@ -423,12 +423,12 @@ const SignupContent = () => {
             marginTop: '-19px'
           }}
         >
-          Signup
+          Sign up
         </h1>
       </div>
 
       <div>
-        <h2
+        {/* <h2
           style={{
             textAlign: 'center',
             fontSize: '18px',
@@ -438,7 +438,7 @@ const SignupContent = () => {
           }}
         >
           User Credentials
-        </h2>
+        </h2>  */}
       </div>
 
       {/* email input */}
