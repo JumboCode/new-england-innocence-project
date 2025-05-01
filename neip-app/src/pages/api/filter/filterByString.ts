@@ -45,10 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             exonerees = await prisma.exoneree.findMany({
                 where: {
                     [model_name]: {
-                        [field]: value,
-                        NOT: {
-                            [field]: "N/A"
-                        }
+                        [field]: value
                     }
                 },
                 select: { id: true },
@@ -59,7 +56,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     [model_name]: {
                         NOT: [
                             { [field]: value },
-                            { [field]: "N/A" }
                         ]
                     }
                 },
