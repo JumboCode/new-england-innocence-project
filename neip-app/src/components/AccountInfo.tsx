@@ -8,18 +8,19 @@ interface AccountInfoProps {
     userProfilePicture: React.ReactNode; //accepts any react node, ideally <Image>
 }
 
-const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePicture }) => {
+const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type }) => {
     //css styles for account info items
     const formStyle: React.CSSProperties = {
         width: "405px",
-        height: "390px",
+        height: "260px",
         top: "263px",
         left: "105px",
         border: "1px solid black",
         padding: "1em",
         display: "flex",
         flexDirection: "column",
-        gap: "13px"
+        gap: "13px", 
+        marginBottom: "20px"
     }
 
     const inputTextStyle: React.CSSProperties = {
@@ -57,16 +58,6 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
         font: "Inter",
         fontSize: "16px",
         fontWeight: "500"
-    }
-
-    const accountCreatedStyle: React.CSSProperties = {
-        width: "229px",
-        height: "20px",
-        font: "Inter",
-        fontWeight: "400",
-        fontSize: "14px",
-        lineHeight: "20px",
-        color: "#B6B5B5"
     }
 
     //basic form handling when user submits info
@@ -113,7 +104,6 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
 
     return (
         <form onSubmit={handleSubmit} style={formStyle}>
-            {userProfilePicture && <span>{userProfilePicture}</span>}
 
             <label style= {{ color: '#000000' }}>Name:</label>
             <input type="text" name="name" placeholder="First name Last name" value={user?.fullName ?? ""} onChange={handleChange} style={inputTextStyle} />
@@ -132,8 +122,6 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePic
 
             {type === "administration" && <div style={adminTypeStyle}>Administration</div>}
             {type === "intern" && <div style={internTypeStyle}>Intern</div>}
-
-            <span style={accountCreatedStyle}>Account Created: xx/xx/xxxx</span>
 
             {/* css styles for placeholder text in text input */}
             <style jsx>{`

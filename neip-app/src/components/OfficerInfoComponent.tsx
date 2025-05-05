@@ -172,8 +172,8 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
       <span style={styles.officerNameText}>{officer?.name || officerName || "Unknown Officer"}</span>
       <span style={styles.officerDepartmentText}>{officer?.department || "Unknown Department"}</span>
       <div style={styles.iconContainer}>
-        <MdOutlineRemoveRedEye style={{ fontSize: "24px", color: !isEditing ? "gray" : "#65A3E1", cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); setIsEditing(false); }} />
-        <LuPenLine style={{ fontSize: "24px", color: isEditing ? "gray" : "#65A3E1", cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); setIsOpen(true); setIsEditing(true); }} />
+        <MdOutlineRemoveRedEye style={{ fontSize: "24px", color: isEditing ? "gray" : "#65A3E1", cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); setIsEditing(false); }} />
+        <LuPenLine style={{ fontSize: "24px", color: !isEditing ? "gray" : "#65A3E1", cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); setIsOpen(true); setIsEditing(true); }} />
         {isOpen ? <FaChevronUp style={{ fontSize: "24px", color: "#65A3E1" }} /> : <FaChevronDown style={{ fontSize: "24px", color: "#65A3E1" }} />}
       </div>
     </div>

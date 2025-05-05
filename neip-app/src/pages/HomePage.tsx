@@ -946,10 +946,10 @@ const HomePage: React.FC = () => {
                 <Image src={PlusIcon} alt='plus icon' width='14' height='14' />
               }
               filled={true}
-              text='Add officer'
+              text='Add new officer'
               border={true}
               height='44px'
-              width='150px'
+              width='180px'
               color='#D5D7DA'
             />
             <IconTextButton
@@ -958,10 +958,10 @@ const HomePage: React.FC = () => {
                 <Image src={PlusIcon} alt='plus icon' width='14' height='14' />
               }
               filled={true}
-              text='Add new exoneree file'
+              text='Add new exoneree'
               border={false}
               height='44px'
-              width='209px'
+              width='190px'
             />
           </div>
         </div>

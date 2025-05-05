@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import AuthEntryBox from '../components/AuthEntryBox'
 import AuthButton from '../components/AuthButton'
 import AuthBox from '../components/AuthBox'
@@ -17,6 +17,21 @@ const authEntryBoxStyle: React.CSSProperties = {
 }
 
 const InternAccountModal: React.FC<InternAccountModalProps> = ({ onClose }) => {
+  const modalRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        onClose()
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [onClose])
+
   return (
     <div
       style={{
@@ -29,7 +44,9 @@ const InternAccountModal: React.FC<InternAccountModalProps> = ({ onClose }) => {
         background: 'rgba(0, 0, 0, 0.5)'
       }}
     >
-      <AuthBox prop={<InternAccountModalContent onClose={onClose} />} />
+      <div ref={modalRef}>
+        <AuthBox prop={<InternAccountModalContent onClose={onClose} />} />
+      </div>
     </div>
   )
 }
