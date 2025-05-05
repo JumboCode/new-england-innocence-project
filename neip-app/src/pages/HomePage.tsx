@@ -732,6 +732,14 @@ const HomePage: React.FC = () => {
         return
       }
 
+      const confirmed = window.confirm(
+        `Are you sure you want to delete ${selectedRows.length} exoneree(s)? This action cannot be undone.`
+      )
+  
+      if (!confirmed) {
+        return
+      }
+
       const response = await fetch('/api/exonerees/batch-delete', {
         method: 'DELETE',
         headers: {
