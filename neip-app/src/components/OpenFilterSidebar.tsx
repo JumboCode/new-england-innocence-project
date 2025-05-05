@@ -408,10 +408,12 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
             <MenuItem value='' disabled>
               Select a filter
             </MenuItem>
-            {dataFields.map(field => (
-              <MenuItem key={field.value} value={field.value}>
-                {field.label}
-              </MenuItem>
+            {[...dataFields]
+              .sort((a, b) => a.label.localeCompare(b.label))
+              .map(field => (
+                <MenuItem key={field.value} value={field.value}>
+                  {field.label}
+                </MenuItem>
             ))}
           </Select>
         </FormControl>
