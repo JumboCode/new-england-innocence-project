@@ -15,7 +15,7 @@ const UsersComponent: React.FC<UsersProps> = ({ userId, firstName, lastName, ema
     const [isDeleteInternOpen, setOpenDeleteIntern] = useState(false);
     //css styles for account info items
     const divStyle: React.CSSProperties = {
-        width: "246px",
+        width: "260px",
         height: "162x",
         top: "258px",
         left: "610px",
@@ -37,6 +37,9 @@ const UsersComponent: React.FC<UsersProps> = ({ userId, firstName, lastName, ema
 
     const emailStyles: React.CSSProperties = {
         width: "Hug (178px)",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
         height: "Hug (20px)",
         font: "Inter",
         fontWeight: "400",
@@ -107,7 +110,7 @@ const UsersComponent: React.FC<UsersProps> = ({ userId, firstName, lastName, ema
                 <div style={divStyle}>
                     {<span style={threeDotsStyles}>...</span>}
                     {(lastName && firstName) && <span style={nameStyles}>{lastName}, {firstName}</span>}
-                    {email && <span style={emailStyles}>Email: {email}</span>}
+                    {email && <span style={emailStyles}>{email}</span>}
                     <div><span style={typeTextStyle}>Type: </span><span style={adminTypeStyle}>Administration</span></div>
                     <span style={accountCreatedStyle}>Account Created: {dateCreated}</span>
                 </div>
@@ -121,7 +124,7 @@ const UsersComponent: React.FC<UsersProps> = ({ userId, firstName, lastName, ema
                     }}>X</span>}
                     <DeleteInternAccountModal usersId={userId} isOpen={isDeleteInternOpen} onClose={() => { setOpenDeleteIntern(false) }} reload={reload} />
                     {(lastName && firstName) && <span style={nameStyles}>{lastName}, {firstName}</span>}
-                    {email && <span style={emailStyles}>Email: {email}</span>}
+                    {email && <span style={emailStyles}>{email}</span>}
                     <div><span style={typeTextStyle}>Type: </span><span style={internTypeStyle}>Intern</span></div>
                     <span style={accountCreatedStyle}>Account Created: {dateCreated}</span>
                 </div>
