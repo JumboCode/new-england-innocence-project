@@ -8,7 +8,7 @@ interface AccountInfoProps {
     userProfilePicture: React.ReactNode; //accepts any react node, ideally <Image>
 }
 
-const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type, userProfilePicture }) => {
+const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type }) => {
     //css styles for account info items
     const formStyle: React.CSSProperties = {
         width: "405px",
