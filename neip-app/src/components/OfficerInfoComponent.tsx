@@ -117,25 +117,35 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
     department: string;
   } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [name, setName] = useState("");
   const [editableNotes, setEditableNotes] = useState("");
   const [editableMediaLinks, setEditableMediaLinks] = useState("");
   const [editableDepartment, setEditableDepartment] = useState("");
   const [editableBadgeNumber, setEditableBadgeNumber] = useState("");
   const [message, setMessage] = useState<{ text: string, type: "success" | "error" | "" }>({ text: "", type: "" });
 
+  const parseOfficer = async (input) => {
+    const [name, badgeNumber] = input.split(':');
+    return { name, badgeNumber }; 
+  }
+
   useEffect(() => {
     const fetchOfficerData = async () => {
       if (!officerName) return;
       setLoading(true);
       try {
-        const response = await fetch(`/api/officers/getOfficerByName?name=${encodeURIComponent(officerName)}`);
+        const editedName = officerName.includes(':') ? officerName : officerName + ':';
+        const response = await fetch(`/api/officers/getOfficerByName?name=${encodeURIComponent(editedName)}`);
         if (response.ok) {
           const data = await response.json();
+          console.log(data);
+          const { name, badgeNumber } = await parseOfficer(officerName);
           setOfficer(data);
+          setName(name); 
           setEditableNotes(data.notes || "");
           setEditableMediaLinks(data.MediaLinks || "");
           setEditableDepartment(data.department || "");
-          setEditableBadgeNumber(data.badgeNumber || ""); // todo need to pull badge number from name
+          setEditableBadgeNumber(badgeNumber || ""); // todo need to pull badge number from name
         }
       } catch (error) {
         console.error("Error fetching officer data:", error);
@@ -160,11 +170,16 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
   const handleSave = async () => {
     if (!officer) return;
     try {
+      let appendedName = name + ":"; // reconstruct name + badge #
+      if (editableBadgeNumber) {
+        appendedName += editableBadgeNumber;
+      }
       const response = await fetch("/api/officers/editOfficer", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
             id: officer.id, 
+            name: appendedName,
             notes: editableNotes, 
             MediaLinks: editableMediaLinks, 
             department: editableDepartment, 
@@ -190,8 +205,9 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
   const collapsibleTrigger = (
     <div style={styles.headerBar} onClick={() => setIsOpen(!isOpen)}>
       <span style={styles.officerInfoText}>Officer Information</span>
-      <span style={styles.officerNameText}>{officer?.name || officerName || "Unknown Officer"}</span>
-      <span style={styles.officerDepartmentText}>{officer?.department || "Unknown Department"}</span>
+      <span style={styles.officerNameText}>{name}</span>
+      {/* <span style={styles.officerNameText}>{officer?.name || officerName || "Unknown Officer"}</span> */}
+      {/* <span style={styles.officerDepartmentText}>{officer?.department || "Unknown Department"}</span> */}
       <div style={styles.iconContainer}>
         <MdOutlineRemoveRedEye style={{ fontSize: "24px", color: isEditing ? "gray" : "#65A3E1", cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); setIsEditing(false); }} />
         <LuPenLine style={{ fontSize: "24px", color: !isEditing ? "gray" : "#65A3E1", cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); setIsOpen(true); setIsEditing(true); }} />
