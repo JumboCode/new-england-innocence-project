@@ -35,7 +35,10 @@ export default async function handler(
       emailAddress: [email],
       firstName: firstName,
       lastName: lastName,
-      password: password
+      password: password,
+      publicMetadata: {
+        role: "administration"
+      }
     })
 
     console.log('User created successfully:', user)
