@@ -44,6 +44,11 @@ const styles = {
   collapsibleContent: {
     padding: "20px"
   },
+  fieldsContainer: {
+    display: "flex", 
+    flexDirection: "column", 
+    gap: "10px"
+  },
   twoColumnRow: {
     display: "flex",
     gap: "20px"
@@ -74,6 +79,19 @@ const styles = {
     overflow: "auto"
   },
 
+  columnTextAreaSmall: {
+    width: "480px",
+    height: "30px",
+    resize: "none" as "none",
+    border: "none",
+    outline: "none",
+    padding: "10px",
+    fontSize: "14px",
+    backgroundColor: "#fff",
+    color: "#000",
+    overflow: "auto",
+  },
+
   mediaLinks: {
     width: "480px",
     height: "92px",
@@ -102,6 +120,7 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
   const [editableNotes, setEditableNotes] = useState("");
   const [editableMediaLinks, setEditableMediaLinks] = useState("");
   const [editableDepartment, setEditableDepartment] = useState("");
+  const [editableBadgeNumber, setEditableBadgeNumber] = useState("");
   const [message, setMessage] = useState<{ text: string, type: "success" | "error" | "" }>({ text: "", type: "" });
 
   useEffect(() => {
@@ -116,6 +135,7 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
           setEditableNotes(data.notes || "");
           setEditableMediaLinks(data.MediaLinks || "");
           setEditableDepartment(data.department || "");
+          setEditableBadgeNumber(data.badgeNumber || ""); // todo need to pull badge number from name
         }
       } catch (error) {
         console.error("Error fetching officer data:", error);
@@ -147,13 +167,14 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
             id: officer.id, 
             notes: editableNotes, 
             MediaLinks: editableMediaLinks, 
-            department: editableDepartment
+            department: editableDepartment, 
+            badgeNumber: editableBadgeNumber,
         })
       });
       const responseData = await response.json();
       if (response.ok) {
         setIsEditing(false);
-        const updatedOfficer = { ...officer, notes: editableNotes, MediaLinks: editableMediaLinks, department: editableDepartment };
+        const updatedOfficer = { ...officer, notes: editableNotes, MediaLinks: editableMediaLinks, department: editableDepartment, badgeNumber: editableBadgeNumber };
         setOfficer(updatedOfficer);
         setMessage({ text: "Changes saved successfully!", type: "success" });
       } else {
@@ -186,24 +207,46 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
           {loading ? (
             <div style={{ color: "#000" }}>Loading officer information...</div>
           ) : (
-            <div style={styles.twoColumnRow}>
-              <div style={styles.columnBox}>
-                <div style={styles.columnHeader}>Notes</div>
-                <textarea
-                  style={styles.columnTextArea}
-                  value={editableNotes}
-                  onChange={(e) => setEditableNotes(e.target.value)}
-                  readOnly={!isEditing}
-                />
-              </div>
-              <div style={styles.columnBox}>
-                <div style={styles.columnHeader}>Media Links</div>
-                <textarea
-                  style={styles.columnTextArea}
-                  value={editableMediaLinks}
-                  onChange={(e) => setEditableMediaLinks(e.target.value)}
-                  readOnly={!isEditing}
-                />
+            <div style={styles.fieldsContainer}> 
+              <div style={styles.twoColumnRow}>
+                <div style={styles.columnBox}>
+                  <div style={styles.columnHeader}>Badge Number</div>
+                  <textarea
+                    style={styles.columnTextAreaSmall}
+                    value={editableBadgeNumber}
+                    onChange={(e) => setEditableBadgeNumber(e.target.value)}
+                    readOnly={!isEditing}
+                  />
+                </div>
+                <div style={styles.columnBox}>
+                  <div style={styles.columnHeader}>Department</div>
+                  <textarea
+                    style={styles.columnTextAreaSmall}
+                    value={editableDepartment}
+                    onChange={(e) => setEditableDepartment(e.target.value)}
+                    readOnly={!isEditing}
+                  />
+                </div>
+              </div>  
+              <div style={styles.twoColumnRow}>
+                <div style={styles.columnBox}>
+                  <div style={styles.columnHeader}>Notes</div>
+                  <textarea
+                    style={styles.columnTextArea}
+                    value={editableNotes}
+                    onChange={(e) => setEditableNotes(e.target.value)}
+                    readOnly={!isEditing}
+                  />
+                </div>
+                <div style={styles.columnBox}>
+                  <div style={styles.columnHeader}>Media Links</div>
+                  <textarea
+                    style={styles.columnTextArea}
+                    value={editableMediaLinks}
+                    onChange={(e) => setEditableMediaLinks(e.target.value)}
+                    readOnly={!isEditing}
+                  />
+                </div>
               </div>
             </div>
           )}
