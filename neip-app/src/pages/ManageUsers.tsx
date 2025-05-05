@@ -9,7 +9,10 @@ interface User {
     id: string
     firstName: string;
     lastName: string;
-    emailAddresses: { email: string }[]
+    publicMetadata: {
+        role: string;
+    };
+    emailAddresses: { emailAddress: string }[]
     createdAt: Date
 }
 
