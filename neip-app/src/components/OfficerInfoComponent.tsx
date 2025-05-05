@@ -45,8 +45,8 @@ const styles = {
     padding: "20px"
   },
   fieldsContainer: {
-    display: "flex", 
-    flexDirection: "column", 
+    display: "flex",
+    flexDirection: "column" as "column",
     gap: "10px"
   },
   twoColumnRow: {
@@ -124,7 +124,7 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
   const [editableBadgeNumber, setEditableBadgeNumber] = useState("");
   const [message, setMessage] = useState<{ text: string, type: "success" | "error" | "" }>({ text: "", type: "" });
 
-  const parseOfficer = async (input) => {
+  const parseOfficer = async (input : string) => {
     const [name, badgeNumber] = input.split(':');
     return { name, badgeNumber }; 
   }
