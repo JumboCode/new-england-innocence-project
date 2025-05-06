@@ -119,7 +119,10 @@ const ManageUsers = () => {
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '60px' }}>
         <div style={{ backgroundColor: 'white', minHeight: '100vh' }}>
-            {isInternAccountModalOpen && <InternAccountModal onClose={() => { setInternAccountModalOpen(false) }} />}
+            {isInternAccountModalOpen && <InternAccountModal onClose={() => { 
+                setInternAccountModalOpen(false);
+                window.location.reload();
+             }} />}
             <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '65px' }}>
                 {
                     users.map((user: User) => {
