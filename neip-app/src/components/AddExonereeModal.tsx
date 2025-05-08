@@ -11,6 +11,7 @@ import LabelAndDropdown from './LabelAndDropdown'
 import DropdownAndTags from '../components/DropdownAndTags'
 import PersonalInfoIcon from '../img/PersonalInfoIcon.png'
 import IconTextButton from '../components/IconTextButton'
+import { useEffect } from 'react'
 
 const style = {
   position: 'absolute',
@@ -93,6 +94,12 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
 
   const [isUploading, setIsUploading] = useState(false)
 
+  useEffect(() => {
+    if (open) {
+      setActiveTab(0)
+    }
+  }, [open])
+
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue)
   }
@@ -136,36 +143,38 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
     }
   }
 
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0]
+    if (!file) return
 
-    setIsUploading(true);
-    const form = new FormData();
-    form.append('image', file);
+    setIsUploading(true)
+    const form = new FormData()
+    form.append('image', file)
 
     try {
       const res = await fetch('/api/exonerees/uploadImage', {
         method: 'POST',
         body: form
-      });
+      })
 
-      const data = await res.json();
+      const data = await res.json()
       if (res.ok && data.imageUrl) {
         setFormData(prev => ({
           ...prev,
           imageUrl: data.imageUrl
-        }));
+        }))
       } else {
-        throw new Error(data.error || 'Upload failed');
+        throw new Error(data.error || 'Upload failed')
       }
     } catch (err) {
-      console.error('Image upload error:', err);
-      alert('Image upload failed');
+      console.error('Image upload error:', err)
+      alert('Image upload failed')
     } finally {
-      setIsUploading(false);
+      setIsUploading(false)
     }
-  } 
+  }
 
   const handleSubmit = async () => {
     try {
@@ -258,9 +267,8 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         return
       }
 
-      console.log("Submitting officersInvolved:", formData.officersInvolved);
-        console.log("Type of officersInvolved:", typeof formData.officersInvolved);
-
+      console.log('Submitting officersInvolved:', formData.officersInvolved)
+      console.log('Type of officersInvolved:', typeof formData.officersInvolved)
 
       const response = await fetch('/api/exonerees/addExoneree', {
         method: 'POST',
@@ -352,23 +360,31 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
     switch (activeTab) {
       case 0:
         const personalLeftIcons = [
-          <React.Fragment key="upload-image-section">
+          <React.Fragment key='upload-image-section'>
             <div style={{ marginBottom: '12px' }}>
               {isUploading ? (
                 <p>Uploading...</p>
               ) : (
-                <div style={{
-                  padding: '5px',
-                  position: 'relative',
-                  width: '50%',
-                  height: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
+                <div
+                  style={{
+                    padding: '5px',
+                    position: 'relative',
+                    width: '50%',
+                    height: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
                   <img
-                    src={formData.imageUrl ? `/api/exonerees/imageProxy?key=${encodeURIComponent(formData.imageUrl.split('/').pop() || '')}` : PersonalInfoIcon.src}
-                    alt="Profile Picture"
+                    src={
+                      formData.imageUrl
+                        ? `/api/exonerees/imageProxy?key=${encodeURIComponent(
+                            formData.imageUrl.split('/').pop() || ''
+                          )}`
+                        : PersonalInfoIcon.src
+                    }
+                    alt='Profile Picture'
                     style={{
                       width: '100%',
                       height: '100%',
@@ -390,8 +406,8 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               Image Upload
             </label>
             <input
-              type="file"
-              accept="image/*"
+              type='file'
+              accept='image/*'
               onChange={handleImageUpload}
               style={{ marginTop: '5px', marginBottom: '10px' }}
             />
@@ -765,7 +781,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
               name='exonerationMethod'
             />
           </React.Fragment>,
-          <React.Fragment key = 'policeDept'>
+          <React.Fragment key='policeDept'>
             <LabelAndEntry
               label={'Police Department'}
               width='60%'
