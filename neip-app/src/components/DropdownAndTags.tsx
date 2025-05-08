@@ -33,7 +33,11 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const response = await fetch(`/api/tags/${apiUrl.toLocaleLowerCase()}/get${apiUrl}`);
+        let url = `/api/tags/${apiUrl.toLocaleLowerCase()}/get${apiUrl}`
+        if (label == 'Officers Involved') {
+          url = `/api/officers/getAllOfficers`
+        }
+        const response = await fetch(`${url}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
