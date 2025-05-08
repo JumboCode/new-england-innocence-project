@@ -2,13 +2,7 @@ import { useState, useEffect } from "react";
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 
-
-interface AccountInfoProps {
-    type: string; // Name will be passed as a string prop
-    userProfilePicture: React.ReactNode; //accepts any react node, ideally <Image>
-}
-
-const AccountInfoComponent: React.FC<AccountInfoProps> = () => {
+const AccountInfoComponent: React.FC = () => {
     //css styles for account info items
     const formStyle: React.CSSProperties = {
         width: "405px",

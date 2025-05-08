@@ -1,6 +1,4 @@
 import AccountInfoComponent from '@/components/AccountInfo'
-import Image from 'next/image'
-import UserProfileSquare from '../img/user-profile-square.png'
 import NavBar from '../components/NavBar'
 import Modal from '@/components/ChangePasswordModal'
 import React, { useState } from 'react'
