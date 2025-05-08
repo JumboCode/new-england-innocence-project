@@ -386,6 +386,10 @@ const HomePage: React.FC = () => {
     setSelectedColumns(columns.map(col => col.key))
   }
 
+  const refreshPage = async () => {
+    window.location.reload();
+  }
+
   // Helper function to refresh data from the API
   const refreshExonerees = async () => {
     try {
@@ -1081,7 +1085,7 @@ const HomePage: React.FC = () => {
                   : filter.value // weird typescript fix
                 return (
                   <div key={keyValue}>
-                    <OfficerInfo key={keyValue} officerName={keyValue} />
+                    <OfficerInfo key={keyValue} officerName={keyValue} onDelete={refreshPage} />
                   </div>
                 )
               }
