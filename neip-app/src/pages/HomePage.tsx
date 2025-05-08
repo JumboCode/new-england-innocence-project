@@ -909,7 +909,7 @@ const HomePage: React.FC = () => {
               color: 'black'
             }}
           >
-            <SearchEntryBox setExonerees={handleSetExonerees} />
+            <SearchEntryBox setExonerees={handleSetExonerees} loadAllExonerees = {refreshExonerees}/>
           </div>
 
           {/* Action Buttons */}
