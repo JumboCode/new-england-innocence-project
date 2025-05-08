@@ -75,7 +75,7 @@ const LoginPage: React.FC = () => {
 
       console.log('sign in result:', signInResult.status)
       if (signInResult.status === 'complete') {
-        alert('Successfully logged in!')
+        // alert('Successfully logged in!')
 
         window.location.reload()
       } else {
