@@ -50,7 +50,7 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({
     };
 
     fetchOptions();
-  }, [apiUrl]);
+  }, [apiUrl, label]);
 
   useEffect(() => {
     setSelectedTags(value);
@@ -82,6 +82,24 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({
         setAvailableOptions([...availableOptions, newOption]);
 
         try {
+          if (label == 'Officers Involved') {
+            const [name, badgeNumber] = inputValue.split(":")
+            const payload = {
+              name: name, 
+              badgeNumber: badgeNumber,
+              department: "",
+              MediaLinks: "",
+              notes: ""
+            }
+            const response = await fetch('/api/officers/addOfficer', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            })
+            if (!response.ok) {
+              throw new Error(`Failed to add ${apiUrl} option`);
+            }
+          } else {
             const response = await fetch(`/api/tags/${apiUrl.toLocaleLowerCase()}/add${apiUrl}`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -90,6 +108,7 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({
             if (!response.ok) {
                 throw new Error(`Failed to add ${apiUrl} option`);
             }
+          }
         } catch (error) {
             console.error(`Failed to add ${apiUrl} option:`, error);
             setSelectedTags(prev => prev.filter(tag => tag !== inputValue));
