@@ -67,7 +67,8 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
         if (title.field === 'originalCharges') {
           endpoint = '/api/tags/charge/getCharge'
         } else if (title.field === 'officersInvolved') {
-          endpoint = '/api/tags/officer/getOfficer'
+          // endpoint = '/api/tags/officer/getOfficer'
+          endpoint = '/api/officers/getAllOfficers'
         } else {
           return
         }
