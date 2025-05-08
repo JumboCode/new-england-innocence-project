@@ -44,6 +44,11 @@ const styles = {
   collapsibleContent: {
     padding: "20px"
   },
+  fieldsContainer: {
+    display: "flex",
+    flexDirection: "column" as "column",
+    gap: "10px"
+  },
   twoColumnRow: {
     display: "flex",
     gap: "20px"
@@ -74,6 +79,19 @@ const styles = {
     overflow: "auto"
   },
 
+  columnTextAreaSmall: {
+    width: "480px",
+    height: "30px",
+    resize: "none" as "none",
+    border: "none",
+    outline: "none",
+    padding: "10px",
+    fontSize: "14px",
+    backgroundColor: "#fff",
+    color: "#000",
+    overflow: "auto",
+  },
+
   mediaLinks: {
     width: "480px",
     height: "92px",
@@ -99,23 +117,35 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
     department: string;
   } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [name, setName] = useState("");
   const [editableNotes, setEditableNotes] = useState("");
   const [editableMediaLinks, setEditableMediaLinks] = useState("");
   const [editableDepartment, setEditableDepartment] = useState("");
+  const [editableBadgeNumber, setEditableBadgeNumber] = useState("");
   const [message, setMessage] = useState<{ text: string, type: "success" | "error" | "" }>({ text: "", type: "" });
+
+  const parseOfficer = async (input : string) => {
+    const [name, badgeNumber] = input.split(':');
+    return { name, badgeNumber }; 
+  }
 
   useEffect(() => {
     const fetchOfficerData = async () => {
       if (!officerName) return;
       setLoading(true);
       try {
-        const response = await fetch(`/api/officers/getOfficerByName?name=${encodeURIComponent(officerName)}`);
+        const editedName = officerName.includes(':') ? officerName : officerName + ':';
+        const response = await fetch(`/api/officers/getOfficerByName?name=${encodeURIComponent(editedName)}`);
         if (response.ok) {
           const data = await response.json();
+          console.log(data);
+          const { name, badgeNumber } = await parseOfficer(officerName);
           setOfficer(data);
+          setName(name); 
           setEditableNotes(data.notes || "");
           setEditableMediaLinks(data.MediaLinks || "");
           setEditableDepartment(data.department || "");
+          setEditableBadgeNumber(badgeNumber || ""); // todo need to pull badge number from name
         }
       } catch (error) {
         console.error("Error fetching officer data:", error);
@@ -140,20 +170,26 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
   const handleSave = async () => {
     if (!officer) return;
     try {
+      let appendedName = name + ":"; // reconstruct name + badge #
+      if (editableBadgeNumber) {
+        appendedName += editableBadgeNumber;
+      }
       const response = await fetch("/api/officers/editOfficer", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
             id: officer.id, 
+            name: appendedName,
             notes: editableNotes, 
             MediaLinks: editableMediaLinks, 
-            department: editableDepartment
+            department: editableDepartment, 
+            badgeNumber: editableBadgeNumber,
         })
       });
       const responseData = await response.json();
       if (response.ok) {
         setIsEditing(false);
-        const updatedOfficer = { ...officer, notes: editableNotes, MediaLinks: editableMediaLinks, department: editableDepartment };
+        const updatedOfficer = { ...officer, notes: editableNotes, MediaLinks: editableMediaLinks, department: editableDepartment, badgeNumber: editableBadgeNumber };
         setOfficer(updatedOfficer);
         setMessage({ text: "Changes saved successfully!", type: "success" });
       } else {
@@ -169,8 +205,9 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
   const collapsibleTrigger = (
     <div style={styles.headerBar} onClick={() => setIsOpen(!isOpen)}>
       <span style={styles.officerInfoText}>Officer Information</span>
-      <span style={styles.officerNameText}>{officer?.name || officerName || "Unknown Officer"}</span>
-      <span style={styles.officerDepartmentText}>{officer?.department || "Unknown Department"}</span>
+      <span style={styles.officerNameText}>{name}</span>
+      {/* <span style={styles.officerNameText}>{officer?.name || officerName || "Unknown Officer"}</span> */}
+      {/* <span style={styles.officerDepartmentText}>{officer?.department || "Unknown Department"}</span> */}
       <div style={styles.iconContainer}>
         <MdOutlineRemoveRedEye style={{ fontSize: "24px", color: isEditing ? "gray" : "#65A3E1", cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); setIsEditing(false); }} />
         <LuPenLine style={{ fontSize: "24px", color: !isEditing ? "gray" : "#65A3E1", cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); setIsOpen(true); setIsEditing(true); }} />
@@ -186,24 +223,46 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
           {loading ? (
             <div style={{ color: "#000" }}>Loading officer information...</div>
           ) : (
-            <div style={styles.twoColumnRow}>
-              <div style={styles.columnBox}>
-                <div style={styles.columnHeader}>Notes</div>
-                <textarea
-                  style={styles.columnTextArea}
-                  value={editableNotes}
-                  onChange={(e) => setEditableNotes(e.target.value)}
-                  readOnly={!isEditing}
-                />
-              </div>
-              <div style={styles.columnBox}>
-                <div style={styles.columnHeader}>Media Links</div>
-                <textarea
-                  style={styles.columnTextArea}
-                  value={editableMediaLinks}
-                  onChange={(e) => setEditableMediaLinks(e.target.value)}
-                  readOnly={!isEditing}
-                />
+            <div style={styles.fieldsContainer}> 
+              <div style={styles.twoColumnRow}>
+                <div style={styles.columnBox}>
+                  <div style={styles.columnHeader}>Badge Number</div>
+                  <textarea
+                    style={styles.columnTextAreaSmall}
+                    value={editableBadgeNumber}
+                    onChange={(e) => setEditableBadgeNumber(e.target.value)}
+                    readOnly={!isEditing}
+                  />
+                </div>
+                <div style={styles.columnBox}>
+                  <div style={styles.columnHeader}>Department</div>
+                  <textarea
+                    style={styles.columnTextAreaSmall}
+                    value={editableDepartment}
+                    onChange={(e) => setEditableDepartment(e.target.value)}
+                    readOnly={!isEditing}
+                  />
+                </div>
+              </div>  
+              <div style={styles.twoColumnRow}>
+                <div style={styles.columnBox}>
+                  <div style={styles.columnHeader}>Notes</div>
+                  <textarea
+                    style={styles.columnTextArea}
+                    value={editableNotes}
+                    onChange={(e) => setEditableNotes(e.target.value)}
+                    readOnly={!isEditing}
+                  />
+                </div>
+                <div style={styles.columnBox}>
+                  <div style={styles.columnHeader}>Media Links</div>
+                  <textarea
+                    style={styles.columnTextArea}
+                    value={editableMediaLinks}
+                    onChange={(e) => setEditableMediaLinks(e.target.value)}
+                    readOnly={!isEditing}
+                  />
+                </div>
               </div>
             </div>
           )}
