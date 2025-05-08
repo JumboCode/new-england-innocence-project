@@ -3,6 +3,7 @@ import Collapsible from "react-collapsible";
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { LuPenLine } from "react-icons/lu";
+import { MdClose } from "react-icons/md";
 
 const styles = {
   container: {
@@ -106,7 +107,7 @@ const styles = {
   }
 };
 
-const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
+const OfficerInfo: React.FC<{ officerName: string, onDelete: () => void }> = ({ officerName, onDelete }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [officer, setOfficer] = useState<{
@@ -202,13 +203,37 @@ const OfficerInfo: React.FC<{ officerName: string }> = ({ officerName }) => {
     }
   };
 
+  const deleteOfficer = async () => {
+    const confirmed = window.confirm("Are you sure you want to delete this officer?");
+    if (!confirmed) return;
+
+    try {
+      const response = await fetch(`/api/officers/deleteOfficer?id=${officer.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to delete. Server responded with ${response.status}`);
+      }
+
+      alert("Officer successfully deleted! Removing filter...")
+      onDelete()
+
+    } catch (error) {
+      console.error("Error deleting officer:", error);
+      setMessage({ text: "Error deleting officer, please try again.", type: "error" });
+    }
+  }
+
   const collapsibleTrigger = (
     <div style={styles.headerBar} onClick={() => setIsOpen(!isOpen)}>
       <span style={styles.officerInfoText}>Officer Information</span>
       <span style={styles.officerNameText}>{name}</span>
-      {/* <span style={styles.officerNameText}>{officer?.name || officerName || "Unknown Officer"}</span> */}
-      {/* <span style={styles.officerDepartmentText}>{officer?.department || "Unknown Department"}</span> */}
       <div style={styles.iconContainer}>
+        <MdClose color="red" size={24} onClick={deleteOfficer} />
         <MdOutlineRemoveRedEye style={{ fontSize: "24px", color: isEditing ? "gray" : "#65A3E1", cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); setIsEditing(false); }} />
         <LuPenLine style={{ fontSize: "24px", color: !isEditing ? "gray" : "#65A3E1", cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); setIsOpen(true); setIsEditing(true); }} />
         {isOpen ? <FaChevronUp style={{ fontSize: "24px", color: "#65A3E1" }} /> : <FaChevronDown style={{ fontSize: "24px", color: "#65A3E1" }} />}
