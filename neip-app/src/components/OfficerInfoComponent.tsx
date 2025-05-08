@@ -208,7 +208,7 @@ const OfficerInfo: React.FC<{ officerName: string, onDelete: () => void }> = ({ 
     if (!confirmed) return;
 
     try {
-      const response = await fetch(`/api/officers/deleteOfficer?id=${officer.id}`, {
+      const response = await fetch(`/api/officers/deleteOfficer?id=${officer?.id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
