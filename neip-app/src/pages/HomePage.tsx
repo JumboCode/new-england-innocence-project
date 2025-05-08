@@ -98,6 +98,7 @@ const columns = [
     width: 120,
     fixed: 'left',
     render: (imageURL: string) => {
+      console.log('Rendering image for URL:', imageURL)
       if (!imageURL || imageURL === 'N/A') {
         return (
           <img

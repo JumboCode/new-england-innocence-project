@@ -18,28 +18,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const normalizedTable = table.toLowerCase()
     let exonereeIds = []
 
+    const baseCondition = { [field]: { has: value } }
+
     const filterCondition = constraint === 'is'
-      ? { [field]: { has: value } }
-      : { NOT: { [field]: { has: value } } }
+      ? baseCondition
+      : { NOT: baseCondition }
 
+    let whereClause: any = {}
     if (normalizedTable === 'legalinfo') {
-      const exonerees = await prisma.exoneree.findMany({
-        where: { legalInfo: filterCondition },
-        select: { id: true }
-      })
-      exonereeIds = exonerees.map(e => e.id)
-
+      whereClause = { legalInfo: filterCondition }
     } else if (normalizedTable === 'postexonerationinfo') {
-      const exonerees = await prisma.exoneree.findMany({
-        where: { postExonerationInfo: filterCondition },
-        select: { id: true }
-      })
-      exonereeIds = exonerees.map(e => e.id)
-
+      whereClause = { postExonerationInfo: filterCondition }
     } else {
       return res.status(400).json({ error: `Table '${table}' not supported for tag filtering` })
     }
 
+    const exonerees = await prisma.exoneree.findMany({
+      where: whereClause,
+      select: { id: true }
+    })
+
+    exonereeIds = exonerees.map(e => e.id)
     return res.status(200).json(exonereeIds)
   } catch (error) {
     console.error('Filter by tag error:', error)
