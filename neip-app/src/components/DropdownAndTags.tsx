@@ -79,6 +79,7 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({
         const newOption = { value: inputValue, label: inputValue };
         const newTags = [...selectedTags, inputValue];
         setSelectedTags(newTags);
+        onChange?.(name, newTags);
         setAvailableOptions([...availableOptions, newOption]);
 
         try {
