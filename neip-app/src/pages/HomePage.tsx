@@ -110,11 +110,11 @@ const columns = [
               borderRadius: '50%'
             }}
           />
-        );
+        )
       }
-    
-      const fileName = imageURL.split('/').pop() || '';
-    
+
+      const fileName = imageURL.split('/').pop() || ''
+
       return (
         <img
           src={`/api/exonerees/imageProxy?key=${encodeURIComponent(fileName)}`}
@@ -126,9 +126,8 @@ const columns = [
             borderRadius: '50%'
           }}
         />
-      );
+      )
     }
-    
   },
   { title: 'DOB', dataIndex: 'dob', key: 'dob', width: 120 },
   { title: 'Race', dataIndex: 'race', key: 'race', width: 120 },
@@ -358,7 +357,7 @@ const HomePage: React.FC = () => {
   const [exonerees, setExonerees] = useState<any[]>([])
   const [selectedRows, setSelectedRows] = useState<number[]>([])
   const [filtersActive, setFiltersActive] = useState(false)
-  const [isSearching, setIsSearching] = useState(false);
+  const [isSearching, setIsSearching] = useState(false)
 
   const { isSignedIn, isLoaded } = useUser()
   const router = useRouter()
@@ -387,7 +386,7 @@ const HomePage: React.FC = () => {
   }
 
   const refreshPage = async () => {
-    window.location.reload();
+    window.location.reload()
   }
 
   // Helper function to refresh data from the API
@@ -504,9 +503,9 @@ const HomePage: React.FC = () => {
   }
   useEffect(() => {
     if (!isSearching) {
-      refreshExonerees();
+      refreshExonerees()
     }
-  }, [isSearching]);
+  }, [isSearching])
 
   const handleOpenModal = () => setModalOpen(true)
   const handleCloseModal = () => setModalOpen(false)
@@ -569,7 +568,6 @@ const HomePage: React.FC = () => {
   const [actionMenuVisible, setActionMenuVisible] = useState(false)
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 })
   const [filteredExonereeIDs, setFilteredExonereeIDs] = useState<number[]>([])
-
 
   const [selectedCell, setSelectedCell] = useState<{
     record: TableRowData
@@ -651,7 +649,11 @@ const HomePage: React.FC = () => {
   //   }
   // }, [selectedFilters, appliedFilters, logic])
   useEffect(() => {
-    if (selectedFilters.length === 0 && appliedFilters.length === 0 && !isSearching) {
+    if (
+      selectedFilters.length === 0 &&
+      appliedFilters.length === 0 &&
+      !isSearching
+    ) {
       refreshExonerees()
     } else {
       fetchFilters()
@@ -739,7 +741,7 @@ const HomePage: React.FC = () => {
       const confirmed = window.confirm(
         `Are you sure you want to delete ${selectedRows.length} exoneree(s)? This action cannot be undone.`
       )
-  
+
       if (!confirmed) {
         return
       }
@@ -935,7 +937,9 @@ const HomePage: React.FC = () => {
               height='44px'
               width='160px'
               onClick={handleDeleteSelectedRows}
+              disabled={selectedRows.length === 0}
             />
+
             <IconTextButton
               icon={
                 <Image
@@ -1085,7 +1089,11 @@ const HomePage: React.FC = () => {
                   : filter.value // weird typescript fix
                 return (
                   <div key={keyValue}>
-                    <OfficerInfo key={keyValue} officerName={keyValue} onDelete={refreshPage} />
+                    <OfficerInfo
+                      key={keyValue}
+                      officerName={keyValue}
+                      onDelete={refreshPage}
+                    />
                   </div>
                 )
               }
