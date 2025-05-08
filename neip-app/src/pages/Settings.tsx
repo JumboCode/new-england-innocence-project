@@ -60,22 +60,7 @@ const AccountInfo = () => {
       >
         Account Information
       </h2>
-      <AccountInfoComponent
-        type='administration'
-        userProfilePicture={
-          <Image
-            src={UserProfileSquare}
-            alt='user profile icon'
-            width='90'
-            height='90'
-            style={{
-              top: '274px',
-              left: '121px',
-              display: 'block'
-            }}
-          />
-        }
-      />
+      <AccountInfoComponent/>
       <button onClick={() => setModalOpen(true)} style={changePassBtnStyle}>
         Change Password
       </button>

@@ -8,7 +8,7 @@ interface AccountInfoProps {
     userProfilePicture: React.ReactNode; //accepts any react node, ideally <Image>
 }
 
-const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type }) => {
+const AccountInfoComponent: React.FC<AccountInfoProps> = () => {
     //css styles for account info items
     const formStyle: React.CSSProperties = {
         width: "405px",
@@ -101,6 +101,7 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type }) => {
 
     }, [isLoaded, isSignedIn, router]);
 
+    const type = user?.publicMetadata.role; 
 
     return (
         <form onSubmit={handleSubmit} style={formStyle}>
