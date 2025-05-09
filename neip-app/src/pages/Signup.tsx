@@ -331,7 +331,7 @@ const SignupContent = () => {
         }}
       >
         <AuthButton
-          color='#43b4ef'
+          color='#3b82f6'
           filled={true}
           text='Sign Up'
           href='/signupConfirmation'
