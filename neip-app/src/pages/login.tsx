@@ -18,31 +18,22 @@ const LoginPage: React.FC = () => {
   const { isSignedIn } = useUser()
   const [redirectTo, setRedirectTo] = useState('/')
   useEffect(() => {
-    console.log('IN THIS USE EFFECT')
     if (!isLoaded) return
-    console.log(`At login page`)
+    console.log(`LOGIN PAGE`)
     console.log(`isLoaded: ${isLoaded}`)
     console.log(`isSignedIn: ${isSignedIn}`)
     if (isSignedIn) {
+      console.log("I SHOULD NOT BE HERE")
       router.push(`/`)
     }
-    console.log(redirectTo)
+    // console.log(redirectTo)
   }, [isLoaded, isSignedIn, router, redirectTo])
-
-  useEffect(() => {
-    console.log('HI')
-    console.log(`isSignedIn: ${isSignedIn}`)
-  }, [isSignedIn])
 
   useEffect(() => {
     if (typeof router.query.redirect === 'string') {
       setRedirectTo(router.query.redirect)
     }
   }, [router.query.redirect])
-
-  const handleSignup = async () => {
-    router.push(`/Signup`)
-  }
 
   const handleLogin = async () => {
     if (!isLoaded) return
@@ -76,7 +67,7 @@ const LoginPage: React.FC = () => {
       console.log('sign in result:', signInResult.status)
       if (signInResult.status === 'complete') {
         // alert('Successfully logged in!')
-
+        // router.push('/') // trying this instead
         window.location.reload()
       } else {
         alert('Login incomplete. Please try again.')
@@ -157,7 +148,7 @@ const LoginPage: React.FC = () => {
                 color='#90D5FF'
                 filled={true}
                 text='Sign up'
-                onClick={handleSignup}
+                href='/Signup'
               />
             </div>
           </div>

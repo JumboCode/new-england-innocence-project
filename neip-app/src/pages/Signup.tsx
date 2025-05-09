@@ -49,7 +49,7 @@ import { useUser } from '@clerk/nextjs'
 const Signup: React.FC = () => {
   const { isSignedIn } = useUser()
   useEffect(() => {
-    console.log('at signup')
+    console.log('SIGNUP PAGE')
     // if (!isLoaded) return
     // console.log(`isLoaded: ${isLoaded}`)
     console.log(`isSignedIn: ${isSignedIn}`)
@@ -212,10 +212,6 @@ const SignupContent = () => {
     }
   }
 
-  const handleLoginRedirect = async () => {
-    router.push("/login");
-  }
-
   return (
     <div>
       <div>
@@ -344,7 +340,7 @@ const SignupContent = () => {
           color='#90D5FF'
           filled={true}
           text='Log in'
-          onClick={handleLoginRedirect}
+          href='/login'
         />
       </div>
     </div>
