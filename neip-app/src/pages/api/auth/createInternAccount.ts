@@ -29,9 +29,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
         console.log("entered here")
+        const [firstName, lastName] = internName.split(" ");
         const internUser = await clerkClient.users.createUser({
             emailAddress: [internEmail],
-            firstName: internName,
+            firstName: firstName,
+            lastName: lastName,
             password: generatedPassword,
             publicMetadata: {
                 role: "intern"

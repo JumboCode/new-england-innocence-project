@@ -98,6 +98,7 @@ const columns = [
     width: 120,
     fixed: 'left',
     render: (imageURL: string) => {
+      console.log('Rendering image for URL:', imageURL)
       if (!imageURL || imageURL === 'N/A') {
         return (
           <img
@@ -110,11 +111,11 @@ const columns = [
               borderRadius: '50%'
             }}
           />
-        );
+        )
       }
-    
-      const fileName = imageURL.split('/').pop() || '';
-    
+
+      const fileName = imageURL.split('/').pop() || ''
+
       return (
         <img
           src={`/api/exonerees/imageProxy?key=${encodeURIComponent(fileName)}`}
@@ -126,9 +127,8 @@ const columns = [
             borderRadius: '50%'
           }}
         />
-      );
+      )
     }
-    
   },
   { title: 'DOB', dataIndex: 'dob', key: 'dob', width: 120 },
   { title: 'Race', dataIndex: 'race', key: 'race', width: 120 },
@@ -358,18 +358,18 @@ const HomePage: React.FC = () => {
   const [exonerees, setExonerees] = useState<any[]>([])
   const [selectedRows, setSelectedRows] = useState<number[]>([])
   const [filtersActive, setFiltersActive] = useState(false)
-  const [isSearching, setIsSearching] = useState(false);
+  const [isSearching, setIsSearching] = useState(false)
 
   const { user, isSignedIn, isLoaded } = useUser()
   const router = useRouter()
 
   useEffect(() => {
     if (!isLoaded) return
-    console.log(`At home page`)
+    console.log(`HOME PAGE`)
     console.log(`isLoaded: ${isLoaded}`)
     console.log(`isSignedIn: ${isSignedIn}`)
     if (!isSignedIn) {
-      router.push(`/login?redirect=${encodeURIComponent(router.asPath)}`)
+      router.push(`/welcome?redirect=${encodeURIComponent(router.asPath)}`)
     }
   }, [isLoaded, isSignedIn, router])
 
@@ -384,6 +384,10 @@ const HomePage: React.FC = () => {
     setFilteredExonereeIDs([])
     setSelectedFilters([])
     setSelectedColumns(columns.map(col => col.key))
+  }
+
+  const refreshPage = async () => {
+    window.location.reload()
   }
 
   // Helper function to refresh data from the API
@@ -500,9 +504,9 @@ const HomePage: React.FC = () => {
   }
   useEffect(() => {
     if (!isSearching) {
-      refreshExonerees();
+      refreshExonerees()
     }
-  }, [isSearching]);
+  }, [isSearching])
 
   const handleOpenModal = () => setModalOpen(true)
   const handleCloseModal = () => setModalOpen(false)
@@ -565,7 +569,6 @@ const HomePage: React.FC = () => {
   const [actionMenuVisible, setActionMenuVisible] = useState(false)
   const [actionMenuPosition, setActionMenuPosition] = useState({ x: 0, y: 0 })
   const [filteredExonereeIDs, setFilteredExonereeIDs] = useState<number[]>([])
-
 
   const [selectedCell, setSelectedCell] = useState<{
     record: TableRowData
@@ -647,7 +650,11 @@ const HomePage: React.FC = () => {
   //   }
   // }, [selectedFilters, appliedFilters, logic])
   useEffect(() => {
-    if (selectedFilters.length === 0 && appliedFilters.length === 0 && !isSearching) {
+    if (
+      selectedFilters.length === 0 &&
+      appliedFilters.length === 0 &&
+      !isSearching
+    ) {
       refreshExonerees()
     } else {
       fetchFilters()
@@ -729,6 +736,14 @@ const HomePage: React.FC = () => {
     try {
       if (selectedRows.length === 0) {
         alert('No rows selected.')
+        return
+      }
+
+      const confirmed = window.confirm(
+        `Are you sure you want to delete ${selectedRows.length} exoneree(s)? This action cannot be undone.`
+      )
+
+      if (!confirmed) {
         return
       }
 
@@ -895,7 +910,7 @@ const HomePage: React.FC = () => {
               color: 'black'
             }}
           >
-            <SearchEntryBox setExonerees={handleSetExonerees} />
+            <SearchEntryBox setExonerees={handleSetExonerees} loadAllExonerees = {refreshExonerees}/>
           </div>
 
           {/* Action Buttons */}
@@ -923,7 +938,9 @@ const HomePage: React.FC = () => {
               height='44px'
               width='160px'
               onClick={handleDeleteSelectedRows}
+              disabled={selectedRows.length === 0}
             />
+
             <IconTextButton
               icon={
                 <Image
@@ -946,10 +963,10 @@ const HomePage: React.FC = () => {
                 <Image src={PlusIcon} alt='plus icon' width='14' height='14' />
               }
               filled={true}
-              text='Add officer'
+              text='Add new officer'
               border={true}
               height='44px'
-              width='150px'
+              width='180px'
               color='#D5D7DA'
             />
             <IconTextButton
@@ -958,10 +975,10 @@ const HomePage: React.FC = () => {
                 <Image src={PlusIcon} alt='plus icon' width='14' height='14' />
               }
               filled={true}
-              text='Add new exoneree file'
+              text='Add new exoneree'
               border={false}
               height='44px'
-              width='209px'
+              width='190px'
             />
           </div>
         </div>
@@ -1073,7 +1090,11 @@ const HomePage: React.FC = () => {
                   : filter.value // weird typescript fix
                 return (
                   <div key={keyValue}>
-                    <OfficerInfo key={keyValue} officerName={keyValue} />
+                    <OfficerInfo
+                      key={keyValue}
+                      officerName={keyValue}
+                      onDelete={refreshPage}
+                    />
                   </div>
                 )
               }

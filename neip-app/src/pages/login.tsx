@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import AuthBox from '../components/AuthBox'
 import AuthButton from '../components/AuthButton'
 import AuthEntryBox from '../components/AuthEntryBox'
-import Modal from '@/components/ChangePasswordModal'
+import Modal from '@/components/ResetPasswordModal'
 import { useRouter } from 'next/router'
 import { useSignIn } from '@clerk/nextjs'
 import { useUser } from '@clerk/nextjs'
@@ -18,31 +18,22 @@ const LoginPage: React.FC = () => {
   const { isSignedIn } = useUser()
   const [redirectTo, setRedirectTo] = useState('/')
   useEffect(() => {
-    console.log('IN THIS USE EFFECT')
     if (!isLoaded) return
-    console.log(`At login page`)
+    console.log(`LOGIN PAGE`)
     console.log(`isLoaded: ${isLoaded}`)
     console.log(`isSignedIn: ${isSignedIn}`)
     if (isSignedIn) {
+      console.log("I SHOULD NOT BE HERE")
       router.push(`/`)
     }
     console.log(redirectTo)
   }, [isLoaded, isSignedIn, router, redirectTo])
 
   useEffect(() => {
-    console.log('HI')
-    console.log(`isSignedIn: ${isSignedIn}`)
-  }, [isSignedIn])
-
-  useEffect(() => {
     if (typeof router.query.redirect === 'string') {
       setRedirectTo(router.query.redirect)
     }
   }, [router.query.redirect])
-
-  const handleSignup = async () => {
-    router.push(`/Signup`)
-  }
 
   const handleLogin = async () => {
     if (!isLoaded) return
@@ -75,9 +66,7 @@ const LoginPage: React.FC = () => {
 
       console.log('sign in result:', signInResult.status)
       if (signInResult.status === 'complete') {
-        alert('Successfully logged in!')
-
-        window.location.reload()
+        window.location.assign('/')
       } else {
         alert('Login incomplete. Please try again.')
         router.push('/login')
@@ -142,7 +131,11 @@ const LoginPage: React.FC = () => {
               }}
             >
               <button onClick={() => setModalOpen(true)}>Reset Password</button>
-              <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
+              <Modal
+              isOpen={isModalOpen}
+              onClose={() => setModalOpen(false)}
+              email={email}
+            />
             </div>
             <div
               style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
@@ -157,7 +150,7 @@ const LoginPage: React.FC = () => {
                 color='#90D5FF'
                 filled={true}
                 text='Sign up'
-                onClick={handleSignup}
+                href='/Signup'
               />
             </div>
           </div>

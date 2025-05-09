@@ -67,7 +67,7 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
         if (title.field === 'originalCharges') {
           endpoint = '/api/tags/charge/getCharge'
         } else if (title.field === 'officersInvolved') {
-          endpoint = '/api/tags/officer/getOfficer'
+          endpoint = '/api/officers/getAllOfficers'
         } else {
           return
         }
@@ -133,7 +133,10 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
             <option value='' disabled>
               Select...
             </option>
-            {(isStaticDropdown ? dropdownOptionsMap[title.field] : dynamicOptions).map(opt => (
+            {(isStaticDropdown 
+              ? dropdownOptionsMap[title.field] 
+              : [...dynamicOptions].sort((a, b) => a.localeCompare(b))
+            ).map(opt => (
               <option key={opt} value={opt}>
                 {opt}
               </option>

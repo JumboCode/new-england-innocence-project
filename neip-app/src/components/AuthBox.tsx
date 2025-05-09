@@ -2,7 +2,8 @@
 
 import { FC, ReactNode } from "react";
 import Image from "next/image";
-import logo from "./caseview_logo.png";
+// import logo from "./caseview_logo.png";
+import logo from "./exonereenetwork_logo.png";
 
 interface AuthBoxProps {
     prop: ReactNode; // The prop is a React component
@@ -28,11 +29,11 @@ const AuthBox: FC<AuthBoxProps> = ({ prop, height, width }) => {
         }}>
             {/* Import logo at top of the page */}
             <div style={{marginTop: '20px'}}>
-                <Image src={logo} alt="CaseView Logo" width={180} height={60}/>
+                <Image src={logo} alt="CaseView Logo" width={300}/>
             </div>
 
             {/* Allows for prop to be passed */}
-            <div style={{padding: '20px'}}>
+            <div style={{padding: '10px'}}>
                 {prop}
             </div>
         </div>

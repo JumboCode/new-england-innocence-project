@@ -9,7 +9,10 @@ interface User {
     id: string
     firstName: string;
     lastName: string;
-    emailAddresses: { email: string }[]
+    publicMetadata: {
+        role: string;
+    };
+    emailAddresses: { emailAddress: string }[]
     createdAt: Date
 }
 
@@ -116,27 +119,30 @@ const ManageUsers = () => {
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '60px' }}>
         <div style={{ backgroundColor: 'white', minHeight: '100vh' }}>
-            {isInternAccountModalOpen && <InternAccountModal onClose={() => { setInternAccountModalOpen(false) }} />}
+            {isInternAccountModalOpen && <InternAccountModal onClose={() => { 
+                setInternAccountModalOpen(false);
+                window.location.reload();
+             }} />}
             <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '65px' }}>
-                {/* <h2>Account Information</h2> */}
                 {
                     users.map((user: User) => {
                         // Accessing firstName and lastName
-                        const firstNameUsers = user.firstName || "Kevin";
-                        const lastNameUsers = user.lastName || "Aka";
+                        const firstNameUsers = user.firstName || "";
+                        const lastNameUsers = user.lastName || "";
+                        const role = user.publicMetadata.role || "administration";
 
-                            // Accessing emailAddresses - assuming the first email address is the primary one
-                            const emailUsers = user.emailAddresses.length > 0 ? user.emailAddresses[0].email : 'kevin.aka@tufts.edu';
-                            const timestamp = user.createdAt;
+                        // Accessing emailAddresses - assuming the first email address is the primary one
+                        const emailUser = user.emailAddresses[0].emailAddress || ""; 
+                        const timestamp = user.createdAt;
 
-                            // Convert to Date object
-                            const date = new Date(timestamp);
+                        // Convert to Date object
+                        const date = new Date(timestamp);
 
                         // Get the ISO string and slice to only include the date (YYYY-MM-DD)
                         const dateOnly = date.toISOString().split('T')[0];
-                        console.log(`User: ${firstNameUsers} ${lastNameUsers}, Email: ${emailUsers}`);
+                        console.log(`User: ${firstNameUsers} ${lastNameUsers}, Email: ${emailUser}`);
                         return (
-                            <UsersComponent key={user.id} userId={user.id} firstName={firstNameUsers} lastName={lastNameUsers} email={emailUsers} type="intern" dateCreated={dateOnly} reload={() => { setReloadFlag(prev => !prev) }} />
+                            <UsersComponent key={user.id} userId={user.id} firstName={firstNameUsers} lastName={lastNameUsers} email={emailUser} type={role} dateCreated={dateOnly} reload={() => { setReloadFlag(prev => !prev) }} />
                         )
                     })}
             </div>

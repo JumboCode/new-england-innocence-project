@@ -105,25 +105,28 @@ const SelectColumnsModal: React.FC<SelectColumnsModalProps> = ({
           display: "flex", flexDirection: "column", gap: 1, maxHeight: "300px",
           overflowY: "auto",
         }}>
-          {filteredColumns.map((column) => (
-            <FormControlLabel
-              key={column.key}
-              control={
-                <Checkbox
-                  checked={selectedColumns.includes(column.key)}
-                  onChange={() => handleColumnToggle(column.key)}
-                  sx={{
-                    "&.Mui-checked": {
-                      color: "black",
-                    },
-                  }}
-                />
-              }
-              label={column.title}
-              sx={{
-                color: "black",
-              }}
-            />
+          {filteredColumns
+            .slice()
+            .sort((a, b) => a.title.localeCompare(b.title))
+            .map((column) => (
+              <FormControlLabel
+                key={column.key}
+                control={
+                  <Checkbox
+                    checked={selectedColumns.includes(column.key)}
+                    onChange={() => handleColumnToggle(column.key)}
+                    sx={{
+                      "&.Mui-checked": {
+                        color: "black",
+                      },
+                    }}
+                  />
+                }
+                label={column.title}
+                sx={{
+                  color: "black",
+                }}
+              />
           ))}
         </Box>
       </Box>
