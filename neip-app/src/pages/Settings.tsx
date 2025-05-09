@@ -18,7 +18,7 @@ const AccountInfo = () => {
 
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
-      router.push(`/login?redirect=${encodeURIComponent('/Settings')}`);
+      router.push(`/welcome?redirect=${encodeURIComponent('/Settings')}`);
     }
     console.log(`At settings page`)
     console.log(`isLoaded: ${isLoaded}`)
@@ -27,6 +27,11 @@ const AccountInfo = () => {
 
   if (!isLoaded) return null;
   if (!isSignedIn) return null;
+
+  const handleLogoutRedirect = async () => {
+    await handleLogout();
+    router.push('/welcome');
+  }
 
   const changePassBtnStyle: React.CSSProperties = {
     font: 'Inter',
@@ -86,7 +91,7 @@ const AccountInfo = () => {
           filled={true}
           text='Logout'
           border={false}
-          onClick={handleLogout}
+          onClick={handleLogoutRedirect}
           height='40px'
           width='100px'
         />
