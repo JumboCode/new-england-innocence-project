@@ -37,7 +37,12 @@ const navItems: NavItem[] = [
         name: "Settings", 
         icon: <img src="/icons/settings.svg" alt="Settings Icon"/>,
         route: "/Settings"
-    }
+    },
+    {
+        name: "Action Log", 
+        icon: <img src="/icons/settings.svg" alt="Settings Icon"/>,
+        route: "/ActionLog"
+    },
 ];
 
 const NavBar: React.FC = () => {

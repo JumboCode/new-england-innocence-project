@@ -360,7 +360,7 @@ const HomePage: React.FC = () => {
   const [filtersActive, setFiltersActive] = useState(false)
   const [isSearching, setIsSearching] = useState(false);
 
-  const { isSignedIn, isLoaded } = useUser()
+  const { user, isSignedIn, isLoaded } = useUser()
   const router = useRouter()
 
   useEffect(() => {
