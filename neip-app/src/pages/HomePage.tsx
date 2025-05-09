@@ -365,11 +365,11 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     if (!isLoaded) return
-    console.log(`At home page`)
+    console.log(`HOME PAGE`)
     console.log(`isLoaded: ${isLoaded}`)
     console.log(`isSignedIn: ${isSignedIn}`)
     if (!isSignedIn) {
-      router.push(`/login?redirect=${encodeURIComponent(router.asPath)}`)
+      router.push(`/welcome?redirect=${encodeURIComponent(router.asPath)}`)
     }
   }, [isLoaded, isSignedIn, router])
 

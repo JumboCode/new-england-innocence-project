@@ -9,10 +9,8 @@ const WelcomePage: React.FC = () => {
   const { isSignedIn, isLoaded } = useUser();
   const router = useRouter();
   useEffect(() => {
-    // if (isLoaded && !isSignedIn) {
-    //   router.push(`/login?redirect=${encodeURIComponent('/welcome')}`);
-    // }
-    console.log(`At welcome page`)
+    // if (!isLoaded) return;
+    console.log(`WELCOME PAGE`)
     console.log(`isLoaded: ${isLoaded}`)
     console.log(`isSignedIn: ${isSignedIn}`)
     if (isSignedIn) {

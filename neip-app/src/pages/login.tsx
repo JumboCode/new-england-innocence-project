@@ -66,9 +66,7 @@ const LoginPage: React.FC = () => {
 
       console.log('sign in result:', signInResult.status)
       if (signInResult.status === 'complete') {
-        // alert('Successfully logged in!')
-        // router.push('/') // trying this instead
-        window.location.reload()
+        window.location.assign('/')
       } else {
         alert('Login incomplete. Please try again.')
         router.push('/login')
