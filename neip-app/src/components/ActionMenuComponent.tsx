@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import EditExonereeModal from './EditExonereeModal';
+import { useUser } from '@clerk/nextjs';
 
 interface ActionMenuProps {
   onClose: () => void;
@@ -15,6 +16,8 @@ const ActionMenuComponent: React.FC<ActionMenuProps> = ({ onClose, exonereeId, s
   const [modalOpen, setModalOpen] = useState(false);
   const handleOpenModal = () => setModalOpen(true);
   const handleCloseModal = () => setModalOpen(false);
+
+  const { user } = useUser(); 
 
   const close = () => {
     setIsVisible(false);
@@ -39,11 +42,16 @@ const ActionMenuComponent: React.FC<ActionMenuProps> = ({ onClose, exonereeId, s
         
     try {
       console.log("Before the delete", exonereeId);
-      const response = await fetch(`/api/exonerees/deleteExoneree?id=${exonereeId}`, {
+      const response = await fetch(`/api/exonerees/deleteExoneree`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-        }
+        },
+        body: JSON.stringify({
+          id: exonereeId,
+          actorName: user?.fullName,
+          actorRole: user?.publicMetadata?.role,
+        }),
       });
 
       if (!response.ok) {
