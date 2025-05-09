@@ -21,8 +21,8 @@ interface LogEntry {
 }
 
 const columns = [
-  { title: 'Name', dataIndex: 'name', key: 'name', width: 180, fixed: 'left' },
-  { title: 'Role', dataIndex: 'role', key: 'role', width: 180 },
+  { title: 'User Name', dataIndex: 'name', key: 'name', width: 180, fixed: 'left' },
+  { title: 'User Role', dataIndex: 'role', key: 'role', width: 180 },
   { title: 'Action', dataIndex: 'action', key: 'action', width: 180 },
   { title: 'Object', dataIndex: 'object', key: 'object', width: 180 },
   { title: 'Date', dataIndex: 'date', key: 'date', width: 180 }
@@ -46,12 +46,13 @@ const ActionLog: React.FC = () => {
     try {
       const res = await fetch('/api/logs/log')
       const json = await res.json()
+      console.log(json)
       if (res.ok && Array.isArray(json)) {
         setLogs(
           json.map((log: any) => ({
             id: log.id,
-            name: log.user?.name || 'N/A',
-            role: log.user?.role || 'N/A',
+            name: log.name || 'N/A',
+            role: log.role || 'N/A',
             action: log.action || 'N/A',
             object: log.object || 'N/A',
             date: new Date(log.date).toLocaleString()
