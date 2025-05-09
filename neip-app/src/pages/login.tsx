@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import AuthBox from '../components/AuthBox'
 import AuthButton from '../components/AuthButton'
 import AuthEntryBox from '../components/AuthEntryBox'
-import Modal from '@/components/ChangePasswordModal'
+import Modal from '@/components/ResetPasswordModal'
 import { useRouter } from 'next/router'
 import { useSignIn } from '@clerk/nextjs'
 import { useUser } from '@clerk/nextjs'
@@ -26,7 +26,7 @@ const LoginPage: React.FC = () => {
       console.log("I SHOULD NOT BE HERE")
       router.push(`/`)
     }
-    // console.log(redirectTo)
+    console.log(redirectTo)
   }, [isLoaded, isSignedIn, router, redirectTo])
 
   useEffect(() => {
@@ -131,7 +131,11 @@ const LoginPage: React.FC = () => {
               }}
             >
               <button onClick={() => setModalOpen(true)}>Reset Password</button>
-              <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
+              <Modal
+              isOpen={isModalOpen}
+              onClose={() => setModalOpen(false)}
+              email={email}
+            />
             </div>
             <div
               style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
