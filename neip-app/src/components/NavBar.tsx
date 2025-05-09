@@ -40,7 +40,7 @@ const navItems: NavItem[] = [
     },
     {
         name: "Action Log", 
-        icon: <img src="/icons/settings.svg" alt="Settings Icon"/>,
+        icon: <img src="/icons/history.svg" alt="Action Log Icon"/>,
         route: "/ActionLog"
     },
 ];
