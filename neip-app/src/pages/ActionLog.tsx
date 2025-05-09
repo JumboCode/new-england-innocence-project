@@ -71,9 +71,8 @@ const ActionLog: React.FC = () => {
 
   const handleExportToCSV = async () => {
     try {
-      const dataToExport = selectedRows.length
-        ? logs.filter(row => selectedRows.includes(row.id))
-        : logs
+
+      const dataToExport = logs
 
       const res = await fetch('/api/export', {
         method: 'POST',
@@ -185,11 +184,7 @@ const ActionLog: React.FC = () => {
             dataSource={logs}
             columns={filteredColumns}
             rowKey="id"
-            pagination={{ pageSize: 10 }}
-            rowSelection={{
-              selectedRowKeys: selectedRows,
-              onChange: keys => setSelectedRows(keys as number[])
-            }}
+            pagination={false}
             scroll={{ x: 'max-content' }}
             bordered
           />
