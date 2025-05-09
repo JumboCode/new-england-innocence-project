@@ -1084,7 +1084,7 @@ const HomePage: React.FC = () => {
 
           <div>
             {selectedFilters.map(filter => {
-              if (filter.name === 'officersInvolved') {
+              if (filter.name === 'officersInvolved' && filter.operator === "is") {
                 const keyValue = Array.isArray(filter.value)
                   ? filter.value.join(',')
                   : filter.value // weird typescript fix
