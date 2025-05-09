@@ -12,25 +12,25 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 const AccountInfo = () => {
-  const [isModalOpen, setModalOpen] = useState(false);
-  const { isSignedIn, isLoaded } = useUser();
-  const router = useRouter();
+  const [isModalOpen, setModalOpen] = useState(false)
+  const { isSignedIn, isLoaded } = useUser()
+  const router = useRouter()
 
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
-      router.push(`/welcome?redirect=${encodeURIComponent('/Settings')}`);
+      router.push(`/welcome?redirect=${encodeURIComponent('/Settings')}`)
     }
     console.log(`At settings page`)
     console.log(`isLoaded: ${isLoaded}`)
     console.log(`isSignedIn: ${isSignedIn}`)
-  }, [isSignedIn, isLoaded, router]);
+  }, [isSignedIn, isLoaded, router])
 
-  if (!isLoaded) return null;
-  if (!isSignedIn) return null;
+  if (!isLoaded) return null
+  if (!isSignedIn) return null
 
   const handleLogoutRedirect = async () => {
-    await handleLogout();
-    router.push('/welcome');
+    await handleLogout()
+    router.push('/welcome')
   }
 
   const changePassBtnStyle: React.CSSProperties = {
