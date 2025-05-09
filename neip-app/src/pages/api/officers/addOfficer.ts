@@ -18,18 +18,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
+
+    const existing = await prisma.officer.findUnique({ where: { name: newName } }); 
+    if (existing) {
+      console.warn('Officer already exists:', newName);
+      return res.status(409).json({ error: 'Officer already exists' });
+    }
+
+    console.log("NAME OF THE OFFICER BEING ADDED: ", newName)
+    console.log("ACTOR NAME IN ADD OFFICER: ", actorName)
     const officer = await prisma.officer.create({
       data: { name: newName, notes, MediaLinks, department },
     });
-
-    res.status(201).json(officer);
 
     // Build URL for sub-endpoint calls.
     const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
     const host = req.headers.host || 'localhost:3000'
     const baseUrl = `${protocol}://${host}`
 
-    // Log the action after officer creation
+    // Log ADD officer
     await fetch(`${baseUrl}/api/logs/log`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -42,6 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       })
     })
 
+    res.status(201).json(officer);
 
   } catch (error) {
     console.error("Error while adding officer:", error); // Log the full error for debugging

@@ -4,7 +4,7 @@ import { prisma } from '../../../utils/database/connectToDb';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
    
     if (req.method === 'POST') {
-        console.log("HERE")
+        console.log("HERE in log.ts post")
         console.log(req.body)
         const { name, role, action, object, date } = req.body
 
