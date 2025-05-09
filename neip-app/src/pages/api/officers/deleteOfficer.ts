@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const host = req.headers.host || 'localhost:3000'
     const baseUrl = `${protocol}://${host}`
 
-    // Log DELETE exoneree
+    // Log DELETE officer
     await fetch(`${baseUrl}/api/logs/log`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

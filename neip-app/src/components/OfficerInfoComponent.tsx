@@ -187,6 +187,8 @@ const OfficerInfo: React.FC<{ officerName: string, onDelete: () => void }> = ({ 
             MediaLinks: editableMediaLinks, 
             department: editableDepartment, 
             badgeNumber: editableBadgeNumber,
+            actorName: user?.fullName,  
+            actorRole: user?.publicMetadata?.role, 
         })
       });
       const responseData = await response.json();
