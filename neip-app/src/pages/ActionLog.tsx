@@ -30,7 +30,6 @@ const columns = [
 
 const ActionLog: React.FC = () => {
   const [logs, setLogs] = useState<LogEntry[]>([])
-  const [selectedRows, setSelectedRows] = useState<number[]>([])
   const [selectedColumns, setSelectedColumns] = useState<string[]>(columns.map(col => col.key))
   const { isSignedIn, isLoaded } = useUser()
   const router = useRouter()
@@ -186,7 +185,7 @@ const ActionLog: React.FC = () => {
             columns={filteredColumns}
             rowKey="id"
             pagination={false}
-            scroll={{ x: 'max-content' }}
+            scroll={{ x: 'max-content', y: '70vh' }}
             bordered
           />
       </div>
