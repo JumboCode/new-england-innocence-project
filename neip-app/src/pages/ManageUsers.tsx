@@ -56,7 +56,7 @@ const ManageUsers = () => {
     const fullUrl = `${baseUrl}${"/api/auth/getUsers"}`;
     const [isInternAccountModalOpen, setInternAccountModalOpen] = useState(false);
 
-    const { isSignedIn, isLoaded } = useUser();
+    const { user, isSignedIn, isLoaded } = useUser();
     const router = useRouter();
     useEffect(() => {
         if (isLoaded && !isSignedIn) {
@@ -99,6 +99,25 @@ const ManageUsers = () => {
 
     if (!isLoaded || !isSignedIn) {
         return null;
+    }
+    
+    if (user?.publicMetadata?.role === "intern") { // protect this page from interns
+        return (
+            <>
+            <div style={{ 
+                alignItems: "center", 
+                paddingTop: "20px", 
+                paddingBottom: "20px", 
+                paddingRight: "65px" 
+            }}>
+                <div style={headingStyle}>Manage Users</div>
+                <NavBar />
+                <div style={{ padding: "20px", paddingLeft: "100px", fontSize: "16px"}}>
+                    Interns can&apos;t access the Manage Users page. Log in with an administration account to use this feature.
+                </div>
+            </div>
+        </>
+        );
     }
 
     return (

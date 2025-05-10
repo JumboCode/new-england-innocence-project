@@ -5,8 +5,7 @@ import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 
 interface AccountInfoProps {
-  type: string; // "administration" or "intern"
-  userProfilePicture: React.ReactNode;
+  type: string; 
 }
 
 const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type }) => {

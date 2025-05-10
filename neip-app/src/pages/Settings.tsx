@@ -1,6 +1,4 @@
 import AccountInfoComponent from '@/components/AccountInfo'
-import Image from 'next/image'
-import UserProfileSquare from '../img/user-profile-square.png'
 import NavBar from '../components/NavBar'
 import Modal from '@/components/ChangePasswordModal'
 import React, { useState } from 'react'
@@ -67,19 +65,6 @@ const AccountInfo = () => {
       </h2>
       <AccountInfoComponent
         type='administration'
-        userProfilePicture={
-          <Image
-            src={UserProfileSquare}
-            alt='user profile icon'
-            width='90'
-            height='90'
-            style={{
-              top: '274px',
-              left: '121px',
-              display: 'block'
-            }}
-          />
-        }
       />
       <button onClick={() => setModalOpen(true)} style={changePassBtnStyle}>
         Change Password
