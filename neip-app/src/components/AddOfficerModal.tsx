@@ -154,7 +154,7 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
               borderRadius='10px'
               value={formData.department}
               onChange={handleChange}
-              name='badgeNumber'
+              name='department'
             />
           </div>
 
