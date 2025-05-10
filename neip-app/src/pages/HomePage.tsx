@@ -453,7 +453,7 @@ const HomePage: React.FC = () => {
           ),
           prosecutor: handleEmptyString(item.legalInfo?.prosecutor),
           judge: handleEmptyString(item.legalInfo?.judge),
-          officersInvolved: item.legalInfo?.officersInvolved || [],
+          officersInvolved: handleArray(item.legalInfo?.officersInvolved || []),
           falseConfession: handleBoolean(
             item.wrongfulConvictionInfo?.falseConfession
           ),
