@@ -26,28 +26,20 @@ const TableFilterIcons: React.FC<TableFilterIconsProps> = ({
   width,
   onOpenFilter
 }) => {
-  function formatCamelCase (text: string) {
-    const formattedText = text.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase()
-    return formattedText.charAt(0).toUpperCase() + formattedText.slice(1)
-  }
-  function capitalize (text: string | undefined): string {
-    console.log('filterValue:', text);
-    if (!text) return ''
-    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
+  
+  function formatCamelCase(text: string) {
+    const formattedText = text.replace(/([a-z])([A-Z])/g, '$1 $2');
+    return formattedText.charAt(0).toUpperCase() + formattedText.slice(1);
   }
 
   // Construct display text with bold filterName
-  const newText = text && formatCamelCase(text)
-  const displayText =
-    newText ||
-    (filterName ? (
-      <>
-        <span style={{ fontWeight: 'bold' }}>{filterName}:</span>{' '}
-        {filterOperator} {filterValue ? capitalize(filterValue) : ''}
-      </>
-    ) : (
-      ''
-    ))
+  const newText = text && formatCamelCase(text);
+  console.log(newText)
+  const displayText = newText || (filterName ? (
+    <>
+      <span style={{ fontWeight: 'bold' }}>{filterName}:</span> {filterOperator} {filterValue}
+    </>
+  ) : "");
 
   const IconButtonStyle: React.CSSProperties = {
     display: 'flex',

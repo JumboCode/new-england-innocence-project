@@ -1022,7 +1022,13 @@ const HomePage: React.FC = () => {
                   />
                 }
                 filled={true}
-                text={`${filter.name} ${filter.operator}: ${filter.value}`}
+                text={`${filter.name} ${filter.operator}: ${
+                  typeof filter.value === 'string'
+                    ? filter.value.charAt(0).toUpperCase() + filter.value.slice(1)
+                    : Array.isArray(filter.value)
+                      ? filter.value.map(v => v.charAt(0).toUpperCase() + v.slice(1)).join(', ')
+                      : ''
+                }`}
                 border={false}
                 borderRadius={false}
                 height='35px'
