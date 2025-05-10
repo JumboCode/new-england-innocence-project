@@ -89,16 +89,24 @@ export default async function handler (
     try {
       const fullUrl = `${baseUrl}${endpoint}`
       console.log(`Calling ${fullUrl} with filter:`, filter)
+      let requestBody: Record<string, any> = {
+        field: filter.field,
+        table: filter.table
+      };
+      
+      if (filter.type === 'bool') {
+        requestBody.constraint = getBoolConstraint(filter);
+      } else {
+        requestBody.value = filter.value;
+        requestBody.constraint = filter.constraint || null;
+      }
+      
 
       // Call the appropriate sub-endpoint.
       const response = await fetch(fullUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          field: filter.field,
-          table: filter.table,
-          constraint: getBoolConstraint(filter)
-        })
+        body: JSON.stringify(requestBody)
         
       })
 

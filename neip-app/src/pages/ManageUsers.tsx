@@ -87,7 +87,7 @@ const ManageUsers = () => {
 
                 const data = await response.json();
                 const users = data.users
-                console.log("USERS", data)
+                // console.log("USERS", data)
                 setUsers(users)
                 return users
             } catch (error) {
@@ -159,7 +159,7 @@ const ManageUsers = () => {
 
                         // Get the ISO string and slice to only include the date (YYYY-MM-DD)
                         const dateOnly = date.toISOString().split('T')[0];
-                        console.log(`User: ${firstNameUsers} ${lastNameUsers}, Email: ${emailUser}`);
+                        // console.log(`User: ${firstNameUsers} ${lastNameUsers}, Email: ${emailUser}`);
                         return (
                             <UsersComponent key={user.id} userId={user.id} firstName={firstNameUsers} lastName={lastNameUsers} email={emailUser} type={role} dateCreated={dateOnly} reload={() => { setReloadFlag(prev => !prev) }} />
                         )
