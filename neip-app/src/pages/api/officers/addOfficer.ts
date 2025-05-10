@@ -25,8 +25,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(409).json({ error: 'Officer already exists' });
     }
 
-    console.log("NAME OF THE OFFICER BEING ADDED: ", newName)
-    console.log("ACTOR NAME IN ADD OFFICER: ", actorName)
     const officer = await prisma.officer.create({
       data: { name: newName, notes, MediaLinks, department },
     });
@@ -41,8 +39,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        name: actorName, 
-        role: actorRole,
+        name: `${actorName}`, 
+        role: `${actorRole}`,
         action: 'add',
         object: `officer ${newName}`,
         date: new Date().toISOString()

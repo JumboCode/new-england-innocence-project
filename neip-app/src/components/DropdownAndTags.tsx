@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Select, { StylesConfig } from 'react-select';
+import { useUser } from '@clerk/nextjs';
 
 interface DropdownAndTagsProps {
   label: string;
@@ -24,6 +25,7 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({
   name,
   apiUrl
 }) => {
+  const { user } = useUser(); 
   const [selectedTags, setSelectedTags] = useState<string[]>(value);
   const [availableOptions, setAvailableOptions] = useState(
     options.map((option) => ({ value: option, label: option }))
@@ -90,12 +92,14 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({
               badgeNumber: badgeNumber,
               department: "",
               MediaLinks: "",
-              notes: ""
+              notes: "", 
+              actorName: user?.fullName,
+              actorRole: user?.publicMetadata?.role,
             }
             const response = await fetch('/api/officers/addOfficer', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
+              body: JSON.stringify(payload),
             })
             if (!response.ok) {
               throw new Error(`Failed to add ${apiUrl} option`);
