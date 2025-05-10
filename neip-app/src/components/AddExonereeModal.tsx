@@ -12,6 +12,7 @@ import DropdownAndTags from '../components/DropdownAndTags'
 import PersonalInfoIcon from '../img/PersonalInfoIcon.png'
 import IconTextButton from '../components/IconTextButton'
 import { useEffect } from 'react'
+import { useUser } from '@clerk/nextjs';
 
 const style = {
   position: 'absolute',
@@ -37,6 +38,8 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
   handleClose,
   onSuccess
 }) => {
+  const { user } = useUser(); 
+  
   const [activeTab, setActiveTab] = useState(0)
   const [formData, setFormData] = useState({
     firstName: '',
@@ -252,7 +255,9 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           dataSource: '',
           lastUpdated: '',
           createdAt: ''
-        }
+        }, 
+        actorName: user?.fullName || user?.emailAddresses[0].emailAddress,
+        actorRole: user?.publicMetadata?.role,
       }
 
       // Basic validation

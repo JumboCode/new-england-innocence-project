@@ -4,6 +4,7 @@ import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { LuPenLine } from "react-icons/lu";
 import { MdClose } from "react-icons/md";
+import { useUser } from '@clerk/nextjs';
 
 const styles = {
   container: {
@@ -108,6 +109,7 @@ const styles = {
 };
 
 const OfficerInfo: React.FC<{ officerName: string, onDelete: () => void }> = ({ officerName, onDelete }) => {
+  const { user } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [officer, setOfficer] = useState<{
@@ -185,6 +187,8 @@ const OfficerInfo: React.FC<{ officerName: string, onDelete: () => void }> = ({ 
             MediaLinks: editableMediaLinks, 
             department: editableDepartment, 
             badgeNumber: editableBadgeNumber,
+            actorName: user?.fullName,  
+            actorRole: user?.publicMetadata?.role, 
         })
       });
       const responseData = await response.json();
@@ -208,11 +212,16 @@ const OfficerInfo: React.FC<{ officerName: string, onDelete: () => void }> = ({ 
     if (!confirmed) return;
 
     try {
-      const response = await fetch(`/api/officers/deleteOfficer?id=${officer?.id}`, {
+      const response = await fetch(`/api/officers/deleteOfficer`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-        }
+        },
+        body: JSON.stringify({
+          id: officer?.id,
+          actorName: user?.fullName,  
+          actorRole: user?.publicMetadata?.role, 
+        }),
       });
 
       if (!response.ok) {
