@@ -1,17 +1,17 @@
-import React from 'react';
+import React from 'react'
 
 interface TableFilterIconsProps {
-    icon?: React.ReactNode; 
-    filled: boolean;
-    text?: string;  
-    filterName?: string;  
-    filterOperator?: string;
-    filterValue?: string;
-    border: boolean;
-    borderRadius: boolean;
-    height?: string;
-    width?: string;
-    onOpenFilter: () => void;
+  icon?: React.ReactNode
+  filled: boolean
+  text?: string
+  filterName?: string
+  filterOperator?: string
+  filterValue?: string
+  border: boolean
+  borderRadius: boolean
+  height?: string
+  width?: string
+  onOpenFilter: () => void
 }
 
 const TableFilterIcons: React.FC<TableFilterIconsProps> = ({
@@ -26,7 +26,7 @@ const TableFilterIcons: React.FC<TableFilterIconsProps> = ({
   width,
   onOpenFilter
 }) => {
-
+  
   function formatCamelCase(text: string) {
     const formattedText = text.replace(/([a-z])([A-Z])/g, '$1 $2');
     return formattedText.charAt(0).toUpperCase() + formattedText.slice(1);
@@ -40,9 +40,6 @@ const TableFilterIcons: React.FC<TableFilterIconsProps> = ({
       <span style={{ fontWeight: 'bold' }}>{filterName}:</span> {filterOperator} {filterValue}
     </>
   ) : "");
-
-  // have text or filter names:
-  //const displayText = text || (filterName ? `${filterName} ${filterOperator} ${filterValue}` : "");
 
   const IconButtonStyle: React.CSSProperties = {
     display: 'flex',
@@ -62,7 +59,7 @@ const TableFilterIcons: React.FC<TableFilterIconsProps> = ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap'
-  };
+  }
 
   return (
     <button style={IconButtonStyle} onClick={onOpenFilter}>
@@ -78,7 +75,7 @@ const TableFilterIcons: React.FC<TableFilterIconsProps> = ({
         </>
       )}
     </button>
-  );
-};
+  )
+}
 
-export default TableFilterIcons;
+export default TableFilterIcons

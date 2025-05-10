@@ -9,12 +9,13 @@ const WelcomePage: React.FC = () => {
   const { isSignedIn, isLoaded } = useUser();
   const router = useRouter();
   useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push(`/login?redirect=${encodeURIComponent('/welcome')}`);
-    }
-    console.log(`At welcome page`)
+    // if (!isLoaded) return;
+    console.log(`WELCOME PAGE`)
     console.log(`isLoaded: ${isLoaded}`)
     console.log(`isSignedIn: ${isSignedIn}`)
+    if (isSignedIn) {
+      router.push(`/`)
+    }
   }, [isLoaded, isSignedIn, router]);
 
   const textStyle = {
@@ -51,8 +52,8 @@ const WelcomePage: React.FC = () => {
 
             {/* Buttons for Login and Signup */}
             <div style={buttonContainerStyle}>
-              <AuthButton color="#1E90FF" filled={true} text="Login" href="/login" />
-              <AuthButton color="#1E90FF" filled={false} text="Signup" href="/Signup" />
+              <AuthButton color="#43b4ef" filled={true} text="Login" href="/login" />
+              <AuthButton color="#43b4ef" filled={false} text="Signup" href="/Signup" />
             </div>
           </div>
         }

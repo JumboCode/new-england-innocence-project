@@ -365,11 +365,11 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     if (!isLoaded) return
-    console.log(`At home page`)
+    console.log(`HOME PAGE`)
     console.log(`isLoaded: ${isLoaded}`)
     console.log(`isSignedIn: ${isSignedIn}`)
     if (!isSignedIn) {
-      router.push(`/login?redirect=${encodeURIComponent(router.asPath)}`)
+      router.push(`/welcome?redirect=${encodeURIComponent(router.asPath)}`)
     }
   }, [isLoaded, isSignedIn, router])
 
@@ -453,7 +453,7 @@ const HomePage: React.FC = () => {
           ),
           prosecutor: handleEmptyString(item.legalInfo?.prosecutor),
           judge: handleEmptyString(item.legalInfo?.judge),
-          officersInvolved: item.legalInfo?.officersInvolved || [],
+          officersInvolved: handleArray(item.legalInfo?.officersInvolved || []),
           falseConfession: handleBoolean(
             item.wrongfulConvictionInfo?.falseConfession
           ),
@@ -1090,7 +1090,7 @@ const HomePage: React.FC = () => {
 
           <div>
             {selectedFilters.map(filter => {
-              if (filter.name === 'officersInvolved') {
+              if (filter.name === 'officersInvolved' && filter.operator === "is") {
                 const keyValue = Array.isArray(filter.value)
                   ? filter.value.join(',')
                   : filter.value // weird typescript fix

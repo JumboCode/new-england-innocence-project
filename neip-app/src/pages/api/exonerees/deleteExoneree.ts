@@ -2,18 +2,44 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../utils/database/connectToDb'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { id } = req.query;
+  const { id, actorName, actorRole } = req.body;
+  console.log(req.body);
 
-  if (!id || typeof id !== 'string') {
-    return res.status(400).json({ error: 'ID parameter is required and must be a string' });
+  const idToDelete = typeof id === 'string' ? parseInt(id, 10) : id;
+  if (!idToDelete || isNaN(idToDelete)) {
+    return res.status(400).json({ error: 'ID must be a valid number or string' });
   }
 
   try {
+    const exoneree = await prisma.exoneree.findUnique({
+      where: { id: idToDelete },
+    });
+    const personalInfo = await prisma.personalInfo.findUnique({
+      where: { id: exoneree?.personalInfoId },
+    });
+
     const deletedExoneree = await prisma.exoneree.delete({
       where: {
-        id: parseInt(id as string, 10),
+        id: idToDelete,
       },
     });
+
+    const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
+    const host = req.headers.host || 'localhost:3000'
+    const baseUrl = `${protocol}://${host}`
+
+    // Log DELETE exoneree
+    await fetch(`${baseUrl}/api/logs/log`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: actorName, 
+        role: actorRole,
+        action: 'delete',
+        object: `exoneree ${personalInfo?.name}`,
+        date: new Date().toISOString()
+      })
+    })
 
     return res.status(200).json({ message: 'Exoneree deleted successfully', deletedExoneree });
   } catch (error) {
