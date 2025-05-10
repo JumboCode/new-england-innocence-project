@@ -65,52 +65,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     });
 
-    console.log("IN ADD EXONEREE")
-    console.log(actorName)
-
     // Build URL for sub-endpoint calls.
     const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
     const host = req.headers.host || 'localhost:3000'
     const baseUrl = `${protocol}://${host}`
-
-    // Check for any new officers 
-    for (const officer of legalInfo.officersInvolved) {
-    // legalInfo.officersInvolved.forEach(async (officer: string) => {
-      console.log(`Officer: ${officer}`);
-
-      try { 
-        const officerResponse = await fetch(`${baseUrl}/api/officers/getOfficerByName?name=${encodeURIComponent(officer)}`)
-        const officerData = await officerResponse.json();
-        console.log(`Officer response: ${officerData}`);
-        
-        if (officerData.error == 'Officer not found') {
-          // Add new officer 
-          console.log("Adding new officer");
-          const [officerName, badgeNumber] = officer.split(':'); // <name>:[badgeNumber]
-
-          console.log("in add exoneree, ")
-          console.log(actorName)
-
-          const createOfficerResponse = await fetch(`${baseUrl}/api/officers/addOfficer`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              name: officerName, 
-              badgeNumber: badgeNumber,
-              notes: '',
-              MediaLinks: '',
-              department: '', 
-              actorName: actorName, 
-              actorRole: actorRole,
-            })
-          });
-          const createOfficerData = await createOfficerResponse.json();
-          console.log('Officer created:', createOfficerData);
-        }
-      } catch (err) {
-        console.error('Error fetching officer:', err);
-      }
-    }
 
     // Log ADD exoneree 
     await fetch(`${baseUrl}/api/logs/log`, {

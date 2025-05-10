@@ -156,40 +156,7 @@ export default async function handler (
     const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
     const host = req.headers.host || 'localhost:3000'
     const baseUrl = `${protocol}://${host}`
-
-    // Check for any new officers 
-    updatedData.legalInfo.officersInvolved.forEach(async (officer: string) => {
-      console.log(`Officer: ${officer}`);
-
-      try { 
-        const officerResponse = await fetch(`${baseUrl}/api/officers/getOfficerByName?name=${encodeURIComponent(officer)}`)
-        const officerData = await officerResponse.json();
-        console.log(`Officer response: ${officerData}`);
-        
-        if (officerData.error == 'Officer not found') {
-          // Add new officer 
-          console.log("Adding new officer");
-          const [officerName, badgeNumber] = officer.split(':'); // <name>:[badgeNumber]
-
-          const createOfficerResponse = await fetch(`${baseUrl}/api/officers/addOfficer`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              name: officerName, 
-              badgeNumber: badgeNumber,
-              notes: '',
-              MediaLinks: '',
-              department: ''
-            })
-          });
-          const createOfficerData = await createOfficerResponse.json();
-          console.log('Officer created:', createOfficerData);
-        }
-      } catch (err) {
-        console.error('Error fetching officer:', err);
-      }
-    });
-
+    
     // Log EDIT exoneree
     await fetch(`${baseUrl}/api/logs/log`, {
       method: 'POST',
@@ -199,7 +166,7 @@ export default async function handler (
         role: actorRole,
         action: 'update',
         object: `exoneree ${updatedData.personalInfo.name}`,
-        date: new Date().toISOString()
+        date: new Date().toISOString(), 
       })
     })
 
