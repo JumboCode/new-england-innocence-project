@@ -1,7 +1,7 @@
 'use client'
+
 import React, { useState } from 'react'
-import type { NextPage } from 'next'
-import { useSignIn } from '@clerk/nextjs'
+import { useUser } from '@clerk/nextjs'
 
 interface ModalProps {
   isOpen: boolean
@@ -17,181 +17,119 @@ const modalOverlay: React.CSSProperties = {
   background: 'rgba(0, 0, 0, 0.5)',
   display: 'flex',
   justifyContent: 'center',
-  alignItems: 'center'
+  alignItems: 'center',
+  zIndex: 9999
 }
 
 const modalContent: React.CSSProperties = {
-  width: '307px',
-  height: '268px',
-  top: '195px',
-  left: '105px',
+  width: '320px',
   backgroundColor: '#FFFFFF',
   padding: '20px',
-  border: '1px solid #B6B5B5'
-}
-
-const submitBtnStyle: React.CSSProperties = {
-  font: 'Inter',
-  fontWeight: '500',
-  fontSize: '14px',
-  lineHeight: '20px',
-  color: '#535862',
-  padding: '5px',
-  borderRadius: '5px',
-  border: '1px solid #000000'
+  borderRadius: '10px',
+  boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)'
 }
 
 const labelStyles: React.CSSProperties = {
-  font: 'Inter',
-  fontWeight: '500',
   fontSize: '14px',
-  lineHeight: '20px',
-  color: '#535862'
+  fontWeight: '500',
+  color: '#333'
 }
 
-const textInputStyle: React.CSSProperties = {
-  width: '252px',
-  height: '30px',
-  borderRadius: '16px',
-  border: '1px solid #CCDDF8',
-  color: '#000000'
-}
-const innerModalContent: React.CSSProperties = {
-  width: '252px',
-  height: '215px',
-  top: '210px',
-  left: '133px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '13px',
-  backgroundColor: '#FFFFFF',
-  alignItems: 'flex-start',
-  justifyContent: 'flex-start'
+const inputStyle: React.CSSProperties = {
+  width: '100%',
+  padding: '8px 12px',
+  marginTop: '5px',
+  marginBottom: '15px',
+  borderRadius: '6px',
+  border: '1px solid #ccc',
+  fontSize: '14px'
 }
 
-const ForgotPasswordPage: NextPage<ModalProps> = ({ isOpen, onClose }) => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [code, setCode] = useState('')
-  const [successfulCreation, setSuccessfulCreation] = useState(false)
-  const [secondFactor, setSecondFactor] = useState(false)
+const buttonStyle: React.CSSProperties = {
+  width: '100%',
+  padding: '10px',
+  borderRadius: '6px',
+  backgroundColor: '#3b82f6',
+  color: 'white',
+  fontWeight: 'bold',
+  border: 'none',
+  cursor: 'pointer',
+  marginBottom: '10px'
+}
+
+const errorStyle: React.CSSProperties = {
+  color: 'red',
+  fontSize: '13px',
+  marginTop: '-10px',
+  marginBottom: '10px'
+}
+
+const successStyle: React.CSSProperties = {
+  color: 'green',
+  fontSize: '14px',
+  marginBottom: '10px'
+}
+
+const ChangePasswordModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+  const { user } = useUser()
+  const [newPassword, setNewPassword] = useState('')
   const [error, setError] = useState('')
-  const { isLoaded, signIn, setActive } = useSignIn()
+  const [success, setSuccess] = useState(false)
 
-  if (!isOpen) return null
+  if (!isOpen || !user) return null
 
-  if (!isLoaded) {
-    return null
-  }
-
-  // Send the password reset code to the user's email
-  async function create (e: React.FormEvent) {
+  const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault()
-    await signIn
-      ?.create({
-        strategy: 'reset_password_email_code',
-        identifier: email
+    try {
+      const response = await fetch('/api/auth/changePassword', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: user.primaryEmailAddress?.emailAddress,
+          newPassword
+        })
       })
-      .then(()=> {
-        setSuccessfulCreation(true)
+  
+      const data = await response.json()
+      if (!response.ok) {
+        setError(data.error || 'Something went wrong.')
+      } else {
         setError('')
-      })
-      .catch(err => {
-        console.error('error', err.errors[0].longMessage)
-        setError(err.errors[0].longMessage)
-      })
-  }
-
-  // Reset the user's password.
-  // Upon successful reset, the user will be
-  // signed in and redirected to the home page
-  async function reset (e: React.FormEvent) {
-    e.preventDefault()
-    await signIn
-      ?.attemptFirstFactor({
-        strategy: 'reset_password_email_code',
-        code,
-        password
-      })
-      .then(result => {
-        // Check if 2FA is required
-        if (result.status === 'needs_second_factor') {
-          setSecondFactor(true)
-          setError('')
-        } else if (result.status === 'complete') {
-          // Set the active session to
-          // the newly created session (user is now signed in)
-          setActive({ session: result.createdSessionId })
-          setError('')
-        } else {
-          console.log(result)
-        }
-      })
-      .catch(err => {
-        console.error('error', err.errors[0].longMessage)
-        setError(err.errors[0].longMessage)
-      })
+        setSuccess(true)
+        setTimeout(() => {
+          onClose()
+        }, 1500)
+      }
+    } catch (err) {
+      console.error('Password update failed:', err)
+      setError('Something went wrong.')
+    }
   }
 
   return (
     <div style={modalOverlay} onClick={onClose}>
       <div style={modalContent} onClick={e => e.stopPropagation()}>
-        <form
-          style={innerModalContent}
-          onSubmit={!successfulCreation ? create : reset}
-        >
-          {!successfulCreation && (
-            <>
-              <label htmlFor='email' style={labelStyles}>
-                Provide your email address:
-              </label>
-              <input
-                type='email'
-                style={textInputStyle}
-                placeholder='e.g john@doe.com'
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-              />
+        <form onSubmit={handleChangePassword}>
+          <label htmlFor='new-password' style={labelStyles}>
+            New Password:
+          </label>
+          <input
+            id='new-password'
+            type='password'
+            value={newPassword}
+            style={inputStyle}
+            onChange={e => setNewPassword(e.target.value)}
+            required
+          />
 
-              <button style={submitBtnStyle}>Send password reset code</button>
-              {error && <p>{error}</p>}
-            </>
-          )}
+          {error && <p style={errorStyle}>{error}</p>}
+          {success && <p style={successStyle}>Password changed successfully!</p>}
 
-          {successfulCreation && (
-            <>
-              <label style={labelStyles} htmlFor='password'>
-                Enter your new password
-              </label>
-              <input
-                style={textInputStyle}
-                type='password'
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-              />
-
-              <label style={labelStyles} htmlFor='password'>
-                Enter the password reset code that was sent to your email
-              </label>
-              <input
-                style={textInputStyle}
-                type='code'
-                value={code}
-                onChange={e => setCode(e.target.value)}
-              />
-
-              <button style={submitBtnStyle}>Reset</button>
-              {error && <p>{error}</p>}
-            </>
-          )}
-
-          {secondFactor && (
-            <p>2FA is required, but this UI does not handle that</p>
-          )}
+          <button type='submit' style={buttonStyle}>Change Password</button>
         </form>
       </div>
     </div>
   )
 }
 
-export default ForgotPasswordPage
+export default ChangePasswordModal

@@ -11,6 +11,7 @@ import DropdownAndTags from '../components/DropdownAndTags'
 import PersonalInfoIcon from '../img/PersonalInfoIcon.png'
 import IconTextButton from '../components/IconTextButton'
 import isEqual from 'lodash/isEqual'
+import { useUser } from '@clerk/nextjs';
 
 const style = {
   position: 'absolute',
@@ -92,6 +93,8 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
   onSuccess,
   closeMenu
 }) => {
+  const { user } = useUser();
+
   const [activeTab, setActiveTab] = useState(0)
 
   const [initial, setInitialData] = useState(selectedExoneree)
@@ -391,7 +394,9 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
         },
         body: JSON.stringify({
           id: selectedExoneree.id, // Use the exoneree's ID
-          updatedData: formattedData // Send the formatted data
+          updatedData: formattedData, // Send the formatted data
+          actorName: user?.fullName,  
+          actorRole: user?.publicMetadata?.role, 
         })
       })
 
@@ -421,6 +426,7 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
   }
 
   const renderTabContent = () => {
+
     switch (activeTab) {
       case 0:
         const personalLeftIcons = [
@@ -439,10 +445,11 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
                   justifyContent: 'center',
                 }}>
                   <img
-                    // src={formData.imageUrl ? `/api/exonerees/imageProxy?key=${encodeURIComponent(formData.imageUrl.split('/').pop() || '')}` : PersonalInfoIcon.src}
                     src={
-                      formData.imageUrl
-                        ? `/api/exonerees/imageProxy?key=${encodeURIComponent(formData.imageUrl.split('/').pop() || '')}`
+                      (formData.imageUrl !== 'N/A')
+                        ? `/api/exonerees/imageProxy?key=${encodeURIComponent(
+                            formData.imageUrl.split('/').pop() || ''
+                          )}`
                         : PersonalInfoIcon.src
                     }
                     alt="Profile Picture"

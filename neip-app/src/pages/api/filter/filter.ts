@@ -1,19 +1,30 @@
-// /pages/api/filter/filter.ts
-
 import { NextApiRequest, NextApiResponse } from 'next'
+
+function getBoolConstraint(filter: any): string {
+  const isNegation = filter.constraint?.toLowerCase() === 'is not';
+
+  if (filter.value === 'True') {
+    return isNegation ? 'not True' : 'True';
+  }
+
+  if (filter.value === 'False') {
+    return isNegation ? 'not False' : 'False';
+  }
+
+  return 'True';
+}
+
 
 export default async function handler (
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // Allow only POST requests.
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
   const { operators, filters } = req.body
 
-  // Validate input format.
   if (
     !operators ||
     !filters ||
@@ -84,11 +95,11 @@ export default async function handler (
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          value: filter.value,
           field: filter.field,
           table: filter.table,
-          constraint: filter.constraint || null
+          constraint: getBoolConstraint(filter)
         })
+        
       })
 
       if (!response.ok) {

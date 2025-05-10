@@ -29,14 +29,14 @@ const dropdownOptionsMap: { [key: string]: string[] } = {
     'White/European'
   ],
   crimeType: ['Felony', 'Misdemeanor'],
-  falseConfession: ['Yes', 'No'],
-  eyewitnessMisidentification: ['Yes', 'No'],
-  inadequateLegalDefense: ['Yes', 'No'],
-  policeMisconduct: ['Yes', 'No'],
-  prosecutorialMisconduct: ['Yes', 'No'],
-  forensicEvidence: ['Yes', 'No'],
-  reentrySupport: ['Yes', 'No'],
-  publicApology: ['Yes', 'No'],
+  falseConfession: ['True', 'False'],
+  eyewitnessMisidentification: ['True', 'False'],
+  inadequateLegalDefense: ['True', 'False'],
+  policeMisconduct: ['True', 'False'],
+  prosecutorialMisconduct: ['True', 'False'],
+  forensicEvidence: ['True', 'False'],
+  reentrySupport: ['True', 'False'],
+  publicApology: ['True', 'False'],
   currentStatus: [
     'Freed but still fighting',
     'Plea deal',
@@ -67,7 +67,7 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
         if (title.field === 'originalCharges') {
           endpoint = '/api/tags/charge/getCharge'
         } else if (title.field === 'officersInvolved') {
-          endpoint = '/api/tags/officer/getOfficer'
+          endpoint = '/api/officers/getAllOfficers'
         } else {
           return
         }
@@ -133,7 +133,10 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
             <option value='' disabled>
               Select...
             </option>
-            {(isStaticDropdown ? dropdownOptionsMap[title.field] : dynamicOptions).map(opt => (
+            {(isStaticDropdown 
+              ? dropdownOptionsMap[title.field] 
+              : [...dynamicOptions].sort((a, b) => a.localeCompare(b))
+            ).map(opt => (
               <option key={opt} value={opt}>
                 {opt}
               </option>

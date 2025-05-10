@@ -6,6 +6,7 @@ import { IconButton } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import LabelAndEntry from './LabelAndEntry'
 import IconTextButton from './IconTextButton'
+import { useUser } from '@clerk/nextjs';
 
 const style = {
   position: 'absolute' as const,
@@ -49,6 +50,8 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
     }))
   }
 
+  const { user } = useUser(); 
+
   const handleSubmit = async () => {
     try {
       const payload = {
@@ -56,7 +59,9 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
         badgeNumber: formData.badgeNumber,
         department: formData.department,
         MediaLinks: formData.mediaLink,
-        notes: formData.notes
+        notes: formData.notes, 
+        actorName: user?.fullName || user?.emailAddresses[0].emailAddress,
+        actorRole: user?.publicMetadata?.role,
       }
 
       const officerName = `${formData.name}:${formData.badgeNumber}`
@@ -149,7 +154,7 @@ const AddOfficerModal: React.FC<AddOfficerModalProps> = ({
               borderRadius='10px'
               value={formData.department}
               onChange={handleChange}
-              name='badgeNumber'
+              name='department'
             />
           </div>
 

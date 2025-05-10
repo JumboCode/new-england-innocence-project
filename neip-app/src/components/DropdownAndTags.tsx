@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Select, { StylesConfig } from 'react-select';
+import { useUser } from '@clerk/nextjs';
 
 interface DropdownAndTagsProps {
   label: string;
@@ -24,6 +25,7 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({
   name,
   apiUrl
 }) => {
+  const { user } = useUser(); 
   const [selectedTags, setSelectedTags] = useState<string[]>(value);
   const [availableOptions, setAvailableOptions] = useState(
     options.map((option) => ({ value: option, label: option }))
@@ -33,7 +35,11 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const response = await fetch(`/api/tags/${apiUrl.toLocaleLowerCase()}/get${apiUrl}`);
+        let url = `/api/tags/${apiUrl.toLocaleLowerCase()}/get${apiUrl}`
+        if (label == 'Officers Involved') {
+          url = `/api/officers/getAllOfficers`
+        }
+        const response = await fetch(`${url}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -46,7 +52,7 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({
     };
 
     fetchOptions();
-  }, [apiUrl]);
+  }, [apiUrl, label]);
 
   useEffect(() => {
     setSelectedTags(value);
@@ -75,9 +81,30 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({
         const newOption = { value: inputValue, label: inputValue };
         const newTags = [...selectedTags, inputValue];
         setSelectedTags(newTags);
+        onChange?.(name, newTags);
         setAvailableOptions([...availableOptions, newOption]);
 
         try {
+          if (label == 'Officers Involved') {
+            const [name, badgeNumber] = inputValue.split(":")
+            const payload = {
+              name: name, 
+              badgeNumber: badgeNumber,
+              department: "",
+              MediaLinks: "",
+              notes: "", 
+              actorName: user?.fullName,
+              actorRole: user?.publicMetadata?.role,
+            }
+            const response = await fetch('/api/officers/addOfficer', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload),
+            })
+            if (!response.ok) {
+              throw new Error(`Failed to add ${apiUrl} option`);
+            }
+          } else {
             const response = await fetch(`/api/tags/${apiUrl.toLocaleLowerCase()}/add${apiUrl}`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -86,6 +113,7 @@ const DropdownAndTags: React.FC<DropdownAndTagsProps> = ({
             if (!response.ok) {
                 throw new Error(`Failed to add ${apiUrl} option`);
             }
+          }
         } catch (error) {
             console.error(`Failed to add ${apiUrl} option:`, error);
             setSelectedTags(prev => prev.filter(tag => tag !== inputValue));

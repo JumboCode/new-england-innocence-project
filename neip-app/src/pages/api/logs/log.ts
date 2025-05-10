@@ -12,11 +12,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         try {
-        const log = await prisma.log.create({
-            data: { name, role, action, object, date },
-        })
+            const log = await prisma.log.create({
+                data: { name, role, action, object, date },
+            })
 
-        return res.status(200).json({ message: 'Log created successfully.', log })
+            return res.status(200).json({ message: 'Log created successfully.', log })
         } catch (error) {
             return res.status(400).json({ error: `Failed to create log: ${error}` })
         }

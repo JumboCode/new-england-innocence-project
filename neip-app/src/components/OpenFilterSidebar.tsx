@@ -378,7 +378,6 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
 
   return (
     <div className='fixed right-0 top-30 h-full w-96 bg-white shadow-lg flex flex-col z-50'>
-      {/* Header */}
       <div className='bg-[#0F6A9A] text-white p-4 flex justify-between items-center'>
         <h2 className='text-lg font-semibold'>Add filters</h2>
         <button onClick={onClose} className='p-2'>
@@ -386,7 +385,6 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
         </button>
       </div>
 
-      {/* Filter Selection Section using MUI Select */}
       <div className='pt-0 pr-4 pb-4 pl-4 border-b border-gray-300 bg-[#0F6A9A]'>
         <FormControl fullWidth>
           <Select
@@ -405,22 +403,16 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
               }
             }}
           >
-            <MenuItem value='' disabled>
-              Select a filter
-            </MenuItem>
-            {[...dataFields]
-              .sort((a, b) => a.label.localeCompare(b.label))
-              .map(field => (
-                <MenuItem key={field.value} value={field.value}>
-                  {field.label}
-                </MenuItem>
+            <MenuItem value='' disabled>Select a filter</MenuItem>
+            {[...dataFields].sort((a, b) => a.label.localeCompare(b.label)).map(field => (
+              <MenuItem key={field.value} value={field.value}>{field.label}</MenuItem>
             ))}
           </Select>
         </FormControl>
       </div>
 
-      {/* Filters List */}
-      <div className='flex-grow p-4 overflow-y-auto bg-[#e6e6e6]'>
+      {/* Scrollable content */}
+      <div className='flex-grow overflow-y-auto p-4 bg-[#e6e6e6]'>
         {filters.length === 0 ? (
           <div className='text-center text-gray-500'>
             <p>Please choose a filter above to refine your search.</p>
@@ -429,10 +421,7 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
           <div>
             <h3 className='font-bold mb-2 text-black-100'>Filters</h3>
             {filters.map((filter, index) => (
-              <div
-                key={filter.id}
-                className='flex flex-col items-center space-y-2'
-              >
+              <div key={filter.id} className='flex flex-col items-center space-y-2'>
                 {index > 0 && (
                   <AndOr
                     value={logic[index - 1]}
@@ -440,30 +429,19 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
                   />
                 )}
                 {filter.type === 'date' && (
-                <div className="text-sm text-gray-600 italic mb-1">
-                  * Enter dates in format DD/MM/YYYY
-                </div>
-              )}
-
+                  <div className="text-sm text-gray-600 italic mb-1">
+                    * Enter dates in format DD/MM/YYYY
+                  </div>
+                )}
                 <FilterSelection
                   title={filter}
                   condition={filter.condition}
                   setCondition={newCondition =>
-                    setFilters(
-                      filters.map(f =>
-                        f.id === filter.id
-                          ? { ...f, condition: newCondition }
-                          : f
-                      )
-                    )
+                    setFilters(filters.map(f => f.id === filter.id ? { ...f, condition: newCondition } : f))
                   }
                   value={filter.value}
                   setValue={newValue =>
-                    setFilters(
-                      filters.map(f =>
-                        f.id === filter.id ? { ...f, value: newValue } : f
-                      )
-                    )
+                    setFilters(filters.map(f => f.id === filter.id ? { ...f, value: newValue } : f))
                   }
                   onRemove={removeFilter}
                 />
@@ -471,20 +449,18 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
             ))}
           </div>
         )}
+      </div>
 
-        {/* "+ Filter" Button at the bottom opens the dropdown */}
-        <div className='mt-4 flex gap-2'>
+      {/* Sticky apply button */}
+      <div className='p-4 bg-[#e6e6e6] border-t border-gray-300 sticky bottom-0'>
+        <div className='flex gap-2 mb-2'>
           <button
             onClick={clearFilters}
             className={`text-white px-4 py-2 rounded-lg flex-grow ${
-              filters.length === 0
-                ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-red-500'
+              filters.length === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-500'
             }`}
             disabled={filters.length === 0}
-            style={{
-              backgroundColor: filters.length === 0 ? '#CCCCCC' : '#EF4444'
-            }}
+            style={{ backgroundColor: filters.length === 0 ? '#CCCCCC' : '#EF4444' }}
           >
             Clear Filters
           </button>
@@ -496,29 +472,20 @@ const OpenFilterSidebar: React.FC<OpenFilterSidebarProps> = ({
             + Filter
           </button>
         </div>
-        {/* "Apply filters" Button */}
-        <div className='mt-4'>
-          <button
-            onClick={applyFilters}
-            className={`text-white px-4 py-2 rounded-lg w-full ${
-              filters.length === 0
-                ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-green-500'
-            }`}
-            disabled={filters.length === 0 || hasInvalidConstraint}
-            style={{
-              backgroundColor:
-                filters.length === 0 || hasInvalidConstraint
-                  ? '#CCCCCC'
-                  : '#44B4EF'
-            }}
-          >
-            Apply filters
-          </button>
-        </div>
+        <button
+          onClick={applyFilters}
+          className={`text-white px-4 py-2 rounded-lg w-full ${
+            filters.length === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500'
+          }`}
+          disabled={filters.length === 0 || hasInvalidConstraint}
+          style={{ backgroundColor: filters.length === 0 || hasInvalidConstraint ? '#CCCCCC' : '#44B4EF' }}
+        >
+          Apply filters
+        </button>
       </div>
     </div>
   )
 }
 
 export default OpenFilterSidebar
+
