@@ -426,6 +426,7 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
   }
 
   const renderTabContent = () => {
+
     switch (activeTab) {
       case 0:
         const personalLeftIcons = [
@@ -444,10 +445,11 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
                   justifyContent: 'center',
                 }}>
                   <img
-                    // src={formData.imageUrl ? `/api/exonerees/imageProxy?key=${encodeURIComponent(formData.imageUrl.split('/').pop() || '')}` : PersonalInfoIcon.src}
                     src={
-                      formData.imageUrl
-                        ? `/api/exonerees/imageProxy?key=${encodeURIComponent(formData.imageUrl.split('/').pop() || '')}`
+                      (formData.imageUrl !== 'N/A')
+                        ? `/api/exonerees/imageProxy?key=${encodeURIComponent(
+                            formData.imageUrl.split('/').pop() || ''
+                          )}`
                         : PersonalInfoIcon.src
                     }
                     alt="Profile Picture"
