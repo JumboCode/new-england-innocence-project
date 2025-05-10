@@ -24,6 +24,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Missing or invalid image key' });
   }
 
+  console.log("key", key)
+
   try {
     const command = new GetObjectCommand({
       Bucket: BUCKET_NAME,
