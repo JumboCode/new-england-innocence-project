@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       where: { id: idToDelete },
     });
     const personalInfo = await prisma.personalInfo.findUnique({
-      where: { id: exoneree.personalInfoId },
+      where: { id: exoneree?.personalInfoId },
     });
 
     const deletedExoneree = await prisma.exoneree.delete({
@@ -36,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         name: actorName, 
         role: actorRole,
         action: 'delete',
-        object: `exoneree ${personalInfo.name}`,
+        object: `exoneree ${personalInfo?.name}`,
         date: new Date().toISOString()
       })
     })

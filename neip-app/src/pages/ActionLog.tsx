@@ -20,7 +20,7 @@ interface LogEntry {
   date: string
 }
 
-const columns = [
+const columns: ColumnType<LogEntry>[] = [
   { title: 'User Name', dataIndex: 'name', key: 'name', width: 180, fixed: 'left' },
   { title: 'User Role', dataIndex: 'role', key: 'role', width: 180 },
   { title: 'Action', dataIndex: 'action', key: 'action', width: 180 },
@@ -30,7 +30,8 @@ const columns = [
 
 const ActionLog: React.FC = () => {
   const [logs, setLogs] = useState<LogEntry[]>([])
-  const [selectedColumns, setSelectedColumns] = useState<string[]>(columns.map(col => col.key))
+  const [selectedColumns] = useState<string[]>(columns.map(col => (col.key ?? 'N/A') as string))
+
   const { isSignedIn, isLoaded } = useUser()
   const router = useRouter()
 
@@ -92,12 +93,12 @@ const ActionLog: React.FC = () => {
   }
 
   const filteredColumns = columns
-    .filter(col => selectedColumns.includes(col.key))
+    .filter(col => col.key !== undefined && selectedColumns.includes(col.key as string))
     .map(col => ({
       ...col,
       sorter: (a: any, b: any) => {
-        const valA = a[col.dataIndex]
-        const valB = b[col.dataIndex]
+        const valA = a[col.dataIndex as string] 
+        const valB = b[col.dataIndex as string]
         if (valA == null) return -1
         if (valB == null) return 1
         if (
@@ -182,7 +183,7 @@ const ActionLog: React.FC = () => {
 
           <Table
             dataSource={logs}
-            columns={filteredColumns}
+            columns={filteredColumns as ColumnType<unknown>[]}
             rowKey="id"
             pagination={false}
             scroll={{ x: 'max-content', y: '70vh' }}

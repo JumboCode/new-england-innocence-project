@@ -32,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         name: actorName, 
         role: actorRole,
         action: 'delete',
-        object: `officer ${officer.name}`,
+        object: `officer ${officer?.name}`,
         date: new Date().toISOString()
       })
     })
