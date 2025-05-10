@@ -63,7 +63,9 @@ const AccountInfo = () => {
       >
         Account Information
       </h2>
-      <AccountInfoComponent/>
+      <AccountInfoComponent
+        type='administration'
+      />
       <button onClick={() => setModalOpen(true)} style={changePassBtnStyle}>
         Change Password
       </button>
