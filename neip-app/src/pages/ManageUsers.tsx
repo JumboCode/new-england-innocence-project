@@ -163,8 +163,8 @@ const ManageUsers = () => {
                     + Add new intern account
                 </button>
             </div>
-            <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '60px' }}>
-                <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '65px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 180px)', overflowY: 'auto', paddingLeft: '60px', paddingRight: '65px' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
                     {
                         users.map((user: User) => {
                             // Accessing firstName and lastName

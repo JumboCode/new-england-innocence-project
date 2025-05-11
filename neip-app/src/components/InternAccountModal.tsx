@@ -58,31 +58,6 @@ const InternAccountModalContent: React.FC<InternAccountModalProps> = ({
   const [internEmail, setInternEmail] = useState('')
   const [internPassword, setInternPassword] = useState('')
 
-  // const signUpIntern = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-  //   e.preventDefault()
-  //   try {
-  //     const res = await fetch('/api/auth/createIntern', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify({ email: internEmail, name: internName })
-  //     })
-  
-  //     const data = await res.json()
-  //     if (!res.ok) throw new Error(data.message)
-
-  //     // console.log("intern created")
-  //     // await clerk.sendPasswordResetEmail({ emailAddress: internEmail })
-  //     // console.log("email sent")
-  //     console.log('Intern created:', data.user)
-  //     // Optionally show success to the admin
-  //   } catch (err: any) {
-  //     console.error('Intern creation error:', err.message)
-  //     // Show error to user
-  //   }
-  // }
-
   const signUpIntern = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {

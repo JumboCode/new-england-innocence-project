@@ -2,19 +2,6 @@ import Link from 'next/link';
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 
-/*const NavItem = () => {
-    return (
-        <nav>
-            <ul>
-                <li><Link href="/">Homepage</Link></li>
-                <li><Link href="/add-entry">Add Entry</Link></li>
-                <li><Link href="/dashboard">Dashboard</Link></li>
-                <li><Link href="/account">Account</Link></li>
-            </ul>
-        </nav>
-    );
-}*/
-
 interface NavItem {
     name: string;
     icon: JSX.Element; 

@@ -2,7 +2,6 @@
 
 import { FC, ReactNode } from "react";
 import Image from "next/image";
-// import logo from "./caseview_logo.png";
 import logo from "./exonereenetwork_logo.png";
 
 interface AuthBoxProps {
