@@ -8,6 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const { email, newPassword } = req.body;
+    console.log(req.body)
 
     if (!email || !newPassword) {
       return res.status(400).json({ error: "Email and new password are required." });

@@ -89,7 +89,7 @@ export default async function handler (
     try {
       const fullUrl = `${baseUrl}${endpoint}`
       console.log(`Calling ${fullUrl} with filter:`, filter)
-      let requestBody: Record<string, any> = {
+      const requestBody: Record<string, any> = {
         field: filter.field,
         table: filter.table
       };
