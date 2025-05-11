@@ -122,72 +122,72 @@ const ManageUsers = () => {
 
     return (
         <>
-        <div
-            style={{
-                backgroundColor: '#033550',
-                color: 'white',
-                display: 'flex',
-                alignItems: 'center',
-                height: '56px', 
-                marginLeft: '60px'
-            }}
-        >
-            <img
-            src='/caseview_logo2.png'
-            alt='Logo'
-            style={{
-                height: '35px',
-                marginLeft: '17px',
-                backgroundColor: 'white'
-            }}
-            />
-        </div>
-        <div style={{ 
-            display: "flex", 
-            justifyContent: "space-between", 
-            alignItems: "center", 
-            paddingTop: "20px", 
-            paddingBottom: "20px", 
-            paddingLeft: "60px", 
-            paddingRight: "65px", 
-            backgroundColor: "white", 
-            color: "black"
-        }}>
-            <div style={headingStyle}>Manage Users</div>
-            <button style={buttonStyle} onClick={() => setInternAccountModalOpen(true)}>
-                + Add new intern account
-            </button>
-        </div>
-        <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '60px' }}>
         <div style={{ backgroundColor: 'white', minHeight: '100vh' }}>
             {isInternAccountModalOpen && <InternAccountModal onClose={() => { 
                 setInternAccountModalOpen(false);
                 window.location.reload();
              }} />}
-            <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '65px' }}>
-                {
-                    users.map((user: User) => {
-                        // Accessing firstName and lastName
-                        const firstNameUsers = user.firstName || "";
-                        const lastNameUsers = user.lastName || "";
-                        const role = user.publicMetadata.role || "administration";
-
-                        // Accessing emailAddresses - assuming the first email address is the primary one
-                        const emailUser = user.emailAddresses[0].emailAddress || ""; 
-                        const timestamp = user.createdAt;
-
-                        // Convert to Date object
-                        const date = new Date(timestamp);
-
-                        // Get the ISO string and slice to only include the date (YYYY-MM-DD)
-                        const dateOnly = date.toISOString().split('T')[0];
-                        // console.log(`User: ${firstNameUsers} ${lastNameUsers}, Email: ${emailUser}`);
-                        return (
-                            <UsersComponent key={user.id} userId={user.id} firstName={firstNameUsers} lastName={lastNameUsers} email={emailUser} type={role} dateCreated={dateOnly} reload={() => { setReloadFlag(prev => !prev) }} />
-                        )
-                    })}
+            <div
+                style={{
+                    backgroundColor: '#033550',
+                    color: 'white',
+                    display: 'flex',
+                    alignItems: 'center',
+                    height: '56px', 
+                    marginLeft: '60px'
+                }}
+            >
+                <img
+                src='/caseview_logo2.png'
+                alt='Logo'
+                style={{
+                    height: '35px',
+                    marginLeft: '17px',
+                    backgroundColor: 'white'
+                }}
+                />
             </div>
-            <NavBar />
+            <div style={{ 
+                display: "flex", 
+                justifyContent: "space-between", 
+                alignItems: "center", 
+                paddingTop: "20px", 
+                paddingBottom: "20px", 
+                paddingLeft: "60px", 
+                paddingRight: "65px", 
+                backgroundColor: "white", 
+                color: "black"
+            }}>
+                <div style={headingStyle}>Manage Users</div>
+                <button style={buttonStyle} onClick={() => setInternAccountModalOpen(true)}>
+                    + Add new intern account
+                </button>
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '60px' }}>
+                <div style={{ display: "flex", flexWrap: "wrap", paddingLeft: '65px' }}>
+                    {
+                        users.map((user: User) => {
+                            // Accessing firstName and lastName
+                            const firstNameUsers = user.firstName || "";
+                            const lastNameUsers = user.lastName || "";
+                            const role = user.publicMetadata.role || "administration";
+
+                            // Accessing emailAddresses - assuming the first email address is the primary one
+                            const emailUser = user.emailAddresses[0].emailAddress || ""; 
+                            const timestamp = user.createdAt;
+
+                            // Convert to Date object
+                            const date = new Date(timestamp);
+
+                            // Get the ISO string and slice to only include the date (YYYY-MM-DD)
+                            const dateOnly = date.toISOString().split('T')[0];
+                            // console.log(`User: ${firstNameUsers} ${lastNameUsers}, Email: ${emailUser}`);
+                            return (
+                                <UsersComponent key={user.id} userId={user.id} firstName={firstNameUsers} lastName={lastNameUsers} email={emailUser} type={role} dateCreated={dateOnly} reload={() => { setReloadFlag(prev => !prev) }} />
+                            )
+                        })}
+                </div>
+                <NavBar />
             </div>
         </div>
         </>
