@@ -115,26 +115,25 @@ const ResetPasswordModal: React.FC<ModalProps> = ({ isOpen, onClose, email: init
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      console.log("here 1")
+
       const dummyPassword = generateRandomPassword()
       const result = await signIn.attemptFirstFactor({
         strategy: 'reset_password_email_code',
         code,
         password: dummyPassword // dummy password just to validate the code
       })
-      console.log("here 2")
+
       if (result.status === 'needs_second_factor') {
         setSecondFactor(true)
         setError('')
         return
       }
-      console.log("here 3")
+
       if (result.status !== 'complete') {
         setError('Reset code verification incomplete.')
         return
       }
-      // console.log("here 4")
-      // console.log(email)
+
       const response = await fetch('/api/auth/changePassword', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
