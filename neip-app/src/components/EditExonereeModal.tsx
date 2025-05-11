@@ -84,6 +84,9 @@ interface ExonereeData {
   advocacyInvolvement: string
   educationalBackground: string
   healthInfo: string
+  dataSource: string
+  updatedAt: string
+  createdAt: string
 }
 
 const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
@@ -155,7 +158,10 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
       : selectedExoneree.originalCharges?.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag && tag !== 'N/A') || [],
       officersInvolved: Array.isArray(selectedExoneree.officersInvolved)
       ? selectedExoneree.officersInvolved.filter((tag: string) => tag !== 'N/A')
-      : selectedExoneree.officersInvolved?.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag && tag !== 'N/A') || []
+      : selectedExoneree.officersInvolved?.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag && tag !== 'N/A') || [],
+    dataSource: selectedExoneree.dataSource || '',
+    updatedAt: selectedExoneree.updatedAt || '',
+    createdAt: selectedExoneree.createdAt || ''
   }
 
   const [formData, setFormData] = useState<ExonereeData>(initialData)
@@ -347,9 +353,9 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
       },
       metaData: {
         // TODO: Add something for this, currently just temporary empty strings.
-        dataSource: '',
-        lastUpdated: '',
-        createdAt: ''
+        dataSource: formData.dataSource,
+        lastUpdated: new Date().toLocaleDateString('en-US'),
+        createdAt: formData.createdAt
       }
     }
 

@@ -253,8 +253,8 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         },
         metaData: {
           dataSource: '',
-          lastUpdated: '',
-          createdAt: ''
+          lastUpdated: new Date().toLocaleDateString('en-US'),
+          createdAt: new Date().toLocaleDateString('en-US')
         }, 
         actorName: user?.fullName || user?.emailAddresses[0].emailAddress,
         actorRole: user?.publicMetadata?.role,
