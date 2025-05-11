@@ -34,6 +34,7 @@ const SearchEntryBox: React.FC<SearchEntryBoxProps> = ({ setExonerees, loadAllEx
           phoneNumber: exoneree.personalInfo?.phoneNumber || 'N/A',
           address: exoneree.personalInfo?.address || 'N/A',
           email: exoneree.personalInfo?.email || 'N/A',
+          imageURL: exoneree.personalInfo?.imageURL || 'N/A',
           caseNumber: exoneree.caseInfo?.caseNumber || 'N/A',
           crimeType: exoneree.caseInfo?.crimeType || 'N/A',
           gender: exoneree.personalInfo?.gender || 'N/A',
