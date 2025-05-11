@@ -44,7 +44,8 @@ const UsersComponent: React.FC<UsersProps> = ({ userId, firstName, lastName, ema
         font: "Inter",
         fontWeight: "400",
         fontSize: "14px",
-        lineHeight: "20px"
+        lineHeight: "20px", 
+        color: "black"
     }
 
     const nameStyles: React.CSSProperties = {
