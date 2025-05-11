@@ -122,6 +122,26 @@ const ManageUsers = () => {
 
     return (
         <>
+        <div
+            style={{
+                backgroundColor: '#033550',
+                color: 'white',
+                display: 'flex',
+                alignItems: 'center',
+                height: '56px', 
+                marginLeft: '60px'
+            }}
+        >
+            <img
+            src='/caseview_logo2.png'
+            alt='Logo'
+            style={{
+                height: '35px',
+                marginLeft: '17px',
+                backgroundColor: 'white'
+            }}
+            />
+        </div>
         <div style={{ 
             display: "flex", 
             justifyContent: "space-between", 
@@ -129,7 +149,9 @@ const ManageUsers = () => {
             paddingTop: "20px", 
             paddingBottom: "20px", 
             paddingLeft: "60px", 
-            paddingRight: "65px" 
+            paddingRight: "65px", 
+            backgroundColor: "white", 
+            color: "black"
         }}>
             <div style={headingStyle}>Manage Users</div>
             <button style={buttonStyle} onClick={() => setInternAccountModalOpen(true)}>

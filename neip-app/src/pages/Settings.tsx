@@ -51,6 +51,27 @@ const AccountInfo = () => {
         paddingLeft: '90px'
       }}
     >
+      {/* Top Banner */}
+      <div
+        style={{
+          backgroundColor: '#033550',
+          color: 'white',
+          display: 'flex',
+          alignItems: 'center',
+          height: '56px', 
+          marginLeft: "-30px"
+        }}
+      >
+        <img
+          src='/caseview_logo2.png'
+          alt='Logo'
+          style={{
+            height: '35px',
+            marginLeft: '17px',
+            backgroundColor: 'white'
+          }}
+        />
+      </div>
       <h2
         style={{
           font: 'Inner',
