@@ -762,7 +762,6 @@ const HomePage: React.FC = () => {
 
       setSelectedRows([])
       refreshExonerees()
-      alert('Selected rows deleted successfully.')
     } catch (error) {
       console.error('Error deleting selected rows:', error)
       alert(
@@ -1177,7 +1176,6 @@ const HomePage: React.FC = () => {
         handleClose={() => setOfficerModalOpen(false)}
         onSuccess={() => {
           setOfficerModalOpen(false)
-          alert('Officer added successfully!')
         }}
       />
       <SelectColumnsModal

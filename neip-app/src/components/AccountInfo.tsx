@@ -87,7 +87,6 @@ const AccountInfoComponent: React.FC<AccountInfoProps> = ({ type }) => {
         firstName: formData.firstName,
         lastName: formData.lastName
       });
-      alert("Profile updated!");
     } catch (err) {
       console.error("Failed to update Clerk profile:", err);
       alert("Something went wrong while updating your profile.");
