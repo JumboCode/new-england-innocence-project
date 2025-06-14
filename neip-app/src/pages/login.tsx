@@ -41,11 +41,12 @@ const LoginPage: React.FC = () => {
     console.log(`isSignedInNow before login: ${isSignedIn}`)
 
     try {
-      const response = await fetch('/api/auth/checkUser', {
+      const response = await fetch(`${window.location.origin}/api/auth/checkUser`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
       })
+      
 
       const result = await response.json()
       if (!response.ok) {
