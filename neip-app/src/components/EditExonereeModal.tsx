@@ -63,6 +63,7 @@ interface ExonereeData {
   policeDepartment: string
   legalRepresentation: string
   prosecutor: string
+  judge: string
   officersInvolved: []
   falseConfession: string
   eyewitnessMisidentification: string
@@ -130,6 +131,7 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
     policeDepartment: selectedExoneree.policeDepartment || '',
     legalRepresentation: selectedExoneree.legalRepresentation || '',
     prosecutor: selectedExoneree.prosecutor || '',
+    judge: selectedExoneree.judge || '', 
     falseConfession: selectedExoneree.falseConfession || '',
     eyewitnessMisidentification:
       selectedExoneree.eyewitnessMisidentification || '',
@@ -321,6 +323,7 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
         policeDepartment: formData.policeDepartment,
         legalRepresentation: formData.legalRepresentation,
         prosecutor: formData.prosecutor,
+        judge: formData.judge,
         officersInvolved: formData.officersInvolved
       },
       wrongfulConvictionInfo: {
@@ -893,6 +896,17 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
               value={formData.prosecutor}
               onChange={handleChange}
               name='prosecutor'
+            />
+          </React.Fragment>,
+          <React.Fragment key='judge'>
+            <LabelAndEntry
+              label={'Judge'}
+              width='60%'
+              height='36px'
+              borderRadius='10px'
+              value={formData.judge}
+              onChange={handleChange}
+              name='judge'
             />
           </React.Fragment>,
           <React.Fragment key='officers-involved'>
