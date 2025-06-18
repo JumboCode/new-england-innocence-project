@@ -413,7 +413,7 @@ const HomePage: React.FC = () => {
         return filteredArray.length ? filteredArray.join(', ') : 'N/A'
       }
       const handleBoolean = (value: boolean | null | undefined) =>
-        value === true ? 'True' : value === false ? 'False' : 'N/A'
+        value === true ? 'Yes' : value === false ? 'No' : 'N/A'
 
       const formattedData = jsonResponse.data.map(
         (item: any, index: number) => ({
