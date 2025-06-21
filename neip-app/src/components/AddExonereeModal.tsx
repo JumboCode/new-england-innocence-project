@@ -458,7 +458,7 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
         const personalRightIcons = [
           <React.Fragment key='email-entry'>
             <LabelAndEntry
-              label={'Email*'}
+              label={'Email'}
               placeholder={''}
               width='40%'
               height='35px'
