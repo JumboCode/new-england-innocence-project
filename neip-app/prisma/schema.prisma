@@ -33,7 +33,7 @@ model PersonalInfo {
   ethnicity   String
   phoneNumber String?
   address     String?
-  email       String?   
+  email       String? 
   imageURL    String?
   exoneree    Exoneree?
 }
