@@ -653,7 +653,7 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
         const caseLeftIcons = [
           <React.Fragment key='case-number'>
             <LabelAndEntry
-              label={'Case Number'}
+              label={'Case Number*'}
               placeholder={'XXXXXXXXXXXX'}
               width='60%'
               height='35px'
