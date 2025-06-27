@@ -224,15 +224,15 @@ const AddExonereeModal: React.FC<AddExonereeModalProps> = ({
           officersInvolved: formData.officersInvolved
         },
         wrongfulConvictionInfo: {
-          falseConfession: formData.falseConfession === 'Yes',
+          falseConfession: formData.falseConfession === 'No' ? false : true, // defaults to Yes
           eyewitnessMisidentification:
-            formData.eyewitnessMisidentification === 'Yes',
-          inadequateLegalDefense: formData.inadequateLegalDefense === 'Yes',
-          policeMisconduct: formData.policeMisconduct === 'Yes',
-          prosecutorialMisconduct: formData.prosecutorialMisconduct === 'Yes',
-          forensicEvidence: formData.forensicEvidence === 'Yes',
+            formData.eyewitnessMisidentification === 'No' ? false : true,
+          inadequateLegalDefense: formData.inadequateLegalDefense === 'No' ? false : true,
+          policeMisconduct: formData.policeMisconduct === 'No' ? false : true,
+          prosecutorialMisconduct: formData.prosecutorialMisconduct === 'No' ? false : true,
+          forensicEvidence: formData.forensicEvidence === 'No' ? false : true,
           informantTestimony:
-            formData.informantTestimony === 'Yes' ? true : false,
+            formData.informantTestimony === 'No' ? false : true,
           otherInfo: formData.otherInfo
         },
         postExonerationInfo: {
