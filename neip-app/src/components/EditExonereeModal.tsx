@@ -110,7 +110,7 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
     phoneNumber: selectedExoneree.phoneNumber || '',
     email: selectedExoneree.email || '',
     dob: selectedExoneree.dob || '',
-    gender: selectedExoneree.gender || '',
+    gender: selectedExoneree.gender === "F" ? "Female" : selectedExoneree.gender === "M" ? "Male" : '',
     race: selectedExoneree.race || '',
     ethnicity: selectedExoneree.ethnicity || '',
     address: selectedExoneree.address || '',
@@ -291,7 +291,6 @@ const EditExonereeModal: React.FC<EditExonereeModalProps> = ({
         phoneNumber: formData.phoneNumber,
         email: formData.email,
         dateOfBirth: formData.dob,
-        //gender: formData.gender === "Male" ? "M" : formData.gender === "Female" ? "F" : "OTHER",
         gender:
           formData.gender === 'Male'
             ? 'M'
